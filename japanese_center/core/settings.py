@@ -80,9 +80,9 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Japanese_Center_DB', # Tên database
+        'NAME': 'japanese_center_db', # Tên database
         'USER': 'root',
-        'PASSWORD': 'hha1525678',
+        'PASSWORD': 'admin123',
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }
