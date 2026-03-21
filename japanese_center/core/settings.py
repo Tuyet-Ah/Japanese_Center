@@ -80,12 +80,19 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Japanese_Center_DB', # Tên database
+        'NAME': 'japanese_center_db', # Tên database
         'USER': 'root',
-        'PASSWORD': 'hha1525678',
+        'PASSWORD': 'admin123',
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }
+}
+
+# REST Framework
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
 }
 
 
@@ -124,3 +131,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+AUTH_USER_MODEL = 'education.User'

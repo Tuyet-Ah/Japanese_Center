@@ -1,0 +1,1 @@
+{"name":"Local: hello","url":"c:\\Japanese_Center\\Japanese_Center\\hello.cpp","tests":[{"id":1772597578851,"input":"2 3 hehe","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"c:\\Japanese_Center\\Japanese_Center\\hello.cpp","group":"local","local":true}

@@ -1,0 +1,97 @@
+<!DOCTYPE html >
+<html lang = "en">
+  <head>
+    <meta charset="UTF-8">
+    <title>JSMART - Luôn đồng hành cùng bạn</title>
+    <link rel="stylesheet" href="./CSS/Home.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+  </head>
+
+  <body>
+    <header> 
+      <div class = "header">
+        <nav class = "taskbar">
+        <img src="image/logoweb.png" alt="logo">
+          <a href="AboutPage.html">Về JSMART</a>
+          <a href="Course.html">Khóa học</a>
+          <a href="Document.html">Kho tài liệu</a>
+          <a href="Exam.html">Đề thi online</a>
+          <a href="JLPT.html">JLPT</a>
+          <a href="LearnOn.html">
+            <button>Học online</button>
+          </a>
+        </nav>
+      </div>
+    </header>
+    
+    <main>
+      <div class = "background">
+          <img src="image/background.jpg" alt="background">
+      </div>
+      <div class = title>
+        <h1> HỌC TIẾNG NHẬT KHÓ ?!</h1>
+        <h2> CÁI GÌ KHÓ CÓ JSMART LO !</h2>
+      </div>
+      <img src="image/decor.png" alt="tt" class ="dec">
+      <div class = "main-container">
+        <div class = "whitebox">
+          
+          <ul class = "course-wrapper">
+            <li class = "course-item">
+              <button>
+                <img src="image/box1.png" alt="course1" class = "course-image">
+              </button>
+            </li>
+            <li class = "course-item">
+              <button>
+                <img src="image/box2.png" alt="course2" class = "course-image">
+              </button>
+            </li>
+            <li class = "course-item">
+              <button>
+                <img src="image/box3.png" alt="course3" class = "course-image">
+              </button>
+            </li>
+            <li class = "course-item">
+              <button>
+                <img src="image/Box4.jpg" alt="course4" class = "course-image">
+              </button>
+            </li>
+            <li class = "course-item">
+              <button>
+                <img src="image/box5.png" alt="course5" class = "course-image">
+              </button>
+            </li>
+          </ul>
+        </div>
+        <button class = "left" onclick="moveSlide(-1)"><img src="image/chevron-left.png" alt="left" ></button>
+        <button class = "right" onclick = "moveSlide(1)"><img src="image/chevron-right.png" alt="right"></button>
+      </div>
+    </main>
+
+
+    <footer class = "footer">
+      <section class = "section">
+        <p>JSMART.EDU.VN</p>
+        <p>HỆ THỐNG NHẤT NGỮ TIẾNG NHẬT HÀNG ĐẦU CẢ NƯỚC</p>
+        <p>TRUNG TÂM LUYỆN THI JLPT ĐA NỀN TẢNG SỐ 1 VIỆT NAM</p>
+      </section>
+      
+      <p>Copyright © 2024 JSMART. All rights reserved.</p>
+      
+    </footer>
+    <div class="hana-chat-container">
+      <div class="hana-bubble">
+          <span class="hana-text">Bạn cần Hana giúp gì không?</span>
+      </div>
+      <div class="hana-mascot">
+          <img src="image/AI.png" alt="Hana Mascot">
+      </div>
+    </div>
+
+    <script src="./JS/Home.js"></script>
+  </body>
+</html>
+
