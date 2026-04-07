@@ -1,4 +1,4 @@
-from education.models import Course,Enrollment,Lesson,UserProgress
+from education.models import Course,Enrollment,Lesson,UserProgress,CourseReview
 
 class CourseService:
     @staticmethod
@@ -46,7 +46,6 @@ class CourseService:
     # tiến độ học tập
     @staticmethod
     def get_course_progress(user, course_id):
-        from ..models import Lesson, UserProgress
         total_lessons = Lesson.objects.filter(chapter__course_id=course_id).count()
         completed_count = UserProgress.objects.filter(
             user=user, 
@@ -60,3 +59,69 @@ class CourseService:
             "total_lessons": total_lessons,
             "progress_percentage": round(percentage, 2)
         }
+    
+    def filter_courses(query_params):
+        """Logic lọc khóa học nâng cao"""
+        queryset = Course.objects.all()
+
+        # 1. Lọc theo từ khóa (Tiêu đề hoặc mô tả)
+        search = query_params.get('search')
+        if search:
+            queryset = queryset.filter(
+                Q(title__icontains=search) | Q(description__icontains=search)
+            )
+
+        # 2. Lọc theo trình độ JLPT (N5, N4,...)
+        level = query_params.get('level')
+        if level:
+            queryset = queryset.filter(level=level)
+
+        # 3. Lọc theo khoảng giá
+        min_price = query_params.get('min_price')
+        max_price = query_params.get('max_price')
+        if min_price:
+            queryset = queryset.filter(price__gte=min_price)
+        if max_price:
+            queryset = queryset.filter(price__lte=max_price)
+
+        # 4. Sắp xếp (Mới nhất, Giá tăng/giảm)
+        ordering = query_params.get('ordering', '-created_at')
+        return queryset.order_by(ordering)
+
+    @staticmethod
+    def get_course_rating(course_id):
+        """Tính điểm trung bình của khóa học"""
+        return CourseReview.objects.filter(course_id=course_id).aggregate(Avg('rating'))['rating__avg'] or 0
+    #Gợi ý tìm kiếm
+    @staticmethod
+    def suggest_courses(query):
+        """Gợi ý nhanh tên khóa học khi người dùng đang nhập"""
+        if not query:
+            return []
+        # Chỉ lấy ID và Title để tối ưu tốc độ (không lấy cả object nặng)
+        return Course.objects.filter(title__icontains=query).values('id', 'title')[:5]
+    
+    @staticmethod
+    def add_review(user, course_id, rating, comment):
+        # 1. Kiểm tra xem học viên đã thanh toán khóa học này chưa
+        has_paid = Enrollment.objects.filter(
+            user=user, 
+            course_id=course_id, 
+            status='paid'
+        ).exists()
+        
+        if not has_paid:
+            raise PermissionError("Bạn cần mua khóa học trước khi để lại đánh giá.")
+
+        # 2. Tạo hoặc cập nhật đánh giá
+        review, created = CourseReview.objects.update_or_create(
+            user=user, 
+            course_id=course_id,
+            defaults={'rating': rating, 'comment': comment}
+        )
+        return review
+
+    @staticmethod
+    def get_course_reviews(course_id):
+        """Lấy danh sách đánh giá của một khóa học"""
+        return CourseReview.objects.filter(course_id=course_id).order_by('-created_at')

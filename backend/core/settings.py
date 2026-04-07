@@ -144,4 +144,4 @@ SIMPLE_JWT = {
     # Cho phép làm mới Refresh Token (xoay vòng token)
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
-}
+}  

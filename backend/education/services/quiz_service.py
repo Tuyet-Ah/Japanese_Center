@@ -1,5 +1,5 @@
-from ..models import Quiz, Question, QuizSubmission
-from django.utils import timezone
+from education.models import Quiz, QuizSubmission
+
 
 class QuizService:
 

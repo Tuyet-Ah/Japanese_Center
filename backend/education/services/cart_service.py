@@ -1,4 +1,3 @@
-from django.db import transaction
 from education.models import CartItem, Enrollment, Course
 
 class CartService:

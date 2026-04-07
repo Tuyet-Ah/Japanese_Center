@@ -1,5 +1,5 @@
 from django.db import transaction
-from ..models import CartItem, Enrollment
+from education.models import CartItem, Enrollment
 
 class PaymentService:
     @staticmethod

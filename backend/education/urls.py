@@ -1,5 +1,5 @@
 from django.urls import path
-from .Views import RegisterView, LoginView, CourseListView,CourseDetailView,CartView,WebhookBankView,CheckoutView,CartDeleteView,PracticeHistoryView,FinalExamHistoryView,QuizSubmitView,QuizDetailView,LessonDetailView,MarkLessonCompleteView,ProfileView,MyCoursesProgressView,QuizLeaderboardView,QuizReviewDetailView,PracticeQuizListView
+from .Views import RegisterView, LoginView, CourseListView,CourseDetailView,CartView,WebhookBankView,CheckoutView,CartDeleteView,PracticeHistoryView,FinalExamHistoryView,QuizSubmitView,QuizDetailView,LessonDetailView,MarkLessonCompleteView,ProfileView,MyCoursesProgressView,QuizLeaderboardView,QuizReviewDetailView,LessonCommentView,PersonalNoteView,ForumTopicView,CourseSearchSuggestView,CourseReviewView
 
 urlpatterns =[
       path('register/', RegisterView.as_view(), name='register'),
@@ -9,7 +9,12 @@ urlpatterns =[
 
       path('courses/', CourseListView.as_view(), name='course-list'),
       path('courses/<int:pk>/',CourseDetailView.as_view(), name='course-detail'),
-
+      # 1. Danh sách khóa học (Tích hợp Tìm kiếm & Lọc)
+      # URL này sẽ xử lý các query params như ?search=, ?level=, ?min_price=
+      # 2. Đánh giá khóa học (Xem danh sách review và Gửi review mới)
+      path('courses/<int:course_id>/reviews/', CourseReviewView.as_view(), name='course-reviews'),
+      # 3. Gợi ý tìm kiếm nhanh (Search Suggestion - Option)
+      path('courses/suggest/', CourseSearchSuggestView.as_view(), name='course-suggest'),
       path('checkout/', CheckoutView.as_view(), name='checkout'),
       path('webhook-bank/', WebhookBankView.as_view(), name='bank-webhook'),
 
@@ -29,6 +34,9 @@ urlpatterns =[
       # Progress & My Courses
       path('my-learning/', MyCoursesProgressView.as_view(), name='my-learning'),
       
-      
+      # Tương tác và công đồng
+      path('lessons/<int:lesson_id>/comments/', LessonCommentView.as_view(), name='lesson-comments'),
+      path('notes/', PersonalNoteView.as_view(), name='personal-notes'),
+      path('forum/topics/', ForumTopicView.as_view(), name='forum-topics'),
             
 ] 
