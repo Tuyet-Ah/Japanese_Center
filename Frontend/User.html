@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JSMART - Khóa học đã mua</title>
-    <link rel="stylesheet" href="./CSS/Course.css">
+    <title>Trang cá nhân</title>
+    <link rel="stylesheet" href="./CSS/User.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,8 +14,7 @@
     <header class="header">
         <div class="logo-nav">
             <div class="logo">
-                <img src="https://via.placeholder.com/50" alt="JSMART Logo" class="logo-img">
-                <span class="logo-text">JSMART</span>
+                <img src="image/logoweb.PNG" alt="JSMART Logo" class="logo-img">
             </div>
             <nav class="nav-links">
                 <a href="Home.html">Trang chủ</a>
@@ -35,13 +34,13 @@
         
         <aside class="sidebar">
             <div class="user-profile-summary">
-                <img src="https://images.unsplash.com/photo-1513002749550-c59d786b8e6c?q=80&w=150" alt="Avatar" class="profile-avatar">
+                <img src="image/2.jpg" alt="Avatar" class="profile-avatar">
                 <h2 class="user-name">Trịnh Thị Tuyết Anh</h2>
                 <p class="user-id">ID: 34578223</p>
             </div>
 
             <div class="menu-section">
-                <p class="menu-title">Tài khoản cá nhân</p>
+                <p class="menu-title active">Tài khoản cá nhân</p>
                 <ul class="menu-list">
                     <li class="menu-item" id="btn-profile">
                         <i class="fa-regular fa-user"></i> Thông tin cá nhân
@@ -59,51 +58,45 @@
         </aside>
 
         <section class="content-area">
-            <div class="courses-section">
-                <h1 class="section-title">CÁC KHÓA HỌC ĐÃ MUA</h1>
+            <div class="info-section">
+                <h1 class="section-title">THÔNG TIN HỌC VIÊN</h1>
                 
-                <div class="filter-bar">
-                    <div class="search-box">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" placeholder="Tìm kiếm khóa học theo tên, mã">
+                <div class="info-grid">
+                    <div class="info-row">
+                        <span class="info-label">Họ tên</span>
+                        <span class="info-value">Trịnh Thị Tuyết Anh</span>
                     </div>
-                    
-                    <div class="select-wrapper">
-                        <select class="filter-select">
-                            <option value="">Trình độ</option>
-                            <option value="n5">N5</option>
-                            <option value="n4">N4</option>
-                        </select>
-                        <i class="fa-solid fa-circle-chevron-down select-icon"></i>
+                    <div class="info-row">
+                        <span class="info-label">Ngày sinh</span>
+                        <span class="info-value">01/05/2005</span>
                     </div>
-
-                    <div class="select-wrapper">
-                        <select class="filter-select">
-                            <option value="">Tình trạng</option>
-                            <option value="dang-hoc">Đang học</option>
-                            <option value="hoan-thanh">Đã hoàn thành</option>
-                        </select>
-                        <i class="fa-solid fa-circle-chevron-down select-icon"></i>
+                    <div class="info-row">
+                        <span class="info-label">Email</span>
+                        <span class="info-value">tanh01052005@gmail.com</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Số điện thoại</span>
+                        <span class="info-value">0357513055</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Giới tính</span>
+                        <span class="info-value">Nữ</span>
                     </div>
                 </div>
 
-                <div class="course-list">
-                    <div class="course-item">
-                        <span class="course-name">Tiếng Nhật cho người mới bắt đầu</span>
-                        <span class="course-level">N5</span>
-                        <span class="course-status">Đang học</span>
-                    </div>
-                    <div class="course-item">
-                        <span class="course-name">Từ vựng cơ bản cho người mới bắt đầu</span>
-                        <span class="course-level">N5</span>
-                        <span class="course-status">Đang học</span>
-                    </div>
+                <div class="action-buttons">
+                    <button class="btn btn-update">Cập nhật thông tin</button>
+                    <button class="btn btn-password">Thay đổi mật khẩu</button>
                 </div>
+            </div>
+
+            <div class="decor-image">
+                <img src="image/2.jpg" alt="Bầu trời mây">
             </div>
         </section>
 
     </main>
 
-    <script src="./JS/Course.js"></script>
+    <script src="./JS/User.js"></script>
 </body>
 </html>

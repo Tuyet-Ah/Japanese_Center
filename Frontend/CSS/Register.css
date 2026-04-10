@@ -1,0 +1,143 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    /* Thay url() bằng đường dẫn tới ảnh nền núi Phú Sĩ của bạn */
+    background-image: url('../image/backRe.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh; /* Sửa thành 100vh để bao phủ toàn bộ màn hình */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Ngăn trang web xuất hiện thanh cuộn dọc không mong muốn */
+}
+
+/* Khung chứa tổng thể bọc cả 2 phần */
+.register-container {
+    display: flex;
+    width: 100%;
+    max-width: 1000px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    padding: 20px;
+}
+
+.form-card {
+    background: #fdfdfd;
+    padding: 25px 35px; /* Ép viền nhỏ lại một chút (trước là 30px 40px) */
+    border-radius: 12px;
+    width: 450px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    
+    /* === BÙA HỘ MỆNH CHỐNG TRÀN === */
+    max-height: 90vh; /* Form không bao giờ cao quá 90% màn hình */
+    overflow-y: auto; /* Tự động hiện thanh cuộn bên trong nếu form quá dài */
+}
+
+/* Tuỳ chỉnh cho thanh cuộn bên trong form đẹp hơn (Chỉ hiện trên Chrome/Edge/Safari) */
+.form-card::-webkit-scrollbar {
+    width: 6px;
+}
+.form-card::-webkit-scrollbar-thumb {
+    background-color: #82a4cf;
+    border-radius: 10px;
+}
+
+.form-card h2 {
+    color: #1a3a8a;
+    text-align: center;
+    margin-bottom: 20px; /* Giảm từ 25px xuống 20px */
+    font-size: 28px; /* Giảm từ 32px xuống 28px */
+    font-family: 'Times New Roman', Times, serif; 
+}
+
+.input-group {
+    margin-bottom: 12px; /* Giảm từ 15px xuống 12px */
+}
+
+.input-group label {
+    display: block;
+    color: #1a3a8a;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.input-wrapper {
+    display: flex;
+    align-items: center;
+    background: #d9e2f1; 
+    border-radius: 6px;
+    padding: 8px 12px; /* Giảm độ dày của ô input */
+}
+
+.input-wrapper i {
+    color: #1a3a8a;
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+.input-wrapper input {
+    border: none;
+    background: transparent;
+    outline: none;
+    width: 100%;
+    font-size: 15px; /* Chữ trong ô input gọn lại một chút */
+    color: #333;
+}
+
+.btn-register {
+    width: 100%;
+    padding: 10px; /* Giảm độ dày của nút bấm */
+    background-color: #82a4cf;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px; /* Giảm từ 15px xuống 10px */
+    transition: background 0.3s;
+}
+
+.btn-register:hover {
+    background-color: #6488b8;
+}
+
+/* === STYLING CHO PHẦN TEXT BÊN PHẢI === */
+.welcome-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex: 1; 
+}
+
+.welcome-text {
+    color: white; 
+    font-size: 40px; /* Chỉnh cho cân đối với form bên trái */
+    line-height: 1.4;
+    font-weight: 800;
+    text-shadow: 
+        -2px -2px 0 #1a3a8a,  
+         2px -2px 0 #1a3a8a,
+        -2px  2px 0 #1a3a8a,
+         2px  2px 0 #1a3a8a,
+         3px  3px 5px rgba(0,0,0,0.4); 
+    margin-bottom: 20px;
+}
+
+.welcome-text .highlight {
+    font-size: 40px;
+}
+
+.chibi-img {
+    width: 300px; /* Nhỏ lại một xíu để không bị chiếm chỗ */
+    height: auto;
+}

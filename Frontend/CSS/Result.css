@@ -1,0 +1,260 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Lora", serif; /* Dùng font Lora giống ảnh thiết kế */
+}
+
+body {
+    background-color: #fdfdfd;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 50px;
+    background-color: #f5f5f5;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.logo-nav {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-text {
+    font-weight: bold;
+    font-size: 26px;
+    color: #001954;
+}
+
+.logo-img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.nav-links {
+    display: flex;
+    gap: 50px;
+    align-items: center;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #001954; 
+    font-weight: bold;
+    font-size: 18px;
+    margin: 0;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: #0c6194; 
+}
+
+.header-icons {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.header-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid #0c6194;
+    object-fit: cover;
+}
+
+.bag-icon { 
+    font-size: 30px;
+    color: #0c6194;
+    cursor: pointer;
+}
+
+.main-container {
+    display: flex;
+    gap: 25px;
+    padding: 40px 50px;
+    min-height: 85vh;
+    /* Thay url thành đường dẫn ảnh nền hoa anh đào của bạn */
+    background: url('https://images.unsplash.com/photo-1522383225653-ed111181a951?q=80&w=2076') no-repeat center center/cover;
+}
+
+.sidebar { 
+    background-color: #00639c;
+    width: 300px;
+    border-radius: 10px;
+    padding: 30px 20px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.user-profile-summary {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.profile-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid white;
+    object-fit: cover;
+    margin-bottom: 15px;
+}
+
+.user-name {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.user-id {
+    font-size: 13px;
+    color: #b3d4ff;
+}
+
+.menu-title {
+    font-size: 15px;
+    margin-bottom: 15px;
+    padding-left: 10px;
+}
+
+.menu-list {
+    list-style: none;
+}
+
+.menu-item {
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background-color: white;
+    color: #0c6194;
+    transition: 0.3s;
+}
+
+/* Nút được active màu xanh đậm */
+.menu-item.active {
+    background-color: #052E5C;
+    color: white;
+}
+
+.menu-item:hover:not(.active) {
+    background-color: #e6f0fa;
+    color: #0c6194;
+}
+
+.logout-btn {
+    background-color: #052E5C;
+    color: #f5f5f5;
+    border: none;
+    padding: 12px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: 0.3s;
+}
+
+.logout-btn:hover {
+    background-color: #f5f5f5;
+    color: #052E5C;
+}
+
+.content-area {
+    flex: 1;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 40px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.results-section {
+    width: 100%;
+}
+
+.section-title {
+    color: #001954;
+    font-size: 24px;
+    margin-bottom: 35px;
+    font-weight: bold;
+}
+
+/* --- Bảng Thống kê kết quả thi --- */
+.results-table {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.table-header {
+    display: flex;
+    background-color: #e8f0fe; /* Màu xanh nhạt */
+    border: 1px solid #b3d4ff;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-weight: bold;
+    color: #001954;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.table-row {
+    display: flex;
+    padding: 15px 20px;
+    align-items: center;
+    color: #001954;
+    font-size: 18px;
+}
+
+/* Chia cột theo tỷ lệ */
+.col-exam {
+    flex: 2;
+}
+
+.col-date {
+    flex: 1;
+    text-align: center;
+}
+
+.col-score {
+    flex: 1;
+    text-align: center;
+}
+
+.col-action {
+    flex: 1;
+    text-align: right;
+}
+
+.detail-link {
+    color: #001954;
+    text-decoration: none;
+    font-weight: bold;
+    border-bottom: 1px solid #001954; /* Đường gạch chân sát chữ */
+    padding-bottom: 1px;
+    transition: 0.3s;
+}
+
+.detail-link:hover {
+    color: #3b82f6;
+    border-bottom-color: #3b82f6;
+}

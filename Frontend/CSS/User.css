@@ -1,0 +1,249 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "lora", sans-serif;
+}
+
+body {/*done*/
+    background-color: #fdfdfd;
+}
+
+.header {/*done*/
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 50px;
+    background-color: #f5f5f5;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.logo-nav {/*done*/
+    display: flex;
+    align-items: center;
+    gap: 60px;
+}
+
+.logo {/*done*/
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.logo-img {/*done*/
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    gap: 50px;
+}
+
+.nav-links {/*done*/
+    display: flex;
+    gap: 120px;
+    align-items: center;
+}
+.nav-links a {/*done*/
+    text-decoration: none;
+    color: #001954; 
+    font-weight: bold;
+    font-size: 24px;
+    margin: 0;
+    transition: 0.3s;
+}
+.nav-links a:hover {/*done*/
+    color: #0c6194; 
+}
+
+.header-icons {/*done*/
+    display: flex;
+    align-items: center;
+    gap: 50px;
+}
+
+.header-avatar {/*done*/
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid #0c6194;
+    object-fit: cover;
+}
+
+.bag-icon { /*done*/
+    font-size: 50px;
+    color: #0c6194;
+    cursor: pointer;
+}
+
+
+.main-container {/*done*/
+    display: flex;
+    gap: 25px;
+    padding: 40px 50px;
+    min-height: 85vh;
+    background: url('../image/backRe.jpg') no-repeat center center/cover;
+}
+
+.sidebar { /*done*/
+    background-color: #00639c;
+    width: 300px;
+    border-radius: 10px;
+    padding: 30px 20px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.user-profile-summary {/*done*/
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.profile-avatar {/*done*/
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid white;
+    object-fit: cover;
+    margin-bottom: 15px;
+}
+
+.user-name {/*done*/
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.user-id {/*done*/
+    font-size: 13px;
+    color: #b3d4ff;
+}
+
+
+.menu-title {
+    font-size: 15px;
+    margin-bottom: 15px;
+    padding-left: 10px;
+}
+
+.menu-list {/*done*/
+    list-style: none;
+}
+
+.menu-item {/*done*/
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background-color: white;
+    color: #0c6194;
+    transition: 0.3s;
+}
+
+
+.menu-item:hover:not(.active) {
+    background-color: #e6f0fa; /* Đổi màu nền thành xanh nhạt */
+    color: #0c6194;
+}
+
+.logout-btn {/*done*/
+    background-color: #052E5C;
+    color: #f5f5f5;
+    border: none;
+    padding: 12px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: 0.3s;
+}
+
+.logout-btn:hover {/*done*/
+    background-color: #f5f5f5;
+    color: #052E5C;
+}
+
+.content-area {/*done*/
+    flex: 1;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    padding: 40px;
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.info-section {/*done*/
+    flex: 1;
+    padding-right: 40px;
+}
+
+.section-title {/*done*/
+    color: #001954;
+    font-size: 24px;
+    margin-bottom: 35px;
+    font-weight: bold;
+}
+
+.info-grid {/*done*/
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    margin-bottom: 50px;
+}
+
+.info-row {/*done*/
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    color: #001954;
+    gap: 80px;
+}
+
+.info-label {/*done*/
+    width: 150px;
+    font-weight: bold;
+}
+
+.info-value {/*done*/
+    font-weight: 500;
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 300px;
+}
+
+.btn {/*done*/
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+    background-color: #0c6194;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background-color: #ffffff;
+    color: #0c6194;
+    border:2px solid #0c6194;
+}
+
+.decor-image img {
+    width: 260px;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2px solid #0c6194;
+}

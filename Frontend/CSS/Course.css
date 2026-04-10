@@ -1,0 +1,300 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "lora", sans-serif;
+}
+
+body {
+    background-color: #fdfdfd;
+}
+
+/* --- Header --- */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 50px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.logo-nav {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.logo-text {
+    font-size: 26px;
+    font-weight: bold;
+    color: #1a4b77;
+}
+
+.nav-links {
+    display: flex;
+    gap: 40px;
+    margin-left: 30px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #1a4b77;
+    font-weight: 600;
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: #3b82f6;
+}
+
+.header-icons {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.header-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 2px solid #b3d4ff;
+    object-fit: cover;
+}
+
+.bag-icon {
+    font-size: 26px;
+    color: #0c6194;
+    cursor: pointer;
+}
+
+/* --- Main Container --- */
+.main-container {
+    display: flex;
+    gap: 25px;
+    padding: 40px 50px;
+    min-height: 85vh;
+    /* Bạn có thể đổi lại link ảnh nền hoa anh đào ở đây */
+    background: url('../image/backRe.jpg') no-repeat center center/cover;
+}
+
+/* --- Sidebar --- */
+.sidebar {
+    background-color: #0c6194;
+    width: 300px;
+    border-radius: 10px;
+    padding: 30px 20px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.user-profile-summary {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.profile-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid white;
+    object-fit: cover;
+    margin-bottom: 15px;
+}
+
+.user-name {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.user-id {
+    font-size: 13px;
+    color: #b3d4ff;
+}
+
+.menu-section {
+    flex: 1;
+}
+
+.menu-title {
+    font-size: 15px;
+    margin-bottom: 15px;
+    padding-left: 10px;
+}
+
+.menu-list {
+    list-style: none;
+}
+
+.menu-item {
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background-color: white;
+    color: #0c6194;
+    transition: 0.3s;
+}
+
+/* Highlight menu Khóa học đã mua */
+.menu-item.active {
+    background-color: #043658;
+    color: white;
+}
+
+.menu-item:hover:not(.active) {
+    background-color: #e6f0fa;
+}
+
+.logout-btn {
+    background-color: #043658;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: 0.3s;
+}
+
+.logout-btn:hover {
+    background-color: #032136;
+}
+
+/* --- Content Area --- */
+.content-area {
+    flex: 1;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 40px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.courses-section {
+    width: 100%;
+}
+
+.section-title {
+    color: #1a4b77;
+    font-size: 24px;
+    margin-bottom: 30px;
+    font-weight: bold;
+}
+
+/* --- Filter Bar --- */
+.filter-bar {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 40px;
+    align-items: center;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    border: 2px solid #1a4b77;
+    border-radius: 5px;
+    padding: 8px 15px;
+    background-color: transparent;
+    width: 350px;
+}
+
+.search-box i {
+    color: #3b82f6;
+    margin-right: 10px;
+}
+
+.search-box input {
+    border: none;
+    outline: none;
+    background: transparent;
+    width: 100%;
+    color: #1a4b77;
+    font-size: 15px;
+}
+
+.search-box input::placeholder {
+    color: #7b9ebc;
+}
+
+.select-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.filter-select {
+    border: 2px solid #1a4b77;
+    border-radius: 5px;
+    padding: 8px 40px 8px 15px;
+    background-color: transparent;
+    color: #1a4b77;
+    font-weight: 600;
+    outline: none;
+    appearance: none;
+    cursor: pointer;
+}
+
+.select-icon {
+    position: absolute;
+    right: 10px;
+    color: #1a4b77;
+    pointer-events: none;
+}
+
+/* --- Course List --- */
+.course-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.course-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 2px solid #7b9ebc;
+    color: #1a4b77;
+}
+
+.course-name {
+    flex: 2;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.course-level {
+    flex: 1;
+    text-align: center;
+    font-size: 16px;
+    color: #3b82f6;
+}
+
+.course-status {
+    flex: 1;
+    text-align: right;
+    font-weight: bold;
+    font-size: 16px;
+}

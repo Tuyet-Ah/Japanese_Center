@@ -1,9 +1,12 @@
-document.getElementById('loginForm').addEventListener('submit', function(e) {
-    e.preventDefault();
+document.getElementById('loginForm').addEventListener('submit', function(event) {
+    // 1. Ngăn chặn hành vi reload trang mặc định của form khi ấn Enter/Submit
+    event.preventDefault();
+
+    // 2. Lấy giá trị người dùng nhập vào
     const user = document.getElementById('username').value;
     const pass = document.getElementById('password').value;
-    
-    // Giả lập logic đăng nhập
-    console.log("Đang đăng nhập với:", user);
-    alert("Chức năng đăng nhập đang được xử lý!");
+
+
+    // 4. Chuyển hướng sang trang chính
+    window.location.href = 'User.html';
 });

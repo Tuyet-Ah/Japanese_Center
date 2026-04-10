@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký - JSMART</title>
+    <link rel="stylesheet" href="./CSS/Register.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="register-container">
+        <div class="form-card">
+            <h2>Đăng ký tài khoản</h2>
+            <form id="registerForm">
+                <div class="input-group">
+                    <label>Tên đăng nhập</label>
+                    <div class="input-wrapper">
+                        <i class="fa-regular fa-user"></i>
+                        <input type="text" id="username" required>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label>Email</label>
+                    <div class="input-wrapper">
+                        <i class="fa-regular fa-envelope"></i>
+                        <input type="email" id="email" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Mật khẩu</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="password" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Nhập lại mật khẩu</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="confirmPassword" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Mã xác thực</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <input type="text" id="captcha" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-register">ĐĂNG KÝ</button>
+            </form>
+        </div>
+
+        <div class="welcome-section">
+            <h1 class="welcome-text">
+                Hãy đăng kí để cùng<br>
+                đồng hành với<br>
+                <span class="highlight">JSMART</span> sớm nhất<br>
+                nhé !!
+            </h1>
+            <img src="image/cheer-removebg-preview.png" alt="JSMART Mascot" class="chibi-img">
+        </div>
+    </div>
+
+    <script src="./JS/Register.js"></script>
+</body>
+</html>
