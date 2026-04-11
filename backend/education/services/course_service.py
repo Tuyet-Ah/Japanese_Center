@@ -1,5 +1,5 @@
 from education.models import Course,Enrollment,Lesson,UserProgress,CourseReview
-
+from django.db.models import Q,Avg
 class CourseService:
     @staticmethod
     def list_all_courses():
@@ -59,7 +59,7 @@ class CourseService:
             "total_lessons": total_lessons,
             "progress_percentage": round(percentage, 2)
         }
-    
+    @staticmethod
     def filter_courses(query_params):
         """Logic lọc khóa học nâng cao"""
         queryset = Course.objects.all()
@@ -122,6 +122,9 @@ class CourseService:
         return review
 
     @staticmethod
-    def get_course_reviews(course_id):
-        """Lấy danh sách đánh giá của một khóa học"""
-        return CourseReview.objects.filter(course_id=course_id).order_by('-created_at')
+    def get_course_reviews(course_id,rating=None):
+        """Lấy danh sách đánh giá của một khóa học và có lọc theo sao"""
+        queryset = CourseReview.objects.filter(course_id=course_id)
+        if rating:
+            queryset = queryset.filter(rating=rating)
+        return queryset.order_by('-created_at')

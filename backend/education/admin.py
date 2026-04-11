@@ -1,5 +1,5 @@
 from django.contrib import admin
-from education.models import User, Course, Chapter, Lesson, Enrollment, CartItem,Question,Quiz,QuizSubmission,UserProgress,LessonComment,LessonNote,ForumResponse,ForumTopic
+from education.models import User, Course,CourseReview, Chapter, Lesson, Enrollment, CartItem,Question,Quiz,QuizSubmission,UserProgress,LessonComment,LessonNote,ForumResponse,ForumTopic
 
 # Cho phép tạo Lesson ngay trong trang Chapter
 class LessonInline(admin.TabularInline):
@@ -12,6 +12,7 @@ class ChapterAdmin(admin.ModelAdmin):
 # Đăng ký các bảng vào trang Admin
 admin.site.register(User)
 admin.site.register(Course)
+admin.site.register(CourseReview)
 admin.site.register(Chapter, ChapterAdmin)
 admin.site.register(Lesson)
 admin.site.register(Enrollment)

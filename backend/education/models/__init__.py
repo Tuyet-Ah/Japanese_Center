@@ -1,5 +1,6 @@
 from .User import User
-from .Course import Course,CourseReview
+from .Course import Course
+from .CourseReview import CourseReview
 from .CartItem import CartItem
 from .Chapter import Chapter
 from .Lesson import Lesson

@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions
-from education.serializers import LessonCommentSerializer, LessonNoteSerializer, ForumTopicSerializer
+from education.serializers import LessonCommentSerializer, LessonNoteSerializer, ForumTopicSerializer,ForumResponseSerializer
 from education.services import InteractionService
 from education.models import ForumTopic
 class LessonCommentView(APIView):
@@ -37,3 +37,16 @@ class ForumTopicView(APIView):
     def post(self, request):
         topic = InteractionService.create_topic(request.user, request.data)
         return Response(ForumTopicSerializer(topic).data, status=status.HTTP_201_CREATED)
+
+class ReplyToTopicView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    def post(self,request,topic_id):
+        content = request.data.get('content')
+        response = InteractionService.reply_to_topic(request.user, topic_id, content)
+        return Response({"message": "Trả lời đã được đăng"}, status=status.HTTP_201_CREATED)
+    
+class GetReplyTopicView(APIView):
+    def get(self,request,topic_id):
+        responses = InteractionService.get_replyTopic(topic_id)
+        serializer = ForumResponseSerializer(responses, many=True)
+        return Response(serializer.data)

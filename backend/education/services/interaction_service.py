@@ -28,7 +28,12 @@ class InteractionService:
             category=data.get('category'),
             content=data.get('content')
         )
-
+    
+    @staticmethod
+    def get_replyTopic(topic_id):
+       # topic = ForumTopic.objects.filter(id = topic_id)
+        return ForumResponse.objects.filter(topic_id=topic_id).select_related('user').order_by('created_at')
+        
     @staticmethod
     def reply_to_topic(user, topic_id, content):
         return ForumResponse.objects.create(user=user, topic_id=topic_id, content=content)

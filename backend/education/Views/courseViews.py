@@ -53,7 +53,8 @@ class CourseReviewView(APIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get(self, request, course_id):
-        reviews = CourseService.get_course_reviews(course_id)
+        rating = request.query_params.get('rating')
+        reviews = CourseService.get_course_reviews(course_id,rating=rating)
         serializer = CourseReviewSerializer(reviews, many=True)
         return Response(serializer.data)
 
