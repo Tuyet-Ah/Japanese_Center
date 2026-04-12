@@ -1,0 +1,6 @@
+# Bắt đầu từ dòng này, KHÔNG có dấu * ở đầu
+backend/db.sqlite3
+*.pyc
+venv/
+.env
+**/__pycache__/
