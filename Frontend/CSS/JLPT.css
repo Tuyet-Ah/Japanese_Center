@@ -1,0 +1,168 @@
+/* Reset cơ bản */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f0f4f8; /* Màu nền xanh nhạt */
+    color: #1a365d;
+}
+
+/* Navbar (Giữ nguyên style) */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 50px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.logo-circle {
+    width: 60px; height: 60px;
+    border-radius: 50%; border: 2px solid #1a365d;
+    display: flex; justify-content: center; align-items: center;
+}
+.logo-text { font-weight: bold; color: #1a365d; font-size: 14px; }
+.nav-links { display: flex; gap: 40px; }
+.nav-links a { text-decoration: none; color: #1a365d; font-weight: 600; }
+.nav-links a.active { color: #4a90e2; }
+.nav-icons { display: flex; gap: 20px; font-size: 24px; color: #1a365d; cursor: pointer; }
+
+/* Bố cục chính */
+.main-container {
+    display: flex;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+/* Grid chứa các thẻ bài test */
+.test-grid {
+    flex: 3;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+/* Thẻ bài test */
+.test-card {
+    background-color: #dce5f0; /* Màu nền xanh xám nhạt */
+    border-radius: 8px;
+    padding: 25px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid #c0d1e6;
+    transition: all 0.3s ease;
+}
+
+.test-title {
+    font-size: 18px;
+    color: #2b3a55;
+    margin-bottom: 15px;
+    line-height: 1.4;
+    text-align: center;
+}
+
+.test-info {
+    font-size: 13px;
+    color: #5a6b8c;
+    text-align: center;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* Nút chi tiết */
+.btn-detail {
+    background-color: #3b5284;
+    color: #ffffff;
+    border: none;
+    padding: 10px 0;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+/* Hiệu ứng hover cho nút và trạng thái active (như trong ảnh mẫu) */
+.btn-detail:hover, .btn-detail.active {
+    background-color: #ffffff;
+    color: #3b5284;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Sidebar bên phải */
+.sidebar {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 200px;
+}
+
+.level-filter {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.filter-header {
+    background-color: #e6eef5;
+    border: 2px solid #2b3a55;
+    color: #2b3a55;
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.level-list {
+    list-style: none;
+    border: 1px solid #2b3a55;
+    border-radius: 6px;
+    background-color: #ffffff;
+}
+
+.level-item {
+    padding: 12px 0;
+    text-align: center;
+    font-weight: bold;
+    color: #2b3a55;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.level-item:not(:last-child) {
+    border-bottom: 1px solid #2b3a55;
+    margin: 0 15px; /* Thụt lề cho đường kẻ như trong ảnh */
+}
+
+.level-item:hover, .level-item.active {
+    color: #4a90e2;
+}
+
+/* Chỗ trống cho Mascot */
+.mascot-container {
+    margin-top: auto;
+    text-align: center;
+}
+
+.mascot-img {
+    max-width: 100%;
+    height: auto;
+}
