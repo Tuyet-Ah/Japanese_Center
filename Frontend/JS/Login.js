@@ -1,14 +1,12 @@
 
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
-    e.preventDefault(); // Ngăn trang web load lại
+    e.preventDefault();
 
-    // 1. Lấy dữ liệu từ form
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
     try {
-        // 2. Gửi request đến Backend (đường dẫn /api/login/ tùy vào cấu hình urls.py tổng)
-        const response = await fetch('http://127.0.0.1:8000/educations/login/', { 
+        const response = await fetch('http://127.0.0.1:8000/educations/login/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -22,16 +20,24 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
         const data = await response.json();
 
         if (response.ok) {
-            // 3. Lưu JWT Token vào LocalStorage hoặc Cookie
-            localStorage.setItem('access_token', data.access);
-            localStorage.setItem('refresh_token', data.refresh);
-            
-            alert('Đăng nhập thành công!');
-            
-            // 4. Chuyển hướng người dùng sang trang chủ hoặc trang cá nhân
-            window.location.href = 'Home.html'; 
+            localStorage.setItem('token', data.access);
+
+            // Giải mã JWT để lấy thông tin người dùng
+            try {
+                const payload = JSON.parse(atob(data.access.split('.')[1]));
+                const user = {
+                    username: payload.username, // Giả sử payload có trường 'username'
+                    // Thêm các thông tin khác nếu có, ví dụ: payload.name
+                };
+                localStorage.setItem('user', JSON.stringify(user));
+            } catch (e) {
+                console.error('Không thể giải mã token:', e);
+                // Nếu không giải mã được, vẫn tiếp tục nhưng không có thông tin user
+            }
+
+            // alert('Đăng nhập thành công!'); // Bỏ alert để chuyển trang ngay lập tức
+            window.location.href = 'Home.html';
         } else {
-            // Hiển thị lỗi từ backend (vd: "Sai mật khẩu")
             alert('Đăng nhập thất bại: ' + (data.detail || 'Thông tin không chính xác'));
         }
     } catch (error) {

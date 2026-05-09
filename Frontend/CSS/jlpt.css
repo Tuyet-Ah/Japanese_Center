@@ -1,0 +1,16 @@
+@import url('./base.css');
+
+/* jlpt.css */
+.levels-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 30px; }
+.level-card { background: white; border: 2px solid var(--border); border-radius: 16px; padding: 24px; transition: all 0.3s ease; }
+.level-badge { width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 900; font-size: 1.5rem; margin-bottom: 12px; }
+.level-n5 { background: linear-gradient(135deg, #2563eb, #60a5fa); }
+.level-n4 { background: linear-gradient(135deg, #3b82f6, #93c5fd); }
+.level-n3 { background: linear-gradient(135deg, #fb7185, #f472b6); }
+.level-n2 { background: linear-gradient(135deg, #f97316, #fb923c); }
+.level-n1 { background: linear-gradient(135deg, #d97706, #f59e0b); }
+
+.test-structure { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; margin-top: 30px; }
+.structure-item { background: white; border: 1px solid var(--border); border-radius: 16px; padding: 24px; text-align: center; }
+.study-path { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; margin-top: 30px; }
+.path-item { background: white; border: 1px solid var(--border); border-radius: 16px; padding: 24px; text-align: center; }

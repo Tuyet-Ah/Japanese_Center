@@ -1,98 +1,164 @@
-<!DOCTYPE html >
-<html lang = "en">
-  <head>
-    <meta charset="UTF-8">
-    <title>JSMART - Luôn đồng hành cùng bạn</title>
-    <link rel="stylesheet" href="./CSS/Home.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
-  </head>
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Japanese Center | Trang chủ</title>
+	<link rel="stylesheet" href="./CSS/home.css">
+	<script defer src="script.js"></script>
+</head>
+<body>
+	<header class="topbar">
+		<div class="container topbar-inner">
+			<a class="brand" href="Home.html">
+				<span class="brand-mark">日</span>
+				<span>
+					Japanese Center
+					<small>Trung tâm giảng dạy tiếng Nhật</small>
+				</span>
+			</a>
+			<nav class="nav">
+				<a href="Home.html">Trang chủ</a>
+				<a href="courses.html">Khóa học</a>
+				<a href="exams.html">Đề thi</a>
+				<a href="jlpt.html">JLPT</a>
+				<a href="materials.html">Tài liệu</a>
+			</nav>
+			<div class="actions">
+				<a data-profile-link href="profile.html" class="icon-btn" hidden title="Trang cá nhân">👤</a>
+				<a data-cart-link href="cart.html" class="icon-btn cart-icon" hidden title="Giỏ hàng">🛒<span data-cart-count class="badge">0</span></a>
+				<div data-auth-actions class="auth-buttons">
+					<a class="btn btn-outline" href="login.html">Đăng nhập</a>
+					<a class="btn btn-primary" href="register.html">Đăng ký</a>
+				</div>
+				<div data-user-actions class="user-section" style="display: none;">
+					<span class="user-greeting">Xin chào, <span data-username></span></span>
+					<button data-logout-btn class="btn btn-outline">Đăng xuất</button>
+				</div>
+			</div>
+		</div>
+	</header>
 
-  <body>
-    <header> 
-      <div class = "header">
-        <nav class = "taskbar">
-        <img src="image/logoweb.png" alt="logo">
-          <a href="AboutPage.html">Về JSMART</a>
-          <a href="Opening.html">Lịch khai giảng</a>
-          <a href="LearnOn.html">Khóa học</a>
-          <a href="Document.html">Kho tài liệu</a>
-          <a href="JLPT.html">JLPT</a>
-          <a href="Share.html">Góc chia sẻ</a>
-          <a href="Login.html">
-            <button>Học online</button>
-          </a>
-        </nav>
-      </div>
-    </header>
-    
-    <main>
-      <div class = "background">
-          <img src="image/background.jpg" alt="background">
-      </div>
-      <div class = title>
-        <h1> HỌC TIẾNG NHẬT KHÓ ?!</h1>
-        <h2> CÁI GÌ KHÓ CÓ JSMART LO !</h2>
-      </div>
-      <img src="image/decor.png" alt="tt" class ="dec">
-      <div class = "main-container">
-        <div class = "whitebox">
-          
-          <ul class = "course-wrapper">
-            <li class = "course-item">
-              <button>
-                <img src="image/box1.png" alt="course1" class = "course-image">
-              </button>
-            </li>
-            <li class = "course-item">
-              <button>
-                <img src="image/box2.png" alt="course2" class = "course-image">
-              </button>
-            </li>
-            <li class = "course-item">
-              <button>
-                <img src="image/box3.png" alt="course3" class = "course-image">
-              </button>
-            </li>
-            <li class = "course-item">
-              <button>
-                <img src="image/Box4.jpg" alt="course4" class = "course-image">
-              </button>
-            </li>
-            <li class = "course-item">
-              <button>
-                <img src="image/box5.png" alt="course5" class = "course-image">
-              </button>
-            </li>
-          </ul>
-        </div>
-        <button class = "left" onclick="moveSlide(-1)"><img src="image/chevron-left.png" alt="left" ></button>
-        <button class = "right" onclick = "moveSlide(1)"><img src="image/chevron-right.png" alt="right"></button>
-      </div>
-    </main>
+	<main>
+		<!-- Hero Banner -->
+		<section class="hero-banner">
+			<div class="container hero-banner-inner">
+				<div class="hero-content">
+					<h1 class="hero-title">HỌC TIẾNG NHẬT KHÓ?!</h1>
+					<p class="hero-subtitle">Không còn khó khăn nữa. Japanese Center mang đến phương pháp học hiệu quả, giáo viên chuyên nghiệp, và cộng đồng học viên nhiệt tình.</p>
+					<a href="courses.html" class="btn btn-primary btn-large">Xem khóa học</a>
+				</div>
+				<div class="hero-visual">
+					<div class="hero-placeholder">
+						<div class="placeholder-icon">🎌</div>
+						<p>Nhật Bản Học Tập</p>
+					</div>
+				</div>
+			</div>
+		</section>
 
+		<!-- Features Section -->
+		<section class="features-section">
+			<div class="container">
+				<div class="features-grid">
+					<div class="feature-card">
+						<div class="feature-icon">📚</div>
+						<h3>Đã có Japanese Center lo</h3>
+						<p>Những giáo viên giàu kinh nghiệm sẽ hướng dẫn bạn từng bước, từ cơ bản đến nâng cao.</p>
+					</div>
+					<div class="feature-card">
+						<div class="feature-icon">🎯</div>
+						<h3>Lộ trình rõ ràng</h3>
+						<p>Mỗi khóa học được thiết kế với mục tiêu cụ thể, giúp bạn tiến bộ nhanh chóng.</p>
+					</div>
+					<div class="feature-card">
+						<div class="feature-icon">👥</div>
+						<h3>Cộng đồng học tập</h3>
+						<p>Cùng học với các bạn cùng mục tiêu, chia sẻ kinh nghiệm và động lực.</p>
+					</div>
+				</div>
+			</div>
+		</section>
 
-    <footer class = "footer">
-      <section class = "section">
-        <p>JSMART.EDU.VN</p>
-        <p>HỆ THỐNG NHẤT NGỮ TIẾNG NHẬT HÀNG ĐẦU CẢ NƯỚC</p>
-        <p>TRUNG TÂM LUYỆN THI JLPT ĐA NỀN TẢNG SỐ 1 VIỆT NAM</p>
-      </section>
-      
-      <p>Copyright © 2024 JSMART. All rights reserved.</p>
-      
-    </footer>
-    <div class="hana-chat-container">
-      <div class="hana-bubble">
-          <span class="hana-text">Bạn cần Hana giúp gì không?</span>
-      </div>
-      <div class="hana-mascot">
-          <img src="image/AI.png" alt="Hana Mascot">
-      </div>
-    </div>
+		<!-- Carousel Section -->
+		<section class="carousel-section">
+			<div class="container">
+				<h2>Điểm mạnh của chúng tôi</h2>
+				<div class="carousel-wrapper">
+					<button class="carousel-btn prev" id="prevBtn">❮</button>
+					<div class="carousel-container">
+						<div class="carousel-track" id="carouselTrack">
+							<div class="carousel-item">
+								<div class="carousel-item-img" style="background-color: #0f766e;"></div>
+								<p>Khóa học N5 - Bắt đầu từ đây</p>
+							</div>
+							<div class="carousel-item">
+								<div class="carousel-item-img" style="background-color: #1d9e96;"></div>
+								<p>Khóa học N4 - Giao tiếp cơ bản</p>
+							</div>
+							<div class="carousel-item">
+								<div class="carousel-item-img" style="background-color: #fb7185;"></div>
+								<p>Khóa học N3 - Nâng cao</p>
+							</div>
+							<div class="carousel-item">
+								<div class="carousel-item-img" style="background-color: #f9a8d4;"></div>
+								<p>JLPT Luyện thi - Chuẩn bị thi</p>
+							</div>
+						</div>
+					</div>
+					<button class="carousel-btn next" id="nextBtn">❯</button>
+				</div>
+			</div>
+		</section>
 
-    <script src="./JS/Home.js"></script>
-  </body>
+		<!-- CTA Section -->
+		<section class="cta-section">
+			<div class="container">
+				<div class="cta-content">
+					<h2>Bắt đầu hành trình học tiếng Nhật của bạn ngay hôm nay</h2>
+					<p>Không bao giờ là quá muộn để bắt đầu. Hàng ngàn học viên đã thay đổi cuộc sống nhờ Japanese Center.</p>
+					<div class="actions">
+						<a href="register.html" class="btn btn-primary btn-large">Đăng ký miễn phí</a>
+						<a href="courses.html" class="btn btn-outline btn-large">Xem các khóa học</a>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="footer">
+		<div class="container footer-inner">
+			<div>Japanese Center - Trung tâm giảng dạy tiếng Nhật</div>
+			<div>Hotline: 0900 123 456 | Email: hello@japanesecenter.vn</div>
+		</div>
+	</footer>
+
+	<script>
+		// Simple carousel functionality
+		const track = document.getElementById('carouselTrack');
+		const items = track.querySelectorAll('.carousel-item');
+		const prevBtn = document.getElementById('prevBtn');
+		const nextBtn = document.getElementById('nextBtn');
+		let currentIndex = 0;
+
+		const itemWidth = 320 + 20; // width + gap
+
+		function updateCarousel() {
+			track.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+		}
+
+		if (prevBtn && nextBtn) {
+			prevBtn.addEventListener('click', () => {
+				currentIndex = (currentIndex - 1 + items.length) % items.length;
+				updateCarousel();
+			});
+
+			nextBtn.addEventListener('click', () => {
+				currentIndex = (currentIndex + 1) % items.length;
+				updateCarousel();
+			});
+		}
+	</script>
+</body>
 </html>
 

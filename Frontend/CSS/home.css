@@ -1,0 +1,29 @@
+@import url('./base.css');
+
+/* home.css */
+.hero-banner { background: linear-gradient(135deg, var(--primary) 0%, #60a5fa 100%); padding: 60px 0; color: white; }
+.hero-banner-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+.hero-content { padding: 20px 0; }
+.hero-title { font-size: clamp(2.5rem, 6vw, 4rem); line-height: 1.1; margin: 0 0 20px; font-weight: 900; letter-spacing: -0.02em; }
+.hero-subtitle { font-size: 1.1rem; line-height: 1.7; margin: 0 0 30px; max-width: 500px; opacity: 0.95; }
+.hero-visual { display: flex; align-items: center; justify-content: center; }
+.hero-placeholder { width: 100%; height: 300px; background: rgba(255, 255, 255, 0.15); border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px; border: 2px solid rgba(255, 255, 255, 0.2); }
+.placeholder-icon { font-size: 60px; }
+
+.features-section { padding: 60px 0; background: var(--surface-2); }
+.features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+.feature-card { background: white; padding: 32px; border-radius: 18px; border: 1px solid var(--border); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.feature-card:hover { transform: translateY(-5px); box-shadow: 0 24px 48px rgba(37, 99, 235, 0.12); }
+.feature-icon { font-size: 48px; margin-bottom: 15px; }
+
+.carousel-section { padding: 60px 0; background: var(--bg); }
+.carousel-section h2 { text-align: center; font-size: 2.2rem; margin: 0 0 40px; color: var(--primary-dark); }
+.carousel-wrapper { display: flex; align-items: center; gap: 20px; position: relative; }
+.carousel-btn { background: var(--primary); color: white; border: 0; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; flex-shrink: 0; }
+.carousel-container { overflow: hidden; flex: 1; }
+.carousel-track { display: flex; gap: 20px; transition: transform 0.3s ease; }
+.carousel-item { flex: 0 0 300px; display: flex; flex-direction: column; background: white; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+.carousel-item-img { width: 100%; height: 180px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 18px; }
+
+.cta-section { background: linear-gradient(135deg, var(--primary) 0%, #60a5fa 100%); padding: 60px 0; color: white; text-align: center; }
+.cta-content .actions { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }

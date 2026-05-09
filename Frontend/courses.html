@@ -1,0 +1,190 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Japanese Center | Khóa học</title>
+  <link rel="stylesheet" href="CSS/courses.css">
+  <script defer src="script.js"></script>
+  <style>
+    .course-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.58);
+      display: grid;
+      place-items: center;
+      z-index: 50;
+      padding: 18px;
+    }
+
+    .course-modal[hidden] { display: none; }
+
+    .course-modal-shell {
+      width: min(1100px, 100%);
+      max-height: min(90vh, 920px);
+      overflow: auto;
+      background: white;
+      border-radius: 28px;
+      box-shadow: 0 30px 80px rgba(15, 23, 42, 0.28);
+      padding: 24px;
+    }
+
+    .course-modal-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+
+    .course-modal-header h2 {
+      margin: 6px 0 8px;
+      font-size: 2rem;
+      color: var(--primary-dark);
+    }
+
+    .course-modal-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 20px;
+    }
+
+    .course-panel {
+      background: var(--surface-2);
+      border: 1px solid rgba(37, 99, 235, 0.12);
+      border-radius: 22px;
+      padding: 18px;
+    }
+
+    .course-panel h3 {
+      margin: 0 0 12px;
+      color: var(--primary-dark);
+    }
+
+    .course-list-bullets {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .course-video-card,
+    .course-exercise-card {
+      background: white;
+      border-radius: 18px;
+      border: 1px solid rgba(37, 99, 235, 0.1);
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
+    .course-video-card strong,
+    .course-exercise-card strong { color: var(--primary-dark); }
+
+    .course-modal-footer {
+      margin-top: 20px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+
+    @media (max-width: 900px) {
+      .course-modal-grid { grid-template-columns: 1fr; }
+      .course-modal-header { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="Home.html">
+        <span class="brand-mark">日</span>
+        <span>Japanese Center<small>Trung tâm giảng dạy tiếng Nhật</small></span>
+      </a>
+      				<nav class="nav">
+			<a href="Home.html">Trang chủ</a>
+			<a href="courses.html">Khóa học</a>
+			<a href="exams.html">Đề thi</a>
+			<a href="jlpt.html">JLPT</a>
+			<a href="materials.html">Tài liệu</a>
+		</nav>
+		<div class="actions">
+			<a data-profile-link href="profile.html" class="icon-btn" hidden title="Trang cá nhân">👤</a>
+			<a data-cart-link href="cart.html" class="icon-btn cart-icon" hidden title="Giỏ hàng">🛒<span data-cart-count class="badge">0</span></a>
+			<div data-auth-actions class="auth-buttons">
+				<a class="btn btn-outline" href="login.html">Đăng nhập</a>
+				<a class="btn btn-primary" href="register.html">Đăng ký</a>
+			</div>
+			<div data-user-actions class="user-section" style="display: none;">
+				<span class="user-greeting">Xin chào, <span data-username></span></span>
+				<button data-logout-btn class="btn btn-outline">Đăng xuất</button>
+			</div>
+		</div>
+  </div>
+	</header>
+
+  <main class="section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2>Danh sách khóa học</h2>
+          <p>Chọn khóa học phù hợp với trình độ, lịch học và mục tiêu của bạn.</p>
+        </div>
+      </div>
+      <div class="grid grid-2" data-course-list></div>
+    </div>
+  </main>
+
+  <div class="course-modal" data-course-modal hidden>
+    <div class="course-modal-shell">
+      <div class="course-modal-header">
+        <div>
+          <span class="badge" data-course-level>N5</span>
+          <h2 data-course-title>N5 Beginner Journey</h2>
+          <p><strong>Lịch học:</strong> <span data-course-schedule>T2-T5</span></p>
+        </div>
+        <button type="button" class="btn btn-outline" onclick="closeCourseDetail()">Đóng</button>
+      </div>
+
+      <div class="course-modal-grid">
+        <section class="course-panel">
+          <h3>Mô tả khóa học</h3>
+          <p data-course-description style="color: var(--muted); line-height: 1.75; margin-top: 0;">
+            Khóa nền tảng giúp bạn làm quen với hiragana, katakana, từ vựng cơ bản và mẫu câu chào hỏi.
+          </p>
+
+          <h3>Kiến thức sẽ học</h3>
+          <ul class="course-list-bullets" data-course-knowledge></ul>
+
+          <div class="course-modal-footer">
+            <button type="button" class="btn btn-primary">Đăng ký học</button>
+          </div>
+        </section>
+
+        <aside class="course-panel">
+          <h3>Video bài dạy</h3>
+          <div data-course-videos></div>
+
+          <h3>Bài tập thực hành</h3>
+          <div data-course-exercises></div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const modal = document.querySelector('[data-course-modal]');
+      if (modal) {
+        modal.addEventListener('click', (event) => {
+          if (event.target === modal) {
+            closeCourseDetail();
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
+
+
+

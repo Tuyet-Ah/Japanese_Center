@@ -1,0 +1,463 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Đề Thi Online | Japanese Center</title>
+	<link rel="stylesheet" href="CSS/exams.css">
+	<script defer src="script.js"></script>
+</head>
+<body>
+	<header class="topbar">
+		<div class="container topbar-inner">
+			<a class="brand" href="Home.html">
+				<span class="brand-mark">日</span>
+				<span>
+					Japanese Center
+					<small>Trung tâm giảng dạy tiếng Nhật</small>
+				</span>
+			</a>
+			<nav class="nav">
+				<a href="Home.html">Trang chủ</a>
+				<a href="courses.html">Khóa học</a>
+				<a href="exams.html" class="active">Đề thi</a>
+				<a href="jlpt.html">JLPT</a>
+				<a href="materials.html">Tài liệu</a>
+
+			</nav>
+			<div class="actions">
+				<a data-profile-link href="profile.html" class="icon-btn" hidden title="Trang cá nhân">👤</a>
+				<a data-cart-link href="cart.html" class="icon-btn cart-icon" hidden title="Giỏ hàng">🛒<span data-cart-count class="badge">0</span></a>
+				<div data-auth-actions class="auth-buttons">
+					<a class="btn btn-outline" href="login.html">Đăng nhập</a>
+					<a class="btn btn-primary" href="register.html">Đăng ký</a>
+				</div>
+				<div data-user-actions class="user-section" style="display: none;">
+					<span class="user-greeting">Xin chào, <span data-username></span></span>
+					<button data-logout-btn class="btn btn-outline">Đăng xuất</button>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<main>
+		<!-- Page Header -->
+		<section class="page-header">
+			<div class="container">
+				<h1>Đề Thi Online</h1>
+				<p>Luyện thi với các bài kiểm tra trực tuyến, đánh giá năng lực tiếng Nhật của bạn</p>
+			</div>
+		</section>
+
+		<!-- Exams Grid -->
+		<section class="section">
+			<div class="container">
+				<h2>Các Bài Kiểm Tra Có Sẵn</h2>
+				<div class="exams-grid">
+					<!-- N5 Exams -->
+					<div class="exam-card">
+						<div class="exam-badge">N5 Beginner</div>
+						<h3>Ngữ pháp N5</h3>
+						<p>Kiểm tra kiến thức ngữ pháp cơ bản tiếng Nhật. Gồm 30 câu hỏi, thời gian 20 phút.</p>
+						<div class="exam-meta">
+							<span>📝 30 câu hỏi</span>
+							<span>⏱️ 20 phút</span>
+							<span>⭐ 1250 điểm</span>
+						</div>
+						<button class="btn btn-primary btn-exam" onclick="startExam('N5-Grammar')">Bắt đầu kiểm tra</button>
+					</div>
+
+					<div class="exam-card">
+						<div class="exam-badge">N5 Beginner</div>
+						<h3>Từ Vựng N5</h3>
+						<p>Kiểm tra từ vựng tiếng Nhật bậc N5. Gồm 25 câu hỏi, thời gian 15 phút.</p>
+						<div class="exam-meta">
+							<span>📝 25 câu hỏi</span>
+							<span>⏱️ 15 phút</span>
+							<span>⭐ 1000 điểm</span>
+						</div>
+						<button class="btn btn-primary btn-exam" onclick="startExam('N5-Vocabulary')">Bắt đầu kiểm tra</button>
+					</div>
+
+					<div class="exam-card">
+						<div class="exam-badge">N5 Beginner</div>
+						<h3>Nghe Hiểu N5</h3>
+						<p>Kiểm tra khả năng nghe hiểu tiếng Nhật. Gồm 20 đoạn nghe, thời gian 25 phút.</p>
+						<div class="exam-meta">
+							<span>🎧 20 đoạn nghe</span>
+							<span>⏱️ 25 phút</span>
+							<span>⭐ 1000 điểm</span>
+						</div>
+						<button class="btn btn-primary btn-exam" onclick="startExam('N5-Listening')">Bắt đầu kiểm tra</button>
+					</div>
+
+					<!-- N4 Exams -->
+					<div class="exam-card">
+						<div class="exam-badge">N4 Elementary</div>
+						<h3>Ngữ pháp N4</h3>
+						<p>Kiểm tra ngữ pháp tiếng Nhật bậc N4. Gồm 35 câu hỏi, thời gian 25 phút.</p>
+						<div class="exam-meta">
+							<span>📝 35 câu hỏi</span>
+							<span>⏱️ 25 phút</span>
+							<span>⭐ 1500 điểm</span>
+						</div>
+						<button class="btn btn-primary btn-exam" onclick="startExam('N4-Grammar')">Bắt đầu kiểm tra</button>
+					</div>
+
+					<div class="exam-card">
+						<div class="exam-badge">N4 Elementary</div>
+						<h3>Từ Vựng N4</h3>
+						<p>Kiểm tra từ vựng tiếng Nhật bậc N4. Gồm 30 câu hỏi, thời gian 20 phút.</p>
+						<div class="exam-meta">
+							<span>📝 30 câu hỏi</span>
+							<span>⏱️ 20 phút</span>
+							<span>⭐ 1200 điểm</span>
+						</div>
+						<button class="btn btn-primary btn-exam" onclick="startExam('N4-Vocabulary')">Bắt đầu kiểm tra</button>
+					</div>
+
+					<div class="exam-card">
+						<div class="exam-badge">N4 Elementary</div>
+						<h3>Đọc Hiểu N4</h3>
+						<p>Kiểm tra khả năng đọc hiểu tiếng Nhật. Gồm 15 đoạn văn, thời gian 30 phút.</p>
+						<div class="exam-meta">
+							<span>📖 15 đoạn văn</span>
+							<span>⏱️ 30 phút</span>
+							<span>⭐ 1500 điểm</span>
+						</div>
+						<button class="btn btn-primary btn-exam" onclick="startExam('N4-Reading')">Bắt đầu kiểm tra</button>
+					</div>
+
+					<!-- N3 Exams -->
+					<div class="exam-card">
+						<div class="exam-badge">N3 Intermediate</div>
+						<h3>Ngữ pháp N3</h3>
+						<p>Kiểm tra ngữ pháp nâng cao tiếng Nhật. Gồm 40 câu hỏi, thời gian 30 phút.</p>
+						<div class="exam-meta">
+							<span>📝 40 câu hỏi</span>
+							<span>⏱️ 30 phút</span>
+							<span>⭐ 1800 điểm</span>
+						</div>
+						<button class="btn btn-primary btn-exam" onclick="startExam('N3-Grammar')">Bắt đầu kiểm tra</button>
+					</div>
+
+					<div class="exam-card">
+						<div class="exam-badge">N3 Intermediate</div>
+						<h3>Từ Vựng N3</h3>
+						<p>Kiểm tra từ vựng tiếng Nhật bậc N3. Gồm 35 câu hỏi, thời gian 25 phút.</p>
+						<div class="exam-meta">
+							<span>📝 35 câu hỏi</span>
+							<span>⏱️ 25 phút</span>
+							<span>⭐ 1500 điểm</span>
+						</div>
+						<button class="btn btn-primary btn-exam" onclick="startExam('N3-Vocabulary')">Bắt đầu kiểm tra</button>
+					</div>
+
+					<div class="exam-card">
+						<div class="exam-badge">N3 Intermediate</div>
+						<h3>Bài Thi Toàn Diện N3</h3>
+						<p>Bài thi toàn diện N3 gồm cả ngữ pháp, từ vựng, nghe, đọc. Thời gian 90 phút.</p>
+						<div class="exam-meta">
+							<span>🎓 Full Test</span>
+							<span>⏱️ 90 phút</span>
+							<span>⭐ 4000 điểm</span>
+						</div>
+						<button class="btn btn-primary btn-exam" onclick="startExam('N3-Full')">Bắt đầu kiểm tra</button>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Results Section -->
+		<section class="section" style="background: var(--surface-2);">
+			<div class="container">
+				<h2>Kết Quả Kiểm Tra Gần Đây</h2>
+				<div class="results-list" id="examResults">
+					<p style="color: var(--muted); text-align: center;">Bạn chưa làm bài kiểm tra nào. Hãy bắt đầu ngay!</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- Stats Section -->
+		<section class="section">
+			<div class="container">
+				<h2>Thống Kê Của Bạn</h2>
+				<div class="stats-grid">
+					<div class="stat-card">
+						<div class="stat-number" id="totalExams">0</div>
+						<div class="stat-label">Bài Kiểm Tra</div>
+					</div>
+					<div class="stat-card">
+						<div class="stat-number" id="avgScore">0%</div>
+						<div class="stat-label">Điểm Trung Bình</div>
+					</div>
+					<div class="stat-card">
+						<div class="stat-number" id="bestScore">0%</div>
+						<div class="stat-label">Điểm Cao Nhất</div>
+					</div>
+					<div class="stat-card">
+						<div class="stat-number" id="studyStreak">0</div>
+						<div class="stat-label">Ngày Liên Tục</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="footer">
+		<div class="container footer-inner">
+			<div>Japanese Center - Trung tâm giảng dạy tiếng Nhật</div>
+			<div>Hotline: 0900 123 456 | Email: hello@japanesecenter.vn</div>
+		</div>
+	</footer>
+
+	<div id="examModal" class="exam-modal" hidden>
+		<div class="exam-shell">
+			<div class="exam-shell-header">
+				<div>
+					<div id="examLevelTag" class="exam-badge">N5 Beginner</div>
+					<h2 id="examTitle">Ngữ pháp N5</h2>
+					<p id="examSubtitle">Màn hình làm bài chi tiết</p>
+				</div>
+				<button type="button" class="btn btn-outline" onclick="closeExamDetail()">Đóng</button>
+			</div>
+
+			<div class="exam-shell-body">
+				<section class="exam-paper">
+					<div class="exam-tabs">
+						<button class="exam-tab active" type="button">Tổng quan</button>
+						<button class="exam-tab" type="button">Câu hỏi</button>
+						<button class="exam-tab" type="button">Đáp án</button>
+						<button class="exam-tab" type="button">Ghi chú</button>
+					</div>
+
+					<div class="exam-paper-body">
+						<div class="exam-intro" id="examIntro"></div>
+						<div id="examQuestionList"></div>
+					</div>
+
+					<div class="exam-paper-footer">
+						<span id="examProgress">Câu 1 / 5</span>
+						<div class="actions">
+							<button type="button" class="btn btn-outline" onclick="closeExamDetail()">Thoát</button>
+							<button type="button" class="btn btn-primary">Nộp bài</button>
+						</div>
+					</div>
+				</section>
+
+				<aside class="exam-sidebar">
+					<div class="sidebar-block">
+						<h3>Thông tin đề</h3>
+						<div class="exam-detail-list">
+							<div class="detail-item"><strong>Thời gian</strong><span id="examDuration">20 phút</span></div>
+							<div class="detail-item"><strong>Số câu</strong><span id="examQuestionCount">30 câu</span></div>
+							<div class="detail-item"><strong>Điểm tối đa</strong><span id="examPoints">1250 điểm</span></div>
+						</div>
+					</div>
+
+					<div class="sidebar-block">
+						<h3>Điều hướng câu hỏi</h3>
+						<div class="question-nav" id="questionNav"></div>
+					</div>
+
+					<div class="sidebar-block" style="border-bottom: 0;">
+						<h3>Gợi ý làm bài</h3>
+						<p id="examTip" style="margin: 0; color: var(--muted); line-height: 1.7;">Đọc kỹ đề, làm từ câu dễ trước và đánh dấu lại các câu khó để quay lại sau.</p>
+					</div>
+				</aside>
+			</div>
+		</div>
+	</div>
+
+	<button id="aiChatToggle" class="ai-chat-toggle" type="button">AI Chat</button>
+	<div id="aiChatPanel" class="ai-chat-panel" hidden>
+		<div class="ai-chat-header">
+			<h3>AI Study Buddy</h3>
+			<p>Hỏi mình về đề thi, ngữ pháp hoặc từ vựng</p>
+		</div>
+		<div id="aiChatMessages" class="ai-chat-messages">
+			<div class="chat-bubble bot">Xin chào, mình có thể giúp bạn phân tích câu hỏi, nhắc mẹo làm bài và giải thích ngữ pháp.</div>
+		</div>
+		<form id="aiChatForm" class="ai-chat-form">
+			<input id="aiChatInput" type="text" placeholder="Nhập câu hỏi của bạn..." autocomplete="off">
+			<button type="submit">Gửi</button>
+		</form>
+	</div>
+
+	<script>
+		const examCatalog = {
+			'N5-Grammar': {
+				title: 'Ngữ pháp N5',
+				level: 'N5 Beginner',
+				subtitle: 'Làm bài kiểm tra ngữ pháp nền tảng',
+				duration: '20 phút',
+				questionCount: '30 câu hỏi',
+				points: '1250 điểm',
+				intro: 'Bài thi gồm các câu hỏi ngắn về trợ từ, động từ và cấu trúc câu cơ bản. Hãy làm từ câu dễ trước rồi quay lại các câu chưa chắc.',
+				tip: 'Tập trung vào trợ từ wa, ga, ni, de và các mẫu câu cơ bản trước khi chọn đáp án.',
+				questions: [
+					{ number: 1, text: '「わたしは学生です。」の意味はどれですか？', options: ['Tôi là học sinh', 'Tôi đi học', 'Tôi là giáo viên', 'Tôi là bác sĩ'] },
+					{ number: 2, text: 'Điền trợ từ đúng: かのじょ ___ せんせいです。', options: ['は', 'が', 'を', 'に'] },
+					{ number: 3, text: 'Chọn cấu trúc đúng để nói "đi đến trường".', options: ['がっこうへいきます', 'がっこうはきます', 'がっこうをいきます', 'がっこうにきます'] },
+					{ number: 4, text: 'Mẫu nào dùng để phủ định?', options: ['〜ません', '〜ました', '〜ます', '〜でしょう'] },
+					{ number: 5, text: 'Chọn từ đúng cho câu: これは ____ です。', options: ['ほん', 'ほんが', 'ほんを', 'ほんに'] }
+				]
+			},
+			'N5-Vocabulary': {
+				title: 'Từ vựng N5',
+				level: 'N5 Beginner',
+				subtitle: 'Ôn bộ từ vựng cơ bản theo chủ đề',
+				duration: '15 phút',
+				questionCount: '25 câu hỏi',
+				points: '1000 điểm',
+				intro: 'Bài thi kiểm tra khả năng nhận biết từ vựng hàng ngày như gia đình, lớp học, thời gian và mua sắm.',
+				tip: 'Học theo cụm chủ đề để tăng tốc độ ghi nhớ và nhận diện từ trong ngữ cảnh.',
+				questions: [
+					{ number: 1, text: '「りんご」の nghĩa là gì?', options: ['Táo', 'Cam', 'Chuối', 'Nho'] },
+					{ number: 2, text: '「でんしゃ」の nghĩa là gì?', options: ['Tàu điện', 'Xe buýt', 'Máy bay', 'Taxi'] },
+					{ number: 3, text: 'Chọn từ chỉ thời gian buổi sáng.', options: ['あさ', 'よる', 'きのう', 'あした'] },
+					{ number: 4, text: '「がっこう」の nghĩa là gì?', options: ['Trường học', 'Bệnh viện', 'Nhà ga', 'Công viên'] },
+					{ number: 5, text: '「たべます」の nghĩa là gì?', options: ['Ăn', 'Uống', 'Ngủ', 'Đi'] }
+				]
+			},
+			'N5-Listening': {
+				title: 'Nghe Hiểu N5',
+				level: 'N5 Beginner',
+				subtitle: 'Luyện phản xạ nghe tình huống ngắn',
+				duration: '25 phút',
+				questionCount: '20 đoạn nghe',
+				points: '1000 điểm',
+				intro: 'Mỗi câu có một đoạn hội thoại ngắn. Nghe kỹ từ khóa, số đếm và địa điểm trước khi chọn đáp án.',
+				tip: 'Lắng nghe âm cuối và từ chỉ thời gian để xác định nội dung chính xác hơn.',
+				questions: [
+					{ number: 1, text: 'Nghe đoạn hội thoại và chọn tình huống đúng.', options: ['Mua vé', 'Hỏi đường', 'Đặt bàn', 'Gọi điện'] },
+					{ number: 2, text: 'Nghe và xác định thời gian được nhắc đến.', options: ['7 giờ', '8 giờ', '9 giờ', '10 giờ'] },
+					{ number: 3, text: 'Người nói đang ở đâu?', options: ['Nhà ga', 'Siêu thị', 'Trường học', 'Công viên'] },
+					{ number: 4, text: 'Chọn hành động được nhắc trong audio.', options: ['Ăn sáng', 'Đi làm', 'Đọc sách', 'Nấu ăn'] },
+					{ number: 5, text: 'Từ khóa chính của đoạn là gì?', options: ['Mưa', 'Xe', 'Bạn', 'Ngày mai'] }
+				]
+			}
+		};
+
+		function renderExamModal(examId) {
+			const exam = examCatalog[examId] || examCatalog['N5-Grammar'];
+			document.getElementById('examLevelTag').textContent = exam.level;
+			document.getElementById('examTitle').textContent = exam.title;
+			document.getElementById('examSubtitle').textContent = exam.subtitle;
+			document.getElementById('examIntro').textContent = exam.intro;
+			document.getElementById('examDuration').textContent = exam.duration;
+			document.getElementById('examQuestionCount').textContent = exam.questionCount;
+			document.getElementById('examPoints').textContent = exam.points;
+			document.getElementById('examTip').textContent = exam.tip;
+
+			const questionList = document.getElementById('examQuestionList');
+			const questionNav = document.getElementById('questionNav');
+			questionList.innerHTML = exam.questions.map((question, index) => `
+				<article class="question-card">
+					<div class="question-head">
+						<div class="question-number">Câu ${question.number}</div>
+						<span class="badge">${exam.level}</span>
+					</div>
+					<div class="question-text">${question.text}</div>
+					<div class="option-list">
+						${question.options.map((option, optionIndex) => `
+							<label class="option-item">
+								<input type="radio" name="question-${index}" value="${optionIndex}">
+								<span>${String.fromCharCode(65 + optionIndex)}. ${option}</span>
+							</label>
+						`).join('')}
+					</div>
+				</article>
+			`).join('');
+
+			questionNav.innerHTML = exam.questions.map((question, index) => `<button type="button" class="question-dot ${index === 0 ? 'active' : ''}">${question.number}</button>`).join('');
+			document.getElementById('examModal').hidden = false;
+			document.body.style.overflow = 'hidden';
+		}
+
+		function closeExamDetail() {
+			document.getElementById('examModal').hidden = true;
+			document.body.style.overflow = '';
+		}
+
+		function startExam(examId) {
+			window.location.href = `exam-detail.html?exam=${encodeURIComponent(examId)}`;
+		}
+
+		const aiChatToggle = document.getElementById('aiChatToggle');
+		const aiChatPanel = document.getElementById('aiChatPanel');
+		const aiChatForm = document.getElementById('aiChatForm');
+		const aiChatInput = document.getElementById('aiChatInput');
+		const aiChatMessages = document.getElementById('aiChatMessages');
+
+		function appendChatBubble(text, type) {
+			const bubble = document.createElement('div');
+			bubble.className = `chat-bubble ${type}`;
+			bubble.textContent = text;
+			aiChatMessages.appendChild(bubble);
+			aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+		}
+
+		function respondToUser(message) {
+			const text = message.toLowerCase();
+			if (text.includes('ngữ pháp')) return 'Với ngữ pháp, bạn nên chia nhỏ thành mẫu câu, ví dụ và bài tập áp dụng.';
+			if (text.includes('từ vựng')) return 'Từ vựng nhớ nhanh nhất khi học theo chủ đề và ôn lại bằng flashcard.';
+			if (text.includes('nghe')) return 'Khi luyện nghe, hãy nghe 2 lần: lần 1 lấy ý chính, lần 2 bắt từ khóa.';
+			if (text.includes('jlpt')) return 'JLPT nên học theo lộ trình: từ vựng, ngữ pháp, đọc hiểu, rồi làm đề mẫu.';
+			return 'Mình có thể giúp bạn tóm tắt đề, giải thích câu hỏi hoặc gợi ý cách ôn tập nhanh.';
+		}
+
+		if (aiChatToggle && aiChatPanel) {
+			aiChatToggle.addEventListener('click', () => {
+				aiChatPanel.hidden = !aiChatPanel.hidden;
+				if (!aiChatPanel.hidden) aiChatInput.focus();
+			});
+		}
+
+		if (aiChatForm) {
+			aiChatForm.addEventListener('submit', (event) => {
+				event.preventDefault();
+				const value = aiChatInput.value.trim();
+				if (!value) return;
+				appendChatBubble(value, 'user');
+				aiChatInput.value = '';
+				window.setTimeout(() => appendChatBubble(respondToUser(value), 'bot'), 300);
+			});
+		}
+
+		// Initialize exam results display
+		document.addEventListener('DOMContentLoaded', () => {
+			updateUIBasedOnLogin();
+			initNavState();
+			const examCards = document.querySelectorAll('.exam-card');
+			examCards.forEach((card) => {
+				card.style.cursor = 'pointer';
+				const examButton = card.querySelector('.btn-exam');
+				const examIdMatch = examButton && examButton.getAttribute('onclick')
+					? examButton.getAttribute('onclick').match(/startExam\('([^']+)'\)/)
+					: null;
+				const examId = examIdMatch ? examIdMatch[1] : null;
+				card.addEventListener('click', (event) => {
+					if (event.target.closest('.btn-exam')) {
+						return;
+					}
+					if (examId) {
+						startExam(examId);
+					}
+				});
+			});
+
+			const examModal = document.getElementById('examModal');
+			if (examModal) {
+				examModal.addEventListener('click', (event) => {
+					if (event.target === examModal) {
+						closeExamDetail();
+					}
+				});
+			}
+		});
+	</script>
+</body>
+</html>
+
+

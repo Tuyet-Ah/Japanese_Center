@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="./CSS/Document.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
     <header class="navbar">
         <div class="logo">
@@ -15,15 +17,19 @@
             </div>
         </div>
         <nav class="nav-links">
-            <a href="#">Trang chủ</a>
-            <a href="#">Khóa học</a>
-            <a href="#" class="active">Tài liệu</a>
-            <a href="#">Đề thi online</a>
-            <a href="#">JLPT</a>
+            <a href="Home.html">Trang chủ</a>
+            <a href="LearnOn.html">Khóa học</a>
+            <a href="Document.html" class="active">Tài liệu</a>
+            <a href="Exam.html">Đề thi online</a>
+            <a href="JLPT.html">JLPT</a>
+            <a href="Share.html">Góc chia sẻ</a>
         </nav>
         <div class="nav-icons">
             <i class="fas fa-globe"></i>
             <i class="fas fa-shopping-bag"></i>
+            <div id="user-section">
+                <a href="Login.html" class="login-signup">Đăng nhập</a>
+            </div>
         </div>
     </header>
 
@@ -87,7 +93,7 @@
                 <button class="nav-btn next-btn"><i class="fas fa-chevron-right"></i></button>
             </div>
         </section>
-        
+
         <section class="learning-section">
             <h2 class="section-title title-pink">Luyện viết</h2>
             <div class="carousel-wrapper">
@@ -109,5 +115,7 @@
     </div>
 
     <script src="script.js"></script>
+    <script src="./JS/Document.js"></script>
 </body>
+
 </html>

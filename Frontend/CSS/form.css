@@ -1,0 +1,15 @@
+/* forms.css */
+.form-wrap { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 18px; align-items: stretch; }
+.form-card { padding: 24px; }
+.form-card h2 { margin-top: 0; }
+.form-group { margin-bottom: 14px; }
+label { display: block; margin-bottom: 8px; font-weight: 700; }
+input, select, textarea { width: 100%; padding: 14px 16px; border-radius: 14px; border: 1px solid var(--border); background: #fff; font: inherit; outline: none; }
+input:focus, select:focus, textarea:focus { border-color: rgba(37, 99, 235, 0.5); box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); }
+.split { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.auth-switch { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; color: var(--muted); font-weight: 600; }
+.link-button { border: 0; background: none; padding: 0; color: var(--primary-dark); font: inherit; font-weight: 800; cursor: pointer; }
+.link-button:hover { text-decoration: underline; }
+.required { color: #dc2626; font-weight: 900; }
+
+@media (max-width: 960px) { .form-wrap { grid-template-columns: 1fr; } }

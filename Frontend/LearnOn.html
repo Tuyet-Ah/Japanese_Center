@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
     ">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
     <header class="navbar">
         <div class="logo">
@@ -17,15 +19,19 @@
             </div>
         </div>
         <nav class="nav-links">
-            <a href="#">Trang chủ</a>
-            <a href="#" class="active">Khóa học</a>
-            <a href="#">Tài liệu</a>
-            <a href="#">Đề thi online</a>
-            <a href="#">JLPT</a>
+            <a href="Home.html">Trang chủ</a>
+            <a href="LearnOn.html" class="active">Khóa học</a>
+            <a href="Document.html">Tài liệu</a>
+            <a href="Exam.html">Đề thi online</a>
+            <a href="JLPT.html">JLPT</a>
+            <a href="Share.html">Góc chia sẻ</a>
         </nav>
         <div class="nav-icons">
             <i class="fas fa-globe"></i>
             <i class="fas fa-shopping-bag"></i>
+            <div id="user-section">
+                <a href="Login.html" class="login-signup">Đăng nhập</a>
+            </div>
         </div>
     </header>
 
@@ -82,7 +88,7 @@
                 </div>
             </div>
 
-             <div class="course-card">
+            <div class="course-card">
                 <div class="course-img-placeholder">
                     <i class="fas fa-torii-gate fa-3x"></i>
                 </div>
@@ -114,7 +120,7 @@
                     <li class="level-item" data-level="Giao tiep">Giao tiếp</li>
                 </ul>
             </div>
-            
+
             <div class="mascot-container">
                 <img src="https://via.placeholder.com/150x150?text=Mascot" alt="Mascot" class="mascot-img">
             </div>
@@ -123,4 +129,5 @@
 
     <script src="./JS/LearnOn.js"></script>
 </body>
+
 </html>

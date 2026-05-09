@@ -1,0 +1,13 @@
+@import url('./base.css');
+
+/* cart.css */
+.cart-list { display: grid; gap: 14px; }
+.item { display: flex; justify-content: space-between; gap: 16px; padding: 18px; border-radius: 18px; background: white; border: 1px solid var(--border); }
+.item-title { margin: 0 0 6px; font-size: 1.05rem; }
+.cart-summary {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(251, 113, 133, 0.08));
+  border: 1px solid rgba(249, 168, 212, 0.9);
+  border-radius: var(--radius-lg); padding: 20px;
+}
+.offer { position: relative; overflow: hidden; }
+.offer::after { content: ""; position: absolute; inset: auto -30px -40px auto; width: 140px; height: 140px; border-radius: 50%; background: rgba(251, 113, 133, 0.12); }

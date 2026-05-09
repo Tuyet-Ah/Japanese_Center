@@ -1,0 +1,217 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Quản Lý Khóa Học | Admin</title>
+	<link rel="stylesheet" href="CSS/admin-courses.css">
+	<script defer src="script.js"></script>
+</head>
+<body>
+	<div class="admin-layout">
+		<!-- Admin Sidebar -->
+		<aside class="admin-sidebar">
+			<div class="sidebar-brand">
+				<span class="sidebar-icon">⚙️</span>
+				<h2>Admin Panel</h2>
+			</div>
+			<nav class="sidebar-menu">
+				<a href="admin-dashboard.html" class="menu-item">
+					<span class="menu-icon">📊</span>
+					<span>Dashboard</span>
+				</a>
+				<a href="admin-courses.html" class="menu-item active">
+					<span class="menu-icon">📚</span>
+					<span>Quản Lý Khóa Học</span>
+				</a>
+				<a href="admin-quizzes.html" class="menu-item">
+					<span class="menu-icon">📝</span>
+					<span>Quản Lý Quiz</span>
+				</a>
+				<a href="admin-approvals.html" class="menu-item">
+					<span class="menu-icon">✅</span>
+					<span>Duyệt Người Dùng</span>
+				</a>
+				<a href="admin-forum.html" class="menu-item">
+					<span class="menu-icon">💬</span>
+					<span>Duyệt Forum</span>
+				</a>
+			</nav>
+			<div class="sidebar-footer">
+				<a href="Home.html" class="menu-item">
+					<span class="menu-icon">🏠</span>
+					<span>Về Trang Chủ</span>
+				</a>
+				<button id="adminLogout" class="menu-item logout-btn">
+					<span class="menu-icon">🚪</span>
+					<span>Đăng Xuất</span>
+				</button>
+			</div>
+		</aside>
+
+		<!-- Admin Main Content -->
+		<main class="admin-main">
+			<header class="admin-header">
+				<h1>Quản Lý Khóa Học</h1>
+				<button id="addCourseBtn" class="btn btn-primary">+ Thêm Khóa Học</button>
+			</header>
+
+			<div class="admin-content">
+				<!-- Add/Edit Form -->
+				<section class="admin-form-section" id="courseFormSection" style="display: none;">
+					<h2>Thêm/Sửa Khóa Học</h2>
+					<form id="courseForm" class="admin-form">
+						<div class="form-row">
+							<div class="form-group">
+								<label for="courseName">Tên Khóa Học *</label>
+								<input type="text" id="courseName" placeholder="VD: N5 Beginner Journey" required>
+							</div>
+							<div class="form-group">
+								<label for="courseLevel">Cấp Độ *</label>
+								<select id="courseLevel" required>
+									<option value="">-- Chọn cấp độ --</option>
+									<option value="N5">N5</option>
+									<option value="N4">N4</option>
+									<option value="N3">N3</option>
+									<option value="N2">N2</option>
+									<option value="N1">N1</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="form-row">
+							<div class="form-group">
+								<label for="courseSchedule">Lịch Học *</label>
+								<input type="text" id="courseSchedule" placeholder="VD: T2-T5 hoặc Cuối tuần" required>
+							</div>
+							<div class="form-group">
+								<label for="coursePrice">Giá (VNĐ) *</label>
+								<input type="number" id="coursePrice" placeholder="VD: 2400000" required>
+							</div>
+						</div>
+
+						<div class="form-row">
+							<div class="form-group" style="grid-column: 1 / -1;">
+								<label for="courseDesc">Mô Tả</label>
+								<textarea id="courseDesc" placeholder="Mô tả khóa học" rows="4"></textarea>
+							</div>
+						</div>
+
+						<div class="form-actions">
+							<button type="submit" class="btn btn-primary">Lưu Khóa Học</button>
+							<button type="button" class="btn btn-outline" id="cancelFormBtn">Hủy</button>
+						</div>
+					</form>
+				</section>
+
+				<!-- Courses Table -->
+				<section class="admin-table-section">
+					<h2>Danh Sách Khóa Học</h2>
+					<div class="table-responsive">
+						<table class="admin-table">
+							<thead>
+								<tr>
+									<th>STT</th>
+									<th>Tên Khóa Học</th>
+									<th>Cấp Độ</th>
+									<th>Lịch Học</th>
+									<th>Giá</th>
+									<th>Học Viên</th>
+									<th>Hành Động</th>
+								</tr>
+							</thead>
+							<tbody id="coursesTableBody">
+								<tr>
+									<td>1</td>
+									<td>N5 Beginner Journey</td>
+									<td><span class="badge badge-n5">N5</span></td>
+									<td>T2-T5</td>
+									<td>2.4M VNĐ</td>
+									<td>25</td>
+									<td>
+										<button class="btn btn-small">Sửa</button>
+										<button class="btn btn-small btn-danger">Xóa</button>
+									</td>
+								</tr>
+								<tr>
+									<td>2</td>
+									<td>N4 Communication Boost</td>
+									<td><span class="badge badge-n4">N4</span></td>
+									<td>T3-T7</td>
+									<td>2.9M VNĐ</td>
+									<td>18</td>
+									<td>
+										<button class="btn btn-small">Sửa</button>
+										<button class="btn btn-small btn-danger">Xóa</button>
+									</td>
+								</tr>
+								<tr>
+									<td>3</td>
+									<td>Business Japanese Starter</td>
+									<td><span class="badge badge-n3">N3+</span></td>
+									<td>Cuối tuần</td>
+									<td>3.5M VNĐ</td>
+									<td>12</td>
+									<td>
+										<button class="btn btn-small">Sửa</button>
+										<button class="btn btn-small btn-danger">Xóa</button>
+									</td>
+								</tr>
+								<tr>
+									<td>4</td>
+									<td>Kanji Intensive Lab</td>
+									<td><span class="badge badge-kanji">Kanji</span></td>
+									<td>T2-T4-T6 Tối</td>
+									<td>1.8M VNĐ</td>
+									<td>31</td>
+									<td>
+										<button class="btn btn-small">Sửa</button>
+										<button class="btn btn-small btn-danger">Xóa</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</section>
+			</div>
+		</main>
+	</div>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', () => {
+			const admin = getAdminUser();
+			if (!admin) window.location.href = 'admin-login.html';
+			initAdminNav();
+		});
+
+		document.getElementById('addCourseBtn').addEventListener('click', () => {
+			document.getElementById('courseFormSection').style.display = 'block';
+			document.getElementById('courseForm').reset();
+		});
+
+		document.getElementById('cancelFormBtn').addEventListener('click', () => {
+			document.getElementById('courseFormSection').style.display = 'none';
+		});
+
+		document.getElementById('courseForm').addEventListener('submit', (e) => {
+			e.preventDefault();
+			alert('✅ Khóa học đã được lưu thành công!');
+			document.getElementById('courseFormSection').style.display = 'none';
+		});
+
+		function initAdminNav() {
+			const currentPage = window.location.pathname.split('/').pop();
+			document.querySelectorAll('.menu-item').forEach(item => {
+				item.classList.remove('active');
+				if (item.href.includes(currentPage)) {
+					item.classList.add('active');
+				}
+			});
+		}
+
+		document.getElementById('adminLogout').addEventListener('click', logoutAdmin);
+	</script>
+</body>
+</html>
+
+
