@@ -1,5 +1,8 @@
 import pymysql
 import os
+from dotenv import load_dotenv
+
+
 pymysql.install_as_MySQLdb()
 """
 Django settings for core project.
@@ -18,7 +21,7 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+load_dotenv(BASE_DIR / '.env')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
@@ -34,6 +37,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,6 +49,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -132,6 +137,8 @@ USE_TZ = True
 STATIC_URL = 'static/'
 AUTH_USER_MODEL = 'education.User'
 
+CORS_ALLOW_ALL_ORIGINS = True
+
 from datetime import timedelta
 
 SIMPLE_JWT = {
@@ -145,3 +152,20 @@ SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
 }  
+
+# VNPAY sandbox configuration
+VNPAY_TMN_CODE = os.environ.get('VNPAY_TMN_CODE', '')
+VNPAY_HASH_SECRET = os.environ.get('VNPAY_HASH_SECRET', '')
+VNPAY_PAYMENT_URL = os.environ.get(
+    'VNPAY_PAYMENT_URL',
+    'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html'
+)
+VNPAY_RETURN_URL = os.environ.get(
+    'VNPAY_RETURN_URL',
+    'http://127.0.0.1:8000/educations/vnpay/return/'
+)
+VNPAY_IPN_URL = os.environ.get(
+    'VNPAY_IPN_URL',
+    'http://127.0.0.1:8000/educations/vnpay/ipn/'
+)
+VNPAY_FRONTEND_RETURN_URL = os.environ.get('VNPAY_FRONTEND_RETURN_URL', '')

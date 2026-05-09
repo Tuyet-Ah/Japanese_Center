@@ -6,3 +6,8 @@ class QuizSubmission(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     score = models.FloatField()
     submitted_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['user', 'quiz'], name='idx_submission_user_quiz')
+        ]

@@ -16,8 +16,28 @@ class RegisterView(APIView):
         except ValueError as e:
             return Response({"error": str(e)}, status=400)
 
+class RegisterAdminView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        try:
+            user = AuthService.register_admin(request.data)
+            return Response(UserSerializer(user).data, status=201)
+        except ValueError as e:
+            return Response({"error": str(e)}, status=400)
+
 class LoginView(TokenObtainPairView):
     serializer_class = CustomTokenSerializer
+
+class ApproveAdminView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, user_id):
+        try:
+            user = AuthService.approve_admin(user_id, request.user)
+            return Response(UserSerializer(user).data, status=200)
+        except ValueError as e:
+            return Response({"error": str(e)}, status=400)
 
 # Quản lý thông tin các nhân và avatar
 class ProfileView(APIView):
