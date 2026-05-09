@@ -9,3 +9,11 @@ class Enrollment(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
     payment_proof = models.ImageField(upload_to='proofs/', null=True, blank=True)
     enrolled_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'course'], name='uniq_enrollment_user_course')
+        ]
+        indexes = [
+            models.Index(fields=['user', 'status'], name='idx_enrollment_user_status')
+        ]

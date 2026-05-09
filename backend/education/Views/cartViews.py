@@ -12,7 +12,11 @@ class CartView(APIView):
 
     def get(self, request):
         cart_items = CartService.get_user_cart(request.user)
-        return Response(CartItemSerializer(cart_items, many=True).data)
+        total_price = sum(item.course.price for item in cart_items)
+        return Response({
+            "cart_items": CartItemSerializer(cart_items, many=True).data,
+            "total_price": float(total_price),
+        })
 
     def post(self, request):
         try:

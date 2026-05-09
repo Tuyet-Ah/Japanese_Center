@@ -13,3 +13,5 @@ from .LessonComment import LessonComment
 from .LessonNote import LessonNote
 from .ForumResponse import ForumResponse
 from .ForumTopic import ForumTopic
+from .PaymentTransaction import PaymentTransaction
+from .PaymentTransactionItem import PaymentTransactionItem

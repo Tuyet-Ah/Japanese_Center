@@ -35,7 +35,7 @@ class CourseService:
     def mark_lesson_as_completed(user, lesson_id):
         """Đánh dấu đã học xong bài này"""
         lesson = Lesson.objects.get(id=lesson_id)
-        progress = UserProgress.objects.get_or_create(
+        progress, _ = UserProgress.objects.get_or_create(
             user=user, 
             lesson=lesson
         )
