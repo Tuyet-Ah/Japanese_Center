@@ -1,0 +1,239 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Quản Lý Quiz | Admin</title>
+	<link rel="stylesheet" href="CSS/admin-quizzes.css">
+	<script defer src="script.js"></script>
+</head>
+<body>
+	<div class="admin-layout">
+		<aside class="admin-sidebar">
+			<div class="sidebar-brand">
+				<span class="sidebar-icon">⚙️</span>
+				<h2>Admin Panel</h2>
+			</div>
+			<nav class="sidebar-menu">
+				<a href="admin-dashboard.html" class="menu-item">
+					<span class="menu-icon">📊</span>
+					<span>Dashboard</span>
+				</a>
+				<a href="admin-courses.html" class="menu-item">
+					<span class="menu-icon">📚</span>
+					<span>Quản Lý Khóa Học</span>
+				</a>
+				<a href="admin-quizzes.html" class="menu-item active">
+					<span class="menu-icon">📝</span>
+					<span>Quản Lý Quiz</span>
+				</a>
+				<a href="admin-approvals.html" class="menu-item">
+					<span class="menu-icon">✅</span>
+					<span>Duyệt Người Dùng</span>
+				</a>
+				<a href="admin-forum.html" class="menu-item">
+					<span class="menu-icon">💬</span>
+					<span>Duyệt Forum</span>
+				</a>
+			</nav>
+			<div class="sidebar-footer">
+				<a href="Home.html" class="menu-item">
+					<span class="menu-icon">🏠</span>
+					<span>Về Trang Chủ</span>
+				</a>
+				<button id="adminLogout" class="menu-item logout-btn">
+					<span class="menu-icon">🚪</span>
+					<span>Đăng Xuất</span>
+				</button>
+			</div>
+		</aside>
+
+		<main class="admin-main">
+			<header class="admin-header">
+				<h1>Quản Lý Quiz</h1>
+				<button id="addQuizBtn" class="btn btn-primary">+ Thêm Quiz</button>
+			</header>
+
+			<div class="admin-content">
+				<!-- Add/Edit Form -->
+				<section class="admin-form-section" id="quizFormSection" style="display: none;">
+					<h2>Thêm/Sửa Quiz</h2>
+					<form id="quizForm" class="admin-form">
+						<div class="form-row">
+							<div class="form-group">
+								<label for="quizName">Tên Quiz *</label>
+								<input type="text" id="quizName" placeholder="VD: Ngữ pháp N5" required>
+							</div>
+							<div class="form-group">
+								<label for="quizLevel">Cấp Độ *</label>
+								<select id="quizLevel" required>
+									<option value="">-- Chọn cấp độ --</option>
+									<option value="N5">N5</option>
+									<option value="N4">N4</option>
+									<option value="N3">N3</option>
+									<option value="N2">N2</option>
+									<option value="N1">N1</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="form-row">
+							<div class="form-group">
+								<label for="quizCategory">Danh Mục *</label>
+								<select id="quizCategory" required>
+									<option value="">-- Chọn danh mục --</option>
+									<option value="grammar">Ngữ Pháp</option>
+									<option value="vocabulary">Từ Vựng</option>
+									<option value="listening">Nghe Hiểu</option>
+									<option value="reading">Đọc Hiểu</option>
+									<option value="writing">Viết</option>
+									<option value="kanji">Kanji</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="quizQuestions">Số Câu Hỏi *</label>
+								<input type="number" id="quizQuestions" placeholder="VD: 30" min="1" required>
+							</div>
+						</div>
+
+						<div class="form-row">
+							<div class="form-group">
+								<label for="quizDuration">Thời Gian (phút) *</label>
+								<input type="number" id="quizDuration" placeholder="VD: 20" min="1" required>
+							</div>
+							<div class="form-group">
+								<label for="quizPassingScore">Điểm Đạt (%) *</label>
+								<input type="number" id="quizPassingScore" placeholder="VD: 70" min="0" max="100" required>
+							</div>
+						</div>
+
+						<div class="form-row">
+							<div class="form-group" style="grid-column: 1 / -1;">
+								<label for="quizDesc">Mô Tả</label>
+								<textarea id="quizDesc" placeholder="Mô tả chi tiết quiz" rows="4"></textarea>
+							</div>
+						</div>
+
+						<div class="form-actions">
+							<button type="submit" class="btn btn-primary">Lưu Quiz</button>
+							<button type="button" class="btn btn-outline" id="cancelQuizBtn">Hủy</button>
+						</div>
+					</form>
+				</section>
+
+				<!-- Quizzes Table -->
+				<section class="admin-table-section">
+					<h2>Danh Sách Quiz</h2>
+					<div class="table-responsive">
+						<table class="admin-table">
+							<thead>
+								<tr>
+									<th>STT</th>
+									<th>Tên Quiz</th>
+									<th>Cấp Độ</th>
+									<th>Danh Mục</th>
+									<th>Câu Hỏi</th>
+									<th>Thời Gian</th>
+									<th>Điểm Đạt</th>
+									<th>Hành Động</th>
+								</tr>
+							</thead>
+							<tbody id="quizzesTableBody">
+								<tr>
+									<td>1</td>
+									<td>Ngữ Pháp N5</td>
+									<td><span class="badge badge-n5">N5</span></td>
+									<td>Ngữ Pháp</td>
+									<td>30</td>
+									<td>20 phút</td>
+									<td>70%</td>
+									<td>
+										<button class="btn btn-small">Sửa</button>
+										<button class="btn btn-small btn-danger">Xóa</button>
+									</td>
+								</tr>
+								<tr>
+									<td>2</td>
+									<td>Từ Vựng N5</td>
+									<td><span class="badge badge-n5">N5</span></td>
+									<td>Từ Vựng</td>
+									<td>25</td>
+									<td>15 phút</td>
+									<td>75%</td>
+									<td>
+										<button class="btn btn-small">Sửa</button>
+										<button class="btn btn-small btn-danger">Xóa</button>
+									</td>
+								</tr>
+								<tr>
+									<td>3</td>
+									<td>Nghe Hiểu N4</td>
+									<td><span class="badge badge-n4">N4</span></td>
+									<td>Nghe Hiểu</td>
+									<td>20</td>
+									<td>25 phút</td>
+									<td>65%</td>
+									<td>
+										<button class="btn btn-small">Sửa</button>
+										<button class="btn btn-small btn-danger">Xóa</button>
+									</td>
+								</tr>
+								<tr>
+									<td>4</td>
+									<td>Kanji N5-N3</td>
+									<td><span class="badge badge-kanji">Kanji</span></td>
+									<td>Kanji</td>
+									<td>50</td>
+									<td>30 phút</td>
+									<td>80%</td>
+									<td>
+										<button class="btn btn-small">Sửa</button>
+										<button class="btn btn-small btn-danger">Xóa</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</section>
+			</div>
+		</main>
+	</div>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', () => {
+			const admin = getAdminUser();
+			if (!admin) window.location.href = 'admin-login.html';
+			initAdminNav();
+		});
+
+		document.getElementById('addQuizBtn').addEventListener('click', () => {
+			document.getElementById('quizFormSection').style.display = 'block';
+			document.getElementById('quizForm').reset();
+		});
+
+		document.getElementById('cancelQuizBtn').addEventListener('click', () => {
+			document.getElementById('quizFormSection').style.display = 'none';
+		});
+
+		document.getElementById('quizForm').addEventListener('submit', (e) => {
+			e.preventDefault();
+			alert('✅ Quiz đã được lưu thành công!');
+			document.getElementById('quizFormSection').style.display = 'none';
+		});
+
+		function initAdminNav() {
+			const currentPage = window.location.pathname.split('/').pop();
+			document.querySelectorAll('.menu-item').forEach(item => {
+				item.classList.remove('active');
+				if (item.href.includes(currentPage)) {
+					item.classList.add('active');
+				}
+			});
+		}
+
+		document.getElementById('adminLogout').addEventListener('click', logoutAdmin);
+	</script>
+</body>
+</html>
+
+

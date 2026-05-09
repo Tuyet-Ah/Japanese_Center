@@ -1,0 +1,236 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Admin Dashboard | Japanese Center</title>
+	<link rel="stylesheet" href="CSS/admin-dashboard.css">
+	<script defer src="script.js"></script>
+</head>
+<body>
+	<div class="admin-layout">
+		<!-- Admin Sidebar -->
+		<aside class="admin-sidebar">
+			<div class="sidebar-brand">
+				<span class="sidebar-icon">⚙️</span>
+				<h2>Admin Panel</h2>
+			</div>
+			<nav class="sidebar-menu">
+				<a href="admin-dashboard.html" class="menu-item active">
+					<span class="menu-icon">📊</span>
+					<span>Dashboard</span>
+				</a>
+				<a href="admin-courses.html" class="menu-item">
+					<span class="menu-icon">📚</span>
+					<span>Quản Lý Khóa Học</span>
+				</a>
+				<a href="admin-quizzes.html" class="menu-item">
+					<span class="menu-icon">📝</span>
+					<span>Quản Lý Quiz</span>
+				</a>
+				<a href="admin-approvals.html" class="menu-item">
+					<span class="menu-icon">✅</span>
+					<span>Duyệt Người Dùng</span>
+				</a>
+				<a href="admin-forum.html" class="menu-item">
+					<span class="menu-icon">💬</span>
+					<span>Duyệt Forum</span>
+				</a>
+			</nav>
+			<div class="sidebar-footer">
+				<a href="Home.html" class="menu-item">
+					<span class="menu-icon">🏠</span>
+					<span>Về Trang Chủ</span>
+				</a>
+				<button id="adminLogout" class="menu-item logout-btn">
+					<span class="menu-icon">🚪</span>
+					<span>Đăng Xuất</span>
+				</button>
+			</div>
+		</aside>
+
+		<!-- Admin Main Content -->
+		<main class="admin-main">
+			<!-- Admin Header -->
+			<header class="admin-header">
+				<h1>Dashboard</h1>
+				<div class="admin-user">
+					<span class="admin-name">Admin: <strong id="adminUsername">Admin</strong></span>
+					<img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%230f766e'/%3E%3Ctext x='20' y='26' font-size='20' fill='white' text-anchor='middle'%3E⚙️%3C/text%3E%3C/svg%3E" alt="Admin" class="admin-avatar">
+				</div>
+			</header>
+
+			<!-- Dashboard Content -->
+			<div class="admin-content">
+				<!-- Stats Grid -->
+				<section class="stats-section">
+					<h2>Thống Kê Hệ Thống</h2>
+					<div class="stats-grid">
+						<div class="stat-box">
+							<div class="stat-icon">📚</div>
+							<div class="stat-info">
+								<div class="stat-label">Tổng Khóa Học</div>
+								<div class="stat-value" id="totalCourses">4</div>
+							</div>
+						</div>
+						<div class="stat-box">
+							<div class="stat-icon">👥</div>
+							<div class="stat-info">
+								<div class="stat-label">Tổng Học Viên</div>
+								<div class="stat-value" id="totalStudents">156</div>
+							</div>
+						</div>
+						<div class="stat-box">
+							<div class="stat-icon">📝</div>
+							<div class="stat-info">
+								<div class="stat-label">Tổng Quiz</div>
+								<div class="stat-value" id="totalQuizzes">12</div>
+							</div>
+						</div>
+						<div class="stat-box">
+							<div class="stat-icon">⏳</div>
+							<div class="stat-info">
+								<div class="stat-label">Chờ Duyệt</div>
+								<div class="stat-value" id="pendingApprovals">3</div>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<!-- Quick Actions -->
+				<section class="quick-actions">
+					<h2>Hành Động Nhanh</h2>
+					<div class="actions-grid">
+						<a href="admin-courses.html" class="action-card">
+							<div class="action-icon">➕</div>
+							<h3>Thêm Khóa Học</h3>
+							<p>Tạo khóa học mới</p>
+						</a>
+						<a href="admin-quizzes.html" class="action-card">
+							<div class="action-icon">📋</div>
+							<h3>Thêm Quiz</h3>
+							<p>Tạo bài kiểm tra mới</p>
+						</a>
+						<a href="admin-approvals.html" class="action-card">
+							<div class="action-icon">✔️</div>
+							<h3>Duyệt Đơn</h3>
+							<p>Xem danh sách chờ duyệt</p>
+						</a>
+						<a href="admin-forum.html" class="action-card">
+							<div class="action-icon">🔍</div>
+							<h3>Kiểm Duyệt Forum</h3>
+							<p>Duyệt chủ đề thảo luận</p>
+						</a>
+					</div>
+				</section>
+
+				<!-- Recent Courses -->
+				<section class="recent-section">
+					<h2>Khóa Học Gần Đây</h2>
+					<div class="recent-list">
+						<div class="recent-item">
+							<div class="recent-info">
+								<h4>N5 Beginner Journey</h4>
+								<p class="meta">Cấp N5 • 25 học viên</p>
+							</div>
+							<div class="recent-actions">
+								<a href="admin-courses.html" class="btn btn-small">Sửa</a>
+								<button class="btn btn-small btn-danger">Xóa</button>
+							</div>
+						</div>
+						<div class="recent-item">
+							<div class="recent-info">
+								<h4>N4 Communication Boost</h4>
+								<p class="meta">Cấp N4 • 18 học viên</p>
+							</div>
+							<div class="recent-actions">
+								<a href="admin-courses.html" class="btn btn-small">Sửa</a>
+								<button class="btn btn-small btn-danger">Xóa</button>
+							</div>
+						</div>
+						<div class="recent-item">
+							<div class="recent-info">
+								<h4>Business Japanese Starter</h4>
+								<p class="meta">Cấp N3+ • 12 học viên</p>
+							</div>
+							<div class="recent-actions">
+								<a href="admin-courses.html" class="btn btn-small">Sửa</a>
+								<button class="btn btn-small btn-danger">Xóa</button>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<!-- Pending Approvals -->
+				<section class="pending-section">
+					<h2>Chờ Duyệt (3 đơn)</h2>
+					<div class="pending-list">
+						<div class="pending-item pending-teacher">
+							<div class="pending-info">
+								<h4>Nguyễn Thị Linh</h4>
+								<p class="pending-type">🎓 Đơn xin làm Teacher</p>
+								<p class="pending-date">Gửi: 2 ngày trước</p>
+							</div>
+							<div class="pending-actions">
+								<button class="btn btn-small btn-success">Duyệt</button>
+								<button class="btn btn-small btn-danger">Từ Chối</button>
+							</div>
+						</div>
+						<div class="pending-item pending-admin">
+							<div class="pending-info">
+								<h4>Trần Văn Hùng</h4>
+								<p class="pending-type">⚙️ Đơn xin làm Admin</p>
+								<p class="pending-date">Gửi: 5 ngày trước</p>
+							</div>
+							<div class="pending-actions">
+								<button class="btn btn-small btn-success">Duyệt</button>
+								<button class="btn btn-small btn-danger">Từ Chối</button>
+							</div>
+						</div>
+						<div class="pending-item pending-topic">
+							<div class="pending-info">
+								<h4>Forum Topic: "Mẹo học kanji hiệu quả"</h4>
+								<p class="pending-type">💬 Chủ đề forum mới</p>
+								<p class="pending-date">Gửi: 1 giờ trước</p>
+							</div>
+							<div class="pending-actions">
+								<button class="btn btn-small btn-success">Duyệt</button>
+								<button class="btn btn-small btn-danger">Từ Chối</button>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+		</main>
+	</div>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', () => {
+			const admin = getAdminUser();
+			if (!admin) {
+				window.location.href = 'admin-login.html';
+				return;
+			}
+			
+			document.getElementById('adminUsername').textContent = admin.name;
+			initAdminNav();
+		});
+
+		document.getElementById('adminLogout').addEventListener('click', () => {
+			logoutAdmin();
+		});
+
+		function initAdminNav() {
+			const currentPage = window.location.pathname.split('/').pop();
+			document.querySelectorAll('.menu-item').forEach(item => {
+				item.classList.remove('active');
+				if (item.href.includes(currentPage)) {
+					item.classList.add('active');
+				}
+			});
+		}
+	</script>
+</body>
+</html>
+
+

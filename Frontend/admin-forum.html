@@ -1,0 +1,237 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Duyệt Forum | Admin</title>
+	<link rel="stylesheet" href="CSS/admin-forum.css">
+	<script defer src="script.js"></script>
+</head>
+<body>
+	<div class="admin-layout">
+		<aside class="admin-sidebar">
+			<div class="sidebar-brand">
+				<span class="sidebar-icon">⚙️</span>
+				<h2>Admin Panel</h2>
+			</div>
+			<nav class="sidebar-menu">
+				<a href="admin-dashboard.html" class="menu-item">
+					<span class="menu-icon">📊</span>
+					<span>Dashboard</span>
+				</a>
+				<a href="admin-courses.html" class="menu-item">
+					<span class="menu-icon">📚</span>
+					<span>Quản Lý Khóa Học</span>
+				</a>
+				<a href="admin-quizzes.html" class="menu-item">
+					<span class="menu-icon">📝</span>
+					<span>Quản Lý Quiz</span>
+				</a>
+				<a href="admin-approvals.html" class="menu-item">
+					<span class="menu-icon">✅</span>
+					<span>Duyệt Người Dùng</span>
+				</a>
+				<a href="admin-forum.html" class="menu-item active">
+					<span class="menu-icon">💬</span>
+					<span>Duyệt Forum</span>
+				</a>
+			</nav>
+			<div class="sidebar-footer">
+				<a href="Home.html" class="menu-item">
+					<span class="menu-icon">🏠</span>
+					<span>Về Trang Chủ</span>
+				</a>
+				<button id="adminLogout" class="menu-item logout-btn">
+					<span class="menu-icon">🚪</span>
+					<span>Đăng Xuất</span>
+				</button>
+			</div>
+		</aside>
+
+		<main class="admin-main">
+			<header class="admin-header">
+				<h1>Duyệt Forum Topics</h1>
+				<span class="header-info">Chờ duyệt: 4 chủ đề</span>
+			</header>
+
+			<div class="admin-content">
+				<!-- Forum Topics List -->
+				<section class="forum-section">
+					<div class="tabs">
+						<button class="tab-btn active" data-tab="pending">Chờ Duyệt (4)</button>
+						<button class="tab-btn" data-tab="approved">Đã Duyệt (28)</button>
+						<button class="tab-btn" data-tab="rejected">Đã Từ Chối (2)</button>
+					</div>
+
+					<div class="forum-list">
+						<!-- Forum Topic 1 -->
+						<div class="forum-item forum-pending">
+							<div class="forum-header">
+								<div class="forum-badge">⏳ Chờ Duyệt</div>
+								<span class="forum-date">8 giờ trước</span>
+							</div>
+
+							<div class="forum-content">
+								<h3>Mẹo Học Kanji Hiệu Quả Cho Người Mới Bắt Đầu</h3>
+								<p class="forum-meta">
+									<strong>Tác giả:</strong> Trần Minh Anh (Học viên N4)<br>
+									<strong>Danh mục:</strong> Luyện Tập & Chia Sẻ
+								</p>
+								<div class="forum-preview">
+									<p>Xin chào mọi người, mình là học viên N4 và muốn chia sẻ những mẹo học kanji mà mình đã thử nghiệm trong 6 tháng qua. Mình thấy rất hiệu quả...</p>
+								</div>
+
+								<div class="forum-actions">
+									<button class="btn btn-success" onclick="forumAction('approve', 1)">✅ Duyệt</button>
+									<button class="btn btn-info" onclick="forumAction('view', 1)">👁️ Xem Chi Tiết</button>
+									<button class="btn btn-danger" onclick="forumAction('reject', 1)">❌ Từ Chối</button>
+								</div>
+							</div>
+						</div>
+
+						<!-- Forum Topic 2 -->
+						<div class="forum-item forum-pending">
+							<div class="forum-header">
+								<div class="forum-badge">⏳ Chờ Duyệt</div>
+								<span class="forum-date">1 ngày trước</span>
+							</div>
+
+							<div class="forum-content">
+								<h3>Trao Đổi Kinh Nghiệm Thi JLPT N3</h3>
+								<p class="forum-meta">
+									<strong>Tác giả:</strong> Phạm Thị Dung (Học viên N3)<br>
+									<strong>Danh mục:</strong> JLPT & Luyện Thi
+								</p>
+								<div class="forum-preview">
+									<p>Mình vừa thi JLPT N3 tháng trước và may mắn đạt điểm cao. Mình muốn chia sẻ lộ trình ôn tập 3 tháng của mình...</p>
+								</div>
+
+								<div class="forum-actions">
+									<button class="btn btn-success" onclick="forumAction('approve', 2)">✅ Duyệt</button>
+									<button class="btn btn-info" onclick="forumAction('view', 2)">👁️ Xem Chi Tiết</button>
+									<button class="btn btn-danger" onclick="forumAction('reject', 2)">❌ Từ Chối</button>
+								</div>
+							</div>
+						</div>
+
+						<!-- Forum Topic 3 -->
+						<div class="forum-item forum-pending">
+							<div class="forum-header">
+								<div class="forum-badge">⏳ Chờ Duyệt</div>
+								<span class="forum-date">2 ngày trước</span>
+							</div>
+
+							<div class="forum-content">
+								<h3>Tìm Bạn Luyện Tập Tiếng Nhật Online</h3>
+								<p class="forum-meta">
+									<strong>Tác giả:</strong> Lê Thị Hà (Học viên N5)<br>
+									<strong>Danh mục:</strong> Kết Nối & Hỗ Trợ
+								</p>
+								<div class="forum-preview">
+									<p>Mình là học viên N5 vừa mới bắt đầu, muốn tìm bạn để luyện tập nói chuyện tiếng Nhật cơ bản. Bạn nào có quan tâm không?</p>
+								</div>
+
+								<div class="forum-actions">
+									<button class="btn btn-success" onclick="forumAction('approve', 3)">✅ Duyệt</button>
+									<button class="btn btn-info" onclick="forumAction('view', 3)">👁️ Xem Chi Tiết</button>
+									<button class="btn btn-danger" onclick="forumAction('reject', 3)">❌ Từ Chối</button>
+								</div>
+							</div>
+						</div>
+
+						<!-- Forum Topic 4 -->
+						<div class="forum-item forum-pending">
+							<div class="forum-header">
+								<div class="forum-badge">⏳ Chờ Duyệt</div>
+								<span class="forum-date">2 ngày trước</span>
+							</div>
+
+							<div class="forum-content">
+								<h3>Quảng Cáo Dịch Vụ Dạy Kèm Riêng</h3>
+								<p class="forum-meta">
+									<strong>Tác giả:</strong> Nguyễn Văn Sơn (Đăng ký mới)<br>
+									<strong>Danh mục:</strong> Tổng Quát
+								</p>
+								<div class="forum-preview">
+									<p>Mình là giáo viên tiếng Nhật có 10 năm kinh nghiệm, hiện đang nhận dạy kèm riêng với giá rất ưu đãi. Liên hệ...</p>
+								</div>
+
+								<div class="forum-actions">
+									<button class="btn btn-success" onclick="forumAction('approve', 4)">✅ Duyệt</button>
+									<button class="btn btn-info" onclick="forumAction('view', 4)">👁️ Xem Chi Tiết</button>
+									<button class="btn btn-danger" onclick="forumAction('reject', 4)">❌ Từ Chối</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<!-- Moderation Guidelines -->
+				<section class="guidelines-section">
+					<h2>Hướng Dẫn Duyệt Forum</h2>
+					<div class="guidelines-content">
+						<h4>✅ Duyệt các chủ đề:</h4>
+						<ul>
+							<li>Chia sẻ kinh nghiệm học tập tiếng Nhật</li>
+							<li>Thảo luận về ngữ pháp, từ vựng, kanji</li>
+							<li>Trao đổi về JLPT và chuẩn bị thi</li>
+							<li>Tìm bạn luyện tập</li>
+							<li>Hỏi đáp về các khóa học</li>
+						</ul>
+
+						<h4>❌ Từ chối các chủ đề:</h4>
+						<ul>
+							<li>Quảng cáo dịch vụ cá nhân</li>
+							<li>Nội dung spam, lừa đảo</li>
+							<li>Bình luận xúc phạm, phân biệt</li>
+							<li>Chia sẻ thông tin nhạy cảm cá nhân</li>
+							<li>Liên kết bên ngoài không tin cậy</li>
+						</ul>
+					</div>
+				</section>
+			</div>
+		</main>
+	</div>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', () => {
+			const admin = getAdminUser();
+			if (!admin) window.location.href = 'admin-login.html';
+			initAdminNav();
+		});
+
+		function forumAction(action, topicId) {
+			if (action === 'approve') {
+				alert(`✅ Đã duyệt topic #${topicId}`);
+			} else if (action === 'reject') {
+				if (confirm(`Bạn chắc chắn từ chối topic #${topicId}?`)) {
+					alert(`❌ Đã từ chối topic #${topicId}`);
+				}
+			} else if (action === 'view') {
+				alert(`👁️ Xem chi tiết topic #${topicId} (sẽ mở modal chi tiết)`);
+			}
+		}
+
+		document.querySelectorAll('.tab-btn').forEach(btn => {
+			btn.addEventListener('click', function() {
+				document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+				this.classList.add('active');
+			});
+		});
+
+		function initAdminNav() {
+			const currentPage = window.location.pathname.split('/').pop();
+			document.querySelectorAll('.menu-item').forEach(item => {
+				item.classList.remove('active');
+				if (item.href.includes(currentPage)) {
+					item.classList.add('active');
+				}
+			});
+		}
+
+		document.getElementById('adminLogout').addEventListener('click', logoutAdmin);
+	</script>
+</body>
+</html>
+
+
