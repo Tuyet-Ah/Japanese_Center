@@ -2,6 +2,10 @@ from .CartItemSerializer import CartItemSerializer
 from .ChapterSerializer import ChapterSerializer
 from .CourseProgressSerializer import CourseProgressSerializer
 from .CourseSerializer import CourseSerializer
+from .CourseCreateSerializer import CourseCreateSerializer
+from .CourseUpdateSerializer import CourseUpdateSerializer
+from .ChapterCreateUpdateSerializer import ChapterCreateUpdateSerializer
+from .LessonCreateUpdateSerializer import LessonCreateUpdateSerializer
 from .CourseShortSerializer import CourseShortSerializer
 from .CustomTokenSerializers import CustomTokenSerializer
 from .EnrollmentProofSerializer import EnrollmentProofSerializer
@@ -19,3 +23,4 @@ from.LessonCommentSerializer import LessonCommentSerializer
 from .LessonNoteSerializer import LessonNoteSerializer
 from .CourseListSerializer import CourseListSerializer
 from .CourseReviewSerializer import CourseReviewSerializer
+from .JapaneseChatbotSerializer import JapaneseChatbotSerializer

@@ -1,6 +1,18 @@
 # Bắt đầu từ dòng này, KHÔNG có dấu * ở đầu
 backend/db.sqlite3
+backend/static/
+backend/media/
 *.pyc
+*.log
 venv/
+.venv/
 .env
+.env.*
 **/__pycache__/
+.pytest_cache/
+.mypy_cache/
+.vscode/
+.idea/
+node_modules/
+dist/
+build/

@@ -1,13 +1,15 @@
 ﻿<!DOCTYPE html>
 <html lang="vi">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Admin Login | Japanese Center</title>
+	<title>Admin Login | JSMART</title>
 	<link rel="stylesheet" href="CSS/admin-login.css">
 	<script defer src="JS/script.js"></script>
 	<script defer src="JS/admin-login.js"></script>
 </head>
+
 <body>
 	<div class="admin-login-page">
 		<div class="admin-login-container">
@@ -21,7 +23,7 @@
 				<form id="adminLoginForm" class="login-form">
 					<div class="form-group">
 						<label for="adminEmail">Email Admin</label>
-						<input type="email" id="adminEmail" placeholder="admin@japanesecenter.vn" required>
+						<input type="email" id="adminEmail" placeholder="admin@jsmart.vn" required>
 					</div>
 
 					<div class="form-group">
@@ -37,7 +39,8 @@
 						</small>
 					</div>
 
-					<button type="submit" class="btn btn-primary btn-large" style="width: 100%; margin-top: 20px;">
+					<button type="submit" class="btn btn-primary btn-large"
+						style="width: 100%; margin-top: 20px;">
 						Đăng Nhập Admin
 					</button>
 
@@ -49,7 +52,8 @@
 				</form>
 
 				<!-- Demo credentials info -->
-				<div class="demo-info" style="background: rgba(251, 113, 133, 0.1); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-top: 20px;">
+				<div class="demo-info"
+					style="background: rgba(251, 113, 133, 0.1); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-top: 20px;">
 					<h4 style="margin: 0 0 8px; color: var(--primary-dark);">🔑 Demo Admin Account</h4>
 					<p style="margin: 4px 0; color: var(--muted); font-size: 0.9rem;">
 						<strong>Email:</strong> admin@demo.com<br>
@@ -63,7 +67,7 @@
 				<div class="illustration-content">
 					<div class="illustration-icon">🛡️</div>
 					<h2>Quản Lý Admin</h2>
-					<p>Quản lý khóa học, quiz, người dùng và diễn đàn của Japanese Center</p>
+					<p>Quản lý khóa học, quiz, người dùng và diễn đàn của JSMART</p>
 					<div class="feature-list">
 						<div class="feature-item">✓ Quản lý khóa học</div>
 						<div class="feature-item">✓ Quản lý bài quiz</div>
@@ -75,7 +79,31 @@
 		</div>
 	</div>
 
+<<<<<<< HEAD
+=======
+	<script>
+		document.getElementById('adminLoginForm').addEventListener('submit', (e) => {
+			e.preventDefault();
+
+			const email = document.getElementById('adminEmail').value;
+			const password = document.getElementById('adminPassword').value;
+			const code = document.getElementById('adminCode').value;
+
+			// Demo authentication (in production, verify with backend)
+			if (email === 'admin@demo.com' && password === 'admin123' && code === 'ADMIN2026') {
+				loginAdmin({
+					email: email,
+					name: 'Admin',
+					role: 'admin',
+					loginTime: new Date().toISOString()
+				});
+				window.location.href = 'admin-dashboard.html';
+			} else {
+				alert('Email, mật khẩu hoặc mã admin không đúng!');
+			}
+		});
+	</script>
+>>>>>>> 386c99f9f4e11f233e2c11136db7ccf1527dd1ec
 </body>
+
 </html>
-
-
