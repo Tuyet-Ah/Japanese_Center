@@ -4,5 +4,6 @@ from .payment_service import PaymentService
 from .cart_service import CartService
 from .quiz_service import QuizService
 from .interaction_service import InteractionService
+from .japanese_chatbot_service import JapaneseChatbotService
 # Khai báo để các file khác gọi trực tiếp từ folder services
-__all__ = ['AuthService', 'CourseService', 'PaymentService', 'CartService','QuizService','InteractionService']
+__all__ = ['AuthService', 'CourseService', 'PaymentService', 'CartService','QuizService','InteractionService','JapaneseChatbotService']

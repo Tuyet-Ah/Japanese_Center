@@ -169,3 +169,8 @@ VNPAY_IPN_URL = os.environ.get(
     'http://127.0.0.1:8000/educations/vnpay/ipn/'
 )
 VNPAY_FRONTEND_RETURN_URL = os.environ.get('VNPAY_FRONTEND_RETURN_URL', '')
+
+# Gemini chatbot configuration
+# Hỗ trợ cả tên biến cũ trong .env (GEMINI_KEY) và tên chuẩn mới (GEMINI_API_KEY)
+GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', os.environ.get('GEMINI_KEY', ''))
+GEMINI_MODEL = os.environ.get('GEMINI_MODEL', 'gemini-1.5-flash')

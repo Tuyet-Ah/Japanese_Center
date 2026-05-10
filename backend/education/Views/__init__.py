@@ -7,3 +7,4 @@ from .paymentViews import CheckoutView, VnpayReturnView, VnpayIpnView
 from .quizViews import QuizDetailView, QuizSubmitView,PracticeHistoryView,FinalExamHistoryView,QuizReviewDetailView,QuizLeaderboardView,PracticeQuizListView
 from .lessonViews import LessonDetailView, MarkLessonCompleteView
 from .interactionView import LessonCommentView,PersonalNoteView,ForumTopicView,ReplyToTopicView,GetReplyTopicView
+from .chatbotViews import JapaneseChatbotView
