@@ -1,6 +1,6 @@
-const cartKey = "japaneseCenterCart";
-const loginKey = "japaneseCenterUser";
-const adminKey = "japaneseCenterAdmin";
+const cartKey = "jsmartCart";
+const loginKey = "jsmartUser";
+const adminKey = "jsmartAdmin";
 
 const demoCourses = [
   { id: 1, name: "N5 Beginner Journey", level: "N5", schedule: "T2-T5", price: 2400000 },
@@ -183,10 +183,10 @@ function handleAuthForms() {
     form.addEventListener("submit", (event) => {
       event.preventDefault();
       const message = form.querySelector("[data-form-message]");
-      
+
       // Kiểm tra xem form này là đăng nhập hay đăng ký
       const isLoginForm = form.closest("[data-login-panel]") !== null;
-      
+
       if (isLoginForm) {
         // Lưu login info
         const emailInput = form.querySelector('input[type="email"]');
@@ -197,7 +197,7 @@ function handleAuthForms() {
           loginTime: new Date().toISOString()
         };
         setLoginUser(userData);
-        
+
         if (message) {
           message.textContent = "Đăng nhập thành công!";
         }
@@ -207,19 +207,19 @@ function handleAuthForms() {
         const emailInput = form.querySelector('input[type="email"]');
         const email = emailInput ? emailInput.value : "user@email.com";
         const name = nameInput ? nameInput.value : email.split("@")[0];
-        
+
         const userData = {
           email: email,
           name: name,
           loginTime: new Date().toISOString()
         };
         setLoginUser(userData);
-        
+
         if (message) {
           message.textContent = "Đăng ký và đăng nhập thành công!";
         }
       }
-      
+
       form.reset();
     });
   });

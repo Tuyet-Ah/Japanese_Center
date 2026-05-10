@@ -9,7 +9,7 @@ replacements = {
     'Trung tÃ¢m giáº£ng dáº¡y tiáº¿ng Nháº­t': 'Trung tâm giảng dạy tiếng Nhật',
     'Æ¯u ÄQÃ£i há»Mc phÃ­, lá»Y trÃ¬nh rÃµ rÃ ng, há»W trá»£ táº­n tÃ¢m': 'Ưu đãi học phí, lộ trình rõ ràng, hỗ trợ tận tâm',
     'Há»Mc tiáº¿ng Nháº­t theo cÃ¡ch hiá»Gn ÄQáº¡i, trá»±c quan vÃ  dá»E theo dÃµi.': 'Học tiếng Nhật theo cách hiện đại, trực quan và dễ theo dõi.',
-    'Japanese Center mang ÄQáº¿n khÃ³a há»Mc tá»« sÆ¡ cáº¥p ÄQáº¿n nÃ¢ng cao, tÃ i liá»Gu há»Mc táº­p ÄQÆ°á»£c chá»Mn lá»Mc vÃ  khu vá»±c cÃ¡ nhÃ¢n ÄQá»C báº¡n theo dÃµi tiáº¿n ÄQá»Y, há»Mc phÃ­ vÃ  ÄQÄCng kÃ½ lá»p nhanh hÆ¡n.': 'Japanese Center mang đến khóa học từ sơ cấp đến nâng cao, tài liệu học tập được chọn lọc và khu vực cá nhân để bạn theo dõi tiến độ, học phí và đăng ký lớp nhanh hơn.',
+    'JSMART mang ÄQáº¿n khÃ³a há»Mc tá»« sÆ¡ cáº¥p ÄQáº¿n nÃ¢ng cao, tÃ i liá»Gu há»Mc táº­p ÄQÆ°á»£c chá»Mn lá»Mc vÃ  khu vá»±c cÃ¡ nhÃ¢n ÄQá»C báº¡n theo dÃµi tiáº¿n ÄQá»Y, há»Mc phÃ­ vÃ  ÄQÄCng kÃ½ lá»p nhanh hÆ¡n.': 'JSMART mang đến khóa học từ sơ cấp đến nâng cao, tài liệu học tập được chọn lọc và khu vực cá nhân để bạn theo dõi tiến độ, học phí và đăng ký lớp nhanh hơn.',
     'Xem khÃ³a há»Mc': 'Xem khóa học',
     'Báº¯t ÄQáº§u ngay': 'Bắt đầu ngay',
     'Æ¯u ÄQÃ£i thÃ¡ng nÃ y': 'Ưu đãi tháng này',
