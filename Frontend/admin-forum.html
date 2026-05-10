@@ -5,7 +5,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Duyệt Forum | Admin</title>
 	<link rel="stylesheet" href="CSS/admin-forum.css">
-	<script defer src="script.js"></script>
+	<script defer src="JS/script.js"></script>
+	<script defer src="JS/admin-forum.js"></script>
 </head>
 <body>
 	<div class="admin-layout">
@@ -193,44 +194,6 @@
 		</main>
 	</div>
 
-	<script>
-		document.addEventListener('DOMContentLoaded', () => {
-			const admin = getAdminUser();
-			if (!admin) window.location.href = 'admin-login.html';
-			initAdminNav();
-		});
-
-		function forumAction(action, topicId) {
-			if (action === 'approve') {
-				alert(`✅ Đã duyệt topic #${topicId}`);
-			} else if (action === 'reject') {
-				if (confirm(`Bạn chắc chắn từ chối topic #${topicId}?`)) {
-					alert(`❌ Đã từ chối topic #${topicId}`);
-				}
-			} else if (action === 'view') {
-				alert(`👁️ Xem chi tiết topic #${topicId} (sẽ mở modal chi tiết)`);
-			}
-		}
-
-		document.querySelectorAll('.tab-btn').forEach(btn => {
-			btn.addEventListener('click', function() {
-				document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-				this.classList.add('active');
-			});
-		});
-
-		function initAdminNav() {
-			const currentPage = window.location.pathname.split('/').pop();
-			document.querySelectorAll('.menu-item').forEach(item => {
-				item.classList.remove('active');
-				if (item.href.includes(currentPage)) {
-					item.classList.add('active');
-				}
-			});
-		}
-
-		document.getElementById('adminLogout').addEventListener('click', logoutAdmin);
-	</script>
 </body>
 </html>
 

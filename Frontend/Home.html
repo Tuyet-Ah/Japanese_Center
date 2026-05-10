@@ -5,7 +5,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Japanese Center | Trang chủ</title>
 	<link rel="stylesheet" href="./CSS/home.css">
-	<script defer src="script.js"></script>
+	<script defer src="JS/script.js"></script>
+	<script defer src="JS/home.js"></script>
 </head>
 <body>
 	<header class="topbar">
@@ -133,32 +134,6 @@
 		</div>
 	</footer>
 
-	<script>
-		// Simple carousel functionality
-		const track = document.getElementById('carouselTrack');
-		const items = track.querySelectorAll('.carousel-item');
-		const prevBtn = document.getElementById('prevBtn');
-		const nextBtn = document.getElementById('nextBtn');
-		let currentIndex = 0;
-
-		const itemWidth = 320 + 20; // width + gap
-
-		function updateCarousel() {
-			track.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
-		}
-
-		if (prevBtn && nextBtn) {
-			prevBtn.addEventListener('click', () => {
-				currentIndex = (currentIndex - 1 + items.length) % items.length;
-				updateCarousel();
-			});
-
-			nextBtn.addEventListener('click', () => {
-				currentIndex = (currentIndex + 1) % items.length;
-				updateCarousel();
-			});
-		}
-	</script>
 </body>
 </html>
 

@@ -5,7 +5,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Duyệt Người Dùng | Admin</title>
 	<link rel="stylesheet" href="CSS/admin-approvals.css">
-	<script defer src="script.js"></script>
+	<script defer src="JS/script.js"></script>
+	<script defer src="JS/admin-approvals.js"></script>
 </head>
 <body>
 	<div class="admin-layout">
@@ -194,46 +195,6 @@
 		</main>
 	</div>
 
-	<script>
-		document.addEventListener('DOMContentLoaded', () => {
-			const admin = getAdminUser();
-			if (!admin) window.location.href = 'admin-login.html';
-			initAdminNav();
-		});
-
-		function approveUser(userId) {
-			alert(`✅ Đã duyệt: ${userId}`);
-		}
-
-		function requestInfo(userId) {
-			alert(`❓ Đã gửi yêu cầu thêm thông tin cho ${userId}`);
-		}
-
-		function rejectUser(userId) {
-			if (confirm(`Bạn chắc chắn muốn từ chối ${userId}?`)) {
-				alert(`❌ Đã từ chối: ${userId}`);
-			}
-		}
-
-		document.querySelectorAll('.tab-btn').forEach(btn => {
-			btn.addEventListener('click', function() {
-				document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-				this.classList.add('active');
-			});
-		});
-
-		function initAdminNav() {
-			const currentPage = window.location.pathname.split('/').pop();
-			document.querySelectorAll('.menu-item').forEach(item => {
-				item.classList.remove('active');
-				if (item.href.includes(currentPage)) {
-					item.classList.add('active');
-				}
-			});
-		}
-
-		document.getElementById('adminLogout').addEventListener('click', logoutAdmin);
-	</script>
 </body>
 </html>
 

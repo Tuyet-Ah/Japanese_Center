@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Japanese Center | Khóa học</title>
   <link rel="stylesheet" href="CSS/courses.css">
-  <script defer src="script.js"></script>
+  <script defer src="JS/script.js"></script>
+  <script defer src="JS/courses.js"></script>
   <style>
     .course-modal {
       position: fixed;
@@ -142,7 +143,7 @@
           <h2 data-course-title>N5 Beginner Journey</h2>
           <p><strong>Lịch học:</strong> <span data-course-schedule>T2-T5</span></p>
         </div>
-        <button type="button" class="btn btn-outline" onclick="closeCourseDetail()">Đóng</button>
+        <button type="button" class="btn btn-outline" data-close-course-modal>Đóng</button>
       </div>
 
       <div class="course-modal-grid">
@@ -171,18 +172,6 @@
     </div>
   </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const modal = document.querySelector('[data-course-modal]');
-      if (modal) {
-        modal.addEventListener('click', (event) => {
-          if (event.target === modal) {
-            closeCourseDetail();
-          }
-        });
-      }
-    });
-  </script>
 </body>
 </html>
 

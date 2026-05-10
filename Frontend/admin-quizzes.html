@@ -5,7 +5,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Quản Lý Quiz | Admin</title>
 	<link rel="stylesheet" href="CSS/admin-quizzes.css">
-	<script defer src="script.js"></script>
+	<script defer src="JS/script.js"></script>
+	<script defer src="JS/admin-quizzes.js"></script>
 </head>
 <body>
 	<div class="admin-layout">
@@ -199,40 +200,6 @@
 		</main>
 	</div>
 
-	<script>
-		document.addEventListener('DOMContentLoaded', () => {
-			const admin = getAdminUser();
-			if (!admin) window.location.href = 'admin-login.html';
-			initAdminNav();
-		});
-
-		document.getElementById('addQuizBtn').addEventListener('click', () => {
-			document.getElementById('quizFormSection').style.display = 'block';
-			document.getElementById('quizForm').reset();
-		});
-
-		document.getElementById('cancelQuizBtn').addEventListener('click', () => {
-			document.getElementById('quizFormSection').style.display = 'none';
-		});
-
-		document.getElementById('quizForm').addEventListener('submit', (e) => {
-			e.preventDefault();
-			alert('✅ Quiz đã được lưu thành công!');
-			document.getElementById('quizFormSection').style.display = 'none';
-		});
-
-		function initAdminNav() {
-			const currentPage = window.location.pathname.split('/').pop();
-			document.querySelectorAll('.menu-item').forEach(item => {
-				item.classList.remove('active');
-				if (item.href.includes(currentPage)) {
-					item.classList.add('active');
-				}
-			});
-		}
-
-		document.getElementById('adminLogout').addEventListener('click', logoutAdmin);
-	</script>
 </body>
 </html>
 

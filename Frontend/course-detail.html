@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chi tiết khóa học</title>
+  <link rel="stylesheet" href="CSS/course-detail.css">
+  <link rel="stylesheet" href="CSS/base.css">
+  <script defer src="JS/script.js"></script>
+  <script defer src="JS/course-detail.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="Home.html">
+        <span class="brand-mark">日</span>
+        <span>Japanese Center<small>Trung tâm giảng dạy tiếng Nhật</small></span>
+      </a>
+      <nav class="nav">
+        <a href="Home.html">Trang chủ</a>
+        <a href="courses.html">Khóa học</a>
+        <a href="exams.html">Đề thi</a>
+        <a href="jlpt.html">JLPT</a>
+        <a href="materials.html">Tài liệu</a>
+      </nav>
+      <div class="actions">
+        <a data-profile-link href="profile.html" class="icon-btn" hidden title="Trang cá nhân">👤</a>
+        <a data-cart-link href="cart.html" class="icon-btn cart-icon" hidden title="Giỏ hàng">🛒<span data-cart-count class="badge">0</span></a>
+      </div>
+    </div>
+  </header>
+
+  <main class="section course-detail-section">
+    <div class="container course-detail-grid">
+      <article class="course-main">
+        <h1 id="course-title">Tiêu đề khóa học</h1>
+        <div class="course-meta">
+          <span class="badge" id="course-level">N5</span>
+          <span id="course-schedule">Lịch học</span>
+        </div>
+
+        <section class="course-intro">
+          <h2>Giới thiệu</h2>
+          <p id="course-description">Mô tả chi tiết về khóa học sẽ hiển thị ở đây.</p>
+        </section>
+
+        <section class="course-goals">
+          <h3>Mục tiêu chương trình học</h3>
+          <ul id="course-knowledge"></ul>
+        </section>
+      </article>
+
+      <aside class="course-sidebar">
+        <div class="price-card">
+          <div class="package small">Gói Basic</div>
+          <div class="price" id="course-price">2.499.000đ</div>
+          <div class="old-price" id="course-old-price"></div>
+          <button class="btn btn-primary" id="buy-now">Mua ngay</button>
+          <button class="btn btn-outline" id="consult">Tư vấn</button>
+        </div>
+
+        <div class="course-info-card">
+          <h4>Chương trình học này bao gồm :</h4>
+          <ul>
+            <li>Tương tác trực tiếp qua Livestream</li>
+            <li>Sách ID & kho đề luyện</li>
+            <li>Phương pháp học kết hợp</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </main>
+</body>
+</html>

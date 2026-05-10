@@ -1,0 +1,19 @@
+/* Styles for course detail page */
+.course-detail-section { padding: 40px 0; }
+.course-detail-grid { display: grid; grid-template-columns: 1fr 360px; gap: 28px; align-items: start; }
+.course-main h1 { margin: 0 0 8px; font-size: 28px; color: #0f172a; }
+.course-meta { display:flex; gap:12px; align-items:center; margin-bottom:16px; color:#374151 }
+.course-meta .badge { background:#f3f4f6; padding:6px 10px; border-radius:8px; font-weight:600 }
+.course-intro p { color:#6b7280; line-height:1.75 }
+.course-goals ul { margin:0; padding-left:18px; color:#374151 }
+
+.course-sidebar .price-card { background:#fff; border-radius:10px; padding:18px; box-shadow:0 8px 30px rgba(2,6,23,0.06); border:1px solid rgba(15,23,42,0.04) }
+.course-sidebar .price { font-size:22px; color:#16a34a; font-weight:700; margin-top:8px }
+.course-sidebar .old-price { color:#9ca3af; text-decoration:line-through; margin-top:4px }
+.course-sidebar .btn { width:100%; margin-top:12px }
+.course-info-card { margin-top:16px; background:#fff; padding:14px; border-radius:10px; border:1px solid rgba(15,23,42,0.03) }
+
+@media (max-width: 900px) {
+  .course-detail-grid { grid-template-columns: 1fr; }
+  .course-sidebar { order: 2; }
+}

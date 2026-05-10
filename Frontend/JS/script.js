@@ -1,5 +1,6 @@
 const cartKey = "japaneseCenterCart";
 const loginKey = "japaneseCenterUser";
+const adminKey = "japaneseCenterAdmin";
 
 const demoCourses = [
   {
@@ -50,7 +51,6 @@ const demoCourses = [
 
 const courseCatalog = Object.fromEntries(demoCourses.map((course) => [course.id, course]));
 
-// Hệ thống login
 function getLoginUser() {
   try {
     return JSON.parse(localStorage.getItem(loginKey)) || null;
@@ -78,21 +78,20 @@ function updateUIBasedOnLogin() {
   const cartLink = document.querySelector("[data-cart-link]");
 
   if (user) {
-    // Đã login
     if (authActions) authActions.style.display = "none";
     if (userActions) userActions.style.display = "flex";
     if (profileLink) profileLink.hidden = false;
     if (cartLink) cartLink.hidden = false;
-    document.querySelectorAll("[data-username]").forEach(el => {
-      el.textContent = user.name;
+    document.querySelectorAll("[data-username]").forEach((element) => {
+      element.textContent = user.name;
     });
   } else {
-    // Chưa login
     if (authActions) authActions.style.display = "flex";
     if (userActions) userActions.style.display = "none";
     if (profileLink) profileLink.hidden = true;
     if (cartLink) cartLink.hidden = true;
   }
+
   updateCartCount();
 }
 
@@ -134,7 +133,7 @@ function renderCourses() {
           <div class="meta">
             <span class="price">${formatMoney(course.price)}</span>
             <div class="actions" style="gap: 8px;">
-              <button class="btn btn-outline" data-open-course="${course.id}">Xem chi tiết</button>
+              <a class="btn btn-outline" href="course-detail.html?id=${course.id}">Xem chi tiết</a>
               <button class="btn btn-primary" data-add-course="${course.id}">Thêm vào giỏ</button>
             </div>
           </div>
@@ -154,15 +153,9 @@ function renderCourses() {
         cart.push(course);
         saveCart(cart);
       }
+
       button.textContent = "Đã thêm";
       button.disabled = true;
-    });
-  });
-
-  list.querySelectorAll("[data-open-course]").forEach((button) => {
-    button.addEventListener("click", () => {
-      const id = Number(button.getAttribute("data-open-course"));
-      openCourseDetail(id);
     });
   });
 }
@@ -187,15 +180,9 @@ function openCourseDetail(courseId) {
   if (level) level.textContent = course.level;
   if (schedule) schedule.textContent = course.schedule;
   if (description) description.textContent = course.description;
-  if (knowledgeList) {
-    knowledgeList.innerHTML = course.knowledge.map((item) => `<li>${item}</li>`).join("");
-  }
-  if (videoList) {
-    videoList.innerHTML = course.videos.map((item) => `<li>${item}</li>`).join("");
-  }
-  if (exerciseList) {
-    exerciseList.innerHTML = course.exercises.map((item) => `<li>${item}</li>`).join("");
-  }
+  if (knowledgeList) knowledgeList.innerHTML = course.knowledge.map((item) => `<li>${item}</li>`).join("");
+  if (videoList) videoList.innerHTML = course.videos.map((item) => `<li>${item}</li>`).join("");
+  if (exerciseList) exerciseList.innerHTML = course.exercises.map((item) => `<li>${item}</li>`).join("");
 }
 
 function closeCourseDetail() {
@@ -240,43 +227,33 @@ function handleAuthForms() {
     form.addEventListener("submit", (event) => {
       event.preventDefault();
       const message = form.querySelector("[data-form-message]");
-      
-      // Kiểm tra xem form này là đăng nhập hay đăng ký
       const isLoginForm = form.closest("[data-login-panel]") !== null;
-      
+
       if (isLoginForm) {
-        // Lưu login info
         const emailInput = form.querySelector('input[type="email"]');
         const email = emailInput ? emailInput.value : "user@email.com";
-        const userData = {
-          email: email,
+        setLoginUser({
+          email,
           name: email.split("@")[0],
           loginTime: new Date().toISOString()
-        };
-        setLoginUser(userData);
-        
-        if (message) {
-          message.textContent = "Đăng nhập thành công!";
-        }
+        });
+
+        if (message) message.textContent = "Đăng nhập thành công!";
       } else {
-        // Đăng ký - lưu và hiển thị thành công
         const nameInput = form.querySelector('input[type="text"]');
         const emailInput = form.querySelector('input[type="email"]');
         const email = emailInput ? emailInput.value : "user@email.com";
         const name = nameInput ? nameInput.value : email.split("@")[0];
-        
-        const userData = {
-          email: email,
-          name: name,
+
+        setLoginUser({
+          email,
+          name,
           loginTime: new Date().toISOString()
-        };
-        setLoginUser(userData);
-        
-        if (message) {
-          message.textContent = "Đăng ký và đăng nhập thành công!";
-        }
+        });
+
+        if (message) message.textContent = "Đăng ký và đăng nhập thành công!";
       }
-      
+
       form.reset();
     });
   });
@@ -290,18 +267,15 @@ function initAuthToggle() {
 
   if (!loginPanel || !registerPanel || !showRegister || !showLogin) return;
 
-  const openRegister = () => {
+  showRegister.addEventListener("click", () => {
     loginPanel.hidden = true;
     registerPanel.hidden = false;
-  };
+  });
 
-  const openLogin = () => {
+  showLogin.addEventListener("click", () => {
     registerPanel.hidden = true;
     loginPanel.hidden = false;
-  };
-
-  showRegister.addEventListener("click", openRegister);
-  showLogin.addEventListener("click", openLogin);
+  });
 }
 
 function initNavState() {
@@ -314,84 +288,86 @@ function initNavState() {
   });
 }
 
-  function getAdminUser() {
-    try {
-      return JSON.parse(localStorage.getItem("japaneseCenterAdmin")) || null;
-    } catch {
-      return null;
+function getAdminUser() {
+  try {
+    return JSON.parse(localStorage.getItem(adminKey)) || null;
+  } catch {
+    return null;
+  }
+}
+
+function loginAdmin(adminData) {
+  localStorage.setItem(adminKey, JSON.stringify(adminData));
+}
+
+function logoutAdmin() {
+  localStorage.removeItem(adminKey);
+  window.location.href = "Home.html";
+}
+
+function initAdminNav() {
+  const currentPage = window.location.pathname.split("/").pop().toLowerCase();
+  document.querySelectorAll(".menu-item").forEach((item) => {
+    item.classList.remove("active");
+    const href = item.getAttribute("href") || "";
+    if (href.toLowerCase().includes(currentPage)) {
+      item.classList.add("active");
     }
-  }
+  });
+}
 
-  function loginAdmin(adminData) {
-    localStorage.setItem("japaneseCenterAdmin", JSON.stringify(adminData));
-  }
-
-  function logoutAdmin() {
-    localStorage.removeItem("japaneseCenterAdmin");
-    window.location.href = "Home.html";
-  }
-
-  function initAdminNav() {
-    const currentPage = window.location.pathname.split('/').pop().toLowerCase();
-    document.querySelectorAll('.menu-item').forEach(item => {
-      item.classList.remove('active');
-      const href = item.getAttribute('href') || '';
-      if (href.toLowerCase().includes(currentPage)) {
-        item.classList.add('active');
-      }
-    });
-  }
-
-document.addEventListener("DOMContentLoaded", () => {
-  updateCartCount();
-  renderCourses();
-  renderCart();
-  handleAuthForms();
-  initAuthToggle();
-  initNavState();
+function initStandardHeader() {
   updateUIBasedOnLogin();
-
-  const clearCartButton = document.querySelector("[data-clear-cart]");
-  if (clearCartButton) {
-    clearCartButton.addEventListener("click", () => {
-      saveCart([]);
-      renderCart();
-    });
-  }
+  initNavState();
 
   const logoutButton = document.querySelector("[data-logout-btn]");
   if (logoutButton) {
     logoutButton.addEventListener("click", logout);
   }
-  
-    // Admin System
-    const adminKey = "japaneseCenterAdmin";
-  
-    function getAdminUser() {
-      try {
-        return JSON.parse(localStorage.getItem(adminKey)) || null;
-      } catch {
-        return null;
-      }
-    }
-  
-    function loginAdmin(adminData) {
-      localStorage.setItem(adminKey, JSON.stringify(adminData));
-    }
-  
-    function logoutAdmin() {
-      localStorage.removeItem(adminKey);
-      window.location.href = "Home.html";
-    }
-  
-    function initAdminNav() {
-      const currentPage = window.location.pathname.split('/').pop().toLowerCase();
-      document.querySelectorAll('.menu-item').forEach(item => {
-        item.classList.remove('active');
-        const href = item.getAttribute('href') || '';
-        if (href.toLowerCase().includes(currentPage)) {
-          item.classList.add('active');
-        }
-      });
-    }
-});
+}
+
+function initAdminShell() {
+  const admin = getAdminUser();
+  if (!admin) {
+    window.location.href = "admin-login.html";
+    return null;
+  }
+
+  const username = document.getElementById("adminUsername");
+  if (username) {
+    username.textContent = admin.name;
+  }
+
+  initAdminNav();
+
+  const logoutButton = document.getElementById("adminLogout");
+  if (logoutButton) {
+    logoutButton.addEventListener("click", logoutAdmin);
+  }
+
+  return admin;
+}
+
+window.demoCourses = demoCourses;
+window.courseCatalog = courseCatalog;
+window.getLoginUser = getLoginUser;
+window.setLoginUser = setLoginUser;
+window.logout = logout;
+window.updateUIBasedOnLogin = updateUIBasedOnLogin;
+window.formatMoney = formatMoney;
+window.readCart = readCart;
+window.saveCart = saveCart;
+window.updateCartCount = updateCartCount;
+window.renderCourses = renderCourses;
+window.openCourseDetail = openCourseDetail;
+window.closeCourseDetail = closeCourseDetail;
+window.renderCart = renderCart;
+window.handleAuthForms = handleAuthForms;
+window.initAuthToggle = initAuthToggle;
+window.initNavState = initNavState;
+window.getAdminUser = getAdminUser;
+window.loginAdmin = loginAdmin;
+window.logoutAdmin = logoutAdmin;
+window.initAdminNav = initAdminNav;
+window.initStandardHeader = initStandardHeader;
+window.initAdminShell = initAdminShell;

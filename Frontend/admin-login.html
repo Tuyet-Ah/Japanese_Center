@@ -5,7 +5,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Admin Login | Japanese Center</title>
 	<link rel="stylesheet" href="CSS/admin-login.css">
-	<script defer src="script.js"></script>
+	<script defer src="JS/script.js"></script>
+	<script defer src="JS/admin-login.js"></script>
 </head>
 <body>
 	<div class="admin-login-page">
@@ -74,28 +75,6 @@
 		</div>
 	</div>
 
-	<script>
-		document.getElementById('adminLoginForm').addEventListener('submit', (e) => {
-			e.preventDefault();
-			
-			const email = document.getElementById('adminEmail').value;
-			const password = document.getElementById('adminPassword').value;
-			const code = document.getElementById('adminCode').value;
-
-			// Demo authentication (in production, verify with backend)
-			if (email === 'admin@demo.com' && password === 'admin123' && code === 'ADMIN2026') {
-				loginAdmin({
-					email: email,
-					name: 'Admin',
-					role: 'admin',
-					loginTime: new Date().toISOString()
-				});
-				window.location.href = 'admin-dashboard.html';
-			} else {
-				alert('Email, mật khẩu hoặc mã admin không đúng!');
-			}
-		});
-	</script>
 </body>
 </html>
 
