@@ -23,3 +23,4 @@ from.LessonCommentSerializer import LessonCommentSerializer
 from .LessonNoteSerializer import LessonNoteSerializer
 from .CourseListSerializer import CourseListSerializer
 from .CourseReviewSerializer import CourseReviewSerializer
+from .JapaneseChatbotSerializer import JapaneseChatbotSerializer
