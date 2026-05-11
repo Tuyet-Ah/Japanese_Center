@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 
 <head>
@@ -50,6 +50,16 @@
       <aside class="cart-summary">
         <h3>Tổng thanh toán</h3>
         <p>Kiểm tra lại các khóa học trước khi tiến hành thanh toán.</p>
+        <div class="discount-section">
+          <label for="discountInput">Mã giảm giá</label>
+          <div class="discount-input-wrapper">
+            <input type="text" id="discountInput" placeholder="Nhập mã (VD: JSMART10)">
+            <button class="btn btn-outline btn-apply-discount" onclick="applyDiscountCode()">Áp dụng</button>
+          </div>
+          <div id="discountMessage"></div>
+          <p class="discount-display">Giảm giá: <span id="discountAmount">-0 VND</span></p>
+        </div>
+        
         <h2 data-cart-total>0 VND</h2>
         <div class="actions">
           <button class="btn btn-outline" data-clear-cart>Xóa giỏ</button>

@@ -5,6 +5,14 @@ function startExam(examId) {
 document.addEventListener("DOMContentLoaded", () => {
   initStandardHeader();
 
+  // Auto-open exam from URL parameter (e.g. from profile results page)
+  const params = new URLSearchParams(window.location.search);
+  const examFromUrl = params.get("exam");
+  if (examFromUrl) {
+    // Small timeout to let page render first
+    setTimeout(() => startExam(examFromUrl), 400);
+  }
+
   const levelItems = document.querySelectorAll("#levelFilter li");
   const examCards = Array.from(document.querySelectorAll(".exam-card"));
 
@@ -22,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
       levelItems.forEach(li => li.style.backgroundColor = "");
       
       // Add active style to clicked item
-      item.style.backgroundColor = "#f0f4f8";
+      item.style.backgroundColor = "var(--surface-2)";
       
       const level = item.getAttribute("data-level");
       applyFilters(level);
