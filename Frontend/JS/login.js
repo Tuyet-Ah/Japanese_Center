@@ -1,17 +1,9 @@
-function togglePasswordVisibility(inputId) {
-  const input = document.getElementById(inputId);
-  if (!input) return;
-  input.type = input.type === "password" ? "text" : "password";
-}
-
 document.addEventListener("DOMContentLoaded", () => {
+  initStandardHeader();
+  handleAuthForms();
+
+  // Additional login-specific validation
   const form = document.getElementById("loginForm");
-  const toggleButton = document.querySelector("[data-toggle-password]");
-
-  if (toggleButton) {
-    toggleButton.addEventListener("click", () => togglePasswordVisibility("loginPassword"));
-  }
-
   if (!form) return;
 
   form.addEventListener("submit", (event) => {

@@ -1,0 +1,9 @@
+VNPAY_TMN_CODE=YF5DZKW5R
+VNPAY_HASH_SECRET=FNIKCLMXJHBOBDODGDNMRISRHXSFRHDQ
+VNPAY_RETURN_URL=http://127.0.0.1:8000/educations/vnpay/return/
+VNPAY_IPN_URL=http://127.0.0.1:8000/educations/vnpay/ipn/
+VNPAY_PAYMENT_URL=https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
+VNPAY_FRONTEND_RETURN_URL=http://127.0.0.1:5500/Frontend/Payment.html
+
+GEMINI_KEY=AIzaSyAwHHPyQYiYldrRAV3MR1RQLo3elIz_s2U
+GEMINI_MODEL=gemini-2.5-flash

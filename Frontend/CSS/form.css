@@ -1,3 +1,5 @@
+@import url('./base.css');
+
 /* forms.css */
 .form-wrap { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 18px; align-items: stretch; }
 .form-card { padding: 24px; }

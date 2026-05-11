@@ -1,119 +1,15 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 
 <head>
-<<<<<<< HEAD
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng nhập | Japanese Center</title>
-    <link rel="stylesheet" href="./CSS/auth.css">
-    <script defer src="JS/script.js"></script>
-    <script defer src="JS/login.js"></script>
-=======
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JSMART | Đăng nhập</title>
   <link rel="stylesheet" href="CSS/login.css">
-  <script defer src="script.js"></script>
->>>>>>> 386c99f9f4e11f233e2c11136db7ccf1527dd1ec
+  <script defer src="JS/script.js"></script>
 </head>
 
 <body>
-<<<<<<< HEAD
-    <div class="auth-container">
-        <div class="auth-card">
-            <div class="auth-header">
-                <a href="Home.html" class="brand-mini">
-                    <span class="brand-mark">日</span>
-                    <span>Japanese Center</span>
-                </a>
-            </div>
-
-            <form id="loginForm" class="auth-form">
-                <h1>Đăng nhập</h1>
-                <p class="auth-subtitle">Chào mừng quay trở lại. Hãy đăng nhập vào tài khoản của bạn.</p>
-
-                <div class="form-group">
-                    <label for="loginEmail">Email</label>
-                    <input 
-                        type="email" 
-                        id="loginEmail" 
-                        name="email" 
-                        placeholder="your@email.com" 
-                        required
-                    >
-                    <small class="error-message" id="emailError"></small>
-                </div>
-
-                <div class="form-group">
-                    <label for="loginPassword">Mật khẩu</label>
-                    <div class="password-input-wrapper">
-                        <input 
-                            type="password" 
-                            id="loginPassword" 
-                            name="password" 
-                            placeholder="••••••••" 
-                            required
-                        >
-                        <button 
-                            type="button" 
-                            class="toggle-password" 
-                            data-toggle-password
-                        >👁️</button>
-                    </div>
-                    <small class="error-message" id="passwordError"></small>
-                </div>
-
-                <div class="form-row">
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="remember">
-                        <span>Ghi nhớ tôi</span>
-                    </label>
-                    <a href="#" class="forgot-link">Quên mật khẩu?</a>
-                </div>
-
-                <button type="submit" class="btn btn-primary btn-block">Đăng nhập</button>
-
-                <div class="divider">hoặc</div>
-
-                <button type="button" class="btn btn-social btn-google">
-                    <span>🔵</span> Đăng nhập với Google
-                </button>
-                <button type="button" class="btn btn-social btn-facebook">
-                    <span>f</span> Đăng nhập với Facebook
-                </button>
-
-                <p class="auth-footer">
-                    Chưa có tài khoản? 
-                    <a href="register.html" class="link-primary">Đăng ký ngay</a>
-                </p>
-            </form>
-        </div>
-
-        <div class="auth-sidebar">
-            <div class="sidebar-content">
-                <h2>Hành trình học tiếng Nhật bắt đầu từ đây</h2>
-                <div class="sidebar-features">
-                    <div class="sidebar-feature">
-                        <span class="icon">🎯</span>
-                        <p>Học tập có mục đích rõ ràng</p>
-                    </div>
-                    <div class="sidebar-feature">
-                        <span class="icon">👨‍🏫</span>
-                        <p>Giáo viên chuyên nghiệp hướng dẫn</p>
-                    </div>
-                    <div class="sidebar-feature">
-                        <span class="icon">📈</span>
-                        <p>Tiến bộ nhanh chóng</p>
-                    </div>
-                    <div class="sidebar-feature">
-                        <span class="icon">👥</span>
-                        <p>Cộng đồng học viên sôi nổi</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-=======
   <header class="topbar">
     <div class="container topbar-inner">
       <a class="brand" href="Home.html">
@@ -143,33 +39,45 @@
     </div>
   </header>
 
-  <main class="section">
-    <div class="container form-wrap">
-      <section class="card form-card" data-login-panel>
-        <span class="badge">Chào mừng trở lại</span>
+  <main class="cute-login-wrapper">
+    <!-- Cute decorative elements -->
+    <div class="decor-circle decor-1"></div>
+    <div class="decor-circle decor-2"></div>
+    <div class="decor-star">✨</div>
+    <div class="decor-star star-2">💖</div>
+
+    <div class="container cute-form-container">
+      <section class="card cute-form-card" data-login-panel>
+        <div class="mascot-wrapper">
+          <img src="assets/cute_mascot.png" alt="Cute Mascot" class="mascot-img">
+        </div>
+        <span class="cute-badge">Chào mừng trở lại! 🐾</span>
         <h2>Đăng nhập tài khoản</h2>
         <form data-auth-form>
           <div class="form-group">
-            <label>Email</label>
-            <input type="email" placeholder="name@email.com">
+            <label>💌 Email của bạn</label>
+            <input type="email" placeholder="Nhập địa chỉ email..." required>
           </div>
           <div class="form-group">
-            <label>Mật khẩu</label>
-            <input type="password" placeholder="Nhập mật khẩu">
+            <label>🔑 Mật khẩu</label>
+            <input type="password" placeholder="Nhập mật khẩu bí mật..." required>
           </div>
-          <button class="btn btn-primary" type="submit">Đăng nhập</button>
-          <p data-form-message></p>
+          <div class="form-options">
+            <label class="remember-me">
+              <input type="checkbox"> Ghi nhớ mình nhé
+            </label>
+            <a href="#" class="forgot-link">Quên mật khẩu? 🥺</a>
+          </div>
+          <button class="btn btn-cute" type="submit">Đăng nhập 💕</button>
+          <p data-form-message class="cute-message"></p>
         </form>
-        <div class="auth-switch">
-          <span>Chưa có tài khoản?</span>
-          <a class="link-button" href="register.html">Đăng ký ngay</a>
+        <div class="auth-switch cute-switch">
+          <span>Bạn chưa có tài khoản?</span>
+          <a class="link-button" href="register.html">Đăng ký ngay thôi! 🌸</a>
         </div>
       </section>
->>>>>>> 386c99f9f4e11f233e2c11136db7ccf1527dd1ec
     </div>
+  </main>
 </body>
-<<<<<<< HEAD
-=======
 
->>>>>>> 386c99f9f4e11f233e2c11136db7ccf1527dd1ec
 </html>
