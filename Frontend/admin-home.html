@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSMART | Trang chủ Admin</title>
+  <link rel="stylesheet" href="./CSS/home.css">
+  <link rel="stylesheet" href="./CSS/admin-home.css">
+  <script defer src="JS/script.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="admin-home.html">
+        <span class="brand-mark">日</span>
+        <span>JSMART<small>Quản trị hệ thống</small></span>
+      </a>
+      <nav class="nav">
+        <a href="admin-home.html" class="active">Trang chủ</a>
+        <a href="admin-approvals.html">Quản lý tài khoản</a>
+        <a href="admin-courses.html">Quản lý khóa học</a>
+        <a href="admin-quizzes.html">Quản lý đề thi</a>
+        <a href="admin-forum.html">Quản lý thảo luận</a>
+        <a href="admin-dashboard.html">Thống kê & Báo cáo</a>
+      </nav>
+      <div class="actions">
+        <div class="admin-user-section">
+          <span class="user-greeting">⚙️ <span id="adminDisplayName">Admin</span></span>
+          <a href="admin-profile.html" class="icon-btn" title="Hồ sơ Admin" style="color:#fff; font-size:1.3rem; text-decoration:none; opacity:0.9;">👤</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO ADMIN -->
+    <section class="hero-banner admin-hero">
+      <div class="container hero-banner-inner">
+        <div class="hero-content">
+          <div class="hero-tag">⚙️ Bảng điều khiển quản trị viên</div>
+          <h1 class="hero-title">CHÀO MỪNG<br><span class="hero-highlight">QUẢN TRỊ VIÊN</span></h1>
+          <p class="hero-subtitle">Quản lý toàn bộ hệ thống JSMART — tài khoản, khóa học, đề thi, thảo luận và báo cáo thống kê tập trung tại đây.</p>
+          <div class="hero-stats">
+            <div class="hero-stat"><strong id="stat-users">156</strong><span>Học viên</span></div>
+            <div class="hero-stat"><strong id="stat-courses">12</strong><span>Khóa học</span></div>
+            <div class="hero-stat"><strong id="stat-exams">24</strong><span>Đề thi</span></div>
+            <div class="hero-stat"><strong id="stat-pending">3</strong><span>Chờ duyệt</span></div>
+          </div>
+          <div class="hero-actions">
+            <a href="admin-dashboard.html" class="btn btn-primary btn-large">Xem thống kê</a>
+            <a href="admin-approvals.html" class="btn btn-outline btn-large" style="color:#fff;border-color:#fff;">Duyệt tài khoản</a>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="hero-card-group">
+            <div class="hero-float-card">⚙️ <span>Hệ thống hoạt động ổn định</span></div>
+            <div class="hero-img-box" style="background: linear-gradient(135deg,rgba(255,171,199,0.6),rgba(188,230,244,0.7)); display:flex;align-items:center;justify-content:center;">
+              <span style="font-size:6rem;">🛡️</span>
+            </div>
+            <div class="hero-float-card hero-float-card--right">📊 <span>3 yêu cầu chờ duyệt</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATS BANNER -->
+    <section class="stats-banner">
+      <div class="container stats-grid">
+        <div class="stat-item"><span class="stat-num">156</span><span class="stat-label">Tổng học viên</span></div>
+        <div class="stat-item"><span class="stat-num">12</span><span class="stat-label">Khóa học đang mở</span></div>
+        <div class="stat-item"><span class="stat-num">24</span><span class="stat-label">Đề thi hiện có</span></div>
+        <div class="stat-item"><span class="stat-num">48</span><span class="stat-label">Chủ đề thảo luận</span></div>
+        <div class="stat-item"><span class="stat-num">3</span><span class="stat-label">Chờ phê duyệt</span></div>
+      </div>
+    </section>
+
+    <!-- CHỨC NĂNG QUẢN TRỊ -->
+    <section class="section-block">
+      <div class="container">
+        <div class="section-header">
+          <h2>Chức năng quản trị</h2>
+          <span class="admin-home-subtitle">Truy cập nhanh các tính năng quản lý</span>
+        </div>
+        <div class="admin-feature-grid">
+          <a href="admin-approvals.html" class="admin-feature-card">
+            <div class="afc-icon">👥</div>
+            <div class="afc-body">
+              <h3>Quản lý tài khoản</h3>
+              <p>Duyệt giáo viên, học viên mới. Phân quyền và quản lý người dùng trong hệ thống.</p>
+              <div class="afc-stats"><span class="afc-badge afc-badge--warn">3 chờ duyệt</span></div>
+            </div>
+            <span class="afc-arrow">→</span>
+          </a>
+          <a href="admin-courses.html" class="admin-feature-card">
+            <div class="afc-icon">📚</div>
+            <div class="afc-body">
+              <h3>Quản lý khóa học</h3>
+              <p>Tạo, chỉnh sửa, xóa khóa học. Cập nhật lịch học, giáo viên và lộ trình đào tạo.</p>
+              <div class="afc-stats"><span class="afc-badge">12 khóa học</span></div>
+            </div>
+            <span class="afc-arrow">→</span>
+          </a>
+          <a href="admin-quizzes.html" class="admin-feature-card">
+            <div class="afc-icon">📝</div>
+            <div class="afc-body">
+              <h3>Quản lý đề thi</h3>
+              <p>Thêm, sửa, xóa đề thi. Quản lý câu hỏi, đáp án và phân loại theo cấp độ JLPT.</p>
+              <div class="afc-stats"><span class="afc-badge">24 đề thi</span></div>
+            </div>
+            <span class="afc-arrow">→</span>
+          </a>
+          <a href="admin-forum.html" class="admin-feature-card">
+            <div class="afc-icon">💬</div>
+            <div class="afc-body">
+              <h3>Quản lý thảo luận</h3>
+              <p>Kiểm duyệt chủ đề forum, xóa nội dung vi phạm, quản lý bình luận học viên.</p>
+              <div class="afc-stats"><span class="afc-badge">48 chủ đề</span></div>
+            </div>
+            <span class="afc-arrow">→</span>
+          </a>
+          <a href="admin-dashboard.html" class="admin-feature-card admin-feature-card--wide">
+            <div class="afc-icon">📊</div>
+            <div class="afc-body">
+              <h3>Thống kê & Báo cáo</h3>
+              <p>Xem tổng quan hệ thống, biểu đồ học viên, doanh thu khóa học và tỉ lệ hoàn thành. Xuất báo cáo theo tháng/quý.</p>
+              <div class="afc-stats">
+                <span class="afc-badge">Doanh thu tháng này</span>
+                <span class="afc-badge afc-badge--green">98% tỉ lệ đậu JLPT</span>
+              </div>
+            </div>
+            <span class="afc-arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOẠT ĐỘNG GẦN ĐÂY -->
+    <section class="why-section">
+      <div class="container">
+        <h2 class="text-center">Hoạt động gần đây</h2>
+        <p class="text-center why-sub">Các thao tác và yêu cầu mới nhất trong hệ thống</p>
+        <div class="why-grid">
+          <div class="why-card">
+            <div class="why-icon">🆕</div>
+            <h3>Tài khoản mới</h3>
+            <p>Nguyễn Thị Linh đăng ký làm giáo viên — <strong>2 ngày trước</strong>. Đang chờ phê duyệt.</p>
+            <a href="admin-approvals.html" class="tip-read-more">Xem & duyệt →</a>
+          </div>
+          <div class="why-card">
+            <div class="why-icon">📖</div>
+            <h3>Khóa học mới</h3>
+            <p>Khóa <strong>N2 Elite Program</strong> vừa được thêm với 18 học viên đăng ký trong 24h đầu.</p>
+            <a href="admin-courses.html" class="tip-read-more">Quản lý →</a>
+          </div>
+          <div class="why-card">
+            <div class="why-icon">💬</div>
+            <h3>Thảo luận chờ duyệt</h3>
+            <p>Chủ đề <strong>"Mẹo học Kanji hiệu quả"</strong> — gửi 1 giờ trước, cần kiểm duyệt nội dung.</p>
+            <a href="admin-forum.html" class="tip-read-more">Kiểm duyệt →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- THỐNG KÊ NHANH -->
+    <section class="section-block teacher-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Tóm tắt hệ thống</h2>
+          <a href="admin-dashboard.html" class="see-all-link">Xem báo cáo đầy đủ →</a>
+        </div>
+        <div class="teacher-tips-grid">
+          <div class="tip-card">
+            <div class="tip-avatar">📈</div>
+            <div class="tip-content">
+              <div class="tip-teacher">Học viên đang hoạt động</div>
+              <h4>156 học viên — tăng 12% so tháng trước</h4>
+              <p>85 học viên N5, 42 học viên N4, 29 học viên N3 trở lên đang theo học tích cực.</p>
+              <a href="admin-dashboard.html" class="tip-read-more">Xem chi tiết →</a>
+            </div>
+          </div>
+          <div class="tip-card">
+            <div class="tip-avatar">💰</div>
+            <div class="tip-content">
+              <div class="tip-teacher">Doanh thu tháng 5/2025</div>
+              <h4>42.500.000 đ — đạt 87% mục tiêu</h4>
+              <p>Khóa N5 Beginner Journey đóng góp doanh thu cao nhất với 25 học viên mới đăng ký.</p>
+              <a href="admin-dashboard.html" class="tip-read-more">Xem báo cáo →</a>
+            </div>
+          </div>
+          <div class="tip-card">
+            <div class="tip-avatar">🏆</div>
+            <div class="tip-content">
+              <div class="tip-teacher">Kết quả thi JLPT kỳ gần nhất</div>
+              <h4>97 học viên đậu — tỉ lệ 98%</h4>
+              <p>Kỳ thi tháng 12/2024: 97/99 học viên đậu N2/N1, cao nhất trong 10 năm hoạt động.</p>
+              <a href="admin-dashboard.html" class="tip-read-more">Xem thống kê →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LỊCH KHAI GIẢNG -->
+    <section class="section-block schedule-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Lịch khai giảng sắp tới</h2>
+          <a href="admin-courses.html" class="see-all-link">Quản lý lịch học →</a>
+        </div>
+        <div class="schedule-table-wrap">
+          <table class="schedule-table">
+            <thead>
+              <tr><th>Khóa học</th><th>Ngày khai giảng</th><th>Lịch học</th><th>Giáo viên</th><th>Học viên</th><th>Hành động</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="sl-badge level-n5">N5</span> N5 Beginner Journey</td>
+                <td>15/06/2025</td>
+                <td>Thứ 2-4-6 | 19:00-21:00</td>
+                <td>Nguyễn Thị Lan</td>
+                <td><span class="seat-badge">25/30</span></td>
+                <td><a href="admin-courses.html" class="btn btn-primary btn-sm">Quản lý</a></td>
+              </tr>
+              <tr>
+                <td><span class="sl-badge level-n4">N4</span> N4 Communication Boost</td>
+                <td>20/06/2025</td>
+                <td>Thứ 3-5-7 | 18:00-20:00</td>
+                <td>Trần Văn Minh</td>
+                <td><span class="seat-badge">18/25</span></td>
+                <td><a href="admin-courses.html" class="btn btn-primary btn-sm">Quản lý</a></td>
+              </tr>
+              <tr>
+                <td><span class="sl-badge level-n3">N3</span> N3 Business Japanese</td>
+                <td>01/07/2025</td>
+                <td>Thứ 7-CN | 08:00-11:00</td>
+                <td>Tanaka Yuki</td>
+                <td><span class="seat-badge seat-many">12/30</span></td>
+                <td><a href="admin-courses.html" class="btn btn-primary btn-sm">Quản lý</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo"><span class="brand-mark">日</span> JSMART Admin</div>
+        <p>Hệ thống quản trị trung tâm tiếng Nhật JSMART — quản lý tập trung, hiệu quả.</p>
+        <div class="footer-socials">
+          <a href="#">📘 Facebook</a>
+          <a href="#">📷 Instagram</a>
+          <a href="#">▶ YouTube</a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h4>Quản lý</h4>
+        <a href="admin-approvals.html">Tài khoản</a>
+        <a href="admin-courses.html">Khóa học</a>
+        <a href="admin-quizzes.html">Đề thi</a>
+        <a href="admin-forum.html">Thảo luận</a>
+      </div>
+      <div class="footer-links">
+        <h4>Báo cáo</h4>
+        <a href="admin-dashboard.html">Tổng quan</a>
+        <a href="admin-dashboard.html">Doanh thu</a>
+        <a href="admin-dashboard.html">Học viên</a>
+        <a href="admin-dashboard.html">Kết quả thi</a>
+      </div>
+      <div class="footer-contact">
+        <h4>Liên hệ hỗ trợ</h4>
+        <p>📍 123 Lê Lợi, Q.1, TP.HCM</p>
+        <p>📞 0900 123 456</p>
+        <p>✉️ admin@jsmart.vn</p>
+        <p>🕐 T2-T7: 8:00 - 21:00</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">© 2025 JSMART Admin Panel. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const user = getLoginUser();
+      const adminUser = getAdminUser();
+      const active = adminUser || (user && user.role === 'admin') ? (adminUser || user) : null;
+
+      if (!active) {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      const nameEl = document.getElementById('adminDisplayName');
+      if (nameEl) nameEl.textContent = active.name || 'Admin';
+
+      const logoutBtn = document.getElementById('adminLogoutBtn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+          logoutAdmin();
+          logout();
+        });
+      }
+    });
+  </script>
+</body>
+</html>

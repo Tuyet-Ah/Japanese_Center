@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 
 <head>
@@ -40,14 +40,14 @@
 				</a>
 			</nav>
 			<div class="sidebar-footer">
-				<a href="Home.html" class="menu-item">
+				<a href="admin-home.html" class="menu-item">
 					<span class="menu-icon">🏠</span>
-					<span>Về Trang Chủ</span>
+					<span>Trang Chủ Admin</span>
 				</a>
-				<button id="adminLogout" class="menu-item logout-btn">
-					<span class="menu-icon">🚪</span>
-					<span>Đăng Xuất</span>
-				</button>
+				<a href="admin-profile.html" class="menu-item">
+					<span class="menu-icon">👤</span>
+					<span>Hồ Sơ Admin</span>
+				</a>
 			</div>
 		</aside>
 
@@ -223,12 +223,10 @@
 		</main>
 	</div>
 
-<<<<<<< HEAD
-=======
 	<script>
 		document.addEventListener('DOMContentLoaded', () => {
-			const admin = getAdminUser();
-			if (!admin) window.location.href = 'admin-login.html';
+			const admin = getAdminUser() || getLoginUser();
+			if (!admin) { window.location.href = 'login.html'; return; }
 			initAdminNav();
 		});
 
@@ -252,20 +250,6 @@
 				this.classList.add('active');
 			});
 		});
-
-		function initAdminNav() {
-			const currentPage = window.location.pathname.split('/').pop();
-			document.querySelectorAll('.menu-item').forEach(item => {
-				item.classList.remove('active');
-				if (item.href.includes(currentPage)) {
-					item.classList.add('active');
-				}
-			});
-		}
-
-		document.getElementById('adminLogout').addEventListener('click', logoutAdmin);
 	</script>
->>>>>>> 386c99f9f4e11f233e2c11136db7ccf1527dd1ec
 </body>
-
 </html>

@@ -414,7 +414,7 @@ function handleAuthForms() {
 
           if (message) message.textContent = "Đăng nhập quản trị thành công!";
           setTimeout(() => {
-            window.location.href = "admin-dashboard.html";
+            window.location.href = "admin-home.html";
           }, 600);
           return;
         }

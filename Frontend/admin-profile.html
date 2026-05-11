@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSMART | Hồ sơ Admin</title>
+  <link rel="stylesheet" href="CSS/profile.css">
+  <link rel="stylesheet" href="CSS/admin-home.css">
+  <style>
+    /* Override profile page for admin theme */
+    body { background: url('assets/cherry_blossom_bg.png') center/cover fixed; }
+
+    .topbar { background: linear-gradient(90deg, #1e1b4b 0%, #312e81 100%); }
+    .topbar .brand-mark { background: linear-gradient(135deg,#818cf8,#38bdf8); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .topbar .nav a { color: rgba(255,255,255,0.85); }
+    .topbar .nav a:hover, .topbar .nav a.active { color:#fff; border-bottom-color:#818cf8; }
+    .topbar .brand span { color:#fff; }
+    .topbar .brand small { color:rgba(255,255,255,0.65); }
+    .topbar .admin-user-section { display:flex; align-items:center; gap:12px; }
+    .topbar .admin-user-section .user-greeting { color:rgba(255,255,255,0.9); font-weight:600; font-size:0.92rem; }
+    .topbar .admin-user-section a.icon-btn { color:#fff; font-size:1.3rem; text-decoration:none; opacity:0.9; }
+    .topbar .admin-user-section a.icon-btn:hover { opacity:1; }
+
+    /* Sidebar overrides */
+    .profile-sidebar { border: 1px solid rgba(99,102,241,0.25); }
+    .profile-sidebar h2 { color: #1e1b4b; }
+    .profile-nav-btn { border-radius: 10px; }
+    .profile-nav-btn.active, .profile-nav-btn:hover { background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(14,165,233,0.1)); color: #3730a3; }
+    .profile-content-header { color: #1e1b4b; background: linear-gradient(135deg,rgba(99,102,241,0.08),rgba(14,165,233,0.06)); }
+
+    /* Admin role badge */
+    .admin-role-badge {
+      display: inline-block;
+      background: linear-gradient(135deg,#818cf8,#38bdf8);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 4px 14px;
+      border-radius: 999px;
+      margin-top: 6px;
+      letter-spacing: 0.05em;
+    }
+
+    /* Action buttons overrides */
+    .action-btn { background: linear-gradient(135deg,#6366f1,#0ea5e9); border-color: transparent; }
+    .action-btn:hover { background: linear-gradient(135deg,#4f46e5,#0284c7); }
+    .logout-btn { background: transparent; color: #dc2626; border: 2px solid #fca5a5; }
+    .logout-btn:hover { background: #fef2f2; }
+
+    /* Permission list */
+    .permission-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+    .permission-list li { display: flex; align-items: center; gap: 10px; font-size: 0.92rem; color: #333; background: rgba(99,102,241,0.06); border-radius: 10px; padding: 10px 14px; }
+    .permission-list li span.perm-icon { font-size: 1.2rem; }
+    .permission-list li span.perm-ok { margin-left: auto; color: #22c55e; font-weight: 800; }
+
+    .admin-info-banner {
+      background: linear-gradient(135deg,rgba(99,102,241,0.1),rgba(14,165,233,0.08));
+      border: 1px solid rgba(99,102,241,0.2);
+      border-radius: 14px;
+      padding: 18px 22px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .admin-info-banner .banner-icon { font-size: 2rem; }
+    .admin-info-banner p { margin: 0; font-size: 0.9rem; color: #3730a3; font-weight: 600; }
+  </style>
+  <script defer src="JS/script.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="admin-home.html">
+        <span class="brand-mark">日</span>
+        <span>JSMART<small>Quản trị hệ thống</small></span>
+      </a>
+      <nav class="nav">
+        <a href="admin-home.html">Trang chủ</a>
+        <a href="admin-approvals.html">Quản lý tài khoản</a>
+        <a href="admin-courses.html">Quản lý khóa học</a>
+        <a href="admin-quizzes.html">Quản lý đề thi</a>
+        <a href="admin-forum.html">Quản lý thảo luận</a>
+        <a href="admin-dashboard.html">Thống kê & Báo cáo</a>
+      </nav>
+      <div class="actions">
+        <div class="admin-user-section">
+          <span class="user-greeting">⚙️ <span id="adminDisplayName">Admin</span></span>
+          <a href="admin-profile.html" class="icon-btn" title="Hồ sơ Admin">👤</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="section" style="padding-top: 20px;">
+    <div class="profile-wrapper">
+
+      <!-- SIDEBAR -->
+      <aside class="profile-sidebar">
+        <div class="profile-avatar-wrap" style="cursor:default;">
+          <img id="adminAvatar" src="assets/icon.png" alt="Admin Avatar">
+        </div>
+        <h2 id="adminProfileName">Admin JSMART</h2>
+        <div class="user-id">Quản trị viên hệ thống</div>
+        <div class="admin-role-badge">⚙️ ADMIN</div>
+
+        <nav class="profile-nav" style="margin-top: 20px;">
+          <a href="#" class="profile-nav-btn active" data-tab="info">⚙️ Thông tin tài khoản</a>
+          <a href="#" class="profile-nav-btn" data-tab="permissions">🔐 Phân quyền</a>
+          <a href="#" class="profile-nav-btn" data-tab="activity">📋 Lịch sử hoạt động</a>
+        </nav>
+
+        <button class="logout-btn" id="adminLogoutBtn" style="margin-top: 16px;">ĐĂNG XUẤT</button>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <section class="profile-content-area">
+
+        <!-- TAB 1: THÔNG TIN -->
+        <div class="profile-tab active" id="tab-info">
+          <h1 class="profile-content-header">THÔNG TIN QUẢN TRỊ VIÊN</h1>
+          <div class="profile-content-body">
+            <div class="admin-info-banner">
+              <span class="banner-icon">🛡️</span>
+              <p>Tài khoản có đầy đủ quyền quản trị hệ thống JSMART. Mọi thay đổi sẽ ảnh hưởng trực tiếp đến toàn bộ người dùng.</p>
+            </div>
+            <div class="profile-info-grid">
+              <div class="info-row">
+                <span class="info-label">Họ tên</span>
+                <span class="info-value" id="info-name">Admin JSMART</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Email</span>
+                <span class="info-value" id="info-email">admin@demo.com</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Vai trò</span>
+                <span class="info-value"><span class="admin-role-badge">⚙️ Quản trị viên</span></span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Trạng thái</span>
+                <span class="info-value" style="color:#22c55e; font-weight:700;">✅ Đang hoạt động</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Đăng nhập lúc</span>
+                <span class="info-value" id="info-loginTime">—</span>
+              </div>
+              <div class="profile-actions">
+                <button class="action-btn" id="changePasswordBtn">Thay đổi mật khẩu</button>
+              </div>
+            </div>
+            <img src="assets/icon.png" alt="Decoration" class="profile-decorative-img">
+          </div>
+        </div>
+
+        <!-- TAB 2: PHÂN QUYỀN -->
+        <div class="profile-tab" id="tab-permissions">
+          <h1 class="profile-content-header">PHÂN QUYỀN HỆ THỐNG</h1>
+          <div class="admin-info-banner">
+            <span class="banner-icon">🔐</span>
+            <p>Danh sách quyền truy cập của tài khoản quản trị viên trong hệ thống JSMART.</p>
+          </div>
+          <ul class="permission-list">
+            <li><span class="perm-icon">👥</span> Quản lý & duyệt tài khoản người dùng <span class="perm-ok">✔</span></li>
+            <li><span class="perm-icon">📚</span> Tạo, sửa, xóa khóa học <span class="perm-ok">✔</span></li>
+            <li><span class="perm-icon">📝</span> Tạo, sửa, xóa đề thi & câu hỏi <span class="perm-ok">✔</span></li>
+            <li><span class="perm-icon">💬</span> Kiểm duyệt thảo luận & forum <span class="perm-ok">✔</span></li>
+            <li><span class="perm-icon">📊</span> Xem thống kê & báo cáo hệ thống <span class="perm-ok">✔</span></li>
+            <li><span class="perm-icon">📧</span> Gửi thông báo đến học viên <span class="perm-ok">✔</span></li>
+            <li><span class="perm-icon">⚙️</span> Cấu hình hệ thống <span class="perm-ok">✔</span></li>
+          </ul>
+        </div>
+
+        <!-- TAB 3: LỊCH SỬ -->
+        <div class="profile-tab" id="tab-activity">
+          <h1 class="profile-content-header">LỊCH SỬ HOẠT ĐỘNG</h1>
+          <div class="results-table-wrap">
+            <table class="results-table">
+              <thead>
+                <tr>
+                  <th>Hành động</th>
+                  <th>Đối tượng</th>
+                  <th>Thời gian</th>
+                  <th>Trạng thái</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>✅ Duyệt tài khoản</td>
+                  <td>Nguyễn Thị Lan (Giáo viên)</td>
+                  <td>10/05/2025 09:30</td>
+                  <td><span class="grade-badge grade-a">Thành công</span></td>
+                </tr>
+                <tr>
+                  <td>📚 Thêm khóa học</td>
+                  <td>N2 Elite Program</td>
+                  <td>09/05/2025 14:15</td>
+                  <td><span class="grade-badge grade-a">Thành công</span></td>
+                </tr>
+                <tr>
+                  <td>❌ Từ chối topic</td>
+                  <td>Forum: "Spam nội dung"</td>
+                  <td>08/05/2025 11:00</td>
+                  <td><span class="grade-badge grade-b">Đã xử lý</span></td>
+                </tr>
+                <tr>
+                  <td>📝 Thêm đề thi</td>
+                  <td>JLPT N3 Test 202407</td>
+                  <td>07/05/2025 16:45</td>
+                  <td><span class="grade-badge grade-a">Thành công</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  <!-- Modal đổi mật khẩu -->
+  <div class="profile-modal" id="passwordModal" hidden>
+    <div class="profile-modal-card">
+      <div class="profile-modal-header">
+        <h3>Thay đổi mật khẩu Admin</h3>
+        <button type="button" class="modal-close" id="closePasswordModal">×</button>
+      </div>
+      <form class="profile-modal-body" id="passwordForm">
+        <label class="modal-field">
+          <span>Mật khẩu hiện tại</span>
+          <input type="password" name="currentPassword" autocomplete="current-password">
+        </label>
+        <label class="modal-field">
+          <span>Mật khẩu mới</span>
+          <input type="password" name="newPassword" required autocomplete="new-password">
+        </label>
+        <label class="modal-field">
+          <span>Xác nhận mật khẩu mới</span>
+          <input type="password" name="confirmPassword" required autocomplete="new-password">
+        </label>
+        <div class="modal-actions">
+          <span class="modal-message" id="passwordMsg"></span>
+          <button type="submit" class="btn btn-primary">Cập nhật</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const adminUser = getAdminUser();
+      const loginUser = getLoginUser();
+      const active = adminUser || (loginUser && loginUser.role === 'admin') ? (adminUser || loginUser) : null;
+
+      if (!active) { window.location.href = 'login.html'; return; }
+
+      // Populate info
+      const name = active.name || 'Admin JSMART';
+      const email = active.email || 'admin@demo.com';
+      document.getElementById('adminDisplayName').textContent = name;
+      document.getElementById('adminProfileName').textContent = name;
+      document.getElementById('info-name').textContent = name;
+      document.getElementById('info-email').textContent = email;
+      if (active.loginTime) {
+        const d = new Date(active.loginTime);
+        document.getElementById('info-loginTime').textContent = d.toLocaleString('vi-VN');
+      }
+
+      // Tab switching
+      document.querySelectorAll('.profile-nav-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+          e.preventDefault();
+          document.querySelectorAll('.profile-nav-btn').forEach(b => b.classList.remove('active'));
+          document.querySelectorAll('.profile-tab').forEach(t => t.classList.remove('active'));
+          btn.classList.add('active');
+          document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+        });
+      });
+
+      // Logout
+      document.getElementById('adminLogoutBtn').addEventListener('click', () => {
+        logoutAdmin();
+        logout();
+      });
+
+      // Password modal
+      document.getElementById('changePasswordBtn').addEventListener('click', () => {
+        document.getElementById('passwordModal').hidden = false;
+      });
+      document.getElementById('closePasswordModal').addEventListener('click', () => {
+        document.getElementById('passwordModal').hidden = true;
+      });
+      document.getElementById('passwordForm').addEventListener('submit', e => {
+        e.preventDefault();
+        const msg = document.getElementById('passwordMsg');
+        msg.style.color = 'green';
+        msg.textContent = 'Cập nhật mật khẩu thành công!';
+        setTimeout(() => { document.getElementById('passwordModal').hidden = true; msg.textContent = ''; }, 1500);
+      });
+    });
+  </script>
+</body>
+</html>
