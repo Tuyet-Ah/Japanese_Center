@@ -76,7 +76,7 @@ class PaymentService:
         ])
 
         amount_vnd = int(total_amount * 100)
-        now = timezone.now()
+        now = timezone.localtime(timezone.now())
         params = {
             'vnp_Version': '2.1.0',
             'vnp_Command': 'pay',

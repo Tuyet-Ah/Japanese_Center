@@ -8,6 +8,10 @@ class AuthService:
         """Logic đăng ký người dùng mới"""
         if User.objects.filter(username=data.get('username')).exists():
             raise ValueError("Tên đăng nhập đã tồn tại")
+        if data.get('email') and User.objects.filter(email=data.get('email')).exists():
+            raise ValueError("Email đã tồn tại")
+        if data.get('phone') and User.objects.filter(phone=data.get('phone')).exists():
+            raise ValueError("Số điện thoại đã tồn tại")
             
         user = User.objects.create_user(
             username=data.get('username'),
@@ -23,6 +27,10 @@ class AuthService:
     def register_admin(data):
         if User.objects.filter(username=data.get('username')).exists():
             raise ValueError("Tên đăng nhập đã tồn tại")
+        if data.get('email') and User.objects.filter(email=data.get('email')).exists():
+            raise ValueError("Email đã tồn tại")
+        if data.get('phone') and User.objects.filter(phone=data.get('phone')).exists():
+            raise ValueError("Số điện thoại đã tồn tại")
 
         user = User.objects.create_user(
             username=data.get('username'),

@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const maxScroll = Math.max(0, track.scrollWidth - track.parentElement.clientWidth);
     let offset = currentIndex * itemWidth;
     if (offset > maxScroll) {
-        offset = maxScroll;
+      offset = maxScroll;
     }
     track.style.transform = `translateX(-${offset}px)`;
   };
@@ -52,10 +52,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Handle window resize
   window.addEventListener('resize', () => {
-      const maxIndex = getMaxIndex();
-      if (currentIndex > maxIndex) {
-          currentIndex = maxIndex;
-      }
-      updateCarousel();
+    const maxIndex = getMaxIndex();
+    if (currentIndex > maxIndex) {
+      currentIndex = maxIndex;
+    }
+    updateCarousel();
   });
 });

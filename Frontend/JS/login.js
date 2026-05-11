@@ -1,12 +1,24 @@
-const API_BASE_URL = "http://127.0.0.1:8000/educations";
+const AUTH_API_BASE_URL = window.API_BASE_URL || "http://127.0.0.1:8000/educations";
 
 function setFormMessage(node, text) {
   if (!node) return;
   node.textContent = text;
 }
 
+function persistLoginUser(user) {
+  if (typeof setLoginUser === "function") {
+    setLoginUser(user);
+  } else {
+    localStorage.setItem("japaneseCenterUser", JSON.stringify(user));
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-  initStandardHeader();
+  if (typeof initStandardHeader === "function") {
+    initStandardHeader();
+  }
+
+  console.log("[auth] login.js loaded");
 
   const form = document.querySelector("[data-auth-form]");
   if (!form) return;
@@ -16,31 +28,42 @@ document.addEventListener("DOMContentLoaded", () => {
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
+    console.log("[auth] login submit");
     setFormMessage(message, "");
 
-    const emailInput = document.getElementById("loginEmail");
+    const usernameInput = document.getElementById("loginUsername");
     const passwordInput = document.getElementById("loginPassword");
-    const email = emailInput ? emailInput.value.trim() : "";
+    const username = usernameInput ? usernameInput.value.trim() : "";
     const password = passwordInput ? passwordInput.value : "";
 
-    if (!email || !password) {
-      setFormMessage(message, "Vui long nhap day du email va mat khau.");
+    console.log("[auth] login payload", { username, hasPassword: Boolean(password) });
+
+    if (!username || !password) {
+      setFormMessage(message, "Vui long nhap day du ten dang nhap va mat khau.");
       return;
     }
 
     if (submitButton) submitButton.disabled = true;
 
     try {
-      const response = await fetch(`${API_BASE_URL}/login/`, {
+      console.log("[auth] login request ->", `${AUTH_API_BASE_URL}/login/`);
+      const response = await fetch(`${AUTH_API_BASE_URL}/login/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username: email, password })
+        body: JSON.stringify({ username, password })
       });
 
+      console.log("[auth] login response", response.status);
+
       const data = await response.json().catch(() => ({}));
+      console.log("[auth] login data", data);
 
       if (!response.ok) {
-        setFormMessage(message, data.detail || data.error || "Dang nhap that bai.");
+        if (response.status === 401) {
+          setFormMessage(message, "Ten dang nhap hoac mat khau bi sai.");
+        } else {
+          setFormMessage(message, data.detail || data.error || "Dang nhap that bai.");
+        }
         return;
       }
 
@@ -52,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       let profile = null;
       try {
-        const profileResponse = await fetch(`${API_BASE_URL}/profile/`, {
+        const profileResponse = await fetch(`${AUTH_API_BASE_URL}/profile/`, {
           headers: { Authorization: `Bearer ${data.access}` }
         });
         if (profileResponse.ok) {
@@ -62,16 +85,16 @@ document.addEventListener("DOMContentLoaded", () => {
         profile = null;
       }
 
-      const username = profile && profile.username ? profile.username : email.split("@")[0];
-      const userEmail = profile && profile.email ? profile.email : email;
+      const displayName = profile && profile.username ? profile.username : username;
+      const userEmail = profile && profile.email ? profile.email : "";
 
-      setLoginUser({
-        name: username,
+      persistLoginUser({
+        name: displayName,
         email: userEmail,
         role: profile ? profile.role : "student",
         loginTime: new Date().toISOString()
       });
-
+      setFormMessage(message, "Dang chuyen huong...");
       window.location.href = "Home.html";
     } catch (error) {
       setFormMessage(message, "Khong the ket noi den may chu. Vui long thu lai.");

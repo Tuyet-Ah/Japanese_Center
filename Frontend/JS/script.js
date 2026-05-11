@@ -132,21 +132,58 @@ async function fetchMyLearning() {
   return response.json();
 }
 
-function readCart() {
+async function fetchCartItems() {
+  const tokens = getAuthTokens();
+  if (!tokens || !tokens.access) return [];
+
   try {
-    return JSON.parse(localStorage.getItem(cartKey)) || [];
+    const response = await fetch(`${API_BASE_URL}/cart/`, {
+      headers: { Authorization: `Bearer ${tokens.access}` }
+    });
+    if (!response.ok) return [];
+    const data = await response.json().catch(() => ({}));
+    return Array.isArray(data.cart_items) ? data.cart_items : [];
   } catch {
     return [];
   }
 }
 
-function saveCart(cart) {
-  localStorage.setItem(cartKey, JSON.stringify(cart));
-  updateCartCount();
+async function addToCartBackend(courseId) {
+  const tokens = getAuthTokens();
+  if (!tokens || !tokens.access) {
+    window.location.href = "login.html";
+    return false;
+  }
+
+  const response = await fetch(`${API_BASE_URL}/cart/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${tokens.access}`
+    },
+    body: JSON.stringify({ course_id: courseId })
+  });
+  return response.ok;
 }
 
-function updateCartCount() {
-  const count = readCart().length;
+async function removeCartItemBackend(cartItemId) {
+  const tokens = getAuthTokens();
+  if (!tokens || !tokens.access) return false;
+  const response = await fetch(`${API_BASE_URL}/cart/${cartItemId}/`, {
+    method: "DELETE",
+    headers: { Authorization: `Bearer ${tokens.access}` }
+  });
+  return response.ok;
+}
+
+async function clearCartBackend() {
+  const items = await fetchCartItems();
+  await Promise.all(items.map((item) => removeCartItemBackend(item.id)));
+}
+
+async function updateCartCount() {
+  const items = await fetchCartItems();
+  const count = items.length;
   document.querySelectorAll("[data-cart-count]").forEach((node) => {
     node.textContent = count;
   });
@@ -190,19 +227,18 @@ async function renderCourses() {
   }
 
   list.querySelectorAll("[data-add-course]").forEach((button) => {
-    button.addEventListener("click", () => {
+    button.addEventListener("click", async () => {
       const id = Number(button.getAttribute("data-add-course"));
-      const course = courseCatalog[id];
-      if (!course) return;
+      if (!id) return;
 
-      const cart = readCart();
-      if (!cart.some((item) => item.id === course.id)) {
-        cart.push(course);
-        saveCart(cart);
-      }
-
-      button.textContent = "Đã thêm";
       button.disabled = true;
+      const added = await addToCartBackend(id);
+      if (added) {
+        button.textContent = "Đã thêm";
+        updateCartCount();
+      } else {
+        button.disabled = false;
+      }
     });
   });
 }
@@ -283,7 +319,7 @@ function applyDiscountCode() {
   if (!input || !messageNode) return;
 
   const code = input.value.trim().toUpperCase();
-  
+
   if (code === "JSMART10") {
     const checkboxes = document.querySelectorAll(".cart-checkbox");
     let subtotal = 0;
@@ -309,30 +345,30 @@ function applyDiscountCode() {
   calculateCartTotal();
 }
 
-function renderCart() {
+async function renderCart() {
   const list = document.querySelector("[data-cart-list]");
   const totalNode = document.querySelector("[data-cart-total]");
   if (!list || !totalNode) return;
 
-  const cart = readCart();
-  if (!cart.length) {
+  const items = await fetchCartItems();
+  if (!items.length) {
     list.innerHTML = '<div class="card"><h3>Giỏ hàng đang trống</h3><p>Hãy quay lại trang khóa học để chọn lớp phù hợp.</p></div>';
     totalNode.textContent = formatMoney(0);
     return;
   }
 
-  list.innerHTML = cart
+  list.innerHTML = items
     .map(
-      (course, index) => `
+      (item, index) => `
         <div class="item">
           <div class="item-checkbox-wrapper">
-            <input type="checkbox" id="cart-item-${index}" class="cart-checkbox" data-price="${course.price}" checked onchange="calculateCartTotal()">
+            <input type="checkbox" id="cart-item-${index}" class="cart-checkbox" data-price="${item.course_details.price}" data-course-id="${item.course_id}" data-cart-item-id="${item.id}" checked onchange="calculateCartTotal()">
           </div>
           <div class="item-details">
-            <h3 class="item-title">${course.name}</h3>
-            <p>${course.level} • ${course.schedule}</p>
+            <h3 class="item-title">${item.course_details.title}</h3>
+            <p>${item.course_details.level}</p>
           </div>
-          <strong class="price">${formatMoney(course.price)}</strong>
+          <strong class="price">${formatMoney(item.course_details.price)}</strong>
         </div>
       `
     )
@@ -726,8 +762,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const clearCartButton = document.querySelector("[data-clear-cart]");
   if (clearCartButton) {
-    clearCartButton.addEventListener("click", () => {
-      saveCart([]);
+    clearCartButton.addEventListener("click", async () => {
+      await clearCartBackend();
       renderCart();
     });
   }
@@ -738,7 +774,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-window.demoCourses = demoCourses;
 window.courseCatalog = courseCatalog;
 window.getLoginUser = getLoginUser;
 window.setLoginUser = setLoginUser;
@@ -748,13 +783,15 @@ window.getAuthTokens = getAuthTokens;
 window.setAuthTokens = setAuthTokens;
 window.clearAuthTokens = clearAuthTokens;
 window.formatMoney = formatMoney;
-window.readCart = readCart;
-window.saveCart = saveCart;
 window.updateCartCount = updateCartCount;
 window.renderCourses = renderCourses;
 window.openCourseDetail = openCourseDetail;
 window.closeCourseDetail = closeCourseDetail;
 window.renderCart = renderCart;
+window.fetchCartItems = fetchCartItems;
+window.addToCartBackend = addToCartBackend;
+window.removeCartItemBackend = removeCartItemBackend;
+window.clearCartBackend = clearCartBackend;
 window.handleAuthForms = handleAuthForms;
 window.initAuthToggle = initAuthToggle;
 window.initNavState = initNavState;

@@ -124,7 +124,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Ho_Chi_Minh'
 
 USE_I18N = True
 
@@ -170,7 +170,10 @@ VNPAY_IPN_URL = os.environ.get(
     'VNPAY_IPN_URL',
     'http://127.0.0.1:8000/educations/vnpay/ipn/'
 )
-VNPAY_FRONTEND_RETURN_URL = os.environ.get('VNPAY_FRONTEND_RETURN_URL', '')
+VNPAY_FRONTEND_RETURN_URL = os.environ.get(
+    'VNPAY_FRONTEND_RETURN_URL',
+    'http://127.0.0.1:5500/Frontend/cart.html'
+)
 
 # Gemini chatbot configuration
 # Hỗ trợ cả tên biến cũ trong .env (GEMINI_KEY) và tên chuẩn mới (GEMINI_API_KEY)
