@@ -1,56 +1,12 @@
 const cartKey = "japaneseCenterCart";
 const loginKey = "japaneseCenterUser";
 const adminKey = "japaneseCenterAdmin";
-const CHATBOT_API_URL = "http://127.0.0.1:8000/educations/chatbot/";
+const authTokenKey = "japaneseCenterAuthTokens";
+const API_HOST = "http://127.0.0.1:8000";
+const API_BASE_URL = `${API_HOST}/educations`;
+const CHATBOT_API_URL = `${API_BASE_URL}/chatbot/`;
 
-const demoCourses = [
-  {
-    id: 1,
-    name: "N5 Beginner Journey",
-    level: "N5",
-    schedule: "T2-T5",
-    price: 2400000,
-    description: "KhÃ³a ná»n táº£ng giÃºp báº¡n lÃ m quen vá»›i hiragana, katakana, tá»« vá»±ng cÆ¡ báº£n vÃ  máº«u cÃ¢u chÃ o há»i.",
-    knowledge: ["Hiragana, katakana", "Tá»« vá»±ng sinh hoáº¡t háº±ng ngÃ y", "Máº«u cÃ¢u giá»›i thiá»‡u báº£n thÃ¢n"],
-    videos: ["Video 1: Chá»¯ cÃ¡i vÃ  phÃ¡t Ã¢m", "Video 2: Giá»›i thiá»‡u báº£n thÃ¢n", "Video 3: Trá»£ tá»« cÆ¡ báº£n"],
-    exercises: ["BÃ i táº­p viáº¿t chá»¯ cÃ¡i", "Quiz tá»« vá»±ng 20 cÃ¢u", "Luyá»‡n há»™i thoáº¡i ngáº¯n"]
-  },
-  {
-    id: 2,
-    name: "N4 Communication Boost",
-    level: "N4",
-    schedule: "T3-T7",
-    price: 2900000,
-    description: "KhÃ³a luyá»‡n giao tiáº¿p trung cáº¥p giÃºp tÄƒng kháº£ nÄƒng nÃ³i, nghe vÃ  pháº£n xáº¡ trong tÃ¬nh huá»‘ng thá»±c táº¿.",
-    knowledge: ["Má»Ÿ rá»™ng ngá»¯ phÃ¡p N4", "Giao tiáº¿p nÆ¡i cÃ´ng viá»‡c", "Nghe hiá»ƒu há»™i thoáº¡i ngáº¯n"],
-    videos: ["Video 1: Giao tiáº¿p táº¡i lá»›p há»c", "Video 2: Äáº·t cÃ¢u há»i", "Video 3: TÃ¬nh huá»‘ng cÃ´ng sá»Ÿ"],
-    exercises: ["Viáº¿t Ä‘oáº¡n tá»± giá»›i thiá»‡u", "LÃ m bÃ i nghe ngáº¯n", "BÃ i táº­p ngá»¯ phÃ¡p 30 cÃ¢u"]
-  },
-  {
-    id: 3,
-    name: "Business Japanese Starter",
-    level: "N3+",
-    schedule: "Cuá»‘i tuáº§n",
-    price: 3500000,
-    description: "KhÃ³a há»c tiáº¿ng Nháº­t á»©ng dá»¥ng cho mÃ´i trÆ°á»ng doanh nghiá»‡p, thÆ° tá»« vÃ  há»p hÃ nh cÆ¡ báº£n.",
-    knowledge: ["Keigo cÆ¡ báº£n", "Email cÃ´ng viá»‡c", "Há»™i thoáº¡i trong vÄƒn phÃ²ng"],
-    videos: ["Video 1: Máº«u email", "Video 2: ChÃ o há»i cÃ´ng ty", "Video 3: Há»p vÃ  bÃ¡o cÃ¡o"],
-    exercises: ["Soáº¡n email máº«u", "Role-play cuá»™c há»p", "Quiz tá»« vá»±ng doanh nghiá»‡p"]
-  },
-  {
-    id: 4,
-    name: "Kanji Intensive Lab",
-    level: "N5-N3",
-    schedule: "Tá»‘i 2-4-6",
-    price: 1800000,
-    description: "Luyá»‡n kanji theo tá»«ng nhÃ³m chá»§ Ä‘á», káº¿t há»£p viáº¿t, nhá»› nghÄ©a vÃ  cÃ¡ch Ä‘á»c.",
-    knowledge: ["Radical cÆ¡ báº£n", "CÃ¡ch Ä‘á»c on-kun", "Nháº­n diá»‡n kanji theo ngá»¯ cáº£nh"],
-    videos: ["Video 1: Kanji ná»n táº£ng", "Video 2: Ghi nhá»› theo hÃ¬nh áº£nh", "Video 3: Kanji thá»±c hÃ nh"],
-    exercises: ["Luyá»‡n viáº¿t 50 chá»¯", "BÃ i táº­p Ä‘á»c kanji", "Ã”n táº­p flashcard"]
-  }
-];
-
-const courseCatalog = Object.fromEntries(demoCourses.map((course) => [course.id, course]));
+let courseCatalog = {};
 
 function getLoginUser() {
   try {
@@ -65,8 +21,25 @@ function setLoginUser(userData) {
   updateUIBasedOnLogin();
 }
 
+function getAuthTokens() {
+  try {
+    return JSON.parse(localStorage.getItem(authTokenKey)) || null;
+  } catch {
+    return null;
+  }
+}
+
+function setAuthTokens(tokens) {
+  localStorage.setItem(authTokenKey, JSON.stringify(tokens));
+}
+
+function clearAuthTokens() {
+  localStorage.removeItem(authTokenKey);
+}
+
 function logout() {
   localStorage.removeItem(loginKey);
+  clearAuthTokens();
   updateUIBasedOnLogin();
   window.location.href = "Home.html";
 }
@@ -100,6 +73,51 @@ function formatMoney(value) {
   return new Intl.NumberFormat("vi-VN").format(value) + " VND";
 }
 
+function buildThumbnailUrl(thumbnail) {
+  if (!thumbnail) return "";
+  if (thumbnail.startsWith("http")) return thumbnail;
+  if (thumbnail.startsWith("/")) return `${API_HOST}${thumbnail}`;
+  return `${API_HOST}/${thumbnail}`;
+}
+
+function normalizeCourseListItem(course) {
+  return {
+    id: course.id,
+    name: course.title,
+    title: course.title,
+    level: course.level,
+    schedule: "Chua cap nhat",
+    price: Number(course.price || 0),
+    description: course.description || "",
+    thumbnail: buildThumbnailUrl(course.thumbnail)
+  };
+}
+
+function normalizeCourseDetail(course) {
+  const normalized = normalizeCourseListItem(course);
+  normalized.description = course.description || "";
+  normalized.chapters = Array.isArray(course.chapters) ? course.chapters : [];
+  return normalized;
+}
+
+async function fetchCourseList() {
+  const response = await fetch(`${API_BASE_URL}/courses/`);
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.error || data.detail || "Fetch courses failed");
+  }
+  return data;
+}
+
+async function fetchCourseDetail(courseId) {
+  const response = await fetch(`${API_BASE_URL}/courses/${courseId}/`);
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.error || data.detail || "Fetch course failed");
+  }
+  return data;
+}
+
 function readCart() {
   try {
     return JSON.parse(localStorage.getItem(cartKey)) || [];
@@ -120,33 +138,47 @@ function updateCartCount() {
   });
 }
 
-function renderCourses() {
+async function renderCourses() {
   const list = document.querySelector("[data-course-list]");
   if (!list) return;
 
-  list.innerHTML = demoCourses
-    .map(
-      (course) => `
-        <article class="card">
-          <span class="badge">${course.level}</span>
-          <h3>${course.name}</h3>
-          <p>${course.description || `Lá»‹ch há»c: ${course.schedule}. Há»c trá»±c tiáº¿p vá»›i giÃ¡o viÃªn, cÃ³ lá»™ trÃ¬nh rÃµ rÃ ng vÃ  tÃ i liá»‡u Ä‘i kÃ¨m.`}</p>
-          <div class="meta">
-            <span class="price">${formatMoney(course.price)}</span>
-            <div class="actions" style="gap: 8px;">
-              <a class="btn btn-outline" href="course-detail.html?id=${course.id}">Xem chi tiáº¿t</a>
-              <button class="btn btn-primary" data-add-course="${course.id}">ThÃªm vÃ o giá»</button>
+  list.innerHTML = '<div class="card"><h3>Dang tai khoa hoc...</h3></div>';
+
+  try {
+    const data = await fetchCourseList();
+    const courses = data.map(normalizeCourseListItem);
+    courseCatalog = Object.fromEntries(courses.map((course) => [course.id, course]));
+
+    list.innerHTML = courses
+      .map((course) => {
+        const thumbClass = course.thumbnail ? "course-thumb" : "course-thumb is-empty";
+        const thumbStyle = course.thumbnail ? `style="background-image: url('${course.thumbnail}');"` : "";
+        return `
+          <article class="card">
+            <div class="${thumbClass}" ${thumbStyle}>JSMART</div>
+            <span class="badge">${course.level}</span>
+            <h3>${course.name}</h3>
+            <p>${course.description || "Chua co mo ta."}</p>
+            <div class="meta">
+              <span class="price">${formatMoney(course.price)}</span>
+              <div class="actions" style="gap: 8px;">
+                <a class="btn btn-outline" href="course-detail.html?id=${course.id}">Xem chi tiet</a>
+                <button class="btn btn-primary" data-add-course="${course.id}">Them vao gio</button>
+              </div>
             </div>
-          </div>
-        </article>
-      `
-    )
-    .join("");
+          </article>
+        `;
+      })
+      .join("");
+  } catch (error) {
+    list.innerHTML = '<div class="card"><h3>Khong the tai khoa hoc.</h3><p>Vui long thu lai sau.</p></div>';
+    return;
+  }
 
   list.querySelectorAll("[data-add-course]").forEach((button) => {
     button.addEventListener("click", () => {
       const id = Number(button.getAttribute("data-add-course"));
-      const course = demoCourses.find((item) => item.id === id);
+      const course = courseCatalog[id];
       if (!course) return;
 
       const cart = readCart();
@@ -180,10 +212,27 @@ function openCourseDetail(courseId) {
   if (title) title.textContent = course.name;
   if (level) level.textContent = course.level;
   if (schedule) schedule.textContent = course.schedule;
-  if (description) description.textContent = course.description;
-  if (knowledgeList) knowledgeList.innerHTML = course.knowledge.map((item) => `<li>${item}</li>`).join("");
-  if (videoList) videoList.innerHTML = course.videos.map((item) => `<li>${item}</li>`).join("");
-  if (exerciseList) exerciseList.innerHTML = course.exercises.map((item) => `<li>${item}</li>`).join("");
+  if (description) description.textContent = course.description || "Chua co mo ta.";
+
+  if (knowledgeList) {
+    const chapters = Array.isArray(course.chapters) ? course.chapters : [];
+    knowledgeList.innerHTML = chapters.length
+      ? chapters.map((chapter) => `<li>Chuong ${chapter.order}: ${chapter.title}</li>`).join("")
+      : "<li>Chua cap nhat.</li>";
+  }
+
+  if (videoList) {
+    const lessons = Array.isArray(course.chapters)
+      ? course.chapters.flatMap((chapter) => (chapter.lessons || []))
+      : [];
+    videoList.innerHTML = lessons.length
+      ? lessons.map((lesson) => `<div class="course-video-card"><strong>${lesson.title}</strong></div>`).join("")
+      : "<div class=\"course-video-card\"><strong>Chua co bai hoc.</strong></div>";
+  }
+
+  if (exerciseList) {
+    exerciseList.innerHTML = "<div class=\"course-exercise-card\"><strong>Chua cap nhat bai tap.</strong></div>";
+  }
 }
 
 function closeCourseDetail() {
@@ -225,6 +274,9 @@ function renderCart() {
 
 function handleAuthForms() {
   document.querySelectorAll("[data-auth-form]").forEach((form) => {
+    if (form.hasAttribute("data-api-auth")) {
+      return;
+    }
     form.addEventListener("submit", (event) => {
       event.preventDefault();
       const message = form.querySelector("[data-form-message]");
@@ -566,6 +618,9 @@ window.getLoginUser = getLoginUser;
 window.setLoginUser = setLoginUser;
 window.logout = logout;
 window.updateUIBasedOnLogin = updateUIBasedOnLogin;
+window.getAuthTokens = getAuthTokens;
+window.setAuthTokens = setAuthTokens;
+window.clearAuthTokens = clearAuthTokens;
 window.formatMoney = formatMoney;
 window.readCart = readCart;
 window.saveCart = saveCart;
@@ -583,3 +638,6 @@ window.logoutAdmin = logoutAdmin;
 window.initAdminNav = initAdminNav;
 window.initStandardHeader = initStandardHeader;
 window.initAdminShell = initAdminShell;
+window.fetchCourseList = fetchCourseList;
+window.fetchCourseDetail = fetchCourseDetail;
+window.normalizeCourseDetail = normalizeCourseDetail;

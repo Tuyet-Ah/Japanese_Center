@@ -7,6 +7,7 @@
   <title>JSMART | Đăng nhập</title>
   <link rel="stylesheet" href="CSS/login.css">
   <script defer src="JS/script.js"></script>
+  <script defer src="JS/login.js"></script>
 </head>
 
 <body>
@@ -53,14 +54,14 @@
         </div>
         <span class="cute-badge">Chào mừng trở lại! 🐾</span>
         <h2>Đăng nhập tài khoản</h2>
-        <form data-auth-form>
+        <form data-auth-form data-api-auth>
           <div class="form-group">
             <label>💌 Email của bạn</label>
-            <input type="email" placeholder="Nhập địa chỉ email..." required>
+            <input id="loginEmail" type="email" placeholder="Nhập địa chỉ email..." required>
           </div>
           <div class="form-group">
             <label>🔑 Mật khẩu</label>
-            <input type="password" placeholder="Nhập mật khẩu bí mật..." required>
+            <input id="loginPassword" type="password" placeholder="Nhập mật khẩu bí mật..." required>
           </div>
           <div class="form-options">
             <label class="remember-me">
