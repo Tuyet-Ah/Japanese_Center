@@ -4,15 +4,15 @@
       --chat-bg: #f4f7fb;
       --chat-panel: rgba(255, 255, 255, 0.92);
       --chat-border: rgba(15, 23, 42, 0.08);
-      --chat-accent: #0f766e;
-      --chat-accent-2: #1d9e96;
+      --chat-accent: #ff6b8b;
+      --chat-accent-2: #6ba8ff;
       --chat-text: #0f172a;
 }
 
 body {
       background:
-            radial-gradient(circle at top left, rgba(29, 158, 150, 0.16), transparent 28%),
-            radial-gradient(circle at bottom right, rgba(15, 118, 110, 0.12), transparent 24%),
+            radial-gradient(circle at top left, rgba(255, 107, 139, 0.15), transparent 28%),
+            radial-gradient(circle at bottom right, rgba(107, 168, 255, 0.15), transparent 24%),
             var(--chat-bg);
       color: var(--chat-text);
 }
@@ -47,7 +47,7 @@ body {
       gap: 8px;
       padding: 8px 14px;
       border-radius: 999px;
-      background: rgba(15, 118, 110, 0.12);
+      background: rgba(255, 107, 139, 0.12);
       color: var(--chat-accent);
       font-weight: 700;
       margin-bottom: 18px;
@@ -126,7 +126,7 @@ body {
 
 .message.user {
       margin-left: auto;
-      background: #0f766e;
+      background: linear-gradient(135deg, var(--chat-accent), var(--chat-accent-2));
       color: #fff;
       border-top-right-radius: 6px;
 }
@@ -225,7 +225,7 @@ body {
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: #0f766e;
+      background: var(--chat-accent-2);
       animation: bounce 0.9s infinite ease-in-out;
 }
 

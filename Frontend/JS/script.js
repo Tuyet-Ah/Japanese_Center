@@ -187,7 +187,7 @@ async function renderCourses() {
         saveCart(cart);
       }
 
-      button.textContent = "ÄÃ£ thÃªm";
+      button.textContent = "Đã thêm";
       button.disabled = true;
     });
   });
@@ -249,7 +249,7 @@ function renderCart() {
 
   const cart = readCart();
   if (!cart.length) {
-    list.innerHTML = '<div class="card"><h3>Giá» hÃ ng Ä‘ang trá»‘ng</h3><p>HÃ£y quay láº¡i trang khÃ³a há»c Ä‘á»ƒ chá»n lá»›p phÃ¹ há»£p.</p></div>';
+    list.innerHTML = '<div class="card"><h3>Giỏ hàng đang trống</h3><p>Hãy quay lại trang khóa học để chọn lớp phù hợp.</p></div>';
     totalNode.textContent = formatMoney(0);
     return;
   }
@@ -281,20 +281,21 @@ function handleAuthForms() {
       event.preventDefault();
       const message = form.querySelector("[data-form-message]");
 
-      // Kiá»ƒm tra xem form nÃ y lÃ  Ä‘Äƒng nháº­p hay Ä‘Äƒng kÃ½
       const isLoginForm = form.closest("[data-login-panel]") !== null;
+      const isRegisterForm = form.closest("[data-register-panel]") !== null;
+      const isAuthForm = isLoginForm || isRegisterForm;
 
       if (isLoginForm) {
-        const emailInput = form.querySelector('input[type="email"]');
-        const email = emailInput ? emailInput.value : "user@email.com";
+        const usernameInput = form.querySelector('input[type="text"]');
+        const username = usernameInput ? usernameInput.value : "user";
         setLoginUser({
-          email,
-          name: email.split("@")[0],
+          email: username + "@jsmart.vn",
+          name: username,
           loginTime: new Date().toISOString()
         });
 
-        if (message) message.textContent = "ÄÄƒng nháº­p thÃ nh cÃ´ng!";
-      } else {
+        if (message) message.textContent = "Đăng nhập thành công! Đang chuyển hướng...";
+      } else if (isRegisterForm) {
         const nameInput = form.querySelector('input[type="text"]');
         const emailInput = form.querySelector('input[type="email"]');
         const email = emailInput ? emailInput.value : "user@email.com";
@@ -306,10 +307,18 @@ function handleAuthForms() {
           loginTime: new Date().toISOString()
         });
 
-        if (message) message.textContent = "ÄÄƒng kÃ½ vÃ  Ä‘Äƒng nháº­p thÃ nh cÃ´ng!";
+        if (message) message.textContent = "Đăng ký thành công! Đang chuyển hướng...";
+      } else {
+        if (message) message.textContent = "Đã lưu thay đổi thành công!";
       }
 
-      form.reset();
+      if (isAuthForm) {
+        setTimeout(() => {
+          window.location.href = "profile.html";
+        }, 800);
+      } else {
+        form.reset();
+      }
     });
   });
 }
@@ -341,6 +350,30 @@ function initNavState() {
       link.classList.add("active");
     }
   });
+}
+
+function initMobileMenu() {
+  const topbarInner = document.querySelector('.topbar-inner');
+  const nav = document.querySelector('.nav');
+  if (!topbarInner || !nav) return;
+
+  if (!document.querySelector('.mobile-menu-btn')) {
+    const btn = document.createElement('button');
+    btn.className = 'mobile-menu-btn';
+    btn.innerHTML = '☰';
+    btn.setAttribute('aria-label', 'Toggle mobile menu');
+
+    const actions = document.querySelector('.actions');
+    if (actions) {
+      topbarInner.insertBefore(btn, actions);
+    } else {
+      topbarInner.appendChild(btn);
+    }
+
+    btn.addEventListener('click', () => {
+      nav.classList.toggle('is-open');
+    });
+  }
 }
 
 function getAdminUser() {
@@ -390,30 +423,30 @@ function initFloatingChatWidget() {
     const style = document.createElement('style');
     style.id = 'jsmart-chat-widget-style';
     style.textContent = `
-      .jsmart-chat-launcher { position:fixed;right:20px;bottom:20px;width:60px;height:60px;border:0;border-radius:999px;background:linear-gradient(135deg,#0f766e,#1d9e96);color:#fff;box-shadow:0 18px 40px rgba(15,118,110,0.3);cursor:pointer;z-index:9999;display:grid;place-items:center; }
-      .jsmart-chat-launcher::before { content:'';position:absolute;inset:-8px;border-radius:inherit;border:2px solid rgba(29,158,150,0.35);animation:jsmartChatPulse 1.8s infinite; }
+      .jsmart-chat-launcher { position:fixed;right:20px;bottom:20px;width:60px;height:60px;border:0;border-radius:999px;background:linear-gradient(135deg,#ff6b8b,#6ba8ff);color:#fff;box-shadow:0 18px 40px rgba(255,107,139,0.3);cursor:pointer;z-index:9999;display:grid;place-items:center; }
+      .jsmart-chat-launcher::before { content:'';position:absolute;inset:-8px;border-radius:inherit;border:2px solid rgba(107,168,255,0.35);animation:jsmartChatPulse 1.8s infinite; }
       .jsmart-chat-launcher span { position:relative;font-size:26px;animation:jsmartChatBob 1.8s ease-in-out infinite; }
       .jsmart-chat-panel { position:fixed;right:20px;bottom:92px;width:min(380px,calc(100vw - 28px));height:min(560px,calc(100vh - 120px));background:rgba(255,255,255,0.98);border:1px solid rgba(15,23,42,0.08);border-radius:24px;box-shadow:0 30px 70px rgba(15,23,42,0.18);overflow:hidden;z-index:9998;display:flex;flex-direction:column;opacity:0;transform:translateY(10px) scale(0.98);pointer-events:none;transition:opacity 0.22s ease,transform 0.22s ease;font-family:"Inter", "Noto Sans Vietnamese", -apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif; }
       .jsmart-chat-panel.is-open { opacity:1;transform:translateY(0) scale(1);pointer-events:auto; }
-      .jsmart-chat-header { padding:14px 16px;background:linear-gradient(135deg,#0f766e,#1d9e96);color:#fff;display:flex;justify-content:space-between;align-items:center;gap:12px; }
+      .jsmart-chat-header { padding:14px 16px;background:linear-gradient(135deg,#ff6b8b,#6ba8ff);color:#fff;display:flex;justify-content:space-between;align-items:center;gap:12px; }
       .jsmart-chat-header strong { display:block;font-size:0.98rem; }
       .jsmart-chat-header small { opacity:0.9; }
       .jsmart-chat-close { width:32px;height:32px;border:0;border-radius:999px;background:rgba(255,255,255,0.18);color:#fff;font-size:18px;cursor:pointer; }
       .jsmart-chat-messages { flex:1;overflow-y:auto;padding:16px;display:grid;gap:12px;background:linear-gradient(rgba(244,247,251,.96),rgba(244,247,251,.96)); }
       .jsmart-chat-message { max-width:86%;padding:12px 14px;border-radius:16px;line-height:1.65;font-size:0.95rem; }
-      .jsmart-chat-message.user { margin-left:auto;background:#0f766e;color:#fff;border-top-right-radius:6px; }
+      .jsmart-chat-message.user { margin-left:auto;background:linear-gradient(135deg,#ff6b8b,#6ba8ff);color:#fff;border-top-right-radius:6px; }
       .jsmart-chat-message.bot { background:#fff;color:#0f172a;border:1px solid rgba(15,23,42,0.08);border-top-left-radius:6px; }
       .jsmart-chat-message h3,.jsmart-chat-message p { margin:0 0 0.55em; }
       .jsmart-chat-message ul { margin:0.45em 0 0.45em 1.2em; }
       .jsmart-chat-composer { border-top:1px solid rgba(15,23,42,0.08);padding:12px;background:#fff; }
       .jsmart-chat-quick { display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px; }
-      .jsmart-chat-chip { border:1px solid rgba(15,118,110,0.16);background:rgba(15,118,110,0.06);color:#0f766e;border-radius:999px;padding:8px 10px;cursor:pointer;font-size:0.85rem; }
+      .jsmart-chat-chip { border:1px solid rgba(255,107,139,0.2);background:rgba(255,107,139,0.08);color:#d65172;border-radius:999px;padding:8px 10px;cursor:pointer;font-size:0.85rem; }
       .jsmart-chat-input { width:100%;min-height:72px;border:1px solid rgba(15,23,42,0.12);border-radius:14px;padding:12px;resize:vertical;font:inherit; }
       .jsmart-chat-actions { display:flex;gap:10px;margin-top:10px; }
-      .jsmart-chat-send { flex:1;border:0;border-radius:14px;background:linear-gradient(135deg,#0f766e,#1d9e96);color:#fff;padding:12px 14px;font-weight:700;cursor:pointer; }
+      .jsmart-chat-send { flex:1;border:0;border-radius:14px;background:linear-gradient(135deg,#ff6b8b,#6ba8ff);color:#fff;padding:12px 14px;font-weight:700;cursor:pointer; }
       .jsmart-chat-send:disabled { opacity:0.7;cursor:not-allowed; }
       .jsmart-chat-typing { display:inline-flex;gap:6px;align-items:center; }
-      .jsmart-chat-typing span { width:8px;height:8px;border-radius:50%;background:#0f766e;animation:jsmartChatBounce 0.9s infinite ease-in-out; }
+      .jsmart-chat-typing span { width:8px;height:8px;border-radius:50%;background:#6ba8ff;animation:jsmartChatBounce 0.9s infinite ease-in-out; }
       .jsmart-chat-typing span:nth-child(2) { animation-delay:0.12s; }
       .jsmart-chat-typing span:nth-child(3) { animation-delay:0.24s; }
       @keyframes jsmartChatPulse { 0%{transform:scale(0.94);opacity:0.8}70%{transform:scale(1.15);opacity:0}100%{transform:scale(1.15);opacity:0} }
@@ -462,7 +495,7 @@ function initFloatingChatWidget() {
   const history = [];
 
   function escapeHtml(value) {
-    return String(value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    return String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 
   function markdownToHtml(markdown) {
@@ -589,12 +622,36 @@ function initAdminShell() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  const path = window.location.pathname.split("/").pop().toLowerCase();
+  const user = getLoginUser();
+  if (user && (path === 'login.html' || path === 'register.html')) {
+    window.location.href = "profile.html";
+    return;
+  }
+
   updateCartCount();
   renderCourses();
+
+  const searchInput = document.getElementById('course-search-input');
+  const searchBtn = document.getElementById('course-search-btn');
+
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      renderCourses(e.target.value);
+    });
+
+    if (searchBtn) {
+      searchBtn.addEventListener('click', () => {
+        renderCourses(searchInput.value);
+      });
+    }
+  }
+
   renderCart();
   handleAuthForms();
   initAuthToggle();
   initNavState();
+  initMobileMenu();
   updateUIBasedOnLogin();
   initFloatingChatWidget();
 
@@ -632,6 +689,7 @@ window.renderCart = renderCart;
 window.handleAuthForms = handleAuthForms;
 window.initAuthToggle = initAuthToggle;
 window.initNavState = initNavState;
+window.initMobileMenu = initMobileMenu;
 window.getAdminUser = getAdminUser;
 window.loginAdmin = loginAdmin;
 window.logoutAdmin = logoutAdmin;
