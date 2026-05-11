@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 
 <head>
@@ -31,7 +31,7 @@
 
     .exam-hero-page {
       padding: 24px;
-      background: linear-gradient(135deg, var(--primary), #60a5fa);
+      background: linear-gradient(135deg, #f472b6, #60a5fa); /* Pink to Blue gradient */
       color: white;
     }
 
@@ -132,15 +132,15 @@
       gap: 8px;
       padding: 8px 12px;
       border-radius: 999px;
-      border: 1px solid rgba(251, 113, 133, 0.28);
-      background: rgba(251, 113, 133, 0.08);
-      color: #be123c;
+      border: 1px solid rgba(244, 114, 182, 0.5); /* Pinkish border */
+      background: rgba(244, 114, 182, 0.1);
+      color: #be185d;
       cursor: pointer;
       font-weight: 700;
     }
 
     .review-toggle.active {
-      background: rgba(251, 113, 133, 0.16);
+      background: rgba(244, 114, 182, 0.25);
     }
 
     .question-text {
@@ -230,8 +230,8 @@
       align-items: center;
       padding: 8px 12px;
       border-radius: 999px;
-      background: rgba(251, 113, 133, 0.12);
-      color: #be123c;
+      background: rgba(244, 114, 182, 0.15);
+      color: #be185d;
       font-weight: 700;
       font-size: 0.9rem;
     }
@@ -336,7 +336,7 @@
             </div>
           </div>
           <div class="exam-meta-row">
-            <span class="exam-pill">Đánh dấu câu phân vân</span>
+            <span class="exam-pill">🚩 Đánh dấu câu</span>
             <span class="exam-pill">Theo dõi tiến độ</span>
             <span class="exam-pill">Nộp bài khi xong</span>
           </div>
@@ -352,7 +352,7 @@
             <section>
               <div class="exam-toolbar">
                 <div><strong>Trạng thái:</strong> <span id="examProgressText">0 / 5 câu đã chọn</span></div>
-                <div><strong>Câu phân vân:</strong> <span id="flagCount">0</span></div>
+                <div><strong>🚩 Đã đánh dấu:</strong> <span id="flagCount">0</span></div>
               </div>
 
               <div class="question-stack" id="questionList"></div>
@@ -573,7 +573,7 @@
           <div class="question-head">
             <div class="question-number">Câu ${index + 1}</div>
             <div class="question-actions">
-              <button type="button" class="review-toggle" data-flag-btn="${index}">Đánh dấu phân vân</button>
+              <button type="button" class="review-toggle" data-flag-btn="${index}">🚩 Đánh dấu</button>
             </div>
           </div>
           <div class="question-text">${question.text}</div>
@@ -654,7 +654,7 @@
         const index = Number(button.getAttribute('data-flag-btn'));
         const active = flaggedQuestions.has(index);
         button.classList.toggle('active', active);
-        button.textContent = active ? 'Bỏ đánh dấu' : 'Đánh dấu phân vân';
+        button.innerHTML = active ? '🚩 Bỏ đánh dấu' : '🚩 Đánh dấu';
         const card = document.getElementById(`question-${index}`);
         if (card) card.classList.toggle('flagged', active);
       });

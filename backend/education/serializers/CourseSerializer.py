@@ -5,4 +5,4 @@ class CourseSerializer(serializers.ModelSerializer):
     chapters = ChapterSerializer(many=True, read_only=True) 
     class Meta:
         model = Course
-        fields = ['id', 'title', 'description', 'level', 'price', 'thumbnail', 'chapters']
+        fields = ['id', 'title', 'description', 'level', 'price', 'thumbnail', 'content_blocks', 'chapters']

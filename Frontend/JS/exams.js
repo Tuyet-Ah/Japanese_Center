@@ -5,42 +5,40 @@ function startExam(examId) {
 document.addEventListener("DOMContentLoaded", () => {
   initStandardHeader();
 
-  const searchInput = document.getElementById("examSearchInput");
-  const levelSelect = document.getElementById("examLevelSelect");
-  const clearButton = document.getElementById("examClearBtn");
+  const levelItems = document.querySelectorAll("#levelFilter li");
   const examCards = Array.from(document.querySelectorAll(".exam-card"));
 
-  const applyFilters = () => {
-    const searchTerm = (searchInput?.value || "").trim().toLowerCase();
-    const selectedLevel = levelSelect?.value || "";
-
+  const applyFilters = (selectedLevel) => {
     examCards.forEach((card) => {
       const cardLevel = card.getAttribute("data-exam-level") || "";
-      const text = card.textContent.toLowerCase();
-      const matchesSearch = !searchTerm || text.includes(searchTerm);
       const matchesLevel = !selectedLevel || cardLevel === selectedLevel;
-      card.style.display = matchesSearch && matchesLevel ? "" : "none";
+      card.style.display = matchesLevel ? "" : "none";
     });
   };
 
+  levelItems.forEach(item => {
+    item.addEventListener('click', () => {
+      // Remove active class from all
+      levelItems.forEach(li => li.style.backgroundColor = "");
+      
+      // Add active style to clicked item
+      item.style.backgroundColor = "#f0f4f8";
+      
+      const level = item.getAttribute("data-level");
+      applyFilters(level);
+    });
+  });
+
   examCards.forEach((card) => {
-    const button = card.querySelector(".btn-exam");
+    const button = card.querySelector(".btn-exam-detail");
     const examIdMatch = button?.getAttribute("onclick")?.match(/startExam\('([^']+)'\)/);
     const examId = examIdMatch ? examIdMatch[1] : null;
 
     card.style.cursor = "pointer";
     card.addEventListener("click", (event) => {
-      if (event.target.closest(".btn-exam")) return;
+      if (event.target.closest(".btn-exam-detail")) return;
       if (examId) startExam(examId);
     });
-  });
-
-  searchInput?.addEventListener("input", applyFilters);
-  levelSelect?.addEventListener("change", applyFilters);
-  clearButton?.addEventListener("click", () => {
-    if (searchInput) searchInput.value = "";
-    if (levelSelect) levelSelect.value = "";
-    applyFilters();
   });
 
   const aiChatToggle = document.getElementById("aiChatToggle");

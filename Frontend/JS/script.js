@@ -97,6 +97,7 @@ function normalizeCourseDetail(course) {
   const normalized = normalizeCourseListItem(course);
   normalized.description = course.description || "";
   normalized.chapters = Array.isArray(course.chapters) ? course.chapters : [];
+  normalized.content_blocks = Array.isArray(course.content_blocks) ? course.content_blocks : [];
   return normalized;
 }
 
@@ -116,6 +117,19 @@ async function fetchCourseDetail(courseId) {
     throw new Error(data.error || data.detail || "Fetch course failed");
   }
   return data;
+}
+
+async function fetchMyLearning() {
+  const tokens = getAuthTokens();
+  if (!tokens || !tokens.access) return null;
+
+  const response = await fetch(`${API_BASE_URL}/my-learning/`, {
+    headers: { Authorization: `Bearer ${tokens.access}` }
+  });
+  if (!response.ok) {
+    return null;
+  }
+  return response.json();
 }
 
 function readCart() {
@@ -699,3 +713,4 @@ window.initAdminShell = initAdminShell;
 window.fetchCourseList = fetchCourseList;
 window.fetchCourseDetail = fetchCourseDetail;
 window.normalizeCourseDetail = normalizeCourseDetail;
+window.fetchMyLearning = fetchMyLearning;

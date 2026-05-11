@@ -7,7 +7,7 @@ class CourseListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Course
-        fields = ['id', 'title', 'level', 'price', 'thumbnail', 'average_rating']
+        fields = ['id', 'title', 'description', 'level', 'price', 'thumbnail', 'average_rating']
 
     def get_average_rating(self, obj):
         return CourseService.get_course_rating(obj.id)

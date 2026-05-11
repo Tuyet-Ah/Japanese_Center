@@ -4,8 +4,41 @@
 .course-main h1 { margin: 0 0 8px; font-size: 28px; color: #0f172a; }
 .course-meta { display:flex; gap:12px; align-items:center; margin-bottom:16px; color:#374151 }
 .course-meta .badge { background:#f3f4f6; padding:6px 10px; border-radius:8px; font-weight:600 }
+.course-section-nav { display:flex; gap:12px; flex-wrap:wrap; margin: 6px 0 18px; }
+.course-section-nav button {
+  border: 1px solid rgba(15,23,42,0.1);
+  background: #fff;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #1f2937;
+}
+.course-section-nav button.is-active { background: #e0e7ff; color: #1d4ed8; border-color: rgba(29,78,216,0.2); }
 .course-intro p { color:#6b7280; line-height:1.75 }
 .course-goals ul { margin:0; padding-left:18px; color:#374151 }
+.course-content { display: grid; gap: 16px; margin-top: 16px; }
+.course-block { padding: 14px; background: #fff; border-radius: 12px; border: 1px solid rgba(15,23,42,0.08); }
+.course-block h3 { margin: 0 0 10px; color: #0f172a; }
+.course-block ul { margin: 0; padding-left: 18px; color: #374151; }
+.course-block p { margin: 0 0 8px; color: #6b7280; line-height: 1.7; }
+.course-outline { margin-top: 20px; }
+.course-lock-note { margin: 0 0 12px; color: #6b7280; }
+.chapter-list { display: grid; gap: 12px; }
+.chapter-item { border: 1px solid rgba(15,23,42,0.08); border-radius: 12px; background: #fff; }
+.chapter-toggle {
+  width: 100%;
+  text-align: left;
+  padding: 12px 14px;
+  border: 0;
+  background: transparent;
+  font-weight: 700;
+  color: #0f172a;
+  cursor: pointer;
+}
+.chapter-toggle.is-open { color: #1d4ed8; }
+.chapter-lessons { padding: 0 16px 12px; color: #4b5563; }
+.chapter-lessons ul { margin: 0; padding-left: 18px; }
 
 .course-sidebar .price-card { background:#fff; border-radius:10px; padding:18px; box-shadow:0 8px 30px rgba(2,6,23,0.06); border:1px solid rgba(15,23,42,0.04) }
 .course-sidebar .price { font-size:22px; color:#16a34a; font-weight:700; margin-top:8px }

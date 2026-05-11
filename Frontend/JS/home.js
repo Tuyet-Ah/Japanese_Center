@@ -7,13 +7,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!track || !prevBtn || !nextBtn) return;
 
-  let items = Array.from(track.querySelectorAll(".carousel-item"));
-  const itemWidth = 340;
+  const itemWidth = 320; // 300px width + 20px gap
   let currentIndex = 0;
 
+  const getMaxIndex = () => {
+    const maxScroll = Math.max(0, track.scrollWidth - track.parentElement.clientWidth);
+    return Math.ceil(maxScroll / itemWidth);
+  };
+
   const updateCarousel = () => {
-    if (!items.length) return;
-    track.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+    const maxScroll = Math.max(0, track.scrollWidth - track.parentElement.clientWidth);
+    let offset = currentIndex * itemWidth;
+    if (offset > maxScroll) {
+        offset = maxScroll;
+    }
+    track.style.transform = `translateX(-${offset}px)`;
   };
 
   const refreshItems = () => {
@@ -23,40 +31,31 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   prevBtn.addEventListener("click", () => {
-    currentIndex = (currentIndex - 1 + items.length) % items.length;
+    const maxIndex = getMaxIndex();
+    if (currentIndex <= 0) {
+      currentIndex = maxIndex;
+    } else {
+      currentIndex--;
+    }
     updateCarousel();
   });
 
   nextBtn.addEventListener("click", () => {
-    currentIndex = (currentIndex + 1) % items.length;
+    const maxIndex = getMaxIndex();
+    if (currentIndex >= maxIndex) {
+      currentIndex = 0;
+    } else {
+      currentIndex++;
+    }
     updateCarousel();
   });
 
-  if (typeof fetchCourseList === "function") {
-    fetchCourseList()
-      .then((data) => {
-        const courses = data.map(normalizeCourseDetail).slice(0, 6);
-        if (!courses.length) return;
-
-        track.innerHTML = courses
-          .map((course) => {
-            const thumbStyle = course.thumbnail
-              ? `style="background-image: url('${course.thumbnail}'); background-size: cover; background-position: center;"`
-              : `style="background: linear-gradient(135deg, #0f766e, #1d9e96);"`;
-
-            return `
-              <div class="carousel-item">
-                <div class="carousel-item-img" ${thumbStyle}></div>
-                <p>${course.title}</p>
-              </div>
-            `;
-          })
-          .join("");
-
-        refreshItems();
-      })
-      .catch(() => {
-        refreshItems();
-      });
-  }
+  // Handle window resize
+  window.addEventListener('resize', () => {
+      const maxIndex = getMaxIndex();
+      if (currentIndex > maxIndex) {
+          currentIndex = maxIndex;
+      }
+      updateCarousel();
+  });
 });
