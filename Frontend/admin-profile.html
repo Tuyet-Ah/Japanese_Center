@@ -10,28 +10,23 @@
     /* Override profile page for admin theme */
     body { background: url('assets/cherry_blossom_bg.png') center/cover fixed; }
 
-    .topbar { background: linear-gradient(90deg, #1e1b4b 0%, #312e81 100%); }
-    .topbar .brand-mark { background: linear-gradient(135deg,#818cf8,#38bdf8); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-    .topbar .nav a { color: rgba(255,255,255,0.85); }
-    .topbar .nav a:hover, .topbar .nav a.active { color:#fff; border-bottom-color:#818cf8; }
-    .topbar .brand span { color:#fff; }
-    .topbar .brand small { color:rgba(255,255,255,0.65); }
+    /* Remove topbar overrides as base.css topbar is already pink */
     .topbar .admin-user-section { display:flex; align-items:center; gap:12px; }
-    .topbar .admin-user-section .user-greeting { color:rgba(255,255,255,0.9); font-weight:600; font-size:0.92rem; }
-    .topbar .admin-user-section a.icon-btn { color:#fff; font-size:1.3rem; text-decoration:none; opacity:0.9; }
-    .topbar .admin-user-section a.icon-btn:hover { opacity:1; }
+    .topbar .admin-user-section .user-greeting { color: var(--primary-dark); font-weight:600; font-size:0.92rem; }
+    .topbar .admin-user-section a.icon-btn { color: var(--primary-dark); font-size:1.3rem; text-decoration:none; opacity:0.9; }
+    .topbar .admin-user-section a.icon-btn:hover { opacity:1; transform: scale(1.15); filter: brightness(0.8); }
 
     /* Sidebar overrides */
-    .profile-sidebar { border: 1px solid rgba(99,102,241,0.25); }
-    .profile-sidebar h2 { color: #1e1b4b; }
+    .profile-sidebar { border: 1px solid rgba(255,171,199,0.35); }
+    .profile-sidebar h2 { color: var(--primary-dark); }
     .profile-nav-btn { border-radius: 10px; }
-    .profile-nav-btn.active, .profile-nav-btn:hover { background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(14,165,233,0.1)); color: #3730a3; }
-    .profile-content-header { color: #1e1b4b; background: linear-gradient(135deg,rgba(99,102,241,0.08),rgba(14,165,233,0.06)); }
+    .profile-nav-btn.active, .profile-nav-btn:hover { background: linear-gradient(135deg, rgba(255,171,199,0.15), rgba(188,230,244,0.25)); color: var(--primary-dark); }
+    .profile-content-header { color: var(--primary-dark); background: linear-gradient(135deg,rgba(255,171,199,0.1),rgba(188,230,244,0.2)); }
 
     /* Admin role badge */
     .admin-role-badge {
       display: inline-block;
-      background: linear-gradient(135deg,#818cf8,#38bdf8);
+      background: linear-gradient(135deg, var(--primary), var(--accent));
       color: #fff;
       font-size: 0.75rem;
       font-weight: 800;
@@ -42,20 +37,20 @@
     }
 
     /* Action buttons overrides */
-    .action-btn { background: linear-gradient(135deg,#6366f1,#0ea5e9); border-color: transparent; }
-    .action-btn:hover { background: linear-gradient(135deg,#4f46e5,#0284c7); }
+    .action-btn { background: linear-gradient(135deg, var(--primary), var(--accent)); border-color: transparent; }
+    .action-btn:hover { background: linear-gradient(135deg, var(--primary-dark), #7dd3fc); }
     .logout-btn { background: transparent; color: #dc2626; border: 2px solid #fca5a5; }
     .logout-btn:hover { background: #fef2f2; }
 
     /* Permission list */
     .permission-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
-    .permission-list li { display: flex; align-items: center; gap: 10px; font-size: 0.92rem; color: #333; background: rgba(99,102,241,0.06); border-radius: 10px; padding: 10px 14px; }
+    .permission-list li { display: flex; align-items: center; gap: 10px; font-size: 0.92rem; color: #333; background: rgba(255,171,199,0.1); border-radius: 10px; padding: 10px 14px; }
     .permission-list li span.perm-icon { font-size: 1.2rem; }
     .permission-list li span.perm-ok { margin-left: auto; color: #22c55e; font-weight: 800; }
 
     .admin-info-banner {
-      background: linear-gradient(135deg,rgba(99,102,241,0.1),rgba(14,165,233,0.08));
-      border: 1px solid rgba(99,102,241,0.2);
+      background: linear-gradient(135deg,rgba(255,171,199,0.15),rgba(188,230,244,0.25));
+      border: 1px solid rgba(255,171,199,0.3);
       border-radius: 14px;
       padding: 18px 22px;
       margin-bottom: 24px;
@@ -64,7 +59,7 @@
       gap: 14px;
     }
     .admin-info-banner .banner-icon { font-size: 2rem; }
-    .admin-info-banner p { margin: 0; font-size: 0.9rem; color: #3730a3; font-weight: 600; }
+    .admin-info-banner p { margin: 0; font-size: 0.9rem; color: var(--primary-dark); font-weight: 600; }
   </style>
   <script defer src="JS/script.js"></script>
 </head>

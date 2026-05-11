@@ -285,9 +285,10 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const user = getLoginUser();
       const adminUser = getAdminUser();
-      const active = adminUser || (user && user.role === 'admin') ? (adminUser || user) : null;
+      const loginUser = getLoginUser();
+      // Accept either admin session or user with admin role
+      const active = adminUser || (loginUser && loginUser.role === 'admin' ? loginUser : null);
 
       if (!active) {
         window.location.href = 'login.html';
@@ -296,14 +297,6 @@
 
       const nameEl = document.getElementById('adminDisplayName');
       if (nameEl) nameEl.textContent = active.name || 'Admin';
-
-      const logoutBtn = document.getElementById('adminLogoutBtn');
-      if (logoutBtn) {
-        logoutBtn.addEventListener('click', () => {
-          logoutAdmin();
-          logout();
-        });
-      }
     });
   </script>
 </body>

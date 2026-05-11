@@ -464,12 +464,12 @@ function initAuthToggle() {
 
 function initLoginRoleToggle() {
   const roleSelect = document.querySelector('[data-login-role]');
-  const adminCodeWrap = document.querySelector('[data-admin-code-wrap]');
-  if (!roleSelect || !adminCodeWrap) return;
+  const adminCodeWraps = document.querySelectorAll('[data-admin-code-wrap]');
+  if (!roleSelect || !adminCodeWraps.length) return;
 
   const updateVisibility = () => {
     const isAdmin = roleSelect.value === "admin";
-    adminCodeWrap.hidden = !isAdmin;
+    adminCodeWraps.forEach(el => el.hidden = !isAdmin);
   };
 
   roleSelect.addEventListener('change', updateVisibility);
@@ -758,7 +758,16 @@ function initAdminShell() {
 document.addEventListener("DOMContentLoaded", () => {
   const path = window.location.pathname.split("/").pop().toLowerCase();
   const user = getLoginUser();
-  if (user && (path === 'login.html' || path === 'register.html')) {
+  const adminUser = getAdminUser();
+
+  // If already logged in as admin and trying to access login/register → go to admin-home
+  if ((adminUser || (user && user.role === 'admin')) && (path === 'login.html' || path === 'register.html')) {
+    window.location.href = "admin-home.html";
+    return;
+  }
+
+  // If already logged in as student and trying to access login/register → go to profile
+  if (user && !user.role && (path === 'login.html' || path === 'register.html')) {
     window.location.href = "profile.html";
     return;
   }
