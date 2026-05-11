@@ -32,6 +32,12 @@ document.addEventListener("DOMContentLoaded", () => {
     track.style.transform = `translateX(-${offset}px)`;
   };
 
+  const refreshItems = () => {
+    items = Array.from(track.querySelectorAll(".carousel-item"));
+    currentIndex = 0;
+    updateCarousel();
+  };
+
   prevBtn.addEventListener("click", () => {
     const maxIndex = getMaxIndex();
     if (currentIndex <= 0) {

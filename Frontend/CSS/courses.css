@@ -1,5 +1,23 @@
 ﻿@import url('./base.css');
 
+.course-thumb {
+	width: 100%;
+	height: 160px;
+	border-radius: 16px;
+	background: linear-gradient(135deg, rgba(37, 99, 235, 0.18), rgba(251, 113, 133, 0.18));
+	background-size: cover;
+	background-position: center;
+	margin-bottom: 12px;
+	display: grid;
+	place-items: center;
+	color: var(--primary-dark);
+	font-weight: 700;
+	letter-spacing: 0.02em;
+}
+
+.course-thumb.is-empty {
+	background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(251, 113, 133, 0.12));
+	border: 1px dashed rgba(37, 99, 235, 0.18);
 .course-toolbar {
 	display: flex;
 	align-items: center;

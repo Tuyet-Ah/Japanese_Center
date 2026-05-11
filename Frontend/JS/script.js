@@ -1,108 +1,12 @@
 const cartKey = "japaneseCenterCart";
 const loginKey = "japaneseCenterUser";
 const adminKey = "japaneseCenterAdmin";
-const CHATBOT_API_URL = "http://127.0.0.1:8000/educations/chatbot/";
+const authTokenKey = "japaneseCenterAuthTokens";
+const API_HOST = "http://127.0.0.1:8000";
+const API_BASE_URL = `${API_HOST}/educations`;
+const CHATBOT_API_URL = `${API_BASE_URL}/chatbot/`;
 
-const demoCourses = [
-  {
-    id: 1,
-    name: "N5 Beginner Journey",
-    level: "N5",
-    status: "in-progress",
-    schedule: "T2-T5",
-    price: 2400000,
-    description: "Khóa nền tảng giúp bạn làm quen với hiragana, katakana, từ vựng cơ bản và mẫu câu chào hỏi.",
-    knowledge: ["Hiragana, katakana", "Từ vựng sinh hoạt hằng ngày", "Mẫu câu giới thiệu bản thân"],
-    videos: ["Video 1: Chữ cái và phát âm", "Video 2: Giới thiệu bản thân", "Video 3: Trợ từ cơ bản"],
-    exercises: ["Bài tập viết chữ cái", "Quiz từ vựng 20 câu", "Luyện hội thoại ngắn"]
-  },
-  {
-    id: 2,
-    name: "N4 Communication Boost",
-    level: "N4",
-    status: "not-started",
-    schedule: "T3-T7",
-    price: 2900000,
-    description: "Khóa luyện giao tiếp trung cấp giúp tăng khả năng nói, nghe và phản xạ trong tình huống thực tế.",
-    knowledge: ["Mở rộng ngữ pháp N4", "Giao tiếp nơi công việc", "Nghe hiểu hội thoại ngắn"],
-    videos: ["Video 1: Giao tiếp tại lớp học", "Video 2: Đặt câu hỏi", "Video 3: Tình huống công sở"],
-    exercises: ["Viết đoạn tự giới thiệu", "Làm bài nghe ngắn", "Bài tập ngữ pháp 30 câu"]
-  },
-  {
-    id: 3,
-    name: "Business Japanese Starter",
-    level: "N3+",
-    status: "completed",
-    schedule: "Cuối tuần",
-    price: 3500000,
-    description: "Khóa học tiếng Nhật ứng dụng cho môi trường doanh nghiệp, thư từ và họp hành cơ bản.",
-    knowledge: ["Keigo cơ bản", "Email công việc", "Hội thoại trong văn phòng"],
-    videos: ["Video 1: Mẫu email", "Video 2: Chào hỏi công ty", "Video 3: Họp và báo cáo"],
-    exercises: ["Soạn email mẫu", "Role-play cuộc họp", "Quiz từ vựng doanh nghiệp"]
-  },
-  {
-    id: 4,
-    name: "Kanji Intensive Lab",
-    level: "N5-N3",
-    status: "in-progress",
-    schedule: "Tối 2-4-6",
-    price: 1800000,
-    description: "Luyện kanji theo từng nhóm chủ đề, kết hợp viết, nhớ nghĩa và cách đọc.",
-    knowledge: ["Radical cơ bản", "Cách đọc on-kun", "Nhận diện kanji theo ngữ cảnh"],
-    videos: ["Video 1: Kanji nền tảng", "Video 2: Ghi nhớ theo hình ảnh", "Video 3: Kanji thực hành"],
-    exercises: ["Luyện viết 50 chữ", "Bài tập đọc kanji", "Ôn tập flashcard"]
-  },
-  {
-    id: 5,
-    name: "N3 Masterclass",
-    level: "N3",
-    status: "not-started",
-    schedule: "T2-T4-T6",
-    price: 3200000,
-    description: "Khóa học chinh phục N3 toàn diện với lộ trình chuyên sâu, tập trung vào đọc hiểu và nghe hiểu.",
-    knowledge: ["Ngữ pháp N3 nâng cao", "Chiến thuật làm bài đọc hiểu", "Luyện nghe bắt từ khóa"],
-    videos: ["Video 1: Cấu trúc đề thi N3", "Video 2: Ngữ pháp thường thi", "Video 3: Đọc hiểu đoạn văn"],
-    exercises: ["Mock test N3 - Đề 1", "Bài tập ngữ pháp N3", "Luyện nghe có transcript"]
-  },
-  {
-    id: 6,
-    name: "Kaiwa Thư giãn (Giao tiếp)",
-    level: "All",
-    status: "completed",
-    schedule: "Sáng T7",
-    price: 1500000,
-    description: "Luyện nói tiếng Nhật tự nhiên qua các chủ đề đời sống, kết bạn và văn hóa Nhật Bản.",
-    knowledge: ["Từ lóng và biểu hiện tự nhiên", "Văn hóa giao tiếp Nhật Bản", "Cách duy trì cuộc hội thoại"],
-    videos: ["Video 1: Chào hỏi tự nhiên", "Video 2: Khen ngợi và phản hồi", "Video 3: Chủ đề sở thích"],
-    exercises: ["Ghi âm giới thiệu sở thích", "Hội thoại nhóm", "Nghe podcast và tóm tắt"]
-  },
-  {
-    id: 7,
-    name: "N2 Elite Program",
-    level: "N2",
-    status: "in-progress",
-    schedule: "Tối 3-5-7",
-    price: 4500000,
-    description: "Khóa luyện thi N2 cấp tốc, dành cho học viên đã vững N3 muốn bứt phá điểm số.",
-    knowledge: ["Ngữ pháp N2 phức tạp", "Từ vựng chuyên ngành", "Đọc hiểu bài báo, tin tức"],
-    videos: ["Video 1: Phân tích câu phức", "Video 2: Từ vựng qua gốc Hán", "Video 3: Nghe hiểu thời sự"],
-    exercises: ["Thi thử N2", "Dịch thuật đoạn văn", "Bài tập trắc nghiệm từ vựng"]
-  },
-  {
-    id: 8,
-    name: "Luyện Viết Email Tiếng Nhật",
-    level: "N3+",
-    status: "not-started",
-    schedule: "Chủ nhật",
-    price: 2000000,
-    description: "Kỹ năng soạn thảo email công việc chuẩn Business Japanese, từ cơ bản đến nâng cao.",
-    knowledge: ["Cấu trúc email chuẩn", "Kính ngữ trong văn viết", "Từ vựng thương mại"],
-    videos: ["Video 1: Bố cục email", "Video 2: Email xin phép, báo cáo", "Video 3: Email từ chối khéo léo"],
-    exercises: ["Soạn email xin nghỉ phép", "Viết thư cảm ơn đối tác", "Sửa lỗi email"]
-  }
-];
-
-const courseCatalog = Object.fromEntries(demoCourses.map((course) => [course.id, course]));
+let courseCatalog = {};
 
 function getLoginUser() {
   try {
@@ -117,8 +21,25 @@ function setLoginUser(userData) {
   updateUIBasedOnLogin();
 }
 
+function getAuthTokens() {
+  try {
+    return JSON.parse(localStorage.getItem(authTokenKey)) || null;
+  } catch {
+    return null;
+  }
+}
+
+function setAuthTokens(tokens) {
+  localStorage.setItem(authTokenKey, JSON.stringify(tokens));
+}
+
+function clearAuthTokens() {
+  localStorage.removeItem(authTokenKey);
+}
+
 function logout() {
   localStorage.removeItem(loginKey);
+  clearAuthTokens();
   updateUIBasedOnLogin();
   window.location.href = "Home.html";
 }
@@ -152,6 +73,65 @@ function formatMoney(value) {
   return new Intl.NumberFormat("vi-VN").format(value) + " VND";
 }
 
+function buildThumbnailUrl(thumbnail) {
+  if (!thumbnail) return "";
+  if (thumbnail.startsWith("http")) return thumbnail;
+  if (thumbnail.startsWith("/")) return `${API_HOST}${thumbnail}`;
+  return `${API_HOST}/${thumbnail}`;
+}
+
+function normalizeCourseListItem(course) {
+  return {
+    id: course.id,
+    name: course.title,
+    title: course.title,
+    level: course.level,
+    schedule: "Chua cap nhat",
+    price: Number(course.price || 0),
+    description: course.description || "",
+    thumbnail: buildThumbnailUrl(course.thumbnail)
+  };
+}
+
+function normalizeCourseDetail(course) {
+  const normalized = normalizeCourseListItem(course);
+  normalized.description = course.description || "";
+  normalized.chapters = Array.isArray(course.chapters) ? course.chapters : [];
+  normalized.content_blocks = Array.isArray(course.content_blocks) ? course.content_blocks : [];
+  return normalized;
+}
+
+async function fetchCourseList() {
+  const response = await fetch(`${API_BASE_URL}/courses/`);
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.error || data.detail || "Fetch courses failed");
+  }
+  return data;
+}
+
+async function fetchCourseDetail(courseId) {
+  const response = await fetch(`${API_BASE_URL}/courses/${courseId}/`);
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.error || data.detail || "Fetch course failed");
+  }
+  return data;
+}
+
+async function fetchMyLearning() {
+  const tokens = getAuthTokens();
+  if (!tokens || !tokens.access) return null;
+
+  const response = await fetch(`${API_BASE_URL}/my-learning/`, {
+    headers: { Authorization: `Bearer ${tokens.access}` }
+  });
+  if (!response.ok) {
+    return null;
+  }
+  return response.json();
+}
+
 function readCart() {
   try {
     return JSON.parse(localStorage.getItem(cartKey)) || [];
@@ -172,64 +152,47 @@ function updateCartCount() {
   });
 }
 
-function renderCourses(filtersOrSearch = "") {
+async function renderCourses() {
   const list = document.querySelector("[data-course-list]");
   if (!list) return;
 
-  const resolvedFilters = typeof filtersOrSearch === "string"
-    ? { searchTerm: filtersOrSearch, level: "all", status: "all" }
-    : {
-      searchTerm: filtersOrSearch?.searchTerm || "",
-      level: filtersOrSearch?.level || "all",
-      status: filtersOrSearch?.status || "all"
-    };
+  list.innerHTML = '<div class="card"><h3>Dang tai khoa hoc...</h3></div>';
 
-  const searchTerm = resolvedFilters.searchTerm.trim().toLowerCase();
-  const levelFilter = resolvedFilters.level.toLowerCase();
-  const statusFilter = resolvedFilters.status;
+  try {
+    const data = await fetchCourseList();
+    const courses = data.map(normalizeCourseListItem);
+    courseCatalog = Object.fromEntries(courses.map((course) => [course.id, course]));
 
-  const filteredCourses = demoCourses.filter((course) => {
-    const courseStatus = course.status || "not-started";
-    const matchesSearch =
-      !searchTerm ||
-      course.name.toLowerCase().includes(searchTerm) ||
-      course.level.toLowerCase().includes(searchTerm) ||
-      (course.description && course.description.toLowerCase().includes(searchTerm));
-    const matchesLevel =
-      levelFilter === "all" || course.level.toLowerCase().includes(levelFilter);
-    const matchesStatus =
-      statusFilter === "all" || courseStatus === statusFilter;
-    return matchesSearch && matchesLevel && matchesStatus;
-  });
-
-  if (filteredCourses.length === 0) {
-    list.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--muted);">Không tìm thấy khóa học nào phù hợp.</div>';
+    list.innerHTML = courses
+      .map((course) => {
+        const thumbClass = course.thumbnail ? "course-thumb" : "course-thumb is-empty";
+        const thumbStyle = course.thumbnail ? `style="background-image: url('${course.thumbnail}');"` : "";
+        return `
+          <article class="card">
+            <div class="${thumbClass}" ${thumbStyle}>JSMART</div>
+            <span class="badge">${course.level}</span>
+            <h3>${course.name}</h3>
+            <p>${course.description || "Chua co mo ta."}</p>
+            <div class="meta">
+              <span class="price">${formatMoney(course.price)}</span>
+              <div class="actions" style="gap: 8px;">
+                <a class="btn btn-outline" href="course-detail.html?id=${course.id}">Xem chi tiet</a>
+                <button class="btn btn-primary" data-add-course="${course.id}">Them vao gio</button>
+              </div>
+            </div>
+          </article>
+        `;
+      })
+      .join("");
+  } catch (error) {
+    list.innerHTML = '<div class="card"><h3>Khong the tai khoa hoc.</h3><p>Vui long thu lai sau.</p></div>';
     return;
   }
-
-  list.innerHTML = filteredCourses
-    .map(
-      (course) => `
-        <article class="card">
-          <span class="badge">${course.level}</span>
-          <h3>${course.name}</h3>
-          <p>${course.description || `Lịch học: ${course.schedule}. Học trực tiếp với giáo viên, có lộ trình rõ ràng và tài liệu đi kèm.`}</p>
-          <div class="meta">
-            <span class="price">${formatMoney(course.price)}</span>
-            <div class="actions" style="gap: 8px;">
-              <a class="btn btn-outline" href="course-detail.html?id=${course.id}">Xem chi tiết</a>
-              <button class="btn btn-primary" data-add-course="${course.id}">Thêm vào giỏ</button>
-            </div>
-          </div>
-        </article>
-      `
-    )
-    .join("");
 
   list.querySelectorAll("[data-add-course]").forEach((button) => {
     button.addEventListener("click", () => {
       const id = Number(button.getAttribute("data-add-course"));
-      const course = demoCourses.find((item) => item.id === id);
+      const course = courseCatalog[id];
       if (!course) return;
 
       const cart = readCart();
@@ -263,10 +226,27 @@ function openCourseDetail(courseId) {
   if (title) title.textContent = course.name;
   if (level) level.textContent = course.level;
   if (schedule) schedule.textContent = course.schedule;
-  if (description) description.textContent = course.description;
-  if (knowledgeList) knowledgeList.innerHTML = course.knowledge.map((item) => `<li>${item}</li>`).join("");
-  if (videoList) videoList.innerHTML = course.videos.map((item) => `<li>${item}</li>`).join("");
-  if (exerciseList) exerciseList.innerHTML = course.exercises.map((item) => `<li>${item}</li>`).join("");
+  if (description) description.textContent = course.description || "Chua co mo ta.";
+
+  if (knowledgeList) {
+    const chapters = Array.isArray(course.chapters) ? course.chapters : [];
+    knowledgeList.innerHTML = chapters.length
+      ? chapters.map((chapter) => `<li>Chuong ${chapter.order}: ${chapter.title}</li>`).join("")
+      : "<li>Chua cap nhat.</li>";
+  }
+
+  if (videoList) {
+    const lessons = Array.isArray(course.chapters)
+      ? course.chapters.flatMap((chapter) => (chapter.lessons || []))
+      : [];
+    videoList.innerHTML = lessons.length
+      ? lessons.map((lesson) => `<div class="course-video-card"><strong>${lesson.title}</strong></div>`).join("")
+      : "<div class=\"course-video-card\"><strong>Chua co bai hoc.</strong></div>";
+  }
+
+  if (exerciseList) {
+    exerciseList.innerHTML = "<div class=\"course-exercise-card\"><strong>Chua cap nhat bai tap.</strong></div>";
+  }
 }
 
 function closeCourseDetail() {
@@ -363,6 +343,9 @@ function renderCart() {
 
 function handleAuthForms() {
   document.querySelectorAll("[data-auth-form]").forEach((form) => {
+    if (form.hasAttribute("data-api-auth")) {
+      return;
+    }
     form.addEventListener("submit", (event) => {
       event.preventDefault();
       const message = form.querySelector("[data-form-message]");
@@ -847,6 +830,9 @@ window.getLoginUser = getLoginUser;
 window.setLoginUser = setLoginUser;
 window.logout = logout;
 window.updateUIBasedOnLogin = updateUIBasedOnLogin;
+window.getAuthTokens = getAuthTokens;
+window.setAuthTokens = setAuthTokens;
+window.clearAuthTokens = clearAuthTokens;
 window.formatMoney = formatMoney;
 window.readCart = readCart;
 window.saveCart = saveCart;
@@ -865,3 +851,7 @@ window.logoutAdmin = logoutAdmin;
 window.initAdminNav = initAdminNav;
 window.initStandardHeader = initStandardHeader;
 window.initAdminShell = initAdminShell;
+window.fetchCourseList = fetchCourseList;
+window.fetchCourseDetail = fetchCourseDetail;
+window.normalizeCourseDetail = normalizeCourseDetail;
+window.fetchMyLearning = fetchMyLearning;

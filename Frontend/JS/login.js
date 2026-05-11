@@ -1,41 +1,82 @@
+const API_BASE_URL = "http://127.0.0.1:8000/educations";
+
+function setFormMessage(node, text) {
+  if (!node) return;
+  node.textContent = text;
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   initStandardHeader();
-  handleAuthForms();
 
-  // Additional login-specific validation
-  const form = document.getElementById("loginForm");
+  const form = document.querySelector("[data-auth-form]");
   if (!form) return;
 
-  form.addEventListener("submit", (event) => {
+  const message = form.querySelector("[data-form-message]");
+  const submitButton = form.querySelector('button[type="submit"]');
+
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
+    setFormMessage(message, "");
 
-    const email = document.getElementById("loginEmail");
-    const password = document.getElementById("loginPassword");
-    const emailError = document.getElementById("emailError");
-    const passwordError = document.getElementById("passwordError");
+    const emailInput = document.getElementById("loginEmail");
+    const passwordInput = document.getElementById("loginPassword");
+    const email = emailInput ? emailInput.value.trim() : "";
+    const password = passwordInput ? passwordInput.value : "";
 
-    if (emailError) emailError.textContent = "";
-    if (passwordError) passwordError.textContent = "";
-
-    let isValid = true;
-    if (!email || !email.value.trim()) {
-      if (emailError) emailError.textContent = "Vui lòng nhập email";
-      isValid = false;
-    }
-    if (!password || !password.value.trim()) {
-      if (passwordError) passwordError.textContent = "Vui lòng nhập mật khẩu";
-      isValid = false;
+    if (!email || !password) {
+      setFormMessage(message, "Vui long nhap day du email va mat khau.");
+      return;
     }
 
-    if (!isValid) return;
+    if (submitButton) submitButton.disabled = true;
 
-    const user = {
-      email: email.value.trim(),
-      name: email.value.split("@")[0],
-      loginTime: new Date().toISOString()
-    };
+    try {
+      const response = await fetch(`${API_BASE_URL}/login/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: email, password })
+      });
 
-    setLoginUser(user);
-    window.location.href = "Home.html";
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        setFormMessage(message, data.detail || data.error || "Dang nhap that bai.");
+        return;
+      }
+
+      if (typeof setAuthTokens === "function") {
+        setAuthTokens({ access: data.access, refresh: data.refresh });
+      } else {
+        localStorage.setItem("japaneseCenterAuthTokens", JSON.stringify({ access: data.access, refresh: data.refresh }));
+      }
+
+      let profile = null;
+      try {
+        const profileResponse = await fetch(`${API_BASE_URL}/profile/`, {
+          headers: { Authorization: `Bearer ${data.access}` }
+        });
+        if (profileResponse.ok) {
+          profile = await profileResponse.json();
+        }
+      } catch {
+        profile = null;
+      }
+
+      const username = profile && profile.username ? profile.username : email.split("@")[0];
+      const userEmail = profile && profile.email ? profile.email : email;
+
+      setLoginUser({
+        name: username,
+        email: userEmail,
+        role: profile ? profile.role : "student",
+        loginTime: new Date().toISOString()
+      });
+
+      window.location.href = "Home.html";
+    } catch (error) {
+      setFormMessage(message, "Khong the ket noi den may chu. Vui long thu lai.");
+    } finally {
+      if (submitButton) submitButton.disabled = false;
+    }
   });
 });

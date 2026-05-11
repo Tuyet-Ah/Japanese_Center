@@ -31,7 +31,7 @@ class CourseCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Course
-        fields = ['title', 'description', 'level', 'price', 'thumbnail', 'chapters']
+        fields = ['title', 'description', 'level', 'price', 'thumbnail', 'content_blocks', 'chapters']
         extra_kwargs = {
             'thumbnail': {'required': False, 'allow_null': True} # Thêm dòng này
         }
