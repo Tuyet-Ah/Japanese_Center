@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 
 <head>
@@ -53,164 +53,100 @@
 			</div>
 		</section>
 
-		<!-- Exams Grid + Filters -->
-		<section class="section">
-			<div class="container">
-				<h2>Các Bài Kiểm Tra Có Sẵn</h2>
+		<section class="section exam-page-wrapper">
+			<div class="container exam-page-container">
+				<div class="exams-main">
+					<div class="exams-grid" id="examsGrid">
+						<!-- N1 Exams -->
+						<div class="exam-card" data-exam-level="N1">
+							<h3>JLPT - N1 Actual<br>Test 201202</h3>
+							<div class="exam-meta">
+								<span><i class="time-icon">⏱</i> 165 phút |</span>
+								<span>257</span>
+							</div>
+							<div class="exam-meta-secondary">
+								4 phần thi | 108 câu hỏi
+							</div>
+							<button class="btn btn-exam-detail btn-outline-exam" onclick="startExam('N1-201202')">Chi tiết <span class="click-icon"></span></button>
+						</div>
 
-				<div class="exams-filters" role="search">
-					<div class="filter-group">
-						<label for="examSearchInput">Tìm kiếm</label>
-						<input id="examSearchInput" type="text" placeholder="Nhập từ khóa (ngữ pháp, từ vựng, N4...)" autocomplete="off" />
-					</div>
+						<div class="exam-card" data-exam-level="N5">
+							<h3>JLPT - N5 Actual<br>Test 201202</h3>
+							<div class="exam-meta">
+								<span><i class="time-icon">⏱</i> 165 phút |</span>
+								<span>257</span>
+							</div>
+							<div class="exam-meta-secondary">
+								4 phần thi | 108 câu hỏi
+							</div>
+							<button class="btn btn-exam-detail btn-primary-exam" onclick="startExam('N5-201202')">Chi tiết</button>
+						</div>
 
-					<div class="filter-group">
-						<label for="examLevelSelect">Cấp độ</label>
-						<select id="examLevelSelect">
-							<option value="">Tất cả</option>
-							<option value="N5">N5</option>
-							<option value="N4">N4</option>
-							<option value="N3">N3</option>
-						</select>
-					</div>
+						<div class="exam-card" data-exam-level="N1">
+							<h3>JLPT - N1 Actual<br>Test 201702</h3>
+							<div class="exam-meta">
+								<span><i class="time-icon">⏱</i> 165 phút |</span>
+								<span>257</span>
+							</div>
+							<div class="exam-meta-secondary">
+								4 phần thi | 108 câu hỏi
+							</div>
+							<button class="btn btn-exam-detail btn-primary-exam" onclick="startExam('N1-201702')">Chi tiết</button>
+						</div>
 
-					<div class="filter-group filter-actions">
-						<button type="button" class="btn btn-outline" id="examClearBtn">Xóa bộ lọc</button>
+						<div class="exam-card" data-exam-level="N1">
+							<h3>JLPT - N1 Actual<br>Test 201202</h3>
+							<div class="exam-meta">
+								<span><i class="time-icon">⏱</i> 165 phút |</span>
+								<span>257</span>
+							</div>
+							<div class="exam-meta-secondary">
+								4 phần thi | 108 câu hỏi
+							</div>
+							<button class="btn btn-exam-detail btn-outline-exam" onclick="startExam('N1-201202-b')">Chi tiết</button>
+						</div>
+
+						<div class="exam-card" data-exam-level="N1">
+							<h3>JLPT - N1 Actual<br>Test 201202</h3>
+							<div class="exam-meta">
+								<span><i class="time-icon">⏱</i> 165 phút |</span>
+								<span>257</span>
+							</div>
+							<div class="exam-meta-secondary">
+								4 phần thi | 108 câu hỏi
+							</div>
+							<button class="btn btn-exam-detail btn-outline-exam" onclick="startExam('N1-201202-c')">Chi tiết</button>
+						</div>
+
+						<div class="exam-card" data-exam-level="N1">
+							<h3>JLPT - N1 Actual<br>Test 201202</h3>
+							<div class="exam-meta">
+								<span><i class="time-icon">⏱</i> 165 phút |</span>
+								<span>257</span>
+							</div>
+							<div class="exam-meta-secondary">
+								4 phần thi | 108 câu hỏi
+							</div>
+							<button class="btn btn-exam-detail btn-outline-exam" onclick="startExam('N1-201202-d')">Chi tiết</button>
+						</div>
 					</div>
 				</div>
 
-				<div class="exams-grid" id="examsGrid">
-
-					<!-- N5 Exams -->
-					<div class="exam-card" data-exam-level="N5">
-
-						<div class="exam-badge">N5 Beginner</div>
-						<h3>Ngữ pháp N5</h3>
-						<p>Kiểm tra kiến thức ngữ pháp cơ bản tiếng Nhật. Gồm 30 câu hỏi, thời gian 20 phút.
-						</p>
-						<div class="exam-meta">
-							<span>📝 30 câu hỏi</span>
-							<span>⏱️ 20 phút</span>
-							<span>⭐ 1250 điểm</span>
-						</div>
-						<button class="btn btn-primary btn-exam" onclick="startExam('N5-Grammar')">Bắt đầu
-							kiểm tra</button>
+				<aside class="exams-sidebar">
+					<div class="level-dropdown">
+						Trình độ <span class="arrow-down">˅</span>
 					</div>
-
-					<div class="exam-card" data-exam-level="N5">
-						<div class="exam-badge">N5 Beginner</div>
-						<h3>Từ Vựng N5</h3>
-
-						<p>Kiểm tra từ vựng tiếng Nhật bậc N5. Gồm 25 câu hỏi, thời gian 15 phút.</p>
-						<div class="exam-meta">
-							<span>📝 25 câu hỏi</span>
-							<span>⏱️ 15 phút</span>
-							<span>⭐ 1000 điểm</span>
-						</div>
-						<button class="btn btn-primary btn-exam" onclick="startExam('N5-Vocabulary')">Bắt
-							đầu kiểm tra</button>
+					<ul class="level-list" id="levelFilter">
+						<li data-level="N5">N5</li>
+						<li data-level="N4">N4</li>
+						<li data-level="N3">N3</li>
+						<li data-level="N2">N2</li>
+						<li data-level="N1">N1</li>
+					</ul>
+					<div class="sidebar-mascot">
+						<img src="assets/mascot.png" alt="Mascot">
 					</div>
-
-					<div class="exam-card" data-exam-level="N5">
-						<div class="exam-badge">N5 Beginner</div>
-						<h3>Nghe Hiểu N5</h3>
-
-						<p>Kiểm tra khả năng nghe hiểu tiếng Nhật. Gồm 20 đoạn nghe, thời gian 25 phút.</p>
-						<div class="exam-meta">
-							<span>🎧 20 đoạn nghe</span>
-							<span>⏱️ 25 phút</span>
-							<span>⭐ 1000 điểm</span>
-						</div>
-						<button class="btn btn-primary btn-exam" onclick="startExam('N5-Listening')">Bắt đầu
-							kiểm tra</button>
-					</div>
-
-					<!-- N4 Exams -->
-					<div class="exam-card" data-exam-level="N4">
-						<div class="exam-badge">N4 Elementary</div>
-						<h3>Ngữ pháp N4</h3>
-
-						<p>Kiểm tra ngữ pháp tiếng Nhật bậc N4. Gồm 35 câu hỏi, thời gian 25 phút.</p>
-						<div class="exam-meta">
-							<span>📝 35 câu hỏi</span>
-							<span>⏱️ 25 phút</span>
-							<span>⭐ 1500 điểm</span>
-						</div>
-						<button class="btn btn-primary btn-exam" onclick="startExam('N4-Grammar')">Bắt đầu
-							kiểm tra</button>
-					</div>
-
-					<div class="exam-card" data-exam-level="N4">
-						<div class="exam-badge">N4 Elementary</div>
-						<h3>Từ Vựng N4</h3>
-
-						<p>Kiểm tra từ vựng tiếng Nhật bậc N4. Gồm 30 câu hỏi, thời gian 20 phút.</p>
-						<div class="exam-meta">
-							<span>📝 30 câu hỏi</span>
-							<span>⏱️ 20 phút</span>
-							<span>⭐ 1200 điểm</span>
-						</div>
-						<button class="btn btn-primary btn-exam" onclick="startExam('N4-Vocabulary')">Bắt
-							đầu kiểm tra</button>
-					</div>
-
-					<div class="exam-card" data-exam-level="N4">
-						<div class="exam-badge">N4 Elementary</div>
-						<h3>Đọc Hiểu N4</h3>
-
-						<p>Kiểm tra khả năng đọc hiểu tiếng Nhật. Gồm 15 đoạn văn, thời gian 30 phút.</p>
-						<div class="exam-meta">
-							<span>📖 15 đoạn văn</span>
-							<span>⏱️ 30 phút</span>
-							<span>⭐ 1500 điểm</span>
-						</div>
-						<button class="btn btn-primary btn-exam" onclick="startExam('N4-Reading')">Bắt đầu
-							kiểm tra</button>
-					</div>
-
-					<!-- N3 Exams -->
-					<div class="exam-card" data-exam-level="N3">
-						<div class="exam-badge">N3 Intermediate</div>
-						<h3>Ngữ pháp N3</h3>
-
-						<p>Kiểm tra ngữ pháp nâng cao tiếng Nhật. Gồm 40 câu hỏi, thời gian 30 phút.</p>
-						<div class="exam-meta">
-							<span>📝 40 câu hỏi</span>
-							<span>⏱️ 30 phút</span>
-							<span>⭐ 1800 điểm</span>
-						</div>
-						<button class="btn btn-primary btn-exam" onclick="startExam('N3-Grammar')">Bắt đầu
-							kiểm tra</button>
-					</div>
-
-					<div class="exam-card" data-exam-level="N3">
-						<div class="exam-badge">N3 Intermediate</div>
-						<h3>Từ Vựng N3</h3>
-
-						<p>Kiểm tra từ vựng tiếng Nhật bậc N3. Gồm 35 câu hỏi, thời gian 25 phút.</p>
-						<div class="exam-meta">
-							<span>📝 35 câu hỏi</span>
-							<span>⏱️ 25 phút</span>
-							<span>⭐ 1500 điểm</span>
-						</div>
-						<button class="btn btn-primary btn-exam" onclick="startExam('N3-Vocabulary')">Bắt
-							đầu kiểm tra</button>
-					</div>
-
-					<div class="exam-card" data-exam-level="N3">
-						<div class="exam-badge">N3 Intermediate</div>
-						<h3>Bài Thi Toàn Diện N3</h3>
-
-						<p>Bài thi toàn diện N3 gồm cả ngữ pháp, từ vựng, nghe, đọc. Thời gian 90 phút.</p>
-						<div class="exam-meta">
-							<span>🎓 Full Test</span>
-							<span>⏱️ 90 phút</span>
-							<span>⭐ 4000 điểm</span>
-						</div>
-						<button class="btn btn-primary btn-exam" onclick="startExam('N3-Full')">Bắt đầu kiểm
-							tra</button>
-					</div>
-				</div>
+				</aside>
 			</div>
 		</section>
 

@@ -1,21 +1,30 @@
 /* base.css */
 :root {
-  --bg: #eff6ff;
+  --bg: #fdf2f8; /* Light pink background */
   --surface: #ffffff;
-  --surface-2: #f8fbff;
-  --text: #102a43;
-  --muted: #52657a;
-  --primary: #2563eb;
-  --primary-dark: #1e3a8a;
-  --accent: #fb7185;
-  --border: #f9a8d4;
-  --shadow: 0 24px 60px rgba(37, 99, 235, 0.12);
+  --surface-2: #fce7f3; /* Secondary light pink */
+  --text: #4c0519; /* Dark pinkish/maroon text */
+  --muted: #881337; /* Muted pink/red */
+  --primary: #ec4899; /* Main Pink */
+  --primary-dark: #be185d; /* Dark Pink */
+  --accent: #3b82f6; /* Blue as accent now */
+  --border: #fbcfe8; /* Soft pink border */
+  --shadow: 0 24px 60px rgba(236, 72, 153, 0.15); /* Pink tinted shadow */
   --radius-xl: 28px;
   --radius-lg: 20px;
   --radius-md: 14px;
 }
 
-* { box-sizing: border-box; }
+/* Hide scrollbar for Chrome, Safari and Opera */
+::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  box-sizing: border-box; 
+}
 html { scroll-behavior: smooth; }
 
 body {

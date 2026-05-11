@@ -7,21 +7,49 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!track || !prevBtn || !nextBtn) return;
 
-  const items = track.querySelectorAll(".carousel-item");
-  const itemWidth = 340;
+  const itemWidth = 320; // 300px width + 20px gap
   let currentIndex = 0;
 
+  const getMaxIndex = () => {
+    const maxScroll = Math.max(0, track.scrollWidth - track.parentElement.clientWidth);
+    return Math.ceil(maxScroll / itemWidth);
+  };
+
   const updateCarousel = () => {
-    track.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+    const maxScroll = Math.max(0, track.scrollWidth - track.parentElement.clientWidth);
+    let offset = currentIndex * itemWidth;
+    if (offset > maxScroll) {
+        offset = maxScroll;
+    }
+    track.style.transform = `translateX(-${offset}px)`;
   };
 
   prevBtn.addEventListener("click", () => {
-    currentIndex = (currentIndex - 1 + items.length) % items.length;
+    const maxIndex = getMaxIndex();
+    if (currentIndex <= 0) {
+      currentIndex = maxIndex;
+    } else {
+      currentIndex--;
+    }
     updateCarousel();
   });
 
   nextBtn.addEventListener("click", () => {
-    currentIndex = (currentIndex + 1) % items.length;
+    const maxIndex = getMaxIndex();
+    if (currentIndex >= maxIndex) {
+      currentIndex = 0;
+    } else {
+      currentIndex++;
+    }
     updateCarousel();
+  });
+
+  // Handle window resize
+  window.addEventListener('resize', () => {
+      const maxIndex = getMaxIndex();
+      if (currentIndex > maxIndex) {
+          currentIndex = maxIndex;
+      }
+      updateCarousel();
   });
 });
