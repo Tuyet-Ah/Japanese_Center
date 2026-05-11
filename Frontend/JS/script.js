@@ -10,10 +10,10 @@ const demoCourses = [
     level: "N5",
     schedule: "T2-T5",
     price: 2400000,
-    description: "KhÃ³a ná»n táº£ng giÃºp báº¡n lÃ m quen vá»›i hiragana, katakana, tá»« vá»±ng cÆ¡ báº£n vÃ  máº«u cÃ¢u chÃ o há»i.",
-    knowledge: ["Hiragana, katakana", "Tá»« vá»±ng sinh hoáº¡t háº±ng ngÃ y", "Máº«u cÃ¢u giá»›i thiá»‡u báº£n thÃ¢n"],
-    videos: ["Video 1: Chá»¯ cÃ¡i vÃ  phÃ¡t Ã¢m", "Video 2: Giá»›i thiá»‡u báº£n thÃ¢n", "Video 3: Trá»£ tá»« cÆ¡ báº£n"],
-    exercises: ["BÃ i táº­p viáº¿t chá»¯ cÃ¡i", "Quiz tá»« vá»±ng 20 cÃ¢u", "Luyá»‡n há»™i thoáº¡i ngáº¯n"]
+    description: "Khóa nền tảng giúp bạn làm quen với hiragana, katakana, từ vựng cơ bản và mẫu câu chào hỏi.",
+    knowledge: ["Hiragana, katakana", "Từ vựng sinh hoạt hằng ngày", "Mẫu câu giới thiệu bản thân"],
+    videos: ["Video 1: Chữ cái và phát âm", "Video 2: Giới thiệu bản thân", "Video 3: Trợ từ cơ bản"],
+    exercises: ["Bài tập viết chữ cái", "Quiz từ vựng 20 câu", "Luyện hội thoại ngắn"]
   },
   {
     id: 2,
@@ -21,32 +21,32 @@ const demoCourses = [
     level: "N4",
     schedule: "T3-T7",
     price: 2900000,
-    description: "KhÃ³a luyá»‡n giao tiáº¿p trung cáº¥p giÃºp tÄƒng kháº£ nÄƒng nÃ³i, nghe vÃ  pháº£n xáº¡ trong tÃ¬nh huá»‘ng thá»±c táº¿.",
-    knowledge: ["Má»Ÿ rá»™ng ngá»¯ phÃ¡p N4", "Giao tiáº¿p nÆ¡i cÃ´ng viá»‡c", "Nghe hiá»ƒu há»™i thoáº¡i ngáº¯n"],
-    videos: ["Video 1: Giao tiáº¿p táº¡i lá»›p há»c", "Video 2: Äáº·t cÃ¢u há»i", "Video 3: TÃ¬nh huá»‘ng cÃ´ng sá»Ÿ"],
-    exercises: ["Viáº¿t Ä‘oáº¡n tá»± giá»›i thiá»‡u", "LÃ m bÃ i nghe ngáº¯n", "BÃ i táº­p ngá»¯ phÃ¡p 30 cÃ¢u"]
+    description: "Khóa luyện giao tiếp trung cấp giúp tăng khả năng nói, nghe và phản xạ trong tình huống thực tế.",
+    knowledge: ["Mở rộng ngữ pháp N4", "Giao tiếp nơi công việc", "Nghe hiểu hội thoại ngắn"],
+    videos: ["Video 1: Giao tiếp tại lớp học", "Video 2: Đặt câu hỏi", "Video 3: Tình huống công sở"],
+    exercises: ["Viết đoạn tự giới thiệu", "Làm bài nghe ngắn", "Bài tập ngữ pháp 30 câu"]
   },
   {
     id: 3,
     name: "Business Japanese Starter",
     level: "N3+",
-    schedule: "Cuá»‘i tuáº§n",
+    schedule: "Cuối tuần",
     price: 3500000,
-    description: "KhÃ³a há»c tiáº¿ng Nháº­t á»©ng dá»¥ng cho mÃ´i trÆ°á»ng doanh nghiá»‡p, thÆ° tá»« vÃ  há»p hÃ nh cÆ¡ báº£n.",
-    knowledge: ["Keigo cÆ¡ báº£n", "Email cÃ´ng viá»‡c", "Há»™i thoáº¡i trong vÄƒn phÃ²ng"],
-    videos: ["Video 1: Máº«u email", "Video 2: ChÃ o há»i cÃ´ng ty", "Video 3: Há»p vÃ  bÃ¡o cÃ¡o"],
-    exercises: ["Soáº¡n email máº«u", "Role-play cuá»™c há»p", "Quiz tá»« vá»±ng doanh nghiá»‡p"]
+    description: "Khóa học tiếng Nhật ứng dụng cho môi trường doanh nghiệp, thư từ và họp hành cơ bản.",
+    knowledge: ["Keigo cơ bản", "Email công việc", "Hội thoại trong văn phòng"],
+    videos: ["Video 1: Mẫu email", "Video 2: Chào hỏi công ty", "Video 3: Họp và báo cáo"],
+    exercises: ["Soạn email mẫu", "Role-play cuộc họp", "Quiz từ vựng doanh nghiệp"]
   },
   {
     id: 4,
     name: "Kanji Intensive Lab",
     level: "N5-N3",
-    schedule: "Tá»‘i 2-4-6",
+    schedule: "Tối 2-4-6",
     price: 1800000,
-    description: "Luyá»‡n kanji theo tá»«ng nhÃ³m chá»§ Ä‘á», káº¿t há»£p viáº¿t, nhá»› nghÄ©a vÃ  cÃ¡ch Ä‘á»c.",
-    knowledge: ["Radical cÆ¡ báº£n", "CÃ¡ch Ä‘á»c on-kun", "Nháº­n diá»‡n kanji theo ngá»¯ cáº£nh"],
-    videos: ["Video 1: Kanji ná»n táº£ng", "Video 2: Ghi nhá»› theo hÃ¬nh áº£nh", "Video 3: Kanji thá»±c hÃ nh"],
-    exercises: ["Luyá»‡n viáº¿t 50 chá»¯", "BÃ i táº­p Ä‘á»c kanji", "Ã”n táº­p flashcard"]
+    description: "Luyện kanji theo từng nhóm chủ đề, kết hợp viết, nhớ nghĩa và cách đọc.",
+    knowledge: ["Radical cơ bản", "Cách đọc on-kun", "Nhận diện kanji theo ngữ cảnh"],
+    videos: ["Video 1: Kanji nền tảng", "Video 2: Ghi nhớ theo hình ảnh", "Video 3: Kanji thực hành"],
+    exercises: ["Luyện viết 50 chữ", "Bài tập đọc kanji", "Ôn tập flashcard"]
   }
 ];
 
@@ -120,22 +120,33 @@ function updateCartCount() {
   });
 }
 
-function renderCourses() {
+function renderCourses(searchTerm = "") {
   const list = document.querySelector("[data-course-list]");
   if (!list) return;
 
-  list.innerHTML = demoCourses
+  const filteredCourses = demoCourses.filter(course => 
+    course.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    course.level.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (course.description && course.description.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
+
+  if (filteredCourses.length === 0) {
+    list.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--muted);">Không tìm thấy khóa học nào phù hợp.</div>';
+    return;
+  }
+
+  list.innerHTML = filteredCourses
     .map(
       (course) => `
         <article class="card">
           <span class="badge">${course.level}</span>
           <h3>${course.name}</h3>
-          <p>${course.description || `Lá»‹ch há»c: ${course.schedule}. Há»c trá»±c tiáº¿p vá»›i giÃ¡o viÃªn, cÃ³ lá»™ trÃ¬nh rÃµ rÃ ng vÃ  tÃ i liá»‡u Ä‘i kÃ¨m.`}</p>
+          <p>${course.description || `Lịch học: ${course.schedule}. Học trực tiếp với giáo viên, có lộ trình rõ ràng và tài liệu đi kèm.`}</p>
           <div class="meta">
             <span class="price">${formatMoney(course.price)}</span>
             <div class="actions" style="gap: 8px;">
-              <a class="btn btn-outline" href="course-detail.html?id=${course.id}">Xem chi tiáº¿t</a>
-              <button class="btn btn-primary" data-add-course="${course.id}">ThÃªm vÃ o giá»</button>
+              <a class="btn btn-outline" href="course-detail.html?id=${course.id}">Xem chi tiết</a>
+              <button class="btn btn-primary" data-add-course="${course.id}">Thêm vào giỏ</button>
             </div>
           </div>
         </article>
@@ -155,7 +166,7 @@ function renderCourses() {
         saveCart(cart);
       }
 
-      button.textContent = "ÄÃ£ thÃªm";
+      button.textContent = "Đã thêm";
       button.disabled = true;
     });
   });
@@ -200,7 +211,7 @@ function renderCart() {
 
   const cart = readCart();
   if (!cart.length) {
-    list.innerHTML = '<div class="card"><h3>Giá» hÃ ng Ä‘ang trá»‘ng</h3><p>HÃ£y quay láº¡i trang khÃ³a há»c Ä‘á»ƒ chá»n lá»›p phÃ¹ há»£p.</p></div>';
+    list.innerHTML = '<div class="card"><h3>Giỏ hàng đang trống</h3><p>Hãy quay lại trang khóa học để chọn lớp phù hợp.</p></div>';
     totalNode.textContent = formatMoney(0);
     return;
   }
@@ -229,20 +240,21 @@ function handleAuthForms() {
       event.preventDefault();
       const message = form.querySelector("[data-form-message]");
 
-      // Kiá»ƒm tra xem form nÃ y lÃ  Ä‘Äƒng nháº­p hay Ä‘Äƒng kÃ½
       const isLoginForm = form.closest("[data-login-panel]") !== null;
+      const isRegisterForm = form.closest("[data-register-panel]") !== null;
+      const isAuthForm = isLoginForm || isRegisterForm;
 
       if (isLoginForm) {
-        const emailInput = form.querySelector('input[type="email"]');
-        const email = emailInput ? emailInput.value : "user@email.com";
+        const usernameInput = form.querySelector('input[type="text"]');
+        const username = usernameInput ? usernameInput.value : "user";
         setLoginUser({
-          email,
-          name: email.split("@")[0],
+          email: username + "@jsmart.vn",
+          name: username,
           loginTime: new Date().toISOString()
         });
 
-        if (message) message.textContent = "ÄÄƒng nháº­p thÃ nh cÃ´ng!";
-      } else {
+        if (message) message.textContent = "Đăng nhập thành công! Đang chuyển hướng...";
+      } else if (isRegisterForm) {
         const nameInput = form.querySelector('input[type="text"]');
         const emailInput = form.querySelector('input[type="email"]');
         const email = emailInput ? emailInput.value : "user@email.com";
@@ -254,10 +266,18 @@ function handleAuthForms() {
           loginTime: new Date().toISOString()
         });
 
-        if (message) message.textContent = "ÄÄƒng kÃ½ vÃ  Ä‘Äƒng nháº­p thÃ nh cÃ´ng!";
+        if (message) message.textContent = "Đăng ký thành công! Đang chuyển hướng...";
+      } else {
+        if (message) message.textContent = "Đã lưu thay đổi thành công!";
       }
 
-      form.reset();
+      if (isAuthForm) {
+        setTimeout(() => {
+          window.location.href = "profile.html";
+        }, 800);
+      } else {
+        form.reset();
+      }
     });
   });
 }
@@ -289,6 +309,30 @@ function initNavState() {
       link.classList.add("active");
     }
   });
+}
+
+function initMobileMenu() {
+  const topbarInner = document.querySelector('.topbar-inner');
+  const nav = document.querySelector('.nav');
+  if (!topbarInner || !nav) return;
+
+  if (!document.querySelector('.mobile-menu-btn')) {
+    const btn = document.createElement('button');
+    btn.className = 'mobile-menu-btn';
+    btn.innerHTML = '☰';
+    btn.setAttribute('aria-label', 'Toggle mobile menu');
+
+    const actions = document.querySelector('.actions');
+    if (actions) {
+      topbarInner.insertBefore(btn, actions);
+    } else {
+      topbarInner.appendChild(btn);
+    }
+
+    btn.addEventListener('click', () => {
+      nav.classList.toggle('is-open');
+    });
+  }
 }
 
 function getAdminUser() {
@@ -338,30 +382,30 @@ function initFloatingChatWidget() {
     const style = document.createElement('style');
     style.id = 'jsmart-chat-widget-style';
     style.textContent = `
-      .jsmart-chat-launcher { position:fixed;right:20px;bottom:20px;width:60px;height:60px;border:0;border-radius:999px;background:linear-gradient(135deg,#0f766e,#1d9e96);color:#fff;box-shadow:0 18px 40px rgba(15,118,110,0.3);cursor:pointer;z-index:9999;display:grid;place-items:center; }
-      .jsmart-chat-launcher::before { content:'';position:absolute;inset:-8px;border-radius:inherit;border:2px solid rgba(29,158,150,0.35);animation:jsmartChatPulse 1.8s infinite; }
+      .jsmart-chat-launcher { position:fixed;right:20px;bottom:20px;width:60px;height:60px;border:0;border-radius:999px;background:linear-gradient(135deg,#ff6b8b,#6ba8ff);color:#fff;box-shadow:0 18px 40px rgba(255,107,139,0.3);cursor:pointer;z-index:9999;display:grid;place-items:center; }
+      .jsmart-chat-launcher::before { content:'';position:absolute;inset:-8px;border-radius:inherit;border:2px solid rgba(107,168,255,0.35);animation:jsmartChatPulse 1.8s infinite; }
       .jsmart-chat-launcher span { position:relative;font-size:26px;animation:jsmartChatBob 1.8s ease-in-out infinite; }
       .jsmart-chat-panel { position:fixed;right:20px;bottom:92px;width:min(380px,calc(100vw - 28px));height:min(560px,calc(100vh - 120px));background:rgba(255,255,255,0.98);border:1px solid rgba(15,23,42,0.08);border-radius:24px;box-shadow:0 30px 70px rgba(15,23,42,0.18);overflow:hidden;z-index:9998;display:flex;flex-direction:column;opacity:0;transform:translateY(10px) scale(0.98);pointer-events:none;transition:opacity 0.22s ease,transform 0.22s ease;font-family:"Inter", "Noto Sans Vietnamese", -apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif; }
       .jsmart-chat-panel.is-open { opacity:1;transform:translateY(0) scale(1);pointer-events:auto; }
-      .jsmart-chat-header { padding:14px 16px;background:linear-gradient(135deg,#0f766e,#1d9e96);color:#fff;display:flex;justify-content:space-between;align-items:center;gap:12px; }
+      .jsmart-chat-header { padding:14px 16px;background:linear-gradient(135deg,#ff6b8b,#6ba8ff);color:#fff;display:flex;justify-content:space-between;align-items:center;gap:12px; }
       .jsmart-chat-header strong { display:block;font-size:0.98rem; }
       .jsmart-chat-header small { opacity:0.9; }
       .jsmart-chat-close { width:32px;height:32px;border:0;border-radius:999px;background:rgba(255,255,255,0.18);color:#fff;font-size:18px;cursor:pointer; }
       .jsmart-chat-messages { flex:1;overflow-y:auto;padding:16px;display:grid;gap:12px;background:linear-gradient(rgba(244,247,251,.96),rgba(244,247,251,.96)); }
       .jsmart-chat-message { max-width:86%;padding:12px 14px;border-radius:16px;line-height:1.65;font-size:0.95rem; }
-      .jsmart-chat-message.user { margin-left:auto;background:#0f766e;color:#fff;border-top-right-radius:6px; }
+      .jsmart-chat-message.user { margin-left:auto;background:linear-gradient(135deg,#ff6b8b,#6ba8ff);color:#fff;border-top-right-radius:6px; }
       .jsmart-chat-message.bot { background:#fff;color:#0f172a;border:1px solid rgba(15,23,42,0.08);border-top-left-radius:6px; }
       .jsmart-chat-message h3,.jsmart-chat-message p { margin:0 0 0.55em; }
       .jsmart-chat-message ul { margin:0.45em 0 0.45em 1.2em; }
       .jsmart-chat-composer { border-top:1px solid rgba(15,23,42,0.08);padding:12px;background:#fff; }
       .jsmart-chat-quick { display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px; }
-      .jsmart-chat-chip { border:1px solid rgba(15,118,110,0.16);background:rgba(15,118,110,0.06);color:#0f766e;border-radius:999px;padding:8px 10px;cursor:pointer;font-size:0.85rem; }
+      .jsmart-chat-chip { border:1px solid rgba(255,107,139,0.2);background:rgba(255,107,139,0.08);color:#d65172;border-radius:999px;padding:8px 10px;cursor:pointer;font-size:0.85rem; }
       .jsmart-chat-input { width:100%;min-height:72px;border:1px solid rgba(15,23,42,0.12);border-radius:14px;padding:12px;resize:vertical;font:inherit; }
       .jsmart-chat-actions { display:flex;gap:10px;margin-top:10px; }
-      .jsmart-chat-send { flex:1;border:0;border-radius:14px;background:linear-gradient(135deg,#0f766e,#1d9e96);color:#fff;padding:12px 14px;font-weight:700;cursor:pointer; }
+      .jsmart-chat-send { flex:1;border:0;border-radius:14px;background:linear-gradient(135deg,#ff6b8b,#6ba8ff);color:#fff;padding:12px 14px;font-weight:700;cursor:pointer; }
       .jsmart-chat-send:disabled { opacity:0.7;cursor:not-allowed; }
       .jsmart-chat-typing { display:inline-flex;gap:6px;align-items:center; }
-      .jsmart-chat-typing span { width:8px;height:8px;border-radius:50%;background:#0f766e;animation:jsmartChatBounce 0.9s infinite ease-in-out; }
+      .jsmart-chat-typing span { width:8px;height:8px;border-radius:50%;background:#6ba8ff;animation:jsmartChatBounce 0.9s infinite ease-in-out; }
       .jsmart-chat-typing span:nth-child(2) { animation-delay:0.12s; }
       .jsmart-chat-typing span:nth-child(3) { animation-delay:0.24s; }
       @keyframes jsmartChatPulse { 0%{transform:scale(0.94);opacity:0.8}70%{transform:scale(1.15);opacity:0}100%{transform:scale(1.15);opacity:0} }
@@ -410,7 +454,7 @@ function initFloatingChatWidget() {
   const history = [];
 
   function escapeHtml(value) {
-    return String(value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    return String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 
   function markdownToHtml(markdown) {
@@ -537,12 +581,36 @@ function initAdminShell() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  const path = window.location.pathname.split("/").pop().toLowerCase();
+  const user = getLoginUser();
+  if (user && (path === 'login.html' || path === 'register.html')) {
+    window.location.href = "profile.html";
+    return;
+  }
+
   updateCartCount();
   renderCourses();
+
+  const searchInput = document.getElementById('course-search-input');
+  const searchBtn = document.getElementById('course-search-btn');
+
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      renderCourses(e.target.value);
+    });
+
+    if (searchBtn) {
+      searchBtn.addEventListener('click', () => {
+        renderCourses(searchInput.value);
+      });
+    }
+  }
+
   renderCart();
   handleAuthForms();
   initAuthToggle();
   initNavState();
+  initMobileMenu();
   updateUIBasedOnLogin();
   initFloatingChatWidget();
 
@@ -577,6 +645,7 @@ window.renderCart = renderCart;
 window.handleAuthForms = handleAuthForms;
 window.initAuthToggle = initAuthToggle;
 window.initNavState = initNavState;
+window.initMobileMenu = initMobileMenu;
 window.getAdminUser = getAdminUser;
 window.loginAdmin = loginAdmin;
 window.logoutAdmin = logoutAdmin;

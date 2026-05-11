@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 
 <head>
@@ -40,38 +40,66 @@
     </div>
   </header>
 
-  <main class="section">
-    <div class="container form-wrap">
-      <section class="card form-card">
-        <span class="badge">Thông tin cá nhân</span>
-        <h2>Hồ sơ học viên</h2>
-        <div class="profile-list">
-          <div class="item"><strong>Họ tên: </strong><span>Nguyễn Minh Anh</span></div>
-          <div class="item"><strong>Email: </strong><span>minhanh@email.com</span></div>
-          <div class="item"><strong>Trình độ: </strong><span>N4</span></div>
-          <div class="item"><strong>Khóa đang học: </strong><span>Giao tiếp cuối tuần</span></div>
-        </div>
-      </section>
-      <section class="card form-card">
-        <span class="badge">Cập nhật nhanh</span>
-        <h2>Chỉnh sửa thông tin</h2>
-        <form data-auth-form>
-          <div class="form-group">
-            <label>Họ và tên</label>
-            <input type="text" placeholder="Nhập họ tên">
+  <main class="section" style="padding-top: 20px;">
+    <div class="container">
+      <div class="profile-wrapper">
+        
+        <!-- SIDEBAR -->
+        <aside class="profile-sidebar">
+          <div class="profile-avatar-wrap">
+            <img src="assets/icon.png" alt="Avatar">
           </div>
-          <div class="form-group">
-            <label>Số điện thoại</label>
-            <input type="text" placeholder="Nhập số điện thoại">
+          <h2 data-profile-name>Trịnh Thị Tuyết Anh</h2>
+          <div class="user-id">ID: 34578223</div>
+
+          <div class="profile-nav-title">Tài khoản cá nhân</div>
+          <nav class="profile-nav">
+            <a href="#" class="profile-nav-btn active">👤 Thông tin cá nhân</a>
+            <a href="#" class="profile-nav-btn">🎓 Khóa học đã mua</a>
+            <a href="#" class="profile-nav-btn">📊 Kết quả học tập</a>
+          </nav>
+
+          <button class="logout-btn" data-logout-btn>ĐĂNG XUẤT</button>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <section class="profile-content-area">
+          <h1 class="profile-content-header">THÔNG TIN HỌC VIÊN</h1>
+          
+          <div class="profile-content-body">
+            <div class="profile-info-grid">
+              <div class="info-row">
+                <span class="info-label">Họ tên</span>
+                <span class="info-value" data-profile-fullname>Trịnh Thị Tuyết Anh</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Ngày sinh</span>
+                <span class="info-value">01/05/2005</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Email</span>
+                <span class="info-value" data-profile-email>tanh01052005@gmail.com</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Số điện thoại</span>
+                <span class="info-value">0357513055</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Giới tính</span>
+                <span class="info-value">Nữ</span>
+              </div>
+
+              <div class="profile-actions">
+                <button class="action-btn">Cập nhật thông tin</button>
+                <button class="action-btn">Thay đổi mật khẩu</button>
+              </div>
+            </div>
+
+            <img src="assets/back.jpg" alt="Decoration" class="profile-decorative-img">
           </div>
-          <div class="form-group">
-            <label>Mục tiêu học tập</label>
-            <textarea rows="4" placeholder="Ví dụ: thi JLPT N3 trong 6 tháng"></textarea>
-          </div>
-          <button class="btn btn-primary" type="submit">Lưu thay đổi</button>
-          <p data-form-message></p>
-        </form>
-      </section>
+        </section>
+
+      </div>
     </div>
   </main>
 </body>

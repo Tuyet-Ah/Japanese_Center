@@ -6,7 +6,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #ffeef2 0%, #e0f7fa 100%);
+  background: url('../assets/back.jpg') center/cover no-repeat;
   overflow: hidden;
 }
 
@@ -58,13 +58,27 @@
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0) scale(1); }
-  50% { transform: translateY(-20px) scale(1.05); }
+
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+
+  50% {
+    transform: translateY(-20px) scale(1.05);
+  }
 }
 
 @keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-15px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-15px);
+  }
 }
 
 .cute-form-container {
@@ -81,8 +95,8 @@
   max-width: 440px;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
-  border-radius: 36px;
-  padding: 40px 30px;
+  border-radius: 28px;
+  padding: 24px 24px;
   box-shadow: 0 20px 50px rgba(255, 182, 193, 0.25), 0 0 0 8px rgba(255, 255, 255, 0.4);
   border: 2px solid #ffdde1;
   text-align: center;
@@ -95,15 +109,15 @@
 }
 
 .mascot-wrapper {
-  margin-top: -80px;
-  margin-bottom: 10px;
+  margin-top: -60px;
+  margin-bottom: 8px;
   display: flex;
   justify-content: center;
 }
 
 .mascot-img {
-  width: 130px;
-  height: 130px;
+  width: 96px;
+  height: 96px;
   object-fit: cover;
   border-radius: 50%;
   border: 4px solid #fff;
@@ -124,9 +138,9 @@
 }
 
 .cute-form-card h2 {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   color: #4a5568;
-  margin: 0 0 24px;
+  margin: 0 0 16px;
   font-family: 'Nunito', 'Inter', sans-serif;
   font-weight: 800;
 }
@@ -134,7 +148,7 @@
 form {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 12px;
   text-align: left;
 }
 
@@ -154,9 +168,9 @@ form {
 .form-group input {
   width: 100%;
   border: 2px solid #e2e8f0;
-  border-radius: 20px;
-  padding: 14px 18px;
-  font-size: 1rem;
+  border-radius: 16px;
+  padding: 10px 14px;
+  font-size: 0.95rem;
   color: #334155;
   background: #f8fafc;
   transition: all 0.3s ease;
@@ -212,9 +226,9 @@ form {
   background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
   color: #fff;
   border: none;
-  border-radius: 20px;
-  padding: 16px;
-  font-size: 1.1rem;
+  border-radius: 16px;
+  padding: 12px;
+  font-size: 1.05rem;
   font-weight: 800;
   cursor: pointer;
   box-shadow: 0 8px 15px rgba(255, 154, 158, 0.3);
@@ -269,10 +283,12 @@ form {
   .cute-form-card {
     padding: 30px 20px;
   }
+
   .mascot-img {
     width: 100px;
     height: 100px;
   }
+
   .mascot-wrapper {
     margin-top: -60px;
   }
