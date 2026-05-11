@@ -6,11 +6,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Admin Dashboard | JSMART</title>
 	<link rel="stylesheet" href="CSS/admin-dashboard.css">
-<<<<<<< HEAD
 	<script defer src="JS/script.js"></script>
 	<script defer src="JS/admin-dashboard.js"></script>
-=======
-	<script defer src="script.js"></script>
+
 </head>
 
 <body>
@@ -28,7 +26,6 @@
 				</a>
 				<a href="admin-courses.html" class="menu-item">
 					<span class="menu-icon">📚</span>
->>>>>>> 386c99f9f4e11f233e2c11136db7ccf1527dd1ec
 					<span>Quản Lý Khóa Học</span>
 				</a>
 				<a href="admin-quizzes.html" class="menu-item">
@@ -212,32 +209,6 @@
 		</main>
 	</div>
 
-	<script>
-		document.addEventListener('DOMContentLoaded', () => {
-			const admin = getAdminUser();
-			if (!admin) {
-				window.location.href = 'admin-login.html';
-				return;
-			}
-
-			document.getElementById('adminUsername').textContent = admin.name;
-			initAdminNav();
-		});
-
-		document.getElementById('adminLogout').addEventListener('click', () => {
-			logoutAdmin();
-		});
-
-		function initAdminNav() {
-			const currentPage = window.location.pathname.split('/').pop();
-			document.querySelectorAll('.menu-item').forEach(item => {
-				item.classList.remove('active');
-				if (item.href.includes(currentPage)) {
-					item.classList.add('active');
-				}
-			});
-		}
-	</script>
 </body>
 
 </html>

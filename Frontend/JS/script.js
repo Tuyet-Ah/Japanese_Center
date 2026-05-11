@@ -8,6 +8,7 @@ const demoCourses = [
     id: 1,
     name: "N5 Beginner Journey",
     level: "N5",
+    status: "in-progress",
     schedule: "T2-T5",
     price: 2400000,
     description: "Khóa nền tảng giúp bạn làm quen với hiragana, katakana, từ vựng cơ bản và mẫu câu chào hỏi.",
@@ -19,6 +20,7 @@ const demoCourses = [
     id: 2,
     name: "N4 Communication Boost",
     level: "N4",
+    status: "not-started",
     schedule: "T3-T7",
     price: 2900000,
     description: "Khóa luyện giao tiếp trung cấp giúp tăng khả năng nói, nghe và phản xạ trong tình huống thực tế.",
@@ -30,6 +32,7 @@ const demoCourses = [
     id: 3,
     name: "Business Japanese Starter",
     level: "N3+",
+    status: "completed",
     schedule: "Cuối tuần",
     price: 3500000,
     description: "Khóa học tiếng Nhật ứng dụng cho môi trường doanh nghiệp, thư từ và họp hành cơ bản.",
@@ -41,6 +44,7 @@ const demoCourses = [
     id: 4,
     name: "Kanji Intensive Lab",
     level: "N5-N3",
+    status: "in-progress",
     schedule: "Tối 2-4-6",
     price: 1800000,
     description: "Luyện kanji theo từng nhóm chủ đề, kết hợp viết, nhớ nghĩa và cách đọc.",
@@ -52,6 +56,7 @@ const demoCourses = [
     id: 5,
     name: "N3 Masterclass",
     level: "N3",
+    status: "not-started",
     schedule: "T2-T4-T6",
     price: 3200000,
     description: "Khóa học chinh phục N3 toàn diện với lộ trình chuyên sâu, tập trung vào đọc hiểu và nghe hiểu.",
@@ -63,6 +68,7 @@ const demoCourses = [
     id: 6,
     name: "Kaiwa Thư giãn (Giao tiếp)",
     level: "All",
+    status: "completed",
     schedule: "Sáng T7",
     price: 1500000,
     description: "Luyện nói tiếng Nhật tự nhiên qua các chủ đề đời sống, kết bạn và văn hóa Nhật Bản.",
@@ -74,6 +80,7 @@ const demoCourses = [
     id: 7,
     name: "N2 Elite Program",
     level: "N2",
+    status: "in-progress",
     schedule: "Tối 3-5-7",
     price: 4500000,
     description: "Khóa luyện thi N2 cấp tốc, dành cho học viên đã vững N3 muốn bứt phá điểm số.",
@@ -85,6 +92,7 @@ const demoCourses = [
     id: 8,
     name: "Luyện Viết Email Tiếng Nhật",
     level: "N3+",
+    status: "not-started",
     schedule: "Chủ nhật",
     price: 2000000,
     description: "Kỹ năng soạn thảo email công việc chuẩn Business Japanese, từ cơ bản đến nâng cao.",
@@ -164,15 +172,35 @@ function updateCartCount() {
   });
 }
 
-function renderCourses(searchTerm = "") {
+function renderCourses(filtersOrSearch = "") {
   const list = document.querySelector("[data-course-list]");
   if (!list) return;
 
-  const filteredCourses = demoCourses.filter(course => 
-    course.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    course.level.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (course.description && course.description.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
+  const resolvedFilters = typeof filtersOrSearch === "string"
+    ? { searchTerm: filtersOrSearch, level: "all", status: "all" }
+    : {
+      searchTerm: filtersOrSearch?.searchTerm || "",
+      level: filtersOrSearch?.level || "all",
+      status: filtersOrSearch?.status || "all"
+    };
+
+  const searchTerm = resolvedFilters.searchTerm.trim().toLowerCase();
+  const levelFilter = resolvedFilters.level.toLowerCase();
+  const statusFilter = resolvedFilters.status;
+
+  const filteredCourses = demoCourses.filter((course) => {
+    const courseStatus = course.status || "not-started";
+    const matchesSearch =
+      !searchTerm ||
+      course.name.toLowerCase().includes(searchTerm) ||
+      course.level.toLowerCase().includes(searchTerm) ||
+      (course.description && course.description.toLowerCase().includes(searchTerm));
+    const matchesLevel =
+      levelFilter === "all" || course.level.toLowerCase().includes(levelFilter);
+    const matchesStatus =
+      statusFilter === "all" || courseStatus === statusFilter;
+    return matchesSearch && matchesLevel && matchesStatus;
+  });
 
   if (filteredCourses.length === 0) {
     list.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--muted);">Không tìm thấy khóa học nào phù hợp.</div>';
@@ -275,7 +303,7 @@ function applyDiscountCode() {
   if (!input || !messageNode) return;
 
   const code = input.value.trim().toUpperCase();
-  
+
   if (code === "JSMART10") {
     const checkboxes = document.querySelectorAll(".cart-checkbox");
     let subtotal = 0;
@@ -344,10 +372,56 @@ function handleAuthForms() {
       const isAuthForm = isLoginForm || isRegisterForm;
 
       if (isLoginForm) {
-        const usernameInput = form.querySelector('input[type="text"]');
-        const username = usernameInput ? usernameInput.value : "user";
+        const identityInput = form.querySelector('input[name="loginIdentity"]');
+        const passwordInput = form.querySelector('input[name="loginPassword"]');
+        const roleSelect = form.querySelector('[data-login-role]');
+        const adminCodeInput = form.querySelector('input[name="adminCode"]');
+
+        const identity = identityInput ? identityInput.value.trim() : "";
+        const password = passwordInput ? passwordInput.value.trim() : "";
+        const role = roleSelect ? roleSelect.value : "student";
+
+        if (!identity || !password) {
+          if (message) message.textContent = "Vui lòng nhập đầy đủ thông tin đăng nhập.";
+          return;
+        }
+
+        if (role === "admin") {
+          const adminCode = adminCodeInput ? adminCodeInput.value.trim() : "";
+          const isValidAdmin =
+            identity === "admin@demo.com" &&
+            password === "admin123" &&
+            adminCode === "ADMIN2026";
+
+          if (!isValidAdmin) {
+            if (message) message.textContent = "Thông tin admin hoặc mã quản trị không đúng.";
+            return;
+          }
+
+          loginAdmin({
+            email: identity,
+            name: "Admin",
+            role: "admin",
+            loginTime: new Date().toISOString()
+          });
+
+          setLoginUser({
+            email: identity,
+            name: "Admin",
+            role: "admin",
+            loginTime: new Date().toISOString()
+          });
+
+          if (message) message.textContent = "Đăng nhập quản trị thành công!";
+          setTimeout(() => {
+            window.location.href = "admin-dashboard.html";
+          }, 600);
+          return;
+        }
+
+        const username = identity.includes("@") ? identity.split("@")[0] : identity;
         setLoginUser({
-          email: username + "@jsmart.vn",
+          email: identity.includes("@") ? identity : username + "@jsmart.vn",
           name: username,
           loginTime: new Date().toISOString()
         });
@@ -371,6 +445,11 @@ function handleAuthForms() {
       }
 
       if (isAuthForm) {
+        const roleSelect = form.querySelector('[data-login-role]');
+        const role = roleSelect ? roleSelect.value : "student";
+        if (isLoginForm && role === "admin") {
+          return;
+        }
         setTimeout(() => {
           window.location.href = "profile.html";
         }, 800);
@@ -398,6 +477,20 @@ function initAuthToggle() {
     registerPanel.hidden = true;
     loginPanel.hidden = false;
   });
+}
+
+function initLoginRoleToggle() {
+  const roleSelect = document.querySelector('[data-login-role]');
+  const adminCodeWrap = document.querySelector('[data-admin-code-wrap]');
+  if (!roleSelect || !adminCodeWrap) return;
+
+  const updateVisibility = () => {
+    const isAdmin = roleSelect.value === "admin";
+    adminCodeWrap.hidden = !isAdmin;
+  };
+
+  roleSelect.addEventListener('change', updateVisibility);
+  updateVisibility();
 }
 
 function initNavState() {
@@ -660,7 +753,7 @@ function initStandardHeader() {
 function initAdminShell() {
   const admin = getAdminUser();
   if (!admin) {
-    window.location.href = "admin-login.html";
+    window.location.href = "login.html";
     return null;
   }
 
@@ -692,22 +785,43 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const searchInput = document.getElementById('course-search-input');
   const searchBtn = document.getElementById('course-search-btn');
+  const statusFilter = document.getElementById('course-status-filter');
+  const levelFilter = document.getElementById('course-level-filter');
+
+  const getCourseFilters = () => ({
+    searchTerm: searchInput?.value || "",
+    status: statusFilter?.value || "all",
+    level: levelFilter?.value || "all"
+  });
 
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
-      renderCourses(e.target.value);
+      renderCourses({ ...getCourseFilters(), searchTerm: e.target.value });
     });
 
     if (searchBtn) {
       searchBtn.addEventListener('click', () => {
-        renderCourses(searchInput.value);
+        renderCourses(getCourseFilters());
       });
     }
+  }
+
+  if (statusFilter) {
+    statusFilter.addEventListener('change', () => {
+      renderCourses(getCourseFilters());
+    });
+  }
+
+  if (levelFilter) {
+    levelFilter.addEventListener('change', () => {
+      renderCourses(getCourseFilters());
+    });
   }
 
   renderCart();
   handleAuthForms();
   initAuthToggle();
+  initLoginRoleToggle();
   initNavState();
   initMobileMenu();
   updateUIBasedOnLogin();

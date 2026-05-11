@@ -1,6 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
   initStandardHeader();
 
+  const adminHome = document.querySelector("[data-admin-home]");
+  const studentHome = document.querySelector("[data-student-home]");
+  const user = getLoginUser();
+  const isAdmin = user && user.role === "admin";
+
+  if (adminHome) adminHome.hidden = !isAdmin;
+  if (studentHome) studentHome.hidden = isAdmin;
+
   const track = document.getElementById("carouselTrack");
   const prevBtn = document.getElementById("prevBtn");
   const nextBtn = document.getElementById("nextBtn");

@@ -40,6 +40,64 @@ body { background: url('../assets/cherry_blossom_bg.png') center/cover fixed; }
 .see-all-link:hover { text-decoration: underline; }
 .text-center { text-align: center; }
 
+/* ===== ADMIN HOME ===== */
+.admin-home-section {
+  background: rgba(255, 240, 245, 0.88);
+}
+
+.admin-home-subtitle {
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.admin-home-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.admin-home-card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 22px;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid rgba(255, 171, 199, 0.35);
+  box-shadow: 0 8px 24px rgba(255, 171, 199, 0.2);
+  display: grid;
+  gap: 10px;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.admin-home-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 35px rgba(255, 171, 199, 0.35);
+}
+
+.admin-home-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: rgba(188, 230, 244, 0.4);
+  font-size: 1.3rem;
+}
+
+.admin-home-card h3 {
+  margin: 0;
+  color: var(--primary-dark);
+  font-size: 1.05rem;
+}
+
+.admin-home-card p {
+  margin: 0;
+  color: #666;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
 /* ===== COURSES GRID ===== */
 .courses-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
 .course-highlight-card {
