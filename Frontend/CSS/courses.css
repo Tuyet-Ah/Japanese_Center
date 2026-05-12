@@ -1,21 +1,126 @@
 ﻿@import url('./base.css');
 
-.course-thumb {
-	width: 100%;
-	height: 160px;
-	border-radius: 16px;
-	background: linear-gradient(135deg, rgba(37, 99, 235, 0.18), rgba(251, 113, 133, 0.18));
-	background-size: cover;
-	background-position: center;
-	margin-bottom: 12px;
-	display: grid;
-	place-items: center;
-	color: var(--primary-dark);
-	font-weight: 700;
-	letter-spacing: 0.02em;
+.course-toolbar {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 12px;
+	flex-wrap: wrap;
 }
 
-.course-thumb.is-empty {
-	background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(251, 113, 133, 0.12));
-	border: 1px dashed rgba(37, 99, 235, 0.18);
+.search-bar {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+	max-width: 440px;
 }
+
+.search-input-wrap {
+	position: relative;
+	flex: 1;
+	min-width: 220px;
+}
+
+.search-icon {
+	position: absolute;
+	left: 16px;
+	top: 50%;
+	transform: translateY(-50%);
+	font-size: 1rem;
+	color: rgba(236, 72, 153, 0.6);
+	pointer-events: none;
+}
+
+.search-input {
+	padding: 12px 16px 12px 42px;
+	border-radius: 24px;
+	border: 1px solid rgba(236, 72, 153, 0.25);
+	width: 100%;
+	font-family: inherit;
+	font-size: 0.95rem;
+	outline: none;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-input:focus {
+	border-color: rgba(236, 72, 153, 0.55);
+	box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
+}
+
+.search-button {
+	padding: 10px 22px;
+	border-radius: 24px;
+	flex-shrink: 0;
+}
+
+.filter-bar {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	background: rgba(255, 255, 255, 0.9);
+	border: 1px solid var(--border);
+	border-radius: 999px;
+	padding: 8px 12px;
+	box-shadow: 0 14px 28px rgba(255, 171, 199, 0.12);
+}
+
+.filter-field {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.filter-field label {
+	font-weight: 700;
+	color: var(--primary-dark);
+	font-size: 0.85rem;
+	white-space: nowrap;
+}
+
+.filter-field select {
+	appearance: none;
+	border-radius: 14px;
+	border: 1px solid rgba(236, 72, 153, 0.2);
+	padding: 8px 34px 8px 12px;
+	background: linear-gradient(135deg, rgba(255, 171, 199, 0.16), rgba(188, 230, 244, 0.22));
+	font-family: inherit;
+	font-size: 0.9rem;
+	color: var(--text);
+	outline: none;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5' stroke='%23f472b6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 12px center;
+	background-size: 16px;
+}
+
+.filter-field select:focus {
+	border-color: rgba(236, 72, 153, 0.55);
+	box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.12);
+}
+
+@media (max-width: 900px) {
+	.course-toolbar {
+		width: 100%;
+		justify-content: flex-start;
+	}
+}
+
+@media (max-width: 768px) {
+	.course-toolbar {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.search-bar,
+	.filter-bar {
+		width: 100%;
+	}
+
+	.filter-bar {
+		justify-content: space-between;
+		border-radius: var(--radius-lg);
+		padding: 10px 14px;
+	}
+}
+

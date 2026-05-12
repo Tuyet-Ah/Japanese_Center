@@ -168,12 +168,12 @@ main.section {
     padding: 40px 50px;
     display: flex;
     flex-direction: column;
-    background: var(--primary); /* Pink background */
+    background: #ffffff;
 }
 
 .profile-content-header {
     font-size: 1.8rem;
-    color: #fff; /* White text */
+    color: var(--primary-dark);
     margin-bottom: 35px;
     font-weight: 600;
     text-transform: uppercase;
@@ -201,12 +201,12 @@ main.section {
 .info-label {
     width: 160px;
     font-weight: 600;
-    color: #fff; /* White text */
+    color: var(--primary-dark);
     font-size: 1.1rem;
 }
 
 .info-value {
-    color: #fff; /* White text */
+    color: var(--primary-dark);
     font-weight: 500;
     font-size: 1.1rem;
 }
@@ -246,6 +246,100 @@ main.section {
     box-shadow: 0 15px 35px rgba(0,0,0,0.15);
 }
 
+/* ========== MODALS ========== */
+.profile-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    z-index: 60;
+}
+
+.profile-modal[hidden] {
+    display: none;
+}
+
+.profile-modal-card {
+    width: min(520px, 100%);
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.25);
+    padding: 22px;
+}
+
+.profile-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.profile-modal-header h3 {
+    margin: 0;
+    color: var(--primary-dark);
+    font-size: 1.3rem;
+}
+
+.modal-close {
+    border: none;
+    background: rgba(244, 114, 182, 0.15);
+    color: var(--primary-dark);
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    line-height: 1;
+}
+
+.profile-modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.modal-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-weight: 600;
+    color: var(--primary-dark);
+}
+
+.modal-field input,
+.modal-field select {
+    border-radius: 12px;
+    border: 1px solid rgba(236, 72, 153, 0.25);
+    padding: 10px 12px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.modal-field input:focus,
+.modal-field select:focus {
+    border-color: rgba(236, 72, 153, 0.55);
+    box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.12);
+}
+
+.modal-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 6px;
+}
+
+.modal-message {
+    font-size: 0.9rem;
+    color: var(--primary-dark);
+}
+
 @media (max-width: 980px) {
     .profile-wrapper {
         flex-direction: column;
@@ -273,7 +367,7 @@ main.section {
 
 /* Exam link in results table */
 .exam-link {
-    color: #fff;
+    color: var(--primary-dark);
     text-decoration: underline;
     text-underline-offset: 3px;
     font-weight: 600;
@@ -334,13 +428,13 @@ main.section {
 .purchased-card-info h3 {
     margin: 0 0 6px;
     font-size: 1.1rem;
-    color: #fff;
+    color: var(--primary-dark);
 }
 
 .purchased-card-info p {
     margin: 2px 0;
     font-size: 0.88rem;
-    color: rgba(255,255,255,0.8);
+    color: rgba(157, 23, 77, 0.9);
 }
 
 .progress-bar-wrap { margin-top: 10px; }
@@ -349,7 +443,7 @@ main.section {
     display: flex;
     justify-content: space-between;
     font-size: 0.82rem;
-    color: rgba(255,255,255,0.85);
+    color: rgba(157, 23, 77, 0.9);
     margin-bottom: 5px;
 }
 
@@ -375,8 +469,8 @@ main.section {
     white-space: nowrap;
 }
 
-.status-active { background: rgba(255,255,255,0.3); color: #fff; }
-.status-done   { background: rgba(134,239,172,0.4); color: #14532d; }
+.status-active { background: rgba(255, 171, 199, 0.25); color: var(--primary-dark); }
+.status-done   { background: rgba(255, 171, 199, 0.2); color: var(--primary-dark); }
 
 /* ========== KẾT QUẢ HỌC TẬP ========== */
 .results-summary {
@@ -399,17 +493,19 @@ main.section {
 
 .result-stat-icon { font-size: 2rem; margin-bottom: 8px; }
 
+
 .result-stat-value {
     font-size: 2rem;
     font-weight: 800;
-    color: #fff;
+    color: var(--primary-dark);
     line-height: 1;
     margin-bottom: 6px;
 }
 
+
 .result-stat-label {
     font-size: 0.85rem;
-    color: rgba(255,255,255,0.8);
+    color: rgba(157, 23, 77, 0.9);
     font-weight: 600;
 }
 
@@ -426,17 +522,19 @@ main.section {
     font-size: 0.95rem;
 }
 
+
 .results-table th {
     background: rgba(255,255,255,0.3);
-    color: #fff;
+    color: var(--primary-dark);
     font-weight: 700;
     padding: 14px 16px;
     text-align: left;
 }
 
+
 .results-table td {
     padding: 14px 16px;
-    color: rgba(255,255,255,0.9);
+    color: rgba(157, 23, 77, 0.9);
     border-bottom: 1px solid rgba(255,255,255,0.15);
 }
 

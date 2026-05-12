@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => startExam(examFromUrl), 400);
   }
 
-  const levelItems = document.querySelectorAll("#levelFilter li");
+  const levelSelect = document.getElementById("levelFilter");
   const examCards = Array.from(document.querySelectorAll(".exam-card"));
 
   const applyFilters = (selectedLevel) => {
@@ -24,18 +24,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  levelItems.forEach(item => {
-    item.addEventListener('click', () => {
-      // Remove active class from all
-      levelItems.forEach(li => li.style.backgroundColor = "");
-      
-      // Add active style to clicked item
-      item.style.backgroundColor = "var(--surface-2)";
-      
-      const level = item.getAttribute("data-level");
-      applyFilters(level);
+  if (levelSelect) {
+    levelSelect.addEventListener('change', () => {
+      applyFilters(levelSelect.value);
     });
-  });
+  }
 
   examCards.forEach((card) => {
     const button = card.querySelector(".btn-exam-detail");

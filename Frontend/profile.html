@@ -76,7 +76,7 @@
                 </div>
                 <div class="info-row">
                   <span class="info-label">Ngày sinh</span>
-                  <span class="info-value">01/05/2005</span>
+                  <span class="info-value" data-profile-dob>01/05/2005</span>
                 </div>
                 <div class="info-row">
                   <span class="info-label">Email</span>
@@ -84,15 +84,15 @@
                 </div>
                 <div class="info-row">
                   <span class="info-label">Số điện thoại</span>
-                  <span class="info-value">0357513055</span>
+                  <span class="info-value" data-profile-phone>0357513055</span>
                 </div>
                 <div class="info-row">
                   <span class="info-label">Giới tính</span>
-                  <span class="info-value">Nữ</span>
+                  <span class="info-value" data-profile-gender>Nữ</span>
                 </div>
                 <div class="profile-actions">
-                  <button class="action-btn">Cập nhật thông tin</button>
-                  <button class="action-btn">Thay đổi mật khẩu</button>
+                  <button class="action-btn" data-open-profile-update>Cập nhật thông tin</button>
+                  <button class="action-btn" data-open-password-change>Thay đổi mật khẩu</button>
                 </div>
               </div>
               <img id="largeAvatar" src="assets/icon.png" alt="Decoration" class="profile-decorative-img">
@@ -221,6 +221,73 @@
 
       </div>
   </main>
+
+  <div class="profile-modal" data-profile-modal="update" hidden>
+    <div class="profile-modal-card">
+      <div class="profile-modal-header">
+        <h3>Cập nhật thông tin</h3>
+        <button type="button" class="modal-close" data-close-profile-modal aria-label="Đóng">×</button>
+      </div>
+      <form class="profile-modal-body" data-profile-update-form>
+        <label class="modal-field">
+          <span>Họ tên</span>
+          <input type="text" name="fullName" required>
+        </label>
+        <label class="modal-field">
+          <span>Email</span>
+          <input type="email" name="email" required>
+        </label>
+        <label class="modal-field">
+          <span>Ngày sinh</span>
+          <input type="date" name="dob">
+        </label>
+        <label class="modal-field">
+          <span>Số điện thoại</span>
+          <input type="tel" name="phone">
+        </label>
+        <label class="modal-field">
+          <span>Giới tính</span>
+          <select name="gender">
+            <option value="">Chọn</option>
+            <option value="Nữ">Nữ</option>
+            <option value="Nam">Nam</option>
+            <option value="Khác">Khác</option>
+          </select>
+        </label>
+        <div class="modal-actions">
+          <span class="modal-message" data-profile-update-message></span>
+          <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="profile-modal" data-profile-modal="password" hidden>
+    <div class="profile-modal-card">
+      <div class="profile-modal-header">
+        <h3>Thay đổi mật khẩu</h3>
+        <button type="button" class="modal-close" data-close-profile-modal aria-label="Đóng">×</button>
+      </div>
+      <form class="profile-modal-body" data-password-form>
+        <label class="modal-field">
+          <span>Mật khẩu hiện tại</span>
+          <input type="password" name="currentPassword" autocomplete="current-password">
+        </label>
+        <label class="modal-field">
+          <span>Mật khẩu mới</span>
+          <input type="password" name="newPassword" required autocomplete="new-password">
+        </label>
+        <label class="modal-field">
+          <span>Xác nhận mật khẩu mới</span>
+          <input type="password" name="confirmPassword" required autocomplete="new-password">
+        </label>
+        <div class="modal-actions">
+          <span class="modal-message" data-password-message></span>
+          <button type="submit" class="btn btn-primary">Cập nhật</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </body>
 
 </html>

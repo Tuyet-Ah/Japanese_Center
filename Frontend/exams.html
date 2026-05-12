@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 
 <head>
@@ -45,14 +45,6 @@
 	</header>
 
 	<main>
-		<!-- Page Header -->
-		<section class="page-header">
-			<div class="container">
-				<h1>Đề Thi Online</h1>
-				<p>Luyện thi với các bài kiểm tra trực tuyến, đánh giá năng lực tiếng Nhật của bạn</p>
-			</div>
-		</section>
-
 		<section class="section exam-page-wrapper">
 			<div class="container exam-page-container">
 				<div class="exams-main">
@@ -129,22 +121,131 @@
 							</div>
 							<button class="btn btn-exam-detail btn-outline-exam" onclick="startExam('N1-201202-d')">Chi tiết</button>
 						</div>
+
+						<div class="exam-card" data-exam-level="N2">
+							<h3>JLPT - N2 Actual<br>Test 201807</h3>
+							<div class="exam-meta">
+								<span><i class="time-icon">⏱</i> 155 phút |</span>
+								<span>235</span>
+							</div>
+							<div class="exam-meta-secondary">
+								4 phần thi | 96 câu hỏi
+							</div>
+							<button class="btn btn-exam-detail btn-primary-exam" onclick="startExam('N2-201807')">Chi tiết</button>
+						</div>
+
+						<div class="exam-card" data-exam-level="N2">
+							<h3>JLPT - N2 Actual<br>Test 201912</h3>
+							<div class="exam-meta">
+								<span><i class="time-icon">⏱</i> 155 phút |</span>
+								<span>235</span>
+							</div>
+							<div class="exam-meta-secondary">
+								4 phần thi | 96 câu hỏi
+							</div>
+							<button class="btn btn-exam-detail btn-outline-exam" onclick="startExam('N2-201912')">Chi tiết</button>
+						</div>
+
+						<div class="exam-card" data-exam-level="N3">
+							<h3>JLPT - N3 Actual<br>Test 201707</h3>
+							<div class="exam-meta">
+								<span><i class="time-icon">⏱</i> 140 phút |</span>
+								<span>210</span>
+							</div>
+							<div class="exam-meta-secondary">
+								3 phần thi | 89 câu hỏi
+							</div>
+							<button class="btn btn-exam-detail btn-primary-exam" onclick="startExam('N3-201707')">Chi tiết</button>
+						</div>
+
+						<div class="exam-card" data-exam-level="N3">
+							<h3>JLPT - N3 Actual<br>Test 201912</h3>
+							<div class="exam-meta">
+								<span><i class="time-icon">⏱</i> 140 phút |</span>
+								<span>210</span>
+							</div>
+							<div class="exam-meta-secondary">
+								3 phần thi | 89 câu hỏi
+							</div>
+							<button class="btn btn-exam-detail btn-outline-exam" onclick="startExam('N3-201912')">Chi tiết</button>
+						</div>
+
+						<div class="exam-card" data-exam-level="N4">
+							<h3>JLPT - N4 Actual<br>Test 201607</h3>
+							<div class="exam-meta">
+								<span><i class="time-icon">⏱</i> 125 phút |</span>
+								<span>180</span>
+							</div>
+							<div class="exam-meta-secondary">
+								3 phần thi | 72 câu hỏi
+							</div>
+							<button class="btn btn-exam-detail btn-primary-exam" onclick="startExam('N4-201607')">Chi tiết</button>
+						</div>
+
+						<div class="exam-card" data-exam-level="N4">
+							<h3>JLPT - N4 Actual<br>Test 201912</h3>
+							<div class="exam-meta">
+								<span><i class="time-icon">⏱</i> 125 phút |</span>
+								<span>180</span>
+							</div>
+							<div class="exam-meta-secondary">
+								3 phần thi | 72 câu hỏi
+							</div>
+							<button class="btn btn-exam-detail btn-outline-exam" onclick="startExam('N4-201912')">Chi tiết</button>
+						</div>
+
+						<div class="exam-card" data-exam-level="N5">
+							<h3>JLPT - N5 Actual<br>Test 201607</h3>
+							<div class="exam-meta">
+								<span><i class="time-icon">⏱</i> 105 phút |</span>
+								<span>140</span>
+							</div>
+							<div class="exam-meta-secondary">
+								3 phần thi | 60 câu hỏi
+							</div>
+							<button class="btn btn-exam-detail btn-primary-exam" onclick="startExam('N5-201607')">Chi tiết</button>
+						</div>
+
+						<div class="exam-card" data-exam-level="N5">
+							<h3>JLPT - N5 Actual<br>Test 201912</h3>
+							<div class="exam-meta">
+								<span><i class="time-icon">⏱</i> 105 phút |</span>
+								<span>140</span>
+							</div>
+							<div class="exam-meta-secondary">
+								3 phần thi | 60 câu hỏi
+							</div>
+							<button class="btn btn-exam-detail btn-outline-exam" onclick="startExam('N5-201912')">Chi tiết</button>
+						</div>
+
+						<div class="exam-card" data-exam-level="N1">
+							<h3>JLPT - N1 Actual<br>Test 201907</h3>
+							<div class="exam-meta">
+								<span><i class="time-icon">⏱</i> 165 phút |</span>
+								<span>257</span>
+							</div>
+							<div class="exam-meta-secondary">
+								4 phần thi | 108 câu hỏi
+							</div>
+							<button class="btn btn-exam-detail btn-primary-exam" onclick="startExam('N1-201907')">Chi tiết</button>
+						</div>
 					</div>
 				</div>
 
 				<aside class="exams-sidebar">
-					<div class="level-dropdown">
-						Trình độ <span class="arrow-down">˅</span>
+					<label class="level-select-label" for="levelFilter">Trình độ</label>
+					<div class="level-select-wrap">
+						<select id="levelFilter" class="level-select">
+							<option value="">Tất cả</option>
+							<option value="N5">N5</option>
+							<option value="N4">N4</option>
+							<option value="N3">N3</option>
+							<option value="N2">N2</option>
+							<option value="N1">N1</option>
+						</select>
 					</div>
-					<ul class="level-list" id="levelFilter">
-						<li data-level="N5">N5</li>
-						<li data-level="N4">N4</li>
-						<li data-level="N3">N3</li>
-						<li data-level="N2">N2</li>
-						<li data-level="N1">N1</li>
-					</ul>
 					<div class="sidebar-mascot">
-						<img src="assets/mascot.png" alt="Mascot">
+						<img src="assets/icon.png" alt="Mascot">
 					</div>
 				</aside>
 			</div>

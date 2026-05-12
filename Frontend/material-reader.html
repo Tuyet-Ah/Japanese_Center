@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSMART | Đọc tài liệu</title>
+  <link rel="stylesheet" href="CSS/material-reader.css">
+  <script defer src="JS/script.js"></script>
+  <script defer src="JS/material-reader.js"></script>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="Home.html">
+        <span class="brand-mark">日</span>
+        <span>JSMART<small>Trung tâm giảng dạy tiếng Nhật</small></span>
+      </a>
+      <nav class="nav">
+        <a href="Home.html">Trang chủ</a>
+        <a href="courses.html">Khóa học</a>
+        <a href="exams.html">Đề thi</a>
+        <a href="jlpt.html">JLPT</a>
+        <a href="materials.html" class="active">Tài liệu</a>
+      </nav>
+      <div class="actions">
+        <a data-profile-link href="profile.html" class="icon-btn" hidden title="Trang cá nhân">👤</a>
+        <a data-cart-link href="cart.html" class="icon-btn cart-icon" hidden title="Giỏ hàng">🛒<span data-cart-count
+            class="badge">0</span></a>
+        <div data-auth-actions class="auth-buttons">
+          <a class="btn btn-outline" href="login.html">Đăng nhập</a>
+          <a class="btn btn-primary" href="register.html">Đăng ký</a>
+        </div>
+        <div data-user-actions class="user-section" style="display: none;">
+          <span class="user-greeting">Xin chào, <span data-username></span></span>
+          <button data-logout-btn class="btn btn-outline">Đăng xuất</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="reader-page">
+    <div class="container reader-container">
+      <div class="reader-breadcrumb">
+        <a href="materials.html">Tài liệu</a>
+        <span> / </span>
+        <span data-doc-category>Bộ từ vựng</span>
+      </div>
+
+      <div class="reader-header">
+        <div>
+          <h1 data-doc-title>Đang tải tài liệu...</h1>
+          <p data-doc-subtitle>Mô tả ngắn tài liệu</p>
+        </div>
+      </div>
+
+      <div class="reader-grid">
+        <div class="reader-primary">
+          <article class="reader-content" data-doc-content>
+            <p>Vui lòng đợi trong giây lát.</p>
+          </article>
+
+          <section class="reader-video" data-doc-video hidden>
+            <div class="video-shell">
+              <aside class="video-question-nav">
+                <button type="button" class="video-nav-toggle" data-video-nav-toggle>Ẩn danh sách câu hỏi</button>
+                <div class="video-question-list" data-video-question-list></div>
+              </aside>
+              <div class="video-main">
+                <div class="video-player">
+                  <video controls data-video-player></video>
+                </div>
+                <div class="video-question-card">
+                  <div class="video-question-header">
+                    <div class="video-question-title" data-video-question-title>Câu 1/31</div>
+                    <div class="video-question-meta" data-video-question-meta>16 từ</div>
+                  </div>
+                  <textarea class="video-answer" rows="5" placeholder="Nhập những gì bạn nghe được" data-video-answer></textarea>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <aside class="reader-notes">
+          <div class="notes-header">
+            <h2>Ghi chú kiến thức</h2>
+            <span class="notes-status" data-notes-status>Chưa lưu</span>
+          </div>
+          <textarea class="notes-input" rows="12" placeholder="Ghi chú tại đây..." data-notes-input></textarea>
+          <button class="btn btn-primary notes-save" type="button" data-notes-save>Lưu ghi chú</button>
+          <p class="notes-hint">Ghi chú sẽ được lưu trên trình duyệt của bạn.</p>
+        </aside>
+      </div>
+    </div>
+  </main>
+</body>
+
+</html>

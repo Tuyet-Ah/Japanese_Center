@@ -391,10 +391,56 @@ function handleAuthForms() {
       const isAuthForm = isLoginForm || isRegisterForm;
 
       if (isLoginForm) {
-        const usernameInput = form.querySelector('input[type="text"]');
-        const username = usernameInput ? usernameInput.value : "user";
+        const identityInput = form.querySelector('input[name="loginIdentity"]');
+        const passwordInput = form.querySelector('input[name="loginPassword"]');
+        const roleSelect = form.querySelector('[data-login-role]');
+        const adminCodeInput = form.querySelector('input[name="adminCode"]');
+
+        const identity = identityInput ? identityInput.value.trim() : "";
+        const password = passwordInput ? passwordInput.value.trim() : "";
+        const role = roleSelect ? roleSelect.value : "student";
+
+        if (!identity || !password) {
+          if (message) message.textContent = "Vui lòng nhập đầy đủ thông tin đăng nhập.";
+          return;
+        }
+
+        if (role === "admin") {
+          const adminCode = adminCodeInput ? adminCodeInput.value.trim() : "";
+          const isValidAdmin =
+            identity === "admin@demo.com" &&
+            password === "admin123" &&
+            adminCode === "ADMIN2026";
+
+          if (!isValidAdmin) {
+            if (message) message.textContent = "Thông tin admin hoặc mã quản trị không đúng.";
+            return;
+          }
+
+          loginAdmin({
+            email: identity,
+            name: "Admin",
+            role: "admin",
+            loginTime: new Date().toISOString()
+          });
+
+          setLoginUser({
+            email: identity,
+            name: "Admin",
+            role: "admin",
+            loginTime: new Date().toISOString()
+          });
+
+          if (message) message.textContent = "Đăng nhập quản trị thành công!";
+          setTimeout(() => {
+            window.location.href = "admin-dashboard.html";
+          }, 600);
+          return;
+        }
+
+        const username = identity.includes("@") ? identity.split("@")[0] : identity;
         setLoginUser({
-          email: username + "@jsmart.vn",
+          email: identity.includes("@") ? identity : username + "@jsmart.vn",
           name: username,
           loginTime: new Date().toISOString()
         });
@@ -418,6 +464,11 @@ function handleAuthForms() {
       }
 
       if (isAuthForm) {
+        const roleSelect = form.querySelector('[data-login-role]');
+        const role = roleSelect ? roleSelect.value : "student";
+        if (isLoginForm && role === "admin") {
+          return;
+        }
         setTimeout(() => {
           window.location.href = "profile.html";
         }, 800);
@@ -445,6 +496,20 @@ function initAuthToggle() {
     registerPanel.hidden = true;
     loginPanel.hidden = false;
   });
+}
+
+function initLoginRoleToggle() {
+  const roleSelect = document.querySelector('[data-login-role]');
+  const adminCodeWrap = document.querySelector('[data-admin-code-wrap]');
+  if (!roleSelect || !adminCodeWrap) return;
+
+  const updateVisibility = () => {
+    const isAdmin = roleSelect.value === "admin";
+    adminCodeWrap.hidden = !isAdmin;
+  };
+
+  roleSelect.addEventListener('change', updateVisibility);
+  updateVisibility();
 }
 
 function initNavState() {
@@ -707,7 +772,7 @@ function initStandardHeader() {
 function initAdminShell() {
   const admin = getAdminUser();
   if (!admin) {
-    window.location.href = "admin-login.html";
+    window.location.href = "login.html";
     return null;
   }
 
@@ -739,22 +804,43 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const searchInput = document.getElementById('course-search-input');
   const searchBtn = document.getElementById('course-search-btn');
+  const statusFilter = document.getElementById('course-status-filter');
+  const levelFilter = document.getElementById('course-level-filter');
+
+  const getCourseFilters = () => ({
+    searchTerm: searchInput?.value || "",
+    status: statusFilter?.value || "all",
+    level: levelFilter?.value || "all"
+  });
 
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
-      renderCourses(e.target.value);
+      renderCourses({ ...getCourseFilters(), searchTerm: e.target.value });
     });
 
     if (searchBtn) {
       searchBtn.addEventListener('click', () => {
-        renderCourses(searchInput.value);
+        renderCourses(getCourseFilters());
       });
     }
+  }
+
+  if (statusFilter) {
+    statusFilter.addEventListener('change', () => {
+      renderCourses(getCourseFilters());
+    });
+  }
+
+  if (levelFilter) {
+    levelFilter.addEventListener('change', () => {
+      renderCourses(getCourseFilters());
+    });
   }
 
   renderCart();
   handleAuthForms();
   initAuthToggle();
+  initLoginRoleToggle();
   initNavState();
   initMobileMenu();
   updateUIBasedOnLogin();
