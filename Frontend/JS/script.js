@@ -101,8 +101,17 @@ function normalizeCourseDetail(course) {
   return normalized;
 }
 
-async function fetchCourseList() {
-  const response = await fetch(`${API_BASE_URL}/courses/`);
+async function fetchCourseList(params = {}) {
+  const searchParams = new URLSearchParams();
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== "") {
+      searchParams.set(key, value);
+    }
+  });
+  const queryString = searchParams.toString();
+  const url = queryString ? `${API_BASE_URL}/courses/?${queryString}` : `${API_BASE_URL}/courses/`;
+
+  const response = await fetch(url);
   const data = await response.json();
   if (!response.ok) {
     throw new Error(data.error || data.detail || "Fetch courses failed");
@@ -189,18 +198,30 @@ async function updateCartCount() {
   });
 }
 
-async function renderCourses() {
+async function renderCourses(options = {}) {
   const list = document.querySelector("[data-course-list]");
   if (!list) return;
 
   list.innerHTML = '<div class="card"><h3>Dang tai khoa hoc...</h3></div>';
 
   try {
-    const data = await fetchCourseList();
+    const data = await fetchCourseList(options.queryParams || {});
     const courses = data.map(normalizeCourseListItem);
-    courseCatalog = Object.fromEntries(courses.map((course) => [course.id, course]));
+    let filteredCourses = courses;
 
-    list.innerHTML = courses
+    if (options.status && options.status !== "all" && options.progressByCourseId) {
+      filteredCourses = courses.filter((course) => {
+        const progress = Number(options.progressByCourseId[course.id] || 0);
+        if (options.status === "not-started") return progress === 0;
+        if (options.status === "in-progress") return progress > 0 && progress < 100;
+        if (options.status === "completed") return progress >= 100;
+        return true;
+      });
+    }
+
+    courseCatalog = Object.fromEntries(filteredCourses.map((course) => [course.id, course]));
+
+    list.innerHTML = filteredCourses
       .map((course) => {
         const thumbClass = course.thumbnail ? "course-thumb" : "course-thumb is-empty";
         const thumbStyle = course.thumbnail ? `style="background-image: url('${course.thumbnail}');"` : "";
@@ -800,41 +821,45 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   updateCartCount();
-  renderCourses();
 
-  const searchInput = document.getElementById('course-search-input');
-  const searchBtn = document.getElementById('course-search-btn');
-  const statusFilter = document.getElementById('course-status-filter');
-  const levelFilter = document.getElementById('course-level-filter');
+  const hasCoursePageHandlers = typeof refreshCourseList === "function";
+  if (!hasCoursePageHandlers) {
+    renderCourses();
 
-  const getCourseFilters = () => ({
-    searchTerm: searchInput?.value || "",
-    status: statusFilter?.value || "all",
-    level: levelFilter?.value || "all"
-  });
+    const searchInput = document.getElementById('course-search-input');
+    const searchBtn = document.getElementById('course-search-btn');
+    const statusFilter = document.getElementById('course-status-filter');
+    const levelFilter = document.getElementById('course-level-filter');
 
-  if (searchInput) {
-    searchInput.addEventListener('input', (e) => {
-      renderCourses({ ...getCourseFilters(), searchTerm: e.target.value });
+    const getCourseFilters = () => ({
+      searchTerm: searchInput?.value || "",
+      status: statusFilter?.value || "all",
+      level: levelFilter?.value || "all"
     });
 
-    if (searchBtn) {
-      searchBtn.addEventListener('click', () => {
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        renderCourses({ ...getCourseFilters(), searchTerm: e.target.value });
+      });
+
+      if (searchBtn) {
+        searchBtn.addEventListener('click', () => {
+          renderCourses(getCourseFilters());
+        });
+      }
+    }
+
+    if (statusFilter) {
+      statusFilter.addEventListener('change', () => {
         renderCourses(getCourseFilters());
       });
     }
-  }
 
-  if (statusFilter) {
-    statusFilter.addEventListener('change', () => {
-      renderCourses(getCourseFilters());
-    });
-  }
-
-  if (levelFilter) {
-    levelFilter.addEventListener('change', () => {
-      renderCourses(getCourseFilters());
-    });
+    if (levelFilter) {
+      levelFilter.addEventListener('change', () => {
+        renderCourses(getCourseFilters());
+      });
+    }
   }
 
   renderCart();

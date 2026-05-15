@@ -43,7 +43,7 @@
     font-size: 1.15rem;
     line-height: 1.4;
     margin: 0 0 15px;
-    font-family: Georgia, 'Times New Roman', Times, serif; /* As seen in mockup */
+    font-family: inherit;
     font-weight: 700;
 }
 
@@ -76,11 +76,11 @@
     font-size: 0.95rem;
 }
 
- .btn-outline-exam {
+.btn-outline-exam {
     background-color: var(--primary);
     color: #ffffff;
     border-color: var(--primary);
- }
+}
 
 .btn-outline-exam:hover {
     background-color: var(--primary-dark);
@@ -107,7 +107,7 @@
 .level-select-label {
     font-weight: 700;
     color: var(--primary-dark);
-    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-family: inherit;
     font-size: 1.05rem;
 }
 
@@ -125,7 +125,7 @@
     border: 0;
     background: transparent;
     color: var(--primary-dark);
-    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-family: inherit;
     font-weight: 700;
     font-size: 1.05rem;
     padding: 8px 34px 8px 6px;
@@ -152,8 +152,9 @@
     .exam-page-container {
         grid-template-columns: 1fr;
     }
-    
+
     .exams-sidebar {
-        order: -1; /* Move sidebar to top on mobile */
+        order: -1;
+        /* Move sidebar to top on mobile */
     }
 }

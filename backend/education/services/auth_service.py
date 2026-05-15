@@ -17,7 +17,7 @@ class AuthService:
             username=data.get('username'),
             password=data.get('password'),
             email=data.get('email'),
-            role=data.get('role', 'student'),
+            role='student',
             phone=data.get('phone'),
             address=data.get('address')
         )

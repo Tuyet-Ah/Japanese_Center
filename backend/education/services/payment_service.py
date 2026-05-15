@@ -13,9 +13,11 @@ from education.models import CartItem, Enrollment, PaymentTransaction, PaymentTr
 class PaymentService:
     @staticmethod
     def _build_vnpay_url(params):
-        sorted_params = sorted(params.items())
+        # Build query string and secure hash excluding vnp_SecureHash and vnp_SecureHashType
+        filtered = {k: v for k, v in params.items() if k not in ['vnp_SecureHash', 'vnp_SecureHashType']}
+        sorted_params = sorted(filtered.items())
         query_string = urlencode(sorted_params, safe='')
-        hash_data = urlencode(sorted_params, safe='')
+        hash_data = query_string
         secure_hash = hmac.new(
             settings.VNPAY_HASH_SECRET.encode('utf-8'),
             hash_data.encode('utf-8'),
@@ -91,7 +93,6 @@ class PaymentService:
             'vnp_IpAddr': client_ip or '127.0.0.1',
             'vnp_CreateDate': now.strftime('%Y%m%d%H%M%S'),
             'vnp_ExpireDate': (now + timedelta(minutes=15)).strftime('%Y%m%d%H%M%S'),
-            'vnp_SecureHashType': 'SHA512',
         }
 
         payment_url = PaymentService._build_vnpay_url(params)

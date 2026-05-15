@@ -67,6 +67,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const message = form.querySelector("[data-form-message]");
   const submitButton = form.querySelector('button[type="submit"]');
 
+  const roleSelect = document.getElementById("registerRole");
+  const adminNote = document.getElementById("adminRegisterNote");
+
+  if (roleSelect && adminNote) {
+    const toggleNote = () => {
+      adminNote.style.display = roleSelect.value === "admin" ? "block" : "none";
+    };
+    toggleNote();
+    roleSelect.addEventListener("change", toggleNote);
+  }
+
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
     console.log("[auth] register submit");
@@ -80,6 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const goalInput = document.getElementById("registerGoal");
     const passwordInput = document.getElementById("registerPassword");
     const passwordConfirmInput = document.getElementById("registerPasswordConfirm");
+    const role = roleSelect ? roleSelect.value : "student";
 
     const name = nameInput ? nameInput.value.trim() : "";
     const username = usernameInput ? usernameInput.value.trim() : "";
@@ -111,8 +123,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (submitButton) submitButton.disabled = true;
 
     try {
-      console.log("[auth] register request ->", `${AUTH_API_BASE_URL}/register/`);
-      const registerResponse = await fetch(`${AUTH_API_BASE_URL}/register/`, {
+      const registerUrl = role === "admin" ? `${AUTH_API_BASE_URL}/register-admin/` : `${AUTH_API_BASE_URL}/register/`;
+      console.log("[auth] register request ->", registerUrl);
+      const registerResponse = await fetch(registerUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -132,6 +145,14 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!registerResponse.ok) {
         const errorText = registerData.error || registerData.detail || "Dang ky that bai.";
         setFormMessage(message, errorText);
+        return;
+      }
+
+      if (role === "admin") {
+        setFormMessage(message, "Dang ky admin thanh cong. Tai khoan se duoc duyet truoc khi dang nhap.");
+        setTimeout(() => {
+          window.location.href = "login.html";
+        }, 900);
         return;
       }
 

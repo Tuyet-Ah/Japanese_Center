@@ -31,12 +31,15 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("[auth] login submit");
     setFormMessage(message, "");
 
-    const usernameInput = document.getElementById("loginUsername");
-    const passwordInput = document.getElementById("loginPassword");
+    const usernameInput = form.querySelector('input[name="loginUsername"]');
+    const passwordInput = form.querySelector('input[name="loginPassword"]');
+    const roleSelect = form.querySelector('[data-login-role]');
+
     const username = usernameInput ? usernameInput.value.trim() : "";
     const password = passwordInput ? passwordInput.value : "";
+    const selectedRole = roleSelect ? roleSelect.value : "student";
 
-    console.log("[auth] login payload", { username, hasPassword: Boolean(password) });
+    console.log("[auth] login payload", { username, role: selectedRole, hasPassword: Boolean(password) });
 
     if (!username || !password) {
       setFormMessage(message, "Vui long nhap day du ten dang nhap va mat khau.");
@@ -88,14 +91,16 @@ document.addEventListener("DOMContentLoaded", () => {
       const displayName = profile && profile.username ? profile.username : username;
       const userEmail = profile && profile.email ? profile.email : "";
 
+      const role = profile ? profile.role : selectedRole;
+
       persistLoginUser({
         name: displayName,
         email: userEmail,
-        role: profile ? profile.role : "student",
+        role,
         loginTime: new Date().toISOString()
       });
       setFormMessage(message, "Dang chuyen huong...");
-      window.location.href = "Home.html";
+      window.location.href = role === "admin" ? "admin-dashboard.html" : "Home.html";
     } catch (error) {
       setFormMessage(message, "Khong the ket noi den may chu. Vui long thu lai.");
     } finally {

@@ -1,5 +1,5 @@
 from django.urls import path
-from .Views import RegisterView, RegisterAdminView, LoginView, ApproveAdminView, ReplyToTopicView, GetReplyTopicView, CourseListView, CourseDetailView, ChapterCreateView, ChapterDetailView, CartView, CheckoutView, CartDeleteView, PracticeHistoryView, FinalExamHistoryView, QuizSubmitView, QuizDetailView, LessonDetailView, LessonCreateView, MarkLessonCompleteView, ProfileView, MyCoursesProgressView, QuizLeaderboardView, QuizReviewDetailView, LessonCommentView, PersonalNoteView, ForumTopicView, CourseSearchSuggestView, CourseReviewView, VnpayReturnView, VnpayIpnView, JapaneseChatbotView
+from .Views import RegisterView, RegisterAdminView, LoginView, ApproveAdminView, ReplyToTopicView, GetReplyTopicView, CourseListView, CourseDetailView, ChapterCreateView, ChapterDetailView, CartView, CheckoutView, CartDeleteView, PracticeHistoryView, FinalExamHistoryView, QuizSubmitView, QuizDetailView, LessonDetailView, LessonCreateView, MarkLessonCompleteView, ProfileView, MyCoursesProgressView, QuizLeaderboardView, QuizReviewDetailView, LessonCommentView, PersonalNoteView, ForumTopicView, CourseSearchSuggestView, CourseReviewView, VnpayReturnView, VnpayIpnView, JapaneseChatbotView, PracticeQuizListView, QuizSubmissionDetailView
 
 urlpatterns =[
       path('register/', RegisterView.as_view(), name='register'),
@@ -27,12 +27,14 @@ urlpatterns =[
 
       
       path('quizzes/<int:pk>/', QuizDetailView.as_view(), name='quiz-detail'),
+      path('quizzes/practice/', PracticeQuizListView.as_view(), name='practice-quiz-list'),
       path('quizzes/<int:pk>/submit/', QuizSubmitView.as_view(), name='quiz-submit'),
       path('quiz-history/practice/', PracticeHistoryView.as_view()),
       path('quiz-history/final/', FinalExamHistoryView.as_view()),
       # Quiz Analytics
       path('quizzes/<int:pk>/leaderboard/', QuizLeaderboardView.as_view(), name='quiz-leaderboard'),
       path('quizzes/<int:pk>/review/', QuizReviewDetailView.as_view(), name='quiz-review'),
+      path('quiz-submissions/<int:pk>/', QuizSubmissionDetailView.as_view(), name='quiz-submission-detail'),
       path('lessons/<int:pk>/', LessonDetailView.as_view(), name='lesson-detail'),
       path('chapters/<int:chapter_id>/lessons/', LessonCreateView.as_view(), name='lesson-create'),
       path('lessons/<int:pk>/complete/', MarkLessonCompleteView.as_view(), name='lesson-complete'),
