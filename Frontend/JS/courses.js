@@ -207,19 +207,23 @@ async function renderMyCourses() {
 
     list.innerHTML = data
       .map((course) => {
-        const thumbStyle = course.thumbnail
-          ? `style="background-image: url('${course.thumbnail}');"`
-          : "";
-        const thumbClass = course.thumbnail ? "course-thumb" : "course-thumb is-empty";
+        const thumbUrl = typeof buildThumbnailUrl === 'function' ? buildThumbnailUrl(course.thumbnail) : (course.thumbnail || '');
+        const thumbStyle = thumbUrl ? `style="background-image: url('${thumbUrl}');"` : "";
+        const thumbClass = thumbUrl ? "course-thumb" : "course-thumb is-empty";
         const progress = Number(course.progress_percentage ?? course.progress ?? 0);
+        const progressLabel = progress >= 100 ? "Đã hoàn thành" : progress > 0 ? "Đang học" : "Chưa bắt đầu";
         return `
           <article class="card">
             <div class="${thumbClass}" ${thumbStyle}>JSMART</div>
             <h3>${course.course_title}</h3>
-            <p>Da hoan thanh: ${progress}%</p>
+            <p>${progressLabel}</p>
+            <div class="progress-bar-wrap" style="margin: 12px 0 16px;">
+              <div class="progress-label"><span>Tiến độ</span><span>${progress}%</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width:${progress}%"></div></div>
+            </div>
             <div class="meta">
               <div class="actions" style="gap: 8px;">
-                <a class="btn btn-primary" href="course-detail.html?id=${course.course_id}">Vao hoc</a>
+                <a class="btn btn-primary" href="course-learning.html?course=${course.course_id}">Vào học</a>
               </div>
             </div>
           </article>

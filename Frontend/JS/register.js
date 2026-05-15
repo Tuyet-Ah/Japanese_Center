@@ -43,11 +43,13 @@ async function loginAfterRegister(username, password) {
     profile = null;
   }
 
-  const displayName = profile && profile.username ? profile.username : username;
-  const userEmail = profile && profile.email ? profile.email : "";
+  const displayName = profile?.full_name || profile?.username || username;
+  const userEmail = profile?.email || "";
 
   persistLoginUser({
+    ...(profile || {}),
     name: displayName,
+    full_name: displayName,
     email: userEmail,
     role: profile ? profile.role : "student",
     loginTime: new Date().toISOString()

@@ -44,12 +44,23 @@ class ProfileView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        serializer = UserProfileSerializer(request.user)
+        serializer = UserProfileSerializer(request.user, context={'request': request})
         return Response(serializer.data)
 
     def patch(self, request):
         user = AuthService.update_profile(request.user, request.data, request.FILES)
-        return Response(UserProfileSerializer(user).data)
+        return Response(UserProfileSerializer(user, context={'request': request}).data)
+
+
+class ChangePasswordView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        try:
+            user = AuthService.change_password(request.user, request.data)
+            return Response({"message": "Đổi mật khẩu thành công"})
+        except ValueError as e:
+            return Response({"error": str(e)}, status=400)
 
 class LogoutView(APIView):
     def post(self, request):

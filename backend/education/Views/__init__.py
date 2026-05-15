@@ -1,4 +1,5 @@
 from .authViews import RegisterView, RegisterAdminView, LoginView, ApproveAdminView, LogoutView, ProfileView
+from .authViews import ChangePasswordView
 from .courseViews import ChapterCreateView, ChapterDetailView
 from .lessonViews import LessonCreateView
 from .courseViews import CourseListView, CourseDetailView,MyCoursesProgressView,CourseSearchSuggestView,CourseReviewView

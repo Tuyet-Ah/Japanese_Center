@@ -1,5 +1,5 @@
 from django.urls import path
-from .Views import RegisterView, RegisterAdminView, LoginView, ApproveAdminView, ReplyToTopicView, GetReplyTopicView, CourseListView, CourseDetailView, ChapterCreateView, ChapterDetailView, CartView, CheckoutView, CartDeleteView, PracticeHistoryView, FinalExamHistoryView, QuizSubmitView, QuizDetailView, LessonDetailView, LessonCreateView, MarkLessonCompleteView, ProfileView, MyCoursesProgressView, QuizLeaderboardView, QuizReviewDetailView, LessonCommentView, PersonalNoteView, ForumTopicView, CourseSearchSuggestView, CourseReviewView, VnpayReturnView, VnpayIpnView, JapaneseChatbotView, PracticeQuizListView, QuizSubmissionDetailView
+from .Views import RegisterView, RegisterAdminView, LoginView, ApproveAdminView, ReplyToTopicView, GetReplyTopicView, CourseListView, CourseDetailView, ChapterCreateView, ChapterDetailView, CartView, CheckoutView, CartDeleteView, PracticeHistoryView, FinalExamHistoryView, QuizSubmitView, QuizDetailView, LessonDetailView, LessonCreateView, MarkLessonCompleteView, ProfileView, ChangePasswordView, MyCoursesProgressView, QuizLeaderboardView, QuizReviewDetailView, LessonCommentView, PersonalNoteView, ForumTopicView, CourseSearchSuggestView, CourseReviewView, VnpayReturnView, VnpayIpnView, JapaneseChatbotView, PracticeQuizListView, QuizSubmissionDetailView
 
 urlpatterns =[
       path('register/', RegisterView.as_view(), name='register'),
@@ -8,6 +8,7 @@ urlpatterns =[
       path('admin-approvals/<int:user_id>/', ApproveAdminView.as_view(), name='approve-admin'),
       # Profile
       path('profile/', ProfileView.as_view(), name='profile'),
+      path('profile/change-password/', ChangePasswordView.as_view(), name='profile-change-password'),
       # 1. Danh sách khóa học (Tích hợp Tìm kiếm & Lọc)
       # URL này sẽ xử lý các query params như ?search=, ?level=, ?min_price=
       path('courses/', CourseListView.as_view(), name='course-list'),

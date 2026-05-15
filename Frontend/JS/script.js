@@ -57,7 +57,7 @@ function updateUIBasedOnLogin() {
     if (profileLink) profileLink.hidden = false;
     if (cartLink) cartLink.hidden = false;
     document.querySelectorAll("[data-username]").forEach((element) => {
-      element.textContent = user.name;
+      element.textContent = user.full_name || user.fullName || user.name || user.username || user.email || "Học viên";
     });
   } else {
     if (authActions) authActions.style.display = "flex";
@@ -141,6 +141,52 @@ async function fetchMyLearning() {
   return response.json();
 }
 
+async function fetchProfile() {
+  const tokens = getAuthTokens();
+  if (!tokens || !tokens.access) return null;
+
+  const response = await fetch(`${API_BASE_URL}/profile/`, {
+    headers: { Authorization: `Bearer ${tokens.access}` }
+  });
+  if (!response.ok) return null;
+  return response.json();
+}
+
+async function updateProfileBackend(formData) {
+  const tokens = getAuthTokens();
+  if (!tokens || !tokens.access) return null;
+
+  const response = await fetch(`${API_BASE_URL}/profile/`, {
+    method: "PATCH",
+    headers: { Authorization: `Bearer ${tokens.access}` },
+    body: formData
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(data.error || data.detail || "Không thể cập nhật thông tin.");
+  }
+  return data;
+}
+
+async function changePasswordBackend(currentPassword, newPassword) {
+  const tokens = getAuthTokens();
+  if (!tokens || !tokens.access) return null;
+
+  const response = await fetch(`${API_BASE_URL}/profile/change-password/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${tokens.access}`
+    },
+    body: JSON.stringify({ current_password: currentPassword, new_password: newPassword })
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(data.error || data.detail || "Không thể đổi mật khẩu.");
+  }
+  return data;
+}
+
 async function fetchCartItems() {
   const tokens = getAuthTokens();
   if (!tokens || !tokens.access) return [];
@@ -161,7 +207,7 @@ async function addToCartBackend(courseId) {
   const tokens = getAuthTokens();
   if (!tokens || !tokens.access) {
     window.location.href = "login.html";
-    return false;
+    return { ok: false, error: "Vui lòng đăng nhập để thêm khóa học." };
   }
 
   const response = await fetch(`${API_BASE_URL}/cart/`, {
@@ -172,7 +218,12 @@ async function addToCartBackend(courseId) {
     },
     body: JSON.stringify({ course_id: courseId })
   });
-  return response.ok;
+  const data = await response.json().catch(() => ({}));
+  return {
+    ok: response.ok,
+    status: response.status,
+    error: data.error || data.detail || "Không thể thêm vào giỏ hàng."
+  };
 }
 
 async function removeCartItemBackend(cartItemId) {
@@ -223,8 +274,16 @@ async function renderCourses(options = {}) {
 
     list.innerHTML = filteredCourses
       .map((course) => {
+        const progress = Number(options.progressByCourseId?.[course.id] ?? -1);
+        const enrolled = progress >= 0;
         const thumbClass = course.thumbnail ? "course-thumb" : "course-thumb is-empty";
         const thumbStyle = course.thumbnail ? `style="background-image: url('${course.thumbnail}');"` : "";
+        const actionHtml = enrolled
+          ? `
+              <a class="btn btn-primary" href="course-learning.html?course=${course.id}">Vao hoc</a>
+              <span class="badge" style="align-self:center;">Da dang ky</span>
+            `
+          : `<button class="btn btn-primary" data-add-course="${course.id}">Them vao gio</button>`;
         return `
           <article class="card">
             <div class="${thumbClass}" ${thumbStyle}>JSMART</div>
@@ -235,7 +294,7 @@ async function renderCourses(options = {}) {
               <span class="price">${formatMoney(course.price)}</span>
               <div class="actions" style="gap: 8px;">
                 <a class="btn btn-outline" href="course-detail.html?id=${course.id}">Xem chi tiet</a>
-                <button class="btn btn-primary" data-add-course="${course.id}">Them vao gio</button>
+                ${actionHtml}
               </div>
             </div>
           </article>
@@ -253,11 +312,12 @@ async function renderCourses(options = {}) {
       if (!id) return;
 
       button.disabled = true;
-      const added = await addToCartBackend(id);
-      if (added) {
+      const result = await addToCartBackend(id);
+      if (result.ok) {
         button.textContent = "Đã thêm";
         updateCartCount();
       } else {
+        alert(result.error || "Không thể thêm vào giỏ hàng.");
         button.disabled = false;
       }
     });

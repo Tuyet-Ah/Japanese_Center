@@ -62,11 +62,40 @@ class AuthService:
     #ypdate thông tin
     @staticmethod
     def update_profile(user, data, files):
+        email = data.get('email', user.email)
+        if email != user.email and User.objects.exclude(id=user.id).filter(email=email).exists():
+            raise ValueError("Email đã tồn tại")
+
+        phone = data.get('phone', user.phone)
+        if phone != user.phone and phone and User.objects.exclude(id=user.id).filter(phone=phone).exists():
+            raise ValueError("Số điện thoại đã tồn tại")
+
+        full_name = data.get('full_name', '').strip()
+        if full_name:
+            first_name, _, last_name = full_name.partition(' ')
+            user.first_name = first_name
+            user.last_name = last_name
+
+        user.email = email
         user.phone = data.get('phone', user.phone)
         user.address = data.get('address', user.address)
         if 'avatar' in files:
             user.avatar = files['avatar']
         user.save()
+        return user
+
+    @staticmethod
+    def change_password(user, data):
+        current_password = data.get('current_password', '')
+        new_password = data.get('new_password', '')
+
+        if not user.check_password(current_password):
+            raise ValueError("Mật khẩu hiện tại không đúng")
+        if len(new_password) < 6:
+            raise ValueError("Mật khẩu mới phải có ít nhất 6 ký tự")
+
+        user.set_password(new_password)
+        user.save(update_fields=['password'])
         return user
     
 

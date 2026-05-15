@@ -88,13 +88,14 @@ document.addEventListener("DOMContentLoaded", () => {
         profile = null;
       }
 
-      const displayName = profile && profile.username ? profile.username : username;
-      const userEmail = profile && profile.email ? profile.email : "";
-
-      const role = profile ? profile.role : selectedRole;
+      const displayName = profile?.full_name || profile?.username || username;
+      const userEmail = profile?.email || "";
+      const role = profile?.role || selectedRole;
 
       persistLoginUser({
+        ...(profile || {}),
         name: displayName,
+        full_name: displayName,
         email: userEmail,
         role,
         loginTime: new Date().toISOString()

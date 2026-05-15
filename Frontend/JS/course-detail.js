@@ -213,8 +213,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const buyBtn = document.getElementById("buy-now");
     if (buyBtn) {
       buyBtn.addEventListener("click", async () => {
-        await addToCartBackend(course.id);
-        window.location.href = "cart.html";
+        const result = await addToCartBackend(course.id);
+        if (result && result.ok) {
+          window.location.href = "cart.html";
+        } else {
+          alert((result && result.error) || "Không thể thêm vào giỏ hàng.");
+        }
       });
     }
 

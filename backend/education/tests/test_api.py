@@ -134,11 +134,23 @@ class AuthApiTests(ApiTestBase):
 
         updated = self.client.patch(
             "/educations/profile/",
-            {"phone": "456", "address": "HN"},
+            {"full_name": "Student Two", "email": "student2_new@example.com", "phone": "456", "address": "HN"},
             format="json",
         )
         self.assertEqual(updated.status_code, status.HTTP_200_OK)
+        self.assertEqual(updated.data["full_name"], "Student Two")
         self.assertEqual(updated.data["phone"], "456")
+
+        password_change = self.client.post(
+            "/educations/profile/change-password/",
+            {"current_password": "pass12345", "new_password": "newpass123"},
+            format="json",
+        )
+        self.assertEqual(password_change.status_code, status.HTTP_200_OK)
+
+        self.client.credentials()
+        new_token = self.login(User.objects.get(username="student2"), password="newpass123")
+        self.assertTrue(new_token)
 
     def test_register_duplicate_username(self):
         payload = {"username": "student1", "password": "x", "email": "a@a.com"}
@@ -186,6 +198,18 @@ class CourseApiTests(ApiTestBase):
         reviews = self.client.get(f"/educations/courses/{self.course.id}/reviews/?rating=4")
         self.assertEqual(reviews.status_code, status.HTTP_200_OK)
         self.assertTrue(any(r["rating"] == 4 for r in reviews.data))
+
+    def test_my_learning_progress(self):
+        self.auth(self.user)
+
+        Enrollment.objects.create(user=self.user, course=self.course, status="paid")
+        UserProgress.objects.create(user=self.user, lesson=self.lesson, is_completed=True)
+
+        response = self.client.get("/educations/my-learning/")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(any(item["course_id"] == self.course.id for item in response.data))
+        course_item = next(item for item in response.data if item["course_id"] == self.course.id)
+        self.assertEqual(course_item["progress_percentage"], 100)
 
 
 class CartApiTests(ApiTestBase):
@@ -249,6 +273,34 @@ class PaymentApiTests(ApiTestBase):
         enrollment = Enrollment.objects.get(user=self.user, course=self.course)
         self.assertEqual(enrollment.status, "paid")
         self.assertFalse(CartItem.objects.filter(user=self.user, course=self.course).exists())
+
+    def test_checkout_success_updates_rejected_enrollment_to_paid(self):
+        self.auth(self.user)
+
+        Enrollment.objects.create(user=self.user, course=self.course, status="rejected")
+        CartItem.objects.create(user=self.user, course=self.course)
+
+        checkout = self.client.post(
+            "/educations/checkout/",
+            {"course_ids": [self.course.id]},
+            format="json",
+        )
+        self.assertEqual(checkout.status_code, status.HTTP_200_OK)
+        txn_ref = checkout.data["txn_ref"]
+
+        params = {
+            "vnp_TxnRef": txn_ref,
+            "vnp_ResponseCode": "00",
+            "vnp_TransactionStatus": "00",
+            "vnp_Amount": "10000",
+        }
+        params["vnp_SecureHash"] = _sign_vnpay(params, settings.VNPAY_HASH_SECRET)
+
+        ret = self.client.get("/educations/vnpay/return/", params)
+        self.assertEqual(ret.status_code, status.HTTP_200_OK)
+
+        enrollment = Enrollment.objects.get(user=self.user, course=self.course)
+        self.assertEqual(enrollment.status, "paid")
 
 
 class QuizApiTests(ApiTestBase):

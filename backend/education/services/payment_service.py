@@ -56,7 +56,14 @@ class PaymentService:
 
         total_amount = sum(item.course.price for item in items_to_buy)
         for item in items_to_buy:
-            Enrollment.objects.get_or_create(user=user, course=item.course, defaults={'status': 'pending'})
+            enrollment, _ = Enrollment.objects.get_or_create(
+                user=user,
+                course=item.course,
+                defaults={'status': 'pending'}
+            )
+            if enrollment.status != 'paid' and enrollment.status != 'pending':
+                enrollment.status = 'pending'
+                enrollment.save(update_fields=['status'])
 
         txn_ref = f"{timezone.now():%Y%m%d%H%M%S}{user.id}"
         order_info = f"JSMART ORDER {txn_ref}"
@@ -131,10 +138,16 @@ class PaymentService:
                 Enrollment.objects.filter(
                     user=payment.user,
                     course_id__in=course_ids,
-                    status='pending'
-                ).update(status='paid')
+                ).exclude(status='paid').update(status='paid')
 
                 CartItem.objects.filter(user=payment.user, course_id__in=course_ids).delete()
+            else:
+                # Idempotent callback handling: ensure enrollment is paid even on repeated callbacks.
+                course_ids = list(payment.items.values_list('course_id', flat=True))
+                Enrollment.objects.filter(
+                    user=payment.user,
+                    course_id__in=course_ids,
+                ).update(status='paid')
             return True, 'success'
 
         if not success and payment.status == 'pending':
