@@ -13,8 +13,9 @@ from .EnrollmentSerializer import EnrollmentSerializer
 from .LessonSerializer import LessonSerializer
 from .QuestionResultSerializer import QuestionResultSerializer
 from .QuestionSerializer import QuestionSerializer
-from .QuizSerializer import QuizSerializer
+from .QuizSerializer import QuizSerializer, QuizListSerializer
 from .QuizSubmissionSerializer import QuizSubmissionSerializer
+from .QuizSubmissionDetailSerializer import QuizSubmissionAnswerSerializer
 from .UserProfileSerializer import UserProfileSerializer
 from .UserSerializer import UserSerializer
 from .ForumResponseSerializer import ForumResponseSerializer

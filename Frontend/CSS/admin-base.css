@@ -300,8 +300,100 @@ body {
   gap: 12px;
 }
 
+.course-builder {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border-radius: var(--radius-lg);
+  border: 1px dashed rgba(236, 72, 153, 0.35);
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.course-builder-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.chapters-container {
+  display: grid;
+  gap: 12px;
+}
+
+.chapter-card {
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(244, 114, 182, 0.2);
+  background: rgba(255, 255, 255, 0.9);
+  display: grid;
+  gap: 10px;
+}
+
+.chapter-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chapter-header input {
+  flex: 1;
+}
+
+.lessons-container {
+  display: grid;
+  gap: 10px;
+  padding-left: 6px;
+}
+
+.lesson-row {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.lesson-row input {
+  width: 100%;
+}
+
+.chapter-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 .table-responsive {
   overflow-x: auto;
+}
+
+.admin-filter-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  align-items: end;
+  margin-bottom: 16px;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filter-group input,
+.filter-group select {
+  border-radius: 12px;
+  border: 1px solid rgba(236, 72, 153, 0.25);
+  padding: 10px 12px;
+  font-family: inherit;
+  outline: none;
+}
+
+.filter-group input:focus,
+.filter-group select:focus {
+  border-color: rgba(236, 72, 153, 0.55);
+  box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.12);
 }
 
 .admin-table {
@@ -374,6 +466,78 @@ body {
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 12px;
+}
+
+.pending-admins-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.pending-admins-list {
+  display: grid;
+  gap: 12px;
+}
+
+.pending-admin-item {
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 12px 24px rgba(244, 114, 182, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.pending-admin-meta {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-top: 4px;
+}
+
+.pending-empty {
+  margin: 0;
+  color: var(--muted);
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: grid;
+  place-items: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.modal-card {
+  width: min(420px, 100%);
+  background: #fff;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.25);
+  padding: 20px 22px;
+  text-align: center;
+}
+
+.modal-card h3 {
+  margin: 0 0 10px;
+  color: var(--primary-dark);
+}
+
+.modal-card p {
+  margin: 0 0 18px;
+  color: var(--muted);
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
 }
 
 .guidelines-section ul {

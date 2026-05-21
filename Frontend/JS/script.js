@@ -57,7 +57,7 @@ function updateUIBasedOnLogin() {
     if (profileLink) profileLink.hidden = false;
     if (cartLink) cartLink.hidden = false;
     document.querySelectorAll("[data-username]").forEach((element) => {
-      element.textContent = user.name;
+      element.textContent = user.full_name || user.fullName || user.name || user.username || user.email || "Học viên";
     });
   } else {
     if (authActions) authActions.style.display = "flex";
@@ -78,6 +78,15 @@ function buildThumbnailUrl(thumbnail) {
   if (thumbnail.startsWith("http")) return thumbnail;
   if (thumbnail.startsWith("/")) return `${API_HOST}${thumbnail}`;
   return `${API_HOST}/${thumbnail}`;
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
 
 function normalizeCourseListItem(course) {
@@ -101,8 +110,17 @@ function normalizeCourseDetail(course) {
   return normalized;
 }
 
-async function fetchCourseList() {
-  const response = await fetch(`${API_BASE_URL}/courses/`);
+async function fetchCourseList(params = {}) {
+  const searchParams = new URLSearchParams();
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== "") {
+      searchParams.set(key, value);
+    }
+  });
+  const queryString = searchParams.toString();
+  const url = queryString ? `${API_BASE_URL}/courses/?${queryString}` : `${API_BASE_URL}/courses/`;
+
+  const response = await fetch(url);
   const data = await response.json();
   if (!response.ok) {
     throw new Error(data.error || data.detail || "Fetch courses failed");
@@ -132,41 +150,196 @@ async function fetchMyLearning() {
   return response.json();
 }
 
-function readCart() {
+async function fetchProfile() {
+  const tokens = getAuthTokens();
+  if (!tokens || !tokens.access) return null;
+
+  const response = await fetch(`${API_BASE_URL}/profile/`, {
+    headers: { Authorization: `Bearer ${tokens.access}` }
+  });
+  if (!response.ok) return null;
+  return response.json();
+}
+
+async function fetchPendingAdmins() {
+  const tokens = getAuthTokens();
+  if (!tokens || !tokens.access) return [];
+
   try {
-    return JSON.parse(localStorage.getItem(cartKey)) || [];
+    const response = await fetch(`${API_BASE_URL}/admin-approvals/`, {
+      headers: { Authorization: `Bearer ${tokens.access}` }
+    });
+    if (!response.ok) return [];
+    const data = await response.json().catch(() => ([]));
+    return Array.isArray(data) ? data : [];
   } catch {
     return [];
   }
 }
 
-function saveCart(cart) {
-  localStorage.setItem(cartKey, JSON.stringify(cart));
-  updateCartCount();
+function renderPendingAdminList(listNode, admins, countNode) {
+  if (!listNode) return;
+  if (!Array.isArray(admins) || admins.length === 0) {
+    listNode.innerHTML = '<p class="pending-empty">Khong co tai khoan admin cho duyet.</p>';
+    if (countNode) countNode.textContent = "0";
+    return;
+  }
+
+  listNode.innerHTML = admins
+    .map((admin) => {
+      const username = escapeHtml(admin.username || "");
+      const email = escapeHtml(admin.email || "");
+      const phone = escapeHtml(admin.phone || "");
+      const address = escapeHtml(admin.address || "");
+      return `
+        <div class="pending-admin-item">
+          <div>
+            <strong>${username || "(Khong co username)"}</strong>
+            <div class="pending-admin-meta">Email: ${email || "-"}</div>
+            <div class="pending-admin-meta">So dien thoai: ${phone || "-"}</div>
+            <div class="pending-admin-meta">Dia chi: ${address || "-"}</div>
+          </div>
+          <a class="btn btn-small" href="admin-approvals.html">Duyet</a>
+        </div>
+      `;
+    })
+    .join("");
+
+  if (countNode) countNode.textContent = String(admins.length);
 }
 
-function updateCartCount() {
-  const count = readCart().length;
+async function updateProfileBackend(formData) {
+  const tokens = getAuthTokens();
+  if (!tokens || !tokens.access) return null;
+
+  const response = await fetch(`${API_BASE_URL}/profile/`, {
+    method: "PATCH",
+    headers: { Authorization: `Bearer ${tokens.access}` },
+    body: formData
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(data.error || data.detail || "Không thể cập nhật thông tin.");
+  }
+  return data;
+}
+
+async function changePasswordBackend(currentPassword, newPassword) {
+  const tokens = getAuthTokens();
+  if (!tokens || !tokens.access) return null;
+
+  const response = await fetch(`${API_BASE_URL}/profile/change-password/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${tokens.access}`
+    },
+    body: JSON.stringify({ current_password: currentPassword, new_password: newPassword })
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(data.error || data.detail || "Không thể đổi mật khẩu.");
+  }
+  return data;
+}
+
+async function fetchCartItems() {
+  const tokens = getAuthTokens();
+  if (!tokens || !tokens.access) return [];
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/cart/`, {
+      headers: { Authorization: `Bearer ${tokens.access}` }
+    });
+    if (!response.ok) return [];
+    const data = await response.json().catch(() => ({}));
+    return Array.isArray(data.cart_items) ? data.cart_items : [];
+  } catch {
+    return [];
+  }
+}
+
+async function addToCartBackend(courseId) {
+  const tokens = getAuthTokens();
+  if (!tokens || !tokens.access) {
+    window.location.href = "login.html";
+    return { ok: false, error: "Vui lòng đăng nhập để thêm khóa học." };
+  }
+
+  const response = await fetch(`${API_BASE_URL}/cart/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${tokens.access}`
+    },
+    body: JSON.stringify({ course_id: courseId })
+  });
+  const data = await response.json().catch(() => ({}));
+  return {
+    ok: response.ok,
+    status: response.status,
+    error: data.error || data.detail || "Không thể thêm vào giỏ hàng."
+  };
+}
+
+async function removeCartItemBackend(cartItemId) {
+  const tokens = getAuthTokens();
+  if (!tokens || !tokens.access) return false;
+  const response = await fetch(`${API_BASE_URL}/cart/${cartItemId}/`, {
+    method: "DELETE",
+    headers: { Authorization: `Bearer ${tokens.access}` }
+  });
+  return response.ok;
+}
+
+async function clearCartBackend() {
+  const items = await fetchCartItems();
+  await Promise.all(items.map((item) => removeCartItemBackend(item.id)));
+}
+
+async function updateCartCount() {
+  const items = await fetchCartItems();
+  const count = items.length;
   document.querySelectorAll("[data-cart-count]").forEach((node) => {
     node.textContent = count;
   });
 }
 
-async function renderCourses() {
+async function renderCourses(options = {}) {
   const list = document.querySelector("[data-course-list]");
   if (!list) return;
 
   list.innerHTML = '<div class="card"><h3>Dang tai khoa hoc...</h3></div>';
 
   try {
-    const data = await fetchCourseList();
+    const data = await fetchCourseList(options.queryParams || {});
     const courses = data.map(normalizeCourseListItem);
-    courseCatalog = Object.fromEntries(courses.map((course) => [course.id, course]));
+    let filteredCourses = courses;
 
-    list.innerHTML = courses
+    if (options.status && options.status !== "all" && options.progressByCourseId) {
+      filteredCourses = courses.filter((course) => {
+        const progress = Number(options.progressByCourseId[course.id] || 0);
+        if (options.status === "not-started") return progress === 0;
+        if (options.status === "in-progress") return progress > 0 && progress < 100;
+        if (options.status === "completed") return progress >= 100;
+        return true;
+      });
+    }
+
+    courseCatalog = Object.fromEntries(filteredCourses.map((course) => [course.id, course]));
+
+    list.innerHTML = filteredCourses
       .map((course) => {
+        const progress = Number(options.progressByCourseId?.[course.id] ?? -1);
+        const enrolled = progress >= 0;
         const thumbClass = course.thumbnail ? "course-thumb" : "course-thumb is-empty";
         const thumbStyle = course.thumbnail ? `style="background-image: url('${course.thumbnail}');"` : "";
+        const actionHtml = enrolled
+          ? `
+              <a class="btn btn-primary" href="course-learning.html?course=${course.id}">Vao hoc</a>
+              <span class="badge" style="align-self:center;">Da dang ky</span>
+            `
+          : `<button class="btn btn-primary" data-add-course="${course.id}">Them vao gio</button>`;
         return `
           <article class="card">
             <div class="${thumbClass}" ${thumbStyle}>JSMART</div>
@@ -177,7 +350,7 @@ async function renderCourses() {
               <span class="price">${formatMoney(course.price)}</span>
               <div class="actions" style="gap: 8px;">
                 <a class="btn btn-outline" href="course-detail.html?id=${course.id}">Xem chi tiet</a>
-                <button class="btn btn-primary" data-add-course="${course.id}">Them vao gio</button>
+                ${actionHtml}
               </div>
             </div>
           </article>
@@ -190,19 +363,19 @@ async function renderCourses() {
   }
 
   list.querySelectorAll("[data-add-course]").forEach((button) => {
-    button.addEventListener("click", () => {
+    button.addEventListener("click", async () => {
       const id = Number(button.getAttribute("data-add-course"));
-      const course = courseCatalog[id];
-      if (!course) return;
+      if (!id) return;
 
-      const cart = readCart();
-      if (!cart.some((item) => item.id === course.id)) {
-        cart.push(course);
-        saveCart(cart);
-      }
-
-      button.textContent = "Đã thêm";
       button.disabled = true;
+      const result = await addToCartBackend(id);
+      if (result.ok) {
+        button.textContent = "Đã thêm";
+        updateCartCount();
+      } else {
+        alert(result.error || "Không thể thêm vào giỏ hàng.");
+        button.disabled = false;
+      }
     });
   });
 }
@@ -309,30 +482,30 @@ function applyDiscountCode() {
   calculateCartTotal();
 }
 
-function renderCart() {
+async function renderCart() {
   const list = document.querySelector("[data-cart-list]");
   const totalNode = document.querySelector("[data-cart-total]");
   if (!list || !totalNode) return;
 
-  const cart = readCart();
-  if (!cart.length) {
+  const items = await fetchCartItems();
+  if (!items.length) {
     list.innerHTML = '<div class="card"><h3>Giỏ hàng đang trống</h3><p>Hãy quay lại trang khóa học để chọn lớp phù hợp.</p></div>';
     totalNode.textContent = formatMoney(0);
     return;
   }
 
-  list.innerHTML = cart
+  list.innerHTML = items
     .map(
-      (course, index) => `
+      (item, index) => `
         <div class="item">
           <div class="item-checkbox-wrapper">
-            <input type="checkbox" id="cart-item-${index}" class="cart-checkbox" data-price="${course.price}" checked onchange="calculateCartTotal()">
+            <input type="checkbox" id="cart-item-${index}" class="cart-checkbox" data-price="${item.course_details.price}" data-course-id="${item.course_id}" data-cart-item-id="${item.id}" checked onchange="calculateCartTotal()">
           </div>
           <div class="item-details">
-            <h3 class="item-title">${course.name}</h3>
-            <p>${course.level} • ${course.schedule}</p>
+            <h3 class="item-title">${item.course_details.title}</h3>
+            <p>${item.course_details.level}</p>
           </div>
-          <strong class="price">${formatMoney(course.price)}</strong>
+          <strong class="price">${formatMoney(item.course_details.price)}</strong>
         </div>
       `
     )
@@ -370,35 +543,9 @@ function handleAuthForms() {
         }
 
         if (role === "admin") {
-          const adminCode = adminCodeInput ? adminCodeInput.value.trim() : "";
-          const isValidAdmin =
-            identity === "admin@demo.com" &&
-            password === "admin123" &&
-            adminCode === "ADMIN2026";
-
-          if (!isValidAdmin) {
-            if (message) message.textContent = "Thông tin admin hoặc mã quản trị không đúng.";
-            return;
+          if (message) {
+            message.textContent = "Vui long dang nhap bang he thong chinh de vao trang admin.";
           }
-
-          loginAdmin({
-            email: identity,
-            name: "Admin",
-            role: "admin",
-            loginTime: new Date().toISOString()
-          });
-
-          setLoginUser({
-            email: identity,
-            name: "Admin",
-            role: "admin",
-            loginTime: new Date().toISOString()
-          });
-
-          if (message) message.textContent = "Đăng nhập quản trị thành công!";
-          setTimeout(() => {
-            window.location.href = "admin-home.html";
-          }, 600);
           return;
         }
 
@@ -464,12 +611,12 @@ function initAuthToggle() {
 
 function initLoginRoleToggle() {
   const roleSelect = document.querySelector('[data-login-role]');
-  const adminCodeWraps = document.querySelectorAll('[data-admin-code-wrap]');
-  if (!roleSelect || !adminCodeWraps.length) return;
+  const adminCodeWrap = document.querySelector('[data-admin-code-wrap]');
+  if (!roleSelect || !adminCodeWrap) return;
 
   const updateVisibility = () => {
     const isAdmin = roleSelect.value === "admin";
-    adminCodeWraps.forEach(el => el.hidden = !isAdmin);
+    adminCodeWrap.hidden = !isAdmin;
   };
 
   roleSelect.addEventListener('change', updateVisibility);
@@ -511,20 +658,17 @@ function initMobileMenu() {
 }
 
 function getAdminUser() {
-  try {
-    return JSON.parse(localStorage.getItem(adminKey)) || null;
-  } catch {
-    return null;
-  }
+  const user = getLoginUser();
+  if (!user) return null;
+  return user.role === "admin" ? user : null;
 }
 
 function loginAdmin(adminData) {
-  localStorage.setItem(adminKey, JSON.stringify(adminData));
+  setLoginUser(adminData);
 }
 
 function logoutAdmin() {
-  localStorage.removeItem(adminKey);
-  window.location.href = "Home.html";
+  logout();
 }
 
 function initAdminNav() {
@@ -773,26 +917,42 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   updateCartCount();
-  renderCourses();
 
-  const searchInput = document.getElementById('course-search-input');
-  const searchBtn = document.getElementById('course-search-btn');
-  const statusFilter = document.getElementById('course-status-filter');
-  const levelFilter = document.getElementById('course-level-filter');
+  const hasCoursePageHandlers = typeof refreshCourseList === "function";
+  if (!hasCoursePageHandlers) {
+    renderCourses();
 
-  const getCourseFilters = () => ({
-    searchTerm: searchInput?.value || "",
-    status: statusFilter?.value || "all",
-    level: levelFilter?.value || "all"
-  });
+    const searchInput = document.getElementById('course-search-input');
+    const searchBtn = document.getElementById('course-search-btn');
+    const statusFilter = document.getElementById('course-status-filter');
+    const levelFilter = document.getElementById('course-level-filter');
 
-  if (searchInput) {
-    searchInput.addEventListener('input', (e) => {
-      renderCourses({ ...getCourseFilters(), searchTerm: e.target.value });
+    const getCourseFilters = () => ({
+      searchTerm: searchInput?.value || "",
+      status: statusFilter?.value || "all",
+      level: levelFilter?.value || "all"
     });
 
-    if (searchBtn) {
-      searchBtn.addEventListener('click', () => {
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        renderCourses({ ...getCourseFilters(), searchTerm: e.target.value });
+      });
+
+      if (searchBtn) {
+        searchBtn.addEventListener('click', () => {
+          renderCourses(getCourseFilters());
+        });
+      }
+    }
+
+    if (statusFilter) {
+      statusFilter.addEventListener('change', () => {
+        renderCourses(getCourseFilters());
+      });
+    }
+
+    if (levelFilter) {
+      levelFilter.addEventListener('change', () => {
         renderCourses(getCourseFilters());
       });
     }
@@ -821,8 +981,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const clearCartButton = document.querySelector("[data-clear-cart]");
   if (clearCartButton) {
-    clearCartButton.addEventListener("click", () => {
-      saveCart([]);
+    clearCartButton.addEventListener("click", async () => {
+      await clearCartBackend();
       renderCart();
     });
   }
@@ -833,7 +993,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-window.demoCourses = demoCourses;
 window.courseCatalog = courseCatalog;
 window.getLoginUser = getLoginUser;
 window.setLoginUser = setLoginUser;
@@ -843,13 +1002,15 @@ window.getAuthTokens = getAuthTokens;
 window.setAuthTokens = setAuthTokens;
 window.clearAuthTokens = clearAuthTokens;
 window.formatMoney = formatMoney;
-window.readCart = readCart;
-window.saveCart = saveCart;
 window.updateCartCount = updateCartCount;
 window.renderCourses = renderCourses;
 window.openCourseDetail = openCourseDetail;
 window.closeCourseDetail = closeCourseDetail;
 window.renderCart = renderCart;
+window.fetchCartItems = fetchCartItems;
+window.addToCartBackend = addToCartBackend;
+window.removeCartItemBackend = removeCartItemBackend;
+window.clearCartBackend = clearCartBackend;
 window.handleAuthForms = handleAuthForms;
 window.initAuthToggle = initAuthToggle;
 window.initNavState = initNavState;
@@ -864,3 +1025,5 @@ window.fetchCourseList = fetchCourseList;
 window.fetchCourseDetail = fetchCourseDetail;
 window.normalizeCourseDetail = normalizeCourseDetail;
 window.fetchMyLearning = fetchMyLearning;
+window.fetchPendingAdmins = fetchPendingAdmins;
+window.renderPendingAdminList = renderPendingAdminList;

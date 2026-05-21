@@ -1,4 +1,4 @@
-from education.models import Quiz, QuizSubmission
+from education.models import Quiz, QuizSubmission, QuizSubmissionAnswer
 
 
 class QuizService:
@@ -17,7 +17,7 @@ class QuizService:
         return Quiz.objects.prefetch_related('questions').get(id=quiz_id)
 
     @staticmethod
-    def submit_quiz(user, quiz_id, user_answers):
+    def submit_quiz(user, quiz_id, user_answers, duration_seconds=0):
         """
         Logic chấm điểm tự động (Senior Approach)
         user_answers format: [{"question_id": 1, "choice": "A"}, ...]
@@ -54,14 +54,36 @@ class QuizService:
         submission = QuizSubmission.objects.create(
             user=user,
             quiz=quiz,
-            score=score
+            score=score,
+            correct_count=correct_count,
+            total_questions=total_questions,
+            duration_seconds=max(int(duration_seconds or 0), 0)
         )
+
+        answers_to_create = []
+        for answer in user_answers:
+            q_id = answer.get('question_id')
+            user_choice = answer.get('choice')
+            if q_id in questions and user_choice:
+                question = questions[q_id]
+                answers_to_create.append(
+                    QuizSubmissionAnswer(
+                        submission=submission,
+                        question=question,
+                        selected_choice=user_choice,
+                        is_correct=question.correct == user_choice
+                    )
+                )
+
+        if answers_to_create:
+            QuizSubmissionAnswer.objects.bulk_create(answers_to_create)
 
         return {
             "submission_id": submission.id,
             "score": score,
             "correct_count": correct_count,
             "total": total_questions,
+            "duration_seconds": submission.duration_seconds,
             "details": detail_results
         }
 

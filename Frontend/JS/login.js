@@ -1,5 +1,4 @@
-// ===== JSMART Login Handler =====
-// Hỗ trợ: admin demo (offline) + student demo (offline) + API backend (khi BE sẵn sàng)
+const AUTH_API_BASE_URL = window.API_BASE_URL || "http://127.0.0.1:8000/educations";
 
 const LOGIN_API_URL = "http://127.0.0.1:8000/educations/login/";
 const PROFILE_API_URL = "http://127.0.0.1:8000/educations/profile/";
@@ -17,8 +16,20 @@ function setFormMessage(node, text, isError = true) {
   node.style.color = isError ? "#dc2626" : "#16a34a";
 }
 
+function persistLoginUser(user) {
+  if (typeof setLoginUser === "function") {
+    setLoginUser(user);
+  } else {
+    localStorage.setItem("japaneseCenterUser", JSON.stringify(user));
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-  initStandardHeader();
+  if (typeof initStandardHeader === "function") {
+    initStandardHeader();
+  }
+
+  console.log("[auth] login.js loaded");
 
   const form = document.querySelector("[data-auth-form]");
   if (!form) return;
@@ -28,49 +39,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
+    console.log("[auth] login submit");
     setFormMessage(message, "");
 
-    // Lấy giá trị từ form (dùng name attribute)
-    const identityInput = form.querySelector('input[name="loginIdentity"]');
+    const usernameInput = form.querySelector('input[name="loginUsername"]');
     const passwordInput = form.querySelector('input[name="loginPassword"]');
-    const roleSelect    = form.querySelector('[data-login-role]');
-    const adminCodeInput = form.querySelector('input[name="adminCode"]');
+    const roleSelect = form.querySelector('[data-login-role]');
 
-    const identity  = identityInput  ? identityInput.value.trim()  : "";
-    const password  = passwordInput  ? passwordInput.value.trim()  : "";
-    const role      = roleSelect     ? roleSelect.value             : "student";
-    const adminCode = adminCodeInput ? adminCodeInput.value.trim()  : "";
+    const username = usernameInput ? usernameInput.value.trim() : "";
+    const password = passwordInput ? passwordInput.value : "";
+    const selectedRole = roleSelect ? roleSelect.value : "student";
 
-    if (!identity || !password) {
-      setFormMessage(message, "Vui lòng nhập đầy đủ email và mật khẩu.");
-      return;
-    }
+    console.log("[auth] login payload", { username, role: selectedRole, hasPassword: Boolean(password) });
 
-    // ── ADMIN LOGIN (demo offline) ────────────────────────────────────────────
-    if (role === "admin") {
-      const isValidAdmin =
-        identity  === DEMO_ADMIN.email &&
-        password  === DEMO_ADMIN.password &&
-        adminCode === DEMO_ADMIN.adminCode;
-
-      if (!isValidAdmin) {
-        setFormMessage(message, "Thông tin admin hoặc mã quản trị không đúng.");
-        return;
-      }
-
-      const adminData = {
-        email:     identity,
-        name:      "Admin",
-        role:      "admin",
-        loginTime: new Date().toISOString()
-      };
-
-      // Lưu cả 2 store để guard trên các trang admin hoạt động
-      loginAdmin(adminData);
-      setLoginUser(adminData);
-
-      setFormMessage(message, "✅ Đăng nhập quản trị thành công! Đang chuyển trang...", false);
-      setTimeout(() => { window.location.href = "admin-home.html"; }, 700);
+    if (!username || !password) {
+      setFormMessage(message, "Vui long nhap day du ten dang nhap va mat khau.");
       return;
     }
 
@@ -79,16 +62,26 @@ document.addEventListener("DOMContentLoaded", () => {
     setFormMessage(message, "Đang xử lý...", false);
 
     try {
-      const response = await fetch(LOGIN_API_URL, {
+      console.log("[auth] login request ->", `${AUTH_API_BASE_URL}/login/`);
+      const response = await fetch(`${AUTH_API_BASE_URL}/login/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username: identity, password })
+        body: JSON.stringify({ username, password, role: selectedRole })
       });
 
+      console.log("[auth] login response", response.status);
+
       const data = await response.json().catch(() => ({}));
+      console.log("[auth] login data", data);
 
       if (!response.ok) {
-        setFormMessage(message, data.detail || data.error || "Đăng nhập thất bại. Kiểm tra lại thông tin.");
+        if (response.status === 401) {
+          setFormMessage(message, "Ten dang nhap hoac mat khau bi sai.");
+        } else if (String(data.detail || "").toLowerCase().includes("cho duyet")) {
+          setFormMessage(message, "Tai khoan admin dang cho duyet.");
+        } else {
+          setFormMessage(message, data.detail || data.error || "Dang nhap that bai.");
+        }
         return;
       }
 
@@ -100,39 +93,28 @@ document.addEventListener("DOMContentLoaded", () => {
       // Lấy thông tin profile
       let profile = null;
       try {
-        const profileResponse = await fetch(PROFILE_API_URL, {
+        const profileResponse = await fetch(`${AUTH_API_BASE_URL}/profile/`, {
           headers: { Authorization: `Bearer ${data.access}` }
         });
         if (profileResponse.ok) profile = await profileResponse.json();
       } catch { /* ignore */ }
 
-      const username  = profile?.username  || identity.split("@")[0];
-      const userEmail = profile?.email     || identity;
-      const userRole  = profile?.role      || "student";
+      const displayName = profile?.full_name || profile?.username || username;
+      const userEmail = profile?.email || "";
+      const role = profile?.role || selectedRole;
 
-      setLoginUser({
-        name:      username,
-        email:     userEmail,
-        role:      userRole,
+      persistLoginUser({
+        ...(profile || {}),
+        name: displayName,
+        full_name: displayName,
+        email: userEmail,
+        role,
         loginTime: new Date().toISOString()
       });
-
-      setFormMessage(message, "✅ Đăng nhập thành công! Đang chuyển trang...", false);
-      setTimeout(() => {
-        window.location.href = userRole === "admin" ? "admin-home.html" : "profile.html";
-      }, 700);
-
-    } catch {
-      // Backend chưa kết nối → đăng nhập demo student
-      const username = identity.includes("@") ? identity.split("@")[0] : identity;
-      setLoginUser({
-        email:     identity.includes("@") ? identity : username + "@jsmart.vn",
-        name:      username,
-        role:      "student",
-        loginTime: new Date().toISOString()
-      });
-      setFormMessage(message, "✅ Đăng nhập thành công (chế độ demo)! Đang chuyển trang...", false);
-      setTimeout(() => { window.location.href = "profile.html"; }, 700);
+      setFormMessage(message, "Dang chuyen huong...");
+      window.location.href = role === "admin" ? "admin-dashboard.html" : "Home.html";
+    } catch (error) {
+      setFormMessage(message, "Khong the ket noi den may chu. Vui long thu lai.");
     } finally {
       if (submitButton) submitButton.disabled = false;
     }

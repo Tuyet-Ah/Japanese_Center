@@ -13,9 +13,11 @@ from education.models import CartItem, Enrollment, PaymentTransaction, PaymentTr
 class PaymentService:
     @staticmethod
     def _build_vnpay_url(params):
-        sorted_params = sorted(params.items())
+        # Build query string and secure hash excluding vnp_SecureHash and vnp_SecureHashType
+        filtered = {k: v for k, v in params.items() if k not in ['vnp_SecureHash', 'vnp_SecureHashType']}
+        sorted_params = sorted(filtered.items())
         query_string = urlencode(sorted_params, safe='')
-        hash_data = urlencode(sorted_params, safe='')
+        hash_data = query_string
         secure_hash = hmac.new(
             settings.VNPAY_HASH_SECRET.encode('utf-8'),
             hash_data.encode('utf-8'),
@@ -54,7 +56,14 @@ class PaymentService:
 
         total_amount = sum(item.course.price for item in items_to_buy)
         for item in items_to_buy:
-            Enrollment.objects.get_or_create(user=user, course=item.course, defaults={'status': 'pending'})
+            enrollment, _ = Enrollment.objects.get_or_create(
+                user=user,
+                course=item.course,
+                defaults={'status': 'pending'}
+            )
+            if enrollment.status != 'paid' and enrollment.status != 'pending':
+                enrollment.status = 'pending'
+                enrollment.save(update_fields=['status'])
 
         txn_ref = f"{timezone.now():%Y%m%d%H%M%S}{user.id}"
         order_info = f"JSMART ORDER {txn_ref}"
@@ -76,7 +85,7 @@ class PaymentService:
         ])
 
         amount_vnd = int(total_amount * 100)
-        now = timezone.now()
+        now = timezone.localtime(timezone.now())
         params = {
             'vnp_Version': '2.1.0',
             'vnp_Command': 'pay',
@@ -91,7 +100,6 @@ class PaymentService:
             'vnp_IpAddr': client_ip or '127.0.0.1',
             'vnp_CreateDate': now.strftime('%Y%m%d%H%M%S'),
             'vnp_ExpireDate': (now + timedelta(minutes=15)).strftime('%Y%m%d%H%M%S'),
-            'vnp_SecureHashType': 'SHA512',
         }
 
         payment_url = PaymentService._build_vnpay_url(params)
@@ -130,10 +138,16 @@ class PaymentService:
                 Enrollment.objects.filter(
                     user=payment.user,
                     course_id__in=course_ids,
-                    status='pending'
-                ).update(status='paid')
+                ).exclude(status='paid').update(status='paid')
 
                 CartItem.objects.filter(user=payment.user, course_id__in=course_ids).delete()
+            else:
+                # Idempotent callback handling: ensure enrollment is paid even on repeated callbacks.
+                course_ids = list(payment.items.values_list('course_id', flat=True))
+                Enrollment.objects.filter(
+                    user=payment.user,
+                    course_id__in=course_ids,
+                ).update(status='paid')
             return True, 'success'
 
         if not success and payment.status == 'pending':

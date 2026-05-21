@@ -41,185 +41,151 @@
   </header>
 
   <main class="section" style="padding-top: 20px;">
-      <div class="profile-wrapper">
-        
-        <!-- SIDEBAR -->
-        <aside class="profile-sidebar">
-          <div class="profile-avatar-wrap" onclick="document.getElementById('avatarUpload').click()">
-            <img id="sidebarAvatar" src="assets/icon.png" alt="Avatar">
-            <div class="avatar-overlay">Thay đổi</div>
-          </div>
-          <input type="file" id="avatarUpload" accept="image/*" style="display: none;">
-          <h2 data-profile-name>Trịnh Thị Tuyết Anh</h2>
-          <div class="user-id">ID: 34578223</div>
+    <div class="profile-wrapper">
 
-          <nav class="profile-nav">
-            <a href="#" class="profile-nav-btn active" data-tab="info">👤 Thông tin cá nhân</a>
-            <a href="#" class="profile-nav-btn" data-tab="courses">🎓 Khóa học đã mua</a>
-            <a href="#" class="profile-nav-btn" data-tab="results">📊 Kết quả học tập</a>
-          </nav>
+      <!-- SIDEBAR -->
+      <aside class="profile-sidebar">
+        <div class="profile-avatar-wrap" onclick="document.getElementById('avatarUpload').click()">
+          <img id="sidebarAvatar" src="assets/icon.png" alt="Avatar">
+          <div class="avatar-overlay">Thay đổi</div>
+        </div>
+        <input type="file" id="avatarUpload" accept="image/*" style="display: none;">
+        <h2 data-profile-name>Học viên</h2>
+        <div class="user-id" data-profile-user-id>ID: --</div>
 
-          <button class="logout-btn" data-logout-btn>ĐĂNG XUẤT</button>
-        </aside>
+        <nav class="profile-nav">
+          <a href="#" class="profile-nav-btn active" data-tab="info">👤 Thông tin cá nhân</a>
+          <a href="#" class="profile-nav-btn" data-tab="courses">🎓 Khóa học đã mua</a>
+          <a href="#" class="profile-nav-btn" data-tab="results">📊 Kết quả học tập</a>
+        </nav>
 
-        <!-- MAIN CONTENT -->
-        <section class="profile-content-area">
+        <button class="logout-btn" data-logout-btn>ĐĂNG XUẤT</button>
+      </aside>
 
-          <!-- TAB 1: THÔNG TIN CÁ NHÂN -->
-          <div class="profile-tab active" id="tab-info">
-            <h1 class="profile-content-header">THÔNG TIN HỌC VIÊN</h1>
-            <div class="profile-content-body">
-              <div class="profile-info-grid">
-                <div class="info-row">
-                  <span class="info-label">Họ tên</span>
-                  <span class="info-value" data-profile-fullname>Trịnh Thị Tuyết Anh</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">Ngày sinh</span>
-                  <span class="info-value" data-profile-dob>01/05/2005</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">Email</span>
-                  <span class="info-value" data-profile-email>tanh01052005@gmail.com</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">Số điện thoại</span>
-                  <span class="info-value" data-profile-phone>0357513055</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">Giới tính</span>
-                  <span class="info-value" data-profile-gender>Nữ</span>
-                </div>
-                <div class="profile-actions">
-                  <button class="action-btn" data-open-profile-update>Cập nhật thông tin</button>
-                  <button class="action-btn" data-open-password-change>Thay đổi mật khẩu</button>
-                </div>
+      <!-- MAIN CONTENT -->
+      <section class="profile-content-area">
+
+        <!-- TAB 1: THÔNG TIN CÁ NHÂN -->
+        <div class="profile-tab active" id="tab-info">
+          <h1 class="profile-content-header">THÔNG TIN HỌC VIÊN</h1>
+          <div class="profile-content-body">
+            <div class="profile-info-grid">
+              <div class="info-row">
+                <span class="info-label">Họ tên</span>
+                <span class="info-value" data-profile-fullname>Trịnh Thị Tuyết Anh</span>
               </div>
-              <img id="largeAvatar" src="assets/icon.png" alt="Decoration" class="profile-decorative-img">
-            </div>
-          </div>
-
-          <!-- TAB 2: KHÓA HỌC ĐÃ MUA -->
-          <div class="profile-tab" id="tab-courses">
-            <h1 class="profile-content-header">KHÓA HỌC ĐÃ MUA</h1>
-            <div class="purchased-courses-grid">
-              <a href="course-learning.html?course=n5-beginner" class="purchased-card">
-                <div class="purchased-card-badge">N5</div>
-                <div class="purchased-card-info">
-                  <h3>N5 Beginner Journey</h3>
-                  <p>🗓 Thứ 2 - Thứ 4 - Thứ 6 | 19:00 - 21:00</p>
-                  <p>👩‍🏫 Giáo viên: Nguyễn Thị Lan</p>
-                  <div class="progress-bar-wrap">
-                    <div class="progress-label"><span>Tiến độ</span><span>65%</span></div>
-                    <div class="progress-bar"><div class="progress-fill" style="width:65%"></div></div>
-                  </div>
-                </div>
-                <span class="purchased-status status-active">Đang học</span>
-              </a>
-              <a href="course-learning.html?course=n4-communication" class="purchased-card">
-                <div class="purchased-card-badge">N4</div>
-                <div class="purchased-card-info">
-                  <h3>N4 Communication Boost</h3>
-                  <p>🗓 Thứ 3 - Thứ 5 - Thứ 7 | 18:00 - 20:00</p>
-                  <p>👩‍🏫 Giáo viên: Trần Văn Minh</p>
-                  <div class="progress-bar-wrap">
-                    <div class="progress-label"><span>Tiến độ</span><span>30%</span></div>
-                    <div class="progress-bar"><div class="progress-fill" style="width:30%"></div></div>
-                  </div>
-                </div>
-                <span class="purchased-status status-active">Đang học</span>
-              </a>
-              <a href="course-learning.html?course=kanji-intensive" class="purchased-card">
-                <div class="purchased-card-badge" style="background: var(--accent); color: #4a7a8a;">N5-N3</div>
-                <div class="purchased-card-info">
-                  <h3>Kanji Intensive Lab</h3>
-                  <p>🗓 Tối 2-4-6 | 20:00 - 22:00</p>
-                  <p>👩‍🏫 Giáo viên: Lê Thị Hoa</p>
-                  <div class="progress-bar-wrap">
-                    <div class="progress-label"><span>Tiến độ</span><span>100%</span></div>
-                    <div class="progress-bar"><div class="progress-fill" style="width:100%; background: #86efac;"></div></div>
-                  </div>
-                </div>
-                <span class="purchased-status status-done">Hoàn thành</span>
-              </a>
-            </div>
-          </div>
-
-          <!-- TAB 3: KẾT QUẢ HỌC TẬP -->
-          <div class="profile-tab" id="tab-results">
-            <h1 class="profile-content-header">KẾT QUẢ HỌC TẬP</h1>
-            <div class="results-summary">
-              <div class="result-stat-card">
-                <div class="result-stat-icon">📝</div>
-                <div class="result-stat-value">12</div>
-                <div class="result-stat-label">Bài kiểm tra</div>
+              <div class="info-row">
+                <span class="info-label">Tên đăng nhập</span>
+                <span class="info-value" data-profile-username>student1</span>
               </div>
-              <div class="result-stat-card">
-                <div class="result-stat-icon">⭐</div>
-                <div class="result-stat-value">8.4</div>
-                <div class="result-stat-label">Điểm TB</div>
+              <div class="info-row">
+                <span class="info-label">Email</span>
+                <span class="info-value" data-profile-email>tanh01052005@gmail.com</span>
               </div>
-              <div class="result-stat-card">
-                <div class="result-stat-icon">🏆</div>
-                <div class="result-stat-value">3</div>
-                <div class="result-stat-label">Khóa hoàn thành</div>
+              <div class="info-row">
+                <span class="info-label">Số điện thoại</span>
+                <span class="info-value" data-profile-phone>0357513055</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Địa chỉ</span>
+                <span class="info-value" data-profile-address>Chưa cập nhật</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Vai trò</span>
+                <span class="info-value" data-profile-role>Học viên</span>
+              </div>
+              <div class="profile-actions">
+                <button class="action-btn" data-open-profile-update>Cập nhật thông tin</button>
+                <button class="action-btn" data-open-password-change>Thay đổi mật khẩu</button>
               </div>
             </div>
-            <div class="results-table-wrap">
-              <table class="results-table">
-                <thead>
-                  <tr>
-                    <th>Bài kiểm tra</th>
-                    <th>Khóa học</th>
-                    <th>Ngày thi</th>
-                    <th>Điểm số</th>
-                    <th>Xếp loại</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a href="exams.html?exam=N5-201202" class="exam-link">Quiz Từ Vựng N5 - Chương 1</a></td>
-                    <td>N5 Beginner Journey</td>
-                    <td>10/05/2025</td>
-                    <td><strong>9.0</strong></td>
-                    <td><span class="grade-badge grade-a">Xuất sắc</span></td>
-                  </tr>
-                  <tr>
-                    <td><a href="exams.html?exam=N5-201202" class="exam-link">Kiểm Tra Ngữ Pháp N5</a></td>
-                    <td>N5 Beginner Journey</td>
-                    <td>05/05/2025</td>
-                    <td><strong>8.5</strong></td>
-                    <td><span class="grade-badge grade-b">Giỏi</span></td>
-                  </tr>
-                  <tr>
-                    <td><a href="exams.html?exam=N1-201202" class="exam-link">Quiz Kanji Cơ Bản</a></td>
-                    <td>Kanji Intensive Lab</td>
-                    <td>01/05/2025</td>
-                    <td><strong>7.5</strong></td>
-                    <td><span class="grade-badge grade-c">Khá</span></td>
-                  </tr>
-                  <tr>
-                    <td><a href="exams.html?exam=N1-201202" class="exam-link">Thi Cuối Khóa Kanji Lab</a></td>
-                    <td>Kanji Intensive Lab</td>
-                    <td>28/04/2025</td>
-                    <td><strong>9.5</strong></td>
-                    <td><span class="grade-badge grade-a">Xuất sắc</span></td>
-                  </tr>
-                  <tr>
-                    <td><a href="exams.html?exam=N1-201702" class="exam-link">Quiz Giao Tiếp N4 - Tuần 1</a></td>
-                    <td>N4 Communication Boost</td>
-                    <td>20/04/2025</td>
-                    <td><strong>8.0</strong></td>
-                    <td><span class="grade-badge grade-b">Giỏi</span></td>
-                  </tr>
-                </tbody>
-              </table>
+            <img id="largeAvatar" src="assets/icon.png" alt="Decoration" class="profile-decorative-img">
+          </div>
+        </div>
+
+        <!-- TAB 2: KHÓA HỌC ĐÃ MUA -->
+        <div class="profile-tab" id="tab-courses">
+          <h1 class="profile-content-header">KHÓA HỌC ĐÃ MUA</h1>
+          <div class="purchased-courses-grid" data-profile-courses-list>
+            <div class="purchased-card">Đang tải khóa học...</div>
+          </div>
+        </div>
+
+        <!-- TAB 3: KẾT QUẢ HỌC TẬP -->
+        <div class="profile-tab" id="tab-results">
+          <h1 class="profile-content-header">KẾT QUẢ HỌC TẬP</h1>
+          <div class="results-summary">
+            <div class="result-stat-card">
+              <div class="result-stat-icon">📝</div>
+              <div class="result-stat-value">12</div>
+              <div class="result-stat-label">Bài kiểm tra</div>
+            </div>
+            <div class="result-stat-card">
+              <div class="result-stat-icon">⭐</div>
+              <div class="result-stat-value">8.4</div>
+              <div class="result-stat-label">Điểm TB</div>
+            </div>
+            <div class="result-stat-card">
+              <div class="result-stat-icon">🏆</div>
+              <div class="result-stat-value">3</div>
+              <div class="result-stat-label">Khóa hoàn thành</div>
             </div>
           </div>
+          <div class="results-table-wrap">
+            <table class="results-table">
+              <thead>
+                <tr>
+                  <th>Bài kiểm tra</th>
+                  <th>Khóa học</th>
+                  <th>Ngày thi</th>
+                  <th>Điểm số</th>
+                  <th>Xếp loại</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><a href="exams.html?exam=N5-201202" class="exam-link">Quiz Từ Vựng N5 - Chương 1</a></td>
+                  <td>N5 Beginner Journey</td>
+                  <td>10/05/2025</td>
+                  <td><strong>9.0</strong></td>
+                  <td><span class="grade-badge grade-a">Xuất sắc</span></td>
+                </tr>
+                <tr>
+                  <td><a href="exams.html?exam=N5-201202" class="exam-link">Kiểm Tra Ngữ Pháp N5</a></td>
+                  <td>N5 Beginner Journey</td>
+                  <td>05/05/2025</td>
+                  <td><strong>8.5</strong></td>
+                  <td><span class="grade-badge grade-b">Giỏi</span></td>
+                </tr>
+                <tr>
+                  <td><a href="exams.html?exam=N1-201202" class="exam-link">Quiz Kanji Cơ Bản</a></td>
+                  <td>Kanji Intensive Lab</td>
+                  <td>01/05/2025</td>
+                  <td><strong>7.5</strong></td>
+                  <td><span class="grade-badge grade-c">Khá</span></td>
+                </tr>
+                <tr>
+                  <td><a href="exams.html?exam=N1-201202" class="exam-link">Thi Cuối Khóa Kanji Lab</a></td>
+                  <td>Kanji Intensive Lab</td>
+                  <td>28/04/2025</td>
+                  <td><strong>9.5</strong></td>
+                  <td><span class="grade-badge grade-a">Xuất sắc</span></td>
+                </tr>
+                <tr>
+                  <td><a href="exams.html?exam=N1-201702" class="exam-link">Quiz Giao Tiếp N4 - Tuần 1</a></td>
+                  <td>N4 Communication Boost</td>
+                  <td>20/04/2025</td>
+                  <td><strong>8.0</strong></td>
+                  <td><span class="grade-badge grade-b">Giỏi</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
 
-        </section>
+      </section>
 
-      </div>
+    </div>
   </main>
 
   <div class="profile-modal" data-profile-modal="update" hidden>
@@ -238,21 +204,12 @@
           <input type="email" name="email" required>
         </label>
         <label class="modal-field">
-          <span>Ngày sinh</span>
-          <input type="date" name="dob">
-        </label>
-        <label class="modal-field">
           <span>Số điện thoại</span>
           <input type="tel" name="phone">
         </label>
         <label class="modal-field">
-          <span>Giới tính</span>
-          <select name="gender">
-            <option value="">Chọn</option>
-            <option value="Nữ">Nữ</option>
-            <option value="Nam">Nam</option>
-            <option value="Khác">Khác</option>
-          </select>
+          <span>Địa chỉ</span>
+          <input type="text" name="address">
         </label>
         <div class="modal-actions">
           <span class="modal-message" data-profile-update-message></span>
