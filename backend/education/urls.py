@@ -1,10 +1,12 @@
 from django.urls import path
-from .Views import RegisterView, RegisterAdminView, LoginView, ApproveAdminView, ReplyToTopicView, GetReplyTopicView, CourseListView, CourseDetailView, ChapterCreateView, ChapterDetailView, CartView, CheckoutView, CartDeleteView, PracticeHistoryView, FinalExamHistoryView, QuizSubmitView, QuizDetailView, LessonDetailView, LessonCreateView, MarkLessonCompleteView, ProfileView, ChangePasswordView, MyCoursesProgressView, QuizLeaderboardView, QuizReviewDetailView, LessonCommentView, PersonalNoteView, ForumTopicView, CourseSearchSuggestView, CourseReviewView, VnpayReturnView, VnpayIpnView, JapaneseChatbotView, PracticeQuizListView, QuizSubmissionDetailView
+from .Views import RegisterView, RegisterAdminView, LoginView, ApproveAdminView, PendingAdminListView, AdminDashboardStatsView, ReplyToTopicView, GetReplyTopicView, CourseListView, CourseDetailView, ChapterCreateView, ChapterDetailView, CartView, CheckoutView, CartDeleteView, PracticeHistoryView, FinalExamHistoryView, QuizSubmitView, QuizDetailView, LessonDetailView, LessonCreateView, MarkLessonCompleteView, ProfileView, ChangePasswordView, MyCoursesProgressView, QuizLeaderboardView, QuizReviewDetailView, LessonCommentView, PersonalNoteView, ForumTopicView, CourseSearchSuggestView, CourseReviewView, VnpayReturnView, VnpayIpnView, JapaneseChatbotView, PracticeQuizListView, QuizSubmissionDetailView, AdminQuizListView
 
 urlpatterns =[
       path('register/', RegisterView.as_view(), name='register'),
       path('register-admin/', RegisterAdminView.as_view(), name='register-admin'),
       path('login/', LoginView.as_view(), name='login'),
+      path('admin/dashboard-stats/', AdminDashboardStatsView.as_view(), name='admin-dashboard-stats'),
+      path('admin-approvals/', PendingAdminListView.as_view(), name='pending-admin-list'),
       path('admin-approvals/<int:user_id>/', ApproveAdminView.as_view(), name='approve-admin'),
       # Profile
       path('profile/', ProfileView.as_view(), name='profile'),
@@ -36,6 +38,7 @@ urlpatterns =[
       path('quizzes/<int:pk>/leaderboard/', QuizLeaderboardView.as_view(), name='quiz-leaderboard'),
       path('quizzes/<int:pk>/review/', QuizReviewDetailView.as_view(), name='quiz-review'),
       path('quiz-submissions/<int:pk>/', QuizSubmissionDetailView.as_view(), name='quiz-submission-detail'),
+      path('admin/quizzes/', AdminQuizListView.as_view(), name='admin-quiz-list'),
       path('lessons/<int:pk>/', LessonDetailView.as_view(), name='lesson-detail'),
       path('chapters/<int:chapter_id>/lessons/', LessonCreateView.as_view(), name='lesson-create'),
       path('lessons/<int:pk>/complete/', MarkLessonCompleteView.as_view(), name='lesson-complete'),

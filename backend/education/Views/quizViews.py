@@ -1,11 +1,16 @@
+from django.db.models import Q
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
-from rest_framework import  permissions
+from rest_framework import permissions, status
 
 from education.services.quiz_service import QuizService
 from education.serializers import QuizSubmissionSerializer, QuizSerializer, QuizListSerializer, QuestionResultSerializer, QuizSubmissionAnswerSerializer
 from education.models import Quiz, QuizSubmission
+
+
+def _is_admin(user):
+    return user.is_authenticated and user.role == 'admin' and not user.is_admin_pending
 
 class PracticeQuizListView(ListAPIView):
     """API cho mục Luyện thi: Liệt kê các đề thi tự do"""
@@ -54,6 +59,30 @@ class QuizLeaderboardView(APIView):
         submissions = QuizSubmission.objects.filter(quiz_id=pk).select_related('user').order_by('-score', 'submitted_at')[:10]
         data = [{"username": s.user.username, "score": s.score, "date": s.submitted_at} for s in submissions]
         return Response(data)
+
+
+class AdminQuizListView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        if not _is_admin(request.user):
+            return Response({"error": "Không có quyền xem danh sách quiz"}, status=status.HTTP_403_FORBIDDEN)
+
+        queryset = Quiz.objects.all().order_by('-id')
+        search = request.query_params.get('search')
+        if search:
+            queryset = queryset.filter(Q(title__icontains=search))
+
+        level = request.query_params.get('level')
+        if level:
+            queryset = queryset.filter(level=level)
+
+        quiz_type = request.query_params.get('quiz_type')
+        if quiz_type:
+            queryset = queryset.filter(quiz_type=quiz_type)
+
+        serializer = QuizListSerializer(queryset, many=True)
+        return Response(serializer.data)
 
 class QuizReviewDetailView(APIView):
     """Xem lại chi tiết đáp án sau khi đã nộp bài"""

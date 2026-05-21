@@ -80,6 +80,15 @@ function buildThumbnailUrl(thumbnail) {
   return `${API_HOST}/${thumbnail}`;
 }
 
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 function normalizeCourseListItem(course) {
   return {
     id: course.id,
@@ -150,6 +159,53 @@ async function fetchProfile() {
   });
   if (!response.ok) return null;
   return response.json();
+}
+
+async function fetchPendingAdmins() {
+  const tokens = getAuthTokens();
+  if (!tokens || !tokens.access) return [];
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/admin-approvals/`, {
+      headers: { Authorization: `Bearer ${tokens.access}` }
+    });
+    if (!response.ok) return [];
+    const data = await response.json().catch(() => ([]));
+    return Array.isArray(data) ? data : [];
+  } catch {
+    return [];
+  }
+}
+
+function renderPendingAdminList(listNode, admins, countNode) {
+  if (!listNode) return;
+  if (!Array.isArray(admins) || admins.length === 0) {
+    listNode.innerHTML = '<p class="pending-empty">Khong co tai khoan admin cho duyet.</p>';
+    if (countNode) countNode.textContent = "0";
+    return;
+  }
+
+  listNode.innerHTML = admins
+    .map((admin) => {
+      const username = escapeHtml(admin.username || "");
+      const email = escapeHtml(admin.email || "");
+      const phone = escapeHtml(admin.phone || "");
+      const address = escapeHtml(admin.address || "");
+      return `
+        <div class="pending-admin-item">
+          <div>
+            <strong>${username || "(Khong co username)"}</strong>
+            <div class="pending-admin-meta">Email: ${email || "-"}</div>
+            <div class="pending-admin-meta">So dien thoai: ${phone || "-"}</div>
+            <div class="pending-admin-meta">Dia chi: ${address || "-"}</div>
+          </div>
+          <a class="btn btn-small" href="admin-approvals.html">Duyet</a>
+        </div>
+      `;
+    })
+    .join("");
+
+  if (countNode) countNode.textContent = String(admins.length);
 }
 
 async function updateProfileBackend(formData) {
@@ -487,35 +543,9 @@ function handleAuthForms() {
         }
 
         if (role === "admin") {
-          const adminCode = adminCodeInput ? adminCodeInput.value.trim() : "";
-          const isValidAdmin =
-            identity === "admin@demo.com" &&
-            password === "admin123" &&
-            adminCode === "ADMIN2026";
-
-          if (!isValidAdmin) {
-            if (message) message.textContent = "Thông tin admin hoặc mã quản trị không đúng.";
-            return;
+          if (message) {
+            message.textContent = "Vui long dang nhap bang he thong chinh de vao trang admin.";
           }
-
-          loginAdmin({
-            email: identity,
-            name: "Admin",
-            role: "admin",
-            loginTime: new Date().toISOString()
-          });
-
-          setLoginUser({
-            email: identity,
-            name: "Admin",
-            role: "admin",
-            loginTime: new Date().toISOString()
-          });
-
-          if (message) message.textContent = "Đăng nhập quản trị thành công!";
-          setTimeout(() => {
-            window.location.href = "admin-dashboard.html";
-          }, 600);
           return;
         }
 
@@ -628,20 +658,17 @@ function initMobileMenu() {
 }
 
 function getAdminUser() {
-  try {
-    return JSON.parse(localStorage.getItem(adminKey)) || null;
-  } catch {
-    return null;
-  }
+  const user = getLoginUser();
+  if (!user) return null;
+  return user.role === "admin" ? user : null;
 }
 
 function loginAdmin(adminData) {
-  localStorage.setItem(adminKey, JSON.stringify(adminData));
+  setLoginUser(adminData);
 }
 
 function logoutAdmin() {
-  localStorage.removeItem(adminKey);
-  window.location.href = "Home.html";
+  logout();
 }
 
 function initAdminNav() {
@@ -977,3 +1004,5 @@ window.fetchCourseList = fetchCourseList;
 window.fetchCourseDetail = fetchCourseDetail;
 window.normalizeCourseDetail = normalizeCourseDetail;
 window.fetchMyLearning = fetchMyLearning;
+window.fetchPendingAdmins = fetchPendingAdmins;
+window.renderPendingAdminList = renderPendingAdminList;

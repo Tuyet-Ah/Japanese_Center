@@ -1,10 +1,14 @@
+from django.contrib.auth import get_user_model
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import  permissions
+from rest_framework import permissions
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from education.services import AuthService
 from education.serializers import UserSerializer, CustomTokenSerializer,UserProfileSerializer
+from education.models import Course, Quiz
+
+User = get_user_model()
 
 # --- AUTH ---
 class RegisterView(APIView):
@@ -38,6 +42,47 @@ class ApproveAdminView(APIView):
             return Response(UserSerializer(user).data, status=200)
         except ValueError as e:
             return Response({"error": str(e)}, status=400)
+
+    def delete(self, request, user_id):
+        if request.user.role != 'admin' or request.user.is_admin_pending:
+            return Response({"error": "Không có quyền xóa tài khoản"}, status=403)
+
+        target = User.objects.filter(id=user_id, role='admin', is_admin_pending=True).first()
+        if not target:
+            return Response({"error": "Không tìm thấy tài khoản cần xóa"}, status=404)
+
+        target.delete()
+        return Response({"message": "Đã xóa tài khoản"}, status=200)
+
+class PendingAdminListView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        if request.user.role != 'admin' or request.user.is_admin_pending:
+            return Response({"error": "Không có quyền xem danh sách chờ duyệt"}, status=403)
+
+        pending_admins = User.objects.filter(role='admin', is_admin_pending=True).order_by('-id')
+        return Response(UserSerializer(pending_admins, many=True).data)
+
+
+class AdminDashboardStatsView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        if request.user.role != 'admin' or request.user.is_admin_pending:
+            return Response({"error": "Không có quyền xem thống kê"}, status=403)
+
+        total_courses = Course.objects.count()
+        total_students = User.objects.filter(role='student').count()
+        total_quizzes = Quiz.objects.count()
+        pending_admins = User.objects.filter(role='admin', is_admin_pending=True).count()
+
+        return Response({
+            "total_courses": total_courses,
+            "total_students": total_students,
+            "total_quizzes": total_quizzes,
+            "pending_admins": pending_admins
+        })
 
 # Quản lý thông tin các nhân và avatar
 class ProfileView(APIView):

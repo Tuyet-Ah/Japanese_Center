@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const response = await fetch(`${AUTH_API_BASE_URL}/login/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({ username, password, role: selectedRole })
       });
 
       console.log("[auth] login response", response.status);
@@ -64,6 +64,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!response.ok) {
         if (response.status === 401) {
           setFormMessage(message, "Ten dang nhap hoac mat khau bi sai.");
+        } else if (String(data.detail || "").toLowerCase().includes("cho duyet")) {
+          setFormMessage(message, "Tai khoan admin dang cho duyet.");
         } else {
           setFormMessage(message, data.detail || data.error || "Dang nhap that bai.");
         }
