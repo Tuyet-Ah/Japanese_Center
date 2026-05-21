@@ -1,8 +1,19 @@
 const AUTH_API_BASE_URL = window.API_BASE_URL || "http://127.0.0.1:8000/educations";
 
-function setFormMessage(node, text) {
+const LOGIN_API_URL = "http://127.0.0.1:8000/educations/login/";
+const PROFILE_API_URL = "http://127.0.0.1:8000/educations/profile/";
+
+// Demo admin credentials (tạm, sẽ thay bằng BE sau)
+const DEMO_ADMIN = {
+  email: "admin@demo.com",
+  password: "admin123",
+  adminCode: "ADMIN2026"
+};
+
+function setFormMessage(node, text, isError = true) {
   if (!node) return;
   node.textContent = text;
+  node.style.color = isError ? "#dc2626" : "#16a34a";
 }
 
 function persistLoginUser(user) {
@@ -46,7 +57,9 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    // ── STUDENT LOGIN (thử API trước, fallback demo) ──────────────────────────
     if (submitButton) submitButton.disabled = true;
+    setFormMessage(message, "Đang xử lý...", false);
 
     try {
       console.log("[auth] login request ->", `${AUTH_API_BASE_URL}/login/`);
@@ -72,23 +85,19 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
+      // Lưu tokens
       if (typeof setAuthTokens === "function") {
         setAuthTokens({ access: data.access, refresh: data.refresh });
-      } else {
-        localStorage.setItem("japaneseCenterAuthTokens", JSON.stringify({ access: data.access, refresh: data.refresh }));
       }
 
+      // Lấy thông tin profile
       let profile = null;
       try {
         const profileResponse = await fetch(`${AUTH_API_BASE_URL}/profile/`, {
           headers: { Authorization: `Bearer ${data.access}` }
         });
-        if (profileResponse.ok) {
-          profile = await profileResponse.json();
-        }
-      } catch {
-        profile = null;
-      }
+        if (profileResponse.ok) profile = await profileResponse.json();
+      } catch { /* ignore */ }
 
       const displayName = profile?.full_name || profile?.username || username;
       const userEmail = profile?.email || "";

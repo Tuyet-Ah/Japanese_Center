@@ -902,7 +902,16 @@ function initAdminShell() {
 document.addEventListener("DOMContentLoaded", () => {
   const path = window.location.pathname.split("/").pop().toLowerCase();
   const user = getLoginUser();
-  if (user && (path === 'login.html' || path === 'register.html')) {
+  const adminUser = getAdminUser();
+
+  // If already logged in as admin and trying to access login/register → go to admin-home
+  if ((adminUser || (user && user.role === 'admin')) && (path === 'login.html' || path === 'register.html')) {
+    window.location.href = "admin-home.html";
+    return;
+  }
+
+  // If already logged in as student and trying to access login/register → go to profile
+  if (user && !user.role && (path === 'login.html' || path === 'register.html')) {
     window.location.href = "profile.html";
     return;
   }
@@ -947,6 +956,18 @@ document.addEventListener("DOMContentLoaded", () => {
         renderCourses(getCourseFilters());
       });
     }
+  }
+
+  if (statusFilter) {
+    statusFilter.addEventListener('change', () => {
+      renderCourses(getCourseFilters());
+    });
+  }
+
+  if (levelFilter) {
+    levelFilter.addEventListener('change', () => {
+      renderCourses(getCourseFilters());
+    });
   }
 
   renderCart();

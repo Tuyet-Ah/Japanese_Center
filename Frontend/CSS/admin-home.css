@@ -1,0 +1,93 @@
+/* ===== ADMIN HOME – Pink Theme ===== */
+
+/* Topbar – matching the student home style */
+.topbar { background: rgba(239, 246, 255, 0.9); border-bottom: 1px solid rgba(249, 168, 212, 0.8); }
+.topbar .brand-mark { background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.topbar .nav a { color: var(--muted); }
+.topbar .nav a:hover, .topbar .nav a.active { color: var(--primary-dark); background: linear-gradient(135deg, rgba(255, 171, 199, 0.15), rgba(188, 230, 244, 0.25)); }
+.topbar .brand span { color: var(--text); }
+.topbar .brand small { color: var(--muted); }
+
+/* Admin user section in topbar */
+.admin-user-section { display: flex; align-items: center; gap: 12px; }
+.admin-user-section .user-greeting { color: var(--primary-dark); font-weight: 600; font-size: 0.92rem; }
+.admin-user-section .btn-outline { color: var(--primary-dark); border-color: rgba(255,171,199,0.4); }
+.admin-user-section .btn-outline:hover { background: rgba(255,171,199,0.15); }
+.admin-user-section a.icon-btn { color: var(--primary-dark) !important; font-size: 1.3rem; text-decoration: none; opacity: 0.9; }
+.admin-user-section a.icon-btn:hover { opacity: 1; transform: scale(1.15); filter: brightness(0.8); }
+
+/* ===== ADMIN FEATURE CARDS ===== */
+.admin-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+}
+
+.admin-feature-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 28px 24px;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid rgba(255,171,199,0.35);
+  box-shadow: 0 4px 20px rgba(255,171,199,0.15);
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  transition: transform 0.25s, box-shadow 0.25s;
+  position: relative;
+}
+
+.admin-feature-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 35px rgba(255,171,199,0.4);
+  border-color: rgba(255,171,199,0.6);
+}
+
+.admin-feature-card--wide {
+  grid-column: 1 / -1;
+}
+
+.afc-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(255,171,199,0.2), rgba(188,230,244,0.3));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+.afc-body { flex: 1; }
+.afc-body h3 { margin: 0 0 8px; font-size: 1.1rem; font-weight: 800; color: var(--primary-dark); }
+.afc-body p { margin: 0 0 12px; font-size: 0.88rem; color: #555; line-height: 1.65; }
+.afc-stats { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.afc-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(255,171,199,0.15);
+  color: var(--primary-dark);
+}
+.afc-badge--warn { background: #fef3c7; color: #92400e; }
+.afc-badge--green { background: #dcfce7; color: #14532d; }
+
+.afc-arrow {
+  font-size: 1.4rem;
+  color: var(--primary);
+  font-weight: 900;
+  align-self: center;
+  transition: transform 0.2s;
+}
+.admin-feature-card:hover .afc-arrow { transform: translateX(5px); }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .admin-feature-grid { grid-template-columns: 1fr; }
+  .admin-feature-card--wide { grid-column: 1; }
+}
