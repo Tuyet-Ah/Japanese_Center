@@ -109,13 +109,27 @@ function buildStaticCourseCourseKey(title) {
   return 'n5-beginner';
 }
 
+function getYoutubeId(url) {
+  if (!url) return '';
+  if (url.includes('/embed/')) {
+    const embedMatch = url.match(/\/embed\/([^?&/]+)/);
+    return embedMatch ? embedMatch[1] : '';
+  }
+  const watchMatch = url.match(/[?&]v=([^&]+)/);
+  if (watchMatch) return watchMatch[1];
+  const shortMatch = url.match(/youtu\.be\/([^?&/]+)/);
+  if (shortMatch) return shortMatch[1];
+  const shortsMatch = url.match(/youtube\.com\/shorts\/([^?&/]+)/);
+  if (shortsMatch) return shortsMatch[1];
+  return '';
+}
+
 function convertYoutubeToEmbed(url) {
   if (!url) return '';
-  if (url.includes('/embed/')) return url;
-  const watchMatch = url.match(/[?&]v=([^&]+)/);
-  if (watchMatch) return `https://www.youtube.com/embed/${watchMatch[1]}`;
-  const shortMatch = url.match(/youtu\.be\/([^?&]+)/);
-  if (shortMatch) return `https://www.youtube.com/embed/${shortMatch[1]}`;
+  const baseParams = 'rel=0&modestbranding=1&playsinline=1';
+  const videoId = getYoutubeId(url);
+  if (videoId) return `https://www.youtube.com/embed/${videoId}?${baseParams}`;
+  if (url.includes('youtube.com') || url.includes('youtu.be')) return '';
   return url;
 }
 
@@ -128,7 +142,7 @@ function normalizeBackendCourse(course, progressPercentage) {
         id: String(lesson.id),
         title: lesson.title || `Bài ${index + 1}`,
         duration: 'Xem trực tiếp',
-        done: false,
+        done: Boolean(lesson.is_completed),
         videoUrl: lesson.video_url || '',
         pdfFile: lesson.pdf_file || ''
       }))
@@ -139,18 +153,37 @@ function normalizeBackendCourse(course, progressPercentage) {
     id: course.id,
     title: course.title,
     teacher: 'Giáo viên của khóa học',
-    progress: Number(progressPercentage || 0),
+    progress: Number(course.progress_percentage ?? progressPercentage ?? 0),
     sections,
     description: course.description || '',
     source: 'backend'
   };
 }
 
-function renderLearningCourse(course) {
+function applyLessonLocks(course) {
+  const ordered = [];
+  (course.sections || []).forEach((section) => {
+    (section.lessons || []).forEach((lesson) => ordered.push(lesson));
+  });
+
+  let lastCompletedIndex = -1;
+  ordered.forEach((lesson, index) => {
+    if (lesson.done) lastCompletedIndex = index;
+  });
+
+  const unlockIndex = Math.min(lastCompletedIndex + 1, Math.max(ordered.length - 1, 0));
+  ordered.forEach((lesson, index) => {
+    lesson.isLocked = index > unlockIndex;
+  });
+}
+
+function renderLearningCourse(course, preferredLessonId) {
   if (!course) return;
 
   currentLearningCourse = course;
   currentLearningLesson = null;
+
+  applyLessonLocks(course);
 
   document.title = `JSMART | ${course.title}`;
   document.getElementById('sidebarCourseTitle').textContent = course.title;
@@ -173,14 +206,21 @@ function renderLearningCourse(course) {
 
     (section.lessons || []).forEach((lesson, index) => {
       const item = document.createElement('li');
-      item.className = `syllabus-lesson${lesson.done ? ' done' : ''}`;
+      item.className = `syllabus-lesson${lesson.done ? ' done' : ''}${lesson.isLocked ? ' locked' : ''}`;
       item.dataset.lessonId = lesson.id;
+      const statusIcon = lesson.isLocked ? '🔒' : (lesson.done ? '✅' : '▶');
       item.innerHTML = `
-        <span class="lesson-check">${lesson.done ? '✅' : '▶'}</span>
+        <span class="lesson-check">${statusIcon}</span>
         <span class="lesson-name">${lesson.title}</span>
         <span class="lesson-duration">${lesson.duration || ''}</span>
       `;
-      item.addEventListener('click', () => loadLesson(lesson, item));
+      item.addEventListener('click', () => {
+        if (lesson.isLocked) {
+          alert('Bạn cần hoàn thành bài trước để mở khóa bài này.');
+          return;
+        }
+        loadLesson(lesson, item);
+      });
       lessonsList.appendChild(item);
 
       if (!currentLearningLesson && index === 0) {
@@ -198,8 +238,13 @@ function renderLearningCourse(course) {
     syllabusEl.appendChild(sectionEl);
   });
 
-  const firstLesson = currentLearningLesson || (course.sections && course.sections[0] && course.sections[0].lessons && course.sections[0].lessons[0]);
-  if (firstLesson) {
+  const preferredLesson = preferredLessonId
+    ? (course.sections || []).flatMap((section) => section.lessons || []).find((lesson) => lesson.id === preferredLessonId)
+    : null;
+  const firstLesson = preferredLesson && !preferredLesson.isLocked
+    ? preferredLesson
+    : (course.sections && course.sections[0] && course.sections[0].lessons && course.sections[0].lessons[0]);
+  if (firstLesson && !firstLesson.isLocked) {
     const firstNode = document.querySelector(`.syllabus-lesson[data-lesson-id="${firstLesson.id}"]`);
     if (firstNode) {
       loadLesson(firstLesson, firstNode);
@@ -213,18 +258,17 @@ function renderLearningCourse(course) {
 }
 
 async function loadBackendCourseLearning(courseId) {
-  if (typeof fetchCourseDetail !== 'function') return null;
+  const tokens = typeof getAuthTokens === 'function' ? getAuthTokens() : null;
+  if (!tokens || !tokens.access) return null;
 
-  const [course, myLearning] = await Promise.all([
-    fetchCourseDetail(courseId),
-    typeof fetchMyLearning === 'function' ? fetchMyLearning() : Promise.resolve(null)
-  ]);
-
-  const learningEntry = Array.isArray(myLearning)
-    ? myLearning.find((item) => Number(item.course_id) === Number(courseId))
-    : null;
-
-  return normalizeBackendCourse(course, learningEntry ? learningEntry.progress_percentage : 0);
+  const response = await fetch(`${API_BASE_URL}/courses/${courseId}/learning/`, {
+    headers: { Authorization: `Bearer ${tokens.access}` }
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(data.error || data.detail || 'Không thể tải tiến độ khóa học');
+  }
+  return normalizeBackendCourse(data, data.progress_percentage || 0);
 }
 
 async function loadCourseLearningPage() {
@@ -252,6 +296,29 @@ async function loadCourseLearningPage() {
   renderLearningCourse(staticCourse || COURSES['n5-beginner']);
 }
 
+async function markLessonCompleted(lessonId) {
+  const tokens = typeof getAuthTokens === 'function' ? getAuthTokens() : null;
+  if (!tokens || !tokens.access) {
+    alert('Bạn cần đăng nhập để hoàn thành bài học.');
+    return false;
+  }
+
+  const response = await fetch(`${API_BASE_URL}/lessons/${lessonId}/complete/`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${tokens.access}`,
+      'Content-Type': 'application/json'
+    }
+  });
+
+  if (!response.ok) {
+    const data = await response.json().catch(() => ({}));
+    alert(data.error || data.detail || 'Không thể cập nhật tiến độ.');
+    return false;
+  }
+  return true;
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   initStandardHeader();
 
@@ -271,6 +338,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.querySelector('.save-notes-btn')?.addEventListener('click', () => {
     alert('Đã lưu ghi chú!');
   });
+
+  document.getElementById('completeLessonBtn')?.addEventListener('click', async () => {
+    if (!currentLearningLesson || !currentLearningCourse) return;
+    const ok = await markLessonCompleted(currentLearningLesson.id);
+    if (!ok) return;
+    const refreshed = await loadBackendCourseLearning(currentLearningCourse.id);
+    if (refreshed) {
+      renderLearningCourse(refreshed, String(currentLearningLesson.id));
+    }
+  });
 });
 
 function loadLesson(lesson, itemEl) {
@@ -284,15 +361,19 @@ function loadLesson(lesson, itemEl) {
 
   const placeholder = document.getElementById('videoPlaceholder');
   const frame = document.getElementById('videoFrame');
+  const completeBtn = document.getElementById('completeLessonBtn');
   const rawVideoUrl = lesson.videoUrl || lesson.video_url || '';
   const videoSrc = rawVideoUrl
     ? convertYoutubeToEmbed(rawVideoUrl)
-    : (lesson.videoId ? `https://www.youtube.com/embed/${lesson.videoId}` : '');
+    : (lesson.videoId ? `https://www.youtube.com/embed/${lesson.videoId}?rel=0&modestbranding=1&playsinline=1` : '');
 
-  if (placeholder) placeholder.style.display = 'none';
+  if (placeholder) placeholder.style.display = videoSrc ? 'none' : 'flex';
   if (frame) {
-    frame.style.display = 'block';
-    frame.src = videoSrc || lesson.videoUrl || lesson.video_url || '';
+    frame.style.display = videoSrc ? 'block' : 'none';
+    frame.src = videoSrc || '';
+  }
+  if (completeBtn) {
+    completeBtn.disabled = Boolean(lesson.isLocked || lesson.done);
   }
 
   const desc = document.getElementById('lessonDesc');

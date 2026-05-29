@@ -871,10 +871,10 @@ function initStandardHeader() {
   updateUIBasedOnLogin();
   initNavState();
 
-  const logoutButton = document.querySelector("[data-logout-btn]");
-  if (logoutButton) {
-    logoutButton.addEventListener("click", logout);
-  }
+  const logoutButtons = document.querySelectorAll("[data-logout-btn]");
+  logoutButtons.forEach((button) => {
+    button.addEventListener("click", logout);
+  });
 }
 
 function initAdminShell() {
@@ -966,10 +966,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  const logoutButton = document.querySelector("[data-logout-btn]");
-  if (logoutButton) {
-    logoutButton.addEventListener("click", logout);
-  }
+  const logoutButtons = document.querySelectorAll("[data-logout-btn]");
+  logoutButtons.forEach((button) => {
+    button.addEventListener("click", logout);
+  });
 });
 
 window.courseCatalog = courseCatalog;

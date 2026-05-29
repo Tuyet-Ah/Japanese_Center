@@ -146,6 +146,23 @@ body {
     margin: 0;
 }
 
+.material-empty {
+    padding: 18px;
+    color: #6b7280;
+    font-style: italic;
+    background: #fff;
+    border-radius: 12px;
+    border: 1px dashed #cbd5f5;
+    min-width: 240px;
+    text-align: center;
+}
+
+.material-error .material-empty {
+    color: #b91c1c;
+    border-color: #fca5a5;
+    background: #fef2f2;
+}
+
 @media (max-width: 768px) {
     .material-card {
         flex: 0 0 220px;

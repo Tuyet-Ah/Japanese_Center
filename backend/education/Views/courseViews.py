@@ -11,8 +11,9 @@ from education.serializers import (
     CourseListSerializer,
     CourseReviewSerializer,
     CourseUpdateSerializer,
+    CourseLearningSerializer,
 )
-from education.models import Chapter, Course, Enrollment
+from education.models import Chapter, Course, Enrollment, UserProgress
 
 
 def _is_admin(user):
@@ -74,6 +75,35 @@ class CourseDetailView(APIView):
 
         course.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class CourseLearningDetailView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, course_id):
+        try:
+            course = CourseService.get_course_detail(course_id)
+        except ValueError as e:
+            return Response({"error": str(e)}, status=status.HTTP_404_NOT_FOUND)
+
+        is_paid = Enrollment.objects.filter(
+            user=request.user,
+            course_id=course_id,
+            status='paid'
+        ).exists()
+
+        if not is_paid and not _is_admin(request.user):
+            return Response({"error": "Bạn cần mua khóa học này để học."}, status=status.HTTP_403_FORBIDDEN)
+
+        completed_ids = set(UserProgress.objects.filter(
+            user=request.user,
+            lesson__chapter__course_id=course_id,
+            is_completed=True
+        ).values_list('lesson_id', flat=True))
+
+        progress = CourseService.get_course_progress(request.user, course_id)
+        serializer = CourseLearningSerializer(course, context={"completed_ids": completed_ids})
+        return Response({**serializer.data, **progress})
 
 
 class ChapterCreateView(APIView):

@@ -1,5 +1,5 @@
 from django.urls import path
-from .Views import RegisterView, RegisterAdminView, LoginView, ApproveAdminView, PendingAdminListView, AdminDashboardStatsView, ReplyToTopicView, GetReplyTopicView, CourseListView, CourseDetailView, ChapterCreateView, ChapterDetailView, CartView, CheckoutView, CartDeleteView, PracticeHistoryView, FinalExamHistoryView, QuizSubmitView, QuizDetailView, LessonDetailView, LessonCreateView, MarkLessonCompleteView, ProfileView, ChangePasswordView, MyCoursesProgressView, QuizLeaderboardView, QuizReviewDetailView, LessonCommentView, PersonalNoteView, ForumTopicView, CourseSearchSuggestView, CourseReviewView, VnpayReturnView, VnpayIpnView, JapaneseChatbotView, PracticeQuizListView, QuizSubmissionDetailView, AdminQuizListView
+from .Views import RegisterView, RegisterAdminView, LoginView, ApproveAdminView, PendingAdminListView, AdminDashboardStatsView, ReplyToTopicView, GetReplyTopicView, CourseListView, CourseDetailView, CourseLearningDetailView, ChapterCreateView, ChapterDetailView, CartView, CheckoutView, CartDeleteView, PracticeHistoryView, FinalExamHistoryView, QuizSubmitView, QuizDetailView, LessonDetailView, LessonCreateView, MarkLessonCompleteView, ProfileView, ChangePasswordView, MyCoursesProgressView, QuizLeaderboardView, QuizReviewDetailView, LessonCommentView, PersonalNoteView, ForumTopicView, CourseSearchSuggestView, CourseReviewView, VnpayReturnView, VnpayIpnView, JapaneseChatbotView, PracticeQuizListView, QuizSubmissionDetailView, AdminQuizListView, MaterialListView, MaterialDetailView
 
 urlpatterns =[
       path('register/', RegisterView.as_view(), name='register'),
@@ -15,6 +15,7 @@ urlpatterns =[
       # URL này sẽ xử lý các query params như ?search=, ?level=, ?min_price=
       path('courses/', CourseListView.as_view(), name='course-list'),
       path('courses/<int:pk>/',CourseDetailView.as_view(), name='course-detail'),
+      path('courses/<int:course_id>/learning/', CourseLearningDetailView.as_view(), name='course-learning-detail'),
       path('courses/<int:course_id>/chapters/', ChapterCreateView.as_view(), name='chapter-create'),
       path('chapters/<int:pk>/', ChapterDetailView.as_view(), name='chapter-detail'),
       # 2. Đánh giá khóa học (Xem danh sách review và Gửi review mới)
@@ -52,4 +53,6 @@ urlpatterns =[
       path('forum/topics/<int:topic_id>/reply/', ReplyToTopicView.as_view(), name='forum-reply'),
       path('forum/topics/<int:topic_id>/response/', GetReplyTopicView.as_view(), name='forum-get-response'),
       path('chatbot/', JapaneseChatbotView.as_view(), name='japanese-chatbot'),
+      path('materials/', MaterialListView.as_view(), name='material-list'),
+      path('materials/<int:pk>/', MaterialDetailView.as_view(), name='material-detail'),
 ] 
