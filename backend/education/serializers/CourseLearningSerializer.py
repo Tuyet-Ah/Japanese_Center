@@ -7,7 +7,7 @@ class LessonLearningSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Lesson
-        fields = ["id", "title", "video_url", "pdf_file", "order", "is_completed"]
+        fields = ["id", "title", "description", "video_url", "pdf_file", "order", "is_completed"]
 
     def get_is_completed(self, obj):
         completed_ids = self.context.get("completed_ids", set())

@@ -101,6 +101,47 @@ const LESSON_DETAILS = {
 let currentLearningCourse = null;
 let currentLearningLesson = null;
 
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function renderLessonDescription(rawText) {
+  const text = String(rawText || '').trim();
+  if (!text) return '';
+
+  const lines = text.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
+  const hasList = lines.some((line) => /^[-*•]/.test(line));
+
+  if (!hasList) {
+    return lines.map((line) => `<p>${escapeHtml(line)}</p>`).join('');
+  }
+
+  const items = [];
+  const paragraphs = [];
+  lines.forEach((line) => {
+    if (/^[-*•]/.test(line)) {
+      items.push(`<li>${escapeHtml(line.replace(/^[-*•]\s*/, ''))}</li>`);
+    } else {
+      paragraphs.push(`<p>${escapeHtml(line)}</p>`);
+    }
+  });
+
+  const listHtml = items.length ? `<ul>${items.join('')}</ul>` : '';
+  return `${paragraphs.join('')}${listHtml}`;
+}
+
+function buildMediaUrl(path) {
+  if (!path) return '';
+  if (path.startsWith('http')) return path;
+  if (path.startsWith('/')) return `${API_HOST}${path}`;
+  return `${API_HOST}/${path}`;
+}
+
 function buildStaticCourseCourseKey(title) {
   const normalized = String(title || '').toLowerCase();
   if (normalized.includes('n5')) return 'n5-beginner';
@@ -141,6 +182,7 @@ function normalizeBackendCourse(course, progressPercentage) {
       ? chapter.lessons.map((lesson, index) => ({
         id: String(lesson.id),
         title: lesson.title || `Bài ${index + 1}`,
+        description: lesson.description || '',
         duration: 'Xem trực tiếp',
         done: Boolean(lesson.is_completed),
         videoUrl: lesson.video_url || '',
@@ -378,7 +420,28 @@ function loadLesson(lesson, itemEl) {
 
   const desc = document.getElementById('lessonDesc');
   if (desc) {
-    desc.textContent = `Bài giảng: ${lesson.title}. Hãy theo dõi toàn bộ video và làm bài tập kèm theo để nắm vững kiến thức.`;
+    const fallbackDesc = `Bài giảng: ${lesson.title}. Hãy theo dõi toàn bộ video và làm bài tập kèm theo để nắm vững kiến thức.`;
+    const rawDesc = lesson.description || lesson.desc || LESSON_DETAILS.default?.desc || fallbackDesc;
+    desc.innerHTML = renderLessonDescription(rawDesc) || `<p>${escapeHtml(fallbackDesc)}</p>`;
+  }
+
+  const resources = document.getElementById('lessonResources');
+  if (resources) {
+    const pdfUrl = buildMediaUrl(lesson.pdfFile || lesson.pdf_file || '');
+    if (pdfUrl) {
+      const fileName = pdfUrl.split('/').pop() || 'Tai lieu PDF';
+      resources.innerHTML = `
+        <a href="${pdfUrl}" class="resource-item" target="_blank" rel="noopener">
+          <span class="resource-icon">📄</span>
+          <div class="resource-info">
+            <div class="resource-name">${escapeHtml(fileName)}</div>
+          </div>
+          <span class="resource-download">⬇</span>
+        </a>
+      `;
+    } else {
+      resources.innerHTML = '<p>Chưa có tài nguyên cho bài học này.</p>';
+    }
   }
 }
 
