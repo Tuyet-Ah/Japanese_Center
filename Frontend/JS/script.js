@@ -2,6 +2,9 @@ const cartKey = "japaneseCenterCart";
 const loginKey = "japaneseCenterUser";
 const adminKey = "japaneseCenterAdmin";
 const authTokenKey = "japaneseCenterAuthTokens";
+const sessionStartKey = "japaneseCenterSessionStart";
+const SESSION_TTL_MS = 3 * 60 * 60 * 1000;
+const authStorage = sessionStorage;
 const API_HOST = "http://127.0.0.1:8000";
 const API_BASE_URL = `${API_HOST}/educations`;
 const CHATBOT_API_URL = `${API_BASE_URL}/chatbot/`;
@@ -10,35 +13,72 @@ let courseCatalog = {};
 
 function getLoginUser() {
   try {
-    return JSON.parse(localStorage.getItem(loginKey)) || null;
+    return JSON.parse(authStorage.getItem(loginKey)) || null;
   } catch {
     return null;
   }
 }
 
 function setLoginUser(userData) {
-  localStorage.setItem(loginKey, JSON.stringify(userData));
+  authStorage.setItem(loginKey, JSON.stringify(userData));
   updateUIBasedOnLogin();
 }
 
 function getAuthTokens() {
   try {
-    return JSON.parse(localStorage.getItem(authTokenKey)) || null;
+    return JSON.parse(authStorage.getItem(authTokenKey)) || null;
   } catch {
     return null;
   }
 }
 
 function setAuthTokens(tokens) {
-  localStorage.setItem(authTokenKey, JSON.stringify(tokens));
+  authStorage.setItem(authTokenKey, JSON.stringify(tokens));
+  if (tokens?.access) {
+    authStorage.setItem(sessionStartKey, String(Date.now()));
+  }
 }
 
 function clearAuthTokens() {
-  localStorage.removeItem(authTokenKey);
+  authStorage.removeItem(authTokenKey);
+  authStorage.removeItem(sessionStartKey);
+}
+
+function isSessionExpired() {
+  const startedAt = Number(authStorage.getItem(sessionStartKey));
+  if (!startedAt) return false;
+  return Date.now() - startedAt >= SESSION_TTL_MS;
+}
+
+function getJwtPayload(token) {
+  if (!token || typeof token !== "string") return null;
+  const parts = token.split(".");
+  if (parts.length < 2) return null;
+  try {
+    let payload = parts[1].replace(/-/g, "+").replace(/_/g, "/");
+    const padding = payload.length % 4;
+    if (padding) {
+      payload += "=".repeat(4 - padding);
+    }
+    const decoded = atob(payload);
+    return JSON.parse(decoded);
+  } catch {
+    return null;
+  }
+}
+
+function isTokenExpired(token) {
+  const payload = getJwtPayload(token);
+  if (!payload || !payload.exp) return false;
+  const now = Math.floor(Date.now() / 1000);
+  return now >= payload.exp;
 }
 
 function logout() {
-  localStorage.removeItem(loginKey);
+  authStorage.removeItem(loginKey);
+  authStorage.removeItem(adminKey);
+  authStorage.removeItem(authTokenKey);
+  authStorage.removeItem(sessionStartKey);
   clearAuthTokens();
   updateUIBasedOnLogin();
   window.location.href = "Home.html";
@@ -46,12 +86,18 @@ function logout() {
 
 function updateUIBasedOnLogin() {
   const user = getLoginUser();
+  const tokens = getAuthTokens();
+  if (tokens?.access && (isTokenExpired(tokens.access) || isSessionExpired())) {
+    logout();
+    return;
+  }
+  const isAuthenticated = Boolean(user && tokens && tokens.access);
   const authActions = document.querySelector("[data-auth-actions]");
   const userActions = document.querySelector("[data-user-actions]");
   const profileLink = document.querySelector("[data-profile-link]");
   const cartLink = document.querySelector("[data-cart-link]");
 
-  if (user) {
+  if (isAuthenticated) {
     if (authActions) authActions.style.display = "none";
     if (userActions) userActions.style.display = "flex";
     if (profileLink) profileLink.hidden = false;
@@ -67,6 +113,27 @@ function updateUIBasedOnLogin() {
   }
 
   updateCartCount();
+}
+
+async function validateAuthSession() {
+  const user = getLoginUser();
+  const tokens = getAuthTokens();
+  if (!user || !tokens?.access) return;
+  if (isTokenExpired(tokens.access) || isSessionExpired()) {
+    logout();
+    return;
+  }
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/profile/`, {
+      headers: { Authorization: `Bearer ${tokens.access}` }
+    });
+    if (!response.ok) {
+      logout();
+    }
+  } catch {
+    logout();
+  }
 }
 
 function formatMoney(value) {
@@ -903,15 +970,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const path = window.location.pathname.split("/").pop().toLowerCase();
   const user = getLoginUser();
   const adminUser = getAdminUser();
+  const tokens = getAuthTokens();
+  const isAuthenticated = Boolean(user && tokens && tokens.access);
 
   // If already logged in as admin and trying to access login/register → go to admin-home
-  if ((adminUser || (user && user.role === 'admin')) && (path === 'login.html' || path === 'register.html')) {
+  if ((adminUser || (isAuthenticated && user.role === 'admin')) && (path === 'login.html' || path === 'register.html')) {
     window.location.href = "admin-home.html";
     return;
   }
 
   // If already logged in as student and trying to access login/register → go to profile
-  if (user && !user.role && (path === 'login.html' || path === 'register.html')) {
+  if (isAuthenticated && !user.role && (path === 'login.html' || path === 'register.html')) {
     window.location.href = "profile.html";
     return;
   }
@@ -977,6 +1046,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initNavState();
   initMobileMenu();
   updateUIBasedOnLogin();
+  validateAuthSession();
   initFloatingChatWidget();
 
   const clearCartButton = document.querySelector("[data-clear-cart]");
@@ -992,6 +1062,8 @@ document.addEventListener("DOMContentLoaded", () => {
     button.addEventListener("click", logout);
   });
 });
+
+
 
 window.courseCatalog = courseCatalog;
 window.getLoginUser = getLoginUser;
