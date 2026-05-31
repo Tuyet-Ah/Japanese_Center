@@ -1,169 +1,75 @@
-const examBank = {
-  "N5-Grammar": {
-    title: "Ngữ pháp N5",
-    level: "N5 Beginner",
-    subtitle: "Làm bài kiểm tra ngữ pháp nền tảng",
-    duration: "20 phút",
-    questionCount: "30 câu hỏi",
-    points: "1250 điểm",
-    tip: "Tập trung vào trợ từ wa, ga, ni, de và các mẫu câu cơ bản trước khi chọn đáp án.",
-    intro: "Bài thi gồm các câu hỏi ngắn về trợ từ, động từ và cấu trúc câu cơ bản. Hãy làm từ câu dễ trước rồi quay lại các câu chưa chắc.",
-    questions: [
-      { text: "「わたしは学生です。」の意味はどれですか？", options: ["Tôi là học sinh", "Tôi đi học", "Tôi là giáo viên", "Tôi là bác sĩ"] },
-      { text: "Điền trợ từ đúng: かのじょ ___ せんせいです。", options: ["は", "が", "を", "に"] },
-      { text: "Chọn cấu trúc đúng để nói \"đi đến trường\".", options: ["がっこうへいきます", "がっこうはきます", "がっこうをいきます", "がっこうにきます"] },
-      { text: "Mẫu nào dùng để phủ định?", options: ["〜ません", "〜ました", "〜ます", "〜でしょう"] },
-      { text: "Chọn từ đúng cho câu: これは ____ です。", options: ["ほん", "ほんが", "ほんを", "ほんに"] }
-    ]
-  },
-  "N5-Vocabulary": {
-    title: "Từ vựng N5",
-    level: "N5 Beginner",
-    subtitle: "Ôn bộ từ vựng cơ bản theo chủ đề",
-    duration: "15 phút",
-    questionCount: "25 câu hỏi",
-    points: "1000 điểm",
-    tip: "Học theo cụm chủ đề để tăng tốc độ ghi nhớ và nhận diện từ trong ngữ cảnh.",
-    intro: "Bài thi kiểm tra khả năng nhận biết từ vựng hàng ngày như gia đình, lớp học, thời gian và mua sắm.",
-    questions: [
-      { text: "「りんご」の nghĩa là gì?", options: ["Táo", "Cam", "Chuối", "Nho"] },
-      { text: "「でんしゃ」の nghĩa là gì?", options: ["Tàu điện", "Xe buýt", "Máy bay", "Taxi"] },
-      { text: "Chọn từ chỉ thời gian buổi sáng.", options: ["あさ", "よる", "きのう", "あした"] },
-      { text: "「がっこう」の nghĩa là gì?", options: ["Trường học", "Bệnh viện", "Nhà ga", "Công viên"] },
-      { text: "「たべます」の nghĩa là gì?", options: ["Ăn", "Uống", "Ngủ", "Đi"] }
-    ]
-  },
-  "N5-Listening": {
-    title: "Nghe Hiểu N5",
-    level: "N5 Beginner",
-    subtitle: "Luyện phản xạ nghe tình huống ngắn",
-    duration: "25 phút",
-    questionCount: "20 đoạn nghe",
-    points: "1000 điểm",
-    tip: "Lắng nghe âm cuối và từ chỉ thời gian để xác định nội dung chính xác hơn.",
-    intro: "Mỗi câu có một đoạn hội thoại ngắn. Nghe kỹ từ khóa, số đếm và địa điểm trước khi chọn đáp án.",
-    questions: [
-      { text: "Nghe đoạn hội thoại và chọn tình huống đúng.", options: ["Mua vé", "Hỏi đường", "Đặt bàn", "Gọi điện"] },
-      { text: "Nghe và xác định thời gian được nhắc đến.", options: ["7 giờ", "8 giờ", "9 giờ", "10 giờ"] },
-      { text: "Người nói đang ở đâu?", options: ["Nhà ga", "Siêu thị", "Trường học", "Công viên"] },
-      { text: "Chọn hành động được nhắc trong audio.", options: ["Ăn sáng", "Đi làm", "Đọc sách", "Nấu ăn"] },
-      { text: "Từ khóa chính của đoạn là gì?", options: ["Mưa", "Xe", "Bạn", "Ngày mai"] }
-    ]
-  },
-  "N4-Grammar": {
-    title: "Ngữ pháp N4",
-    level: "N4 Elementary",
-    subtitle: "Kiểm tra ngữ pháp trung cấp",
-    duration: "25 phút",
-    questionCount: "35 câu hỏi",
-    points: "1500 điểm",
-    tip: "Ôn lại các mẫu liên kết câu, khả năng và điều kiện trước khi làm bài.",
-    intro: "Bài thi tập trung vào ngữ pháp N4, cách nối mệnh đề và các mẫu biểu đạt thông dụng.",
-    questions: [
-      { text: "Chọn mẫu câu đúng cho ý: nếu trời mưa thì tôi không đi.", options: ["AとB", "AばB", "AてもB", "AからB"] },
-      { text: "Mẫu nào biểu thị khả năng?", options: ["〜ことができる", "〜つもりです", "〜たほうがいい", "〜ようです"] },
-      { text: "Chọn câu có nghĩa “vì bận nên không đi được”.", options: ["〜ので", "〜まで", "〜しか", "〜ながら"] },
-      { text: "Mẫu nào dùng để xin phép?", options: ["〜てもいいですか", "〜なければならない", "〜かもしれない", "〜にちがいない"] },
-      { text: "Điền từ thích hợp: 先生は会議に ___.", options: ["いきます", "いっています", "いった", "いかなかった"] }
-    ]
-  },
-  "N4-Vocabulary": {
-    title: "Từ Vựng N4",
-    level: "N4 Elementary",
-    subtitle: "Ôn các nhóm từ vựng trung cấp",
-    duration: "20 phút",
-    questionCount: "30 câu hỏi",
-    points: "1200 điểm",
-    tip: "Chia từ vựng theo chủ đề công việc, du lịch và học tập để nhớ tốt hơn.",
-    intro: "Bài thi tập trung vào từ vựng thông dụng bậc N4 để kiểm tra tốc độ nhận diện từ.",
-    questions: [
-      { text: "「約束」の nghĩa là gì?", options: ["Lời hứa", "Hóa đơn", "Cuộc gọi", "Nhà ga"] },
-      { text: "「便利」の nghĩa là gì?", options: ["Tiện lợi", "Nặng nề", "Đắt đỏ", "Chậm chạp"] },
-      { text: "Chọn từ liên quan đến công việc.", options: ["しごと", "みず", "はな", "てんき"] },
-      { text: "「経験」の nghĩa là gì?", options: ["Kinh nghiệm", "Sự im lặng", "Tình bạn", "Sự chậm trễ"] },
-      { text: "「予約」の nghĩa là gì?", options: ["Đặt chỗ", "Lời nhắn", "Món quà", "Sự cố"] }
-    ]
-  },
-  "N4-Reading": {
-    title: "Đọc Hiểu N4",
-    level: "N4 Elementary",
-    subtitle: "Kiểm tra khả năng đọc hiểu",
-    duration: "30 phút",
-    questionCount: "15 đoạn văn",
-    points: "1500 điểm",
-    tip: "Đọc câu hỏi trước, gạch từ khóa rồi tìm thông tin tương ứng trong đoạn văn.",
-    intro: "Bài thi gồm các đoạn văn ngắn về đời sống và công việc với câu hỏi suy luận đơn giản.",
-    questions: [
-      { text: "Ý chính của đoạn văn là gì?", options: ["Lịch trình", "Sở thích", "Mua sắm", "Thi cử"] },
-      { text: "Nhân vật chính muốn làm gì?", options: ["Đi làm", "Đi du lịch", "Học tiếng Nhật", "Mua nhà"] },
-      { text: "Từ nào gần nghĩa với “tuy nhiên”?", options: ["でも", "そして", "だから", "それから"] },
-      { text: "Thông tin nào được nhắc đến trong đoạn?", options: ["Thời gian", "Màu sắc", "Mũi tên", "Lời ca"] },
-      { text: "Kết luận hợp lý nhất là gì?", options: ["Đồng ý", "Từ chối", "Đặt lịch", "Hủy bỏ"] }
-    ]
-  },
-  "N3-Grammar": {
-    title: "Ngữ pháp N3",
-    level: "N3 Intermediate",
-    subtitle: "Làm bài kiểm tra ngữ pháp nâng cao",
-    duration: "30 phút",
-    questionCount: "40 câu hỏi",
-    points: "1800 điểm",
-    tip: "Chú ý các mẫu điều kiện, nguyên nhân và cách diễn đạt ý kiến cá nhân.",
-    intro: "Bài thi gồm những mẫu câu N3 có độ dài vừa phải, yêu cầu đọc kỹ ngữ cảnh trước khi chọn đáp án.",
-    questions: [
-      { text: "Chọn mẫu câu phù hợp để diễn đạt “dù có mệt vẫn sẽ học”.", options: ["〜ても", "〜ばかり", "〜しか", "〜ほど"] },
-      { text: "Mẫu nào diễn đạt “có vẻ như”?", options: ["〜そうです", "〜たいです", "〜つもりです", "〜にくいです"] },
-      { text: "Điền từ thích hợp: この仕事は簡単では ___.", options: ["ない", "ある", "なる", "する"] },
-      { text: "Mẫu nào dùng để đưa ra phỏng đoán?", options: ["〜でしょう", "〜ました", "〜ません", "〜ています"] },
-      { text: "Chọn câu thể hiện sự bắt buộc.", options: ["〜なければならない", "〜なくてもいい", "〜たほうがいい", "〜ことがある"] }
-    ]
-  },
-  "N3-Vocabulary": {
-    title: "Từ Vựng N3",
-    level: "N3 Intermediate",
-    subtitle: "Ôn từ vựng bậc trung cấp",
-    duration: "25 phút",
-    questionCount: "35 câu hỏi",
-    points: "1500 điểm",
-    tip: "Học từ theo ngữ cảnh và bộ từ đi kèm, đừng học từng từ rời rạc.",
-    intro: "Bài thi tập trung vào từ vựng N3 có tính ứng dụng cao trong học tập và công việc.",
-    questions: [
-      { text: "「保証」の nghĩa là gì?", options: ["Bảo đảm", "Mở rộng", "Điều hòa", "Ký hiệu"] },
-      { text: "「調整」の nghĩa là gì?", options: ["Điều chỉnh", "Dự đoán", "Thống kê", "Ghi chép"] },
-      { text: "Chọn từ mang nghĩa “khả năng”.", options: ["可能", "安全", "静か", "便利"] },
-      { text: "「改善」の nghĩa là gì?", options: ["Cải thiện", "Sao chép", "Rời bỏ", "Ngăn cản"] },
-      { text: "「説明」の nghĩa là gì?", options: ["Giải thích", "Lịch sử", "Trách nhiệm", "Phí tổn"] }
-    ]
-  },
-  "N3-Full": {
-    title: "Bài Thi Toàn Diện N3",
-    level: "N3 Intermediate",
-    subtitle: "Tổng hợp ngữ pháp, từ vựng, nghe và đọc",
-    duration: "90 phút",
-    questionCount: "Tổng hợp",
-    points: "4000 điểm",
-    tip: "Phân bố thời gian đều cho 4 phần và đánh dấu các câu chưa chắc để quay lại sau.",
-    intro: "Bài thi tổng hợp mô phỏng cấu trúc N3 với nhiều dạng câu hỏi khác nhau.",
-    questions: [
-      { text: "Chọn câu thể hiện nguyên nhân hợp lý nhất.", options: ["〜ので", "〜けれど", "〜のに", "〜ながら"] },
-      { text: "Từ nào phù hợp với ngữ cảnh học thuật?", options: ["研究", "ご飯", "映画", "駅"] },
-      { text: "Điền trợ từ đúng: 仕事が終わったら、家へ ___.", options: ["帰ります", "帰っている", "帰らない", "帰れない"] },
-      { text: "Ý nào đúng với đoạn đọc ngắn?", options: ["Mục tiêu", "Tên gọi", "Màu sắc", "Hình dạng"] },
-      { text: "Chọn câu trả lời phù hợp trong tình huống nghe.", options: ["Đồng ý", "Từ chối", "Xin lỗi", "Hẹn gặp"] }
-    ]
-  }
-};
-
-const examId = new URLSearchParams(window.location.search).get("exam") || "N5-Grammar";
-const exam = examBank[examId] || examBank["N5-Grammar"];
 const selectedAnswers = new Map();
 const flaggedQuestions = new Set();
+let currentExam = null;
+let isSubmitted = false;
+let reviewSubmissionId = null;
+let examStartTime = null;
+let timerInterval = null;
+let remainingSeconds = 0;
+
+function buildExamFromApi(quiz) {
+  const questions = Array.isArray(quiz.questions) ? quiz.questions : [];
+  const questionCount = questions.length;
+  const levelLabel = quiz.level ? `JLPT ${quiz.level}` : "JLPT";
+
+  return {
+    id: quiz.id,
+    title: quiz.title,
+    level: levelLabel,
+    subtitle: quiz.quiz_type === "practice" ? "Đề thi luyện tập" : "Bài kiểm tra",
+    duration: `${quiz.time_limit} phút`,
+    questionCount: `${questionCount} câu hỏi`,
+    points: `${questionCount * 10} điểm`,
+    tip: "Đọc kỹ câu hỏi, loại trừ đáp án sai trước khi chọn đáp án đúng.",
+    intro: "Bài thi gồm các câu hỏi trắc nghiệm. Hãy tập trung vào từng câu và kiểm tra lại trước khi nộp bài.",
+    questions: questions.map((question) => ({
+      id: question.id,
+      text: question.text,
+      options: [question.opt_a, question.opt_b, question.opt_c, question.opt_d]
+    }))
+  };
+}
+
+async function loadExamFromApi() {
+  const examId = new URLSearchParams(window.location.search).get("exam");
+  if (!examId) return null;
+
+  const tokens = typeof getAuthTokens === "function" ? getAuthTokens() : null;
+  if (!tokens || !tokens.access) return null;
+
+  const response = await fetch(`${API_BASE_URL}/quizzes/${examId}/`, {
+    headers: { Authorization: `Bearer ${tokens.access}` }
+  });
+
+  if (!response.ok) return null;
+  const data = await response.json();
+  return buildExamFromApi(data);
+}
+
+function getReviewParams() {
+  const params = new URLSearchParams(window.location.search);
+  const review = params.get("review") === "1";
+  const submissionId = params.get("submission");
+  return { review, submissionId };
+}
+
+function getStoredSubmission(submissionId) {
+  if (!submissionId) return null;
+  try {
+    const raw = localStorage.getItem(`quizSubmission:${submissionId}`);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
 
 function renderExam() {
+  const exam = currentExam;
+  if (!exam) return;
   const levelTag = document.getElementById("examLevelTag");
   const title = document.getElementById("examTitle");
   const subtitle = document.getElementById("examSubtitle");
-  const duration = document.getElementById("examDuration");
+  const durationElement = document.querySelector("#examDurationStatic strong");
   const questionCount = document.getElementById("examQuestionCount");
   const points = document.getElementById("examPoints");
   const intro = document.getElementById("examIntro");
@@ -172,7 +78,7 @@ function renderExam() {
   if (levelTag) levelTag.textContent = exam.level;
   if (title) title.textContent = exam.title;
   if (subtitle) subtitle.textContent = exam.subtitle;
-  if (duration) duration.textContent = exam.duration;
+  if (durationElement) durationElement.textContent = exam.duration;
   if (questionCount) questionCount.textContent = exam.questionCount;
   if (points) points.textContent = exam.points;
   if (intro) intro.textContent = exam.intro;
@@ -193,15 +99,18 @@ function renderExam() {
             <div class="question-text">${question.text}</div>
             <div class="option-list">
               ${question.options
-                .map(
-                  (option, optionIndex) => `
-                    <label class="option-item">
-                      <input type="radio" name="question-${index}" value="${optionIndex}">
-                      <span>${String.fromCharCode(65 + optionIndex)}. ${option}</span>
+            .map(
+              (option, optionIndex) => {
+                const letter = String.fromCharCode(65 + optionIndex);
+                return `
+                    <label class="option-item" data-question-id="${question.id}" data-option-letter="${letter}">
+                      <input type="radio" name="question-${question.id}" value="${letter}">
+                      <span>${letter}. ${option}</span>
                     </label>
-                  `
-                )
-                .join("")}
+                  `;
+              }
+            )
+            .join("")}
             </div>
           </article>
         `
@@ -217,11 +126,67 @@ function renderExam() {
   bindExamEvents();
   updateFlagUI();
   updateProgress();
+  examStartTime = Date.now();
+  startTimer();
+}
+
+function startTimer() {
+  if (isSubmitted || reviewSubmissionId) return;
+  if (!currentExam || !currentExam.duration) return;
+
+  // Parse duration from "20 phút" format to get minutes
+  const match = currentExam.duration.match(/(\d+)/);
+  if (!match) return;
+
+  const totalMinutes = parseInt(match[1], 10);
+  remainingSeconds = totalMinutes * 60;
+
+  const timerContainer = document.getElementById("timerContainer");
+  const examDurationStatic = document.getElementById("examDurationStatic");
+  if (timerContainer) timerContainer.style.display = "inline-block";
+  if (examDurationStatic) examDurationStatic.style.display = "none";
+
+  updateTimerDisplay();
+
+  timerInterval = setInterval(() => {
+    remainingSeconds--;
+    updateTimerDisplay();
+
+    if (remainingSeconds <= 0) {
+      clearInterval(timerInterval);
+      autoSubmitExam();
+    }
+  }, 1000);
+}
+
+function updateTimerDisplay() {
+  const timerElement = document.getElementById("examTimer");
+  if (!timerElement) return;
+
+  const minutes = Math.floor(remainingSeconds / 60);
+  const seconds = remainingSeconds % 60;
+  const timeStr = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+
+  timerElement.textContent = timeStr;
+
+  // Update warning/danger states
+  timerElement.classList.remove("warning", "danger");
+  if (remainingSeconds <= 60) {
+    timerElement.classList.add("danger");
+  } else if (remainingSeconds <= 300) {
+    timerElement.classList.add("warning");
+  }
+}
+
+async function autoSubmitExam() {
+  if (isSubmitted) return;
+  await submitExam();
 }
 
 function bindExamEvents() {
   document.querySelectorAll("[data-flag-btn]").forEach((button) => {
     button.addEventListener("click", () => {
+      if (isSubmitted) return;
       const index = Number(button.getAttribute("data-flag-btn"));
       if (flaggedQuestions.has(index)) {
         flaggedQuestions.delete(index);
@@ -234,8 +199,10 @@ function bindExamEvents() {
 
   document.querySelectorAll('.question-card input[type="radio"]').forEach((input) => {
     input.addEventListener("change", () => {
-      const questionIndex = Number(input.name.replace("question-", ""));
-      selectedAnswers.set(questionIndex, input.value);
+      if (isSubmitted) return;
+      const questionId = Number(input.name.replace("question-", ""));
+      const answer = input.value;
+      selectedAnswers.set(questionId, answer);
       updateProgress();
       updateNavState();
     });
@@ -250,8 +217,9 @@ function bindExamEvents() {
 
   const submitButton = document.getElementById("submitExamBtn");
   if (submitButton) {
-    submitButton.addEventListener("click", () => {
-      alert(`Đã nộp bài. Bạn đã trả lời ${selectedAnswers.size}/${exam.questions.length} câu và đánh dấu ${flaggedQuestions.size} câu cần xem lại.`);
+    submitButton.addEventListener("click", async () => {
+      if (isSubmitted) return;
+      await submitExam();
     });
   }
 }
@@ -292,24 +260,277 @@ function updateFlagUI() {
 
 function updateProgress() {
   const progressText = document.getElementById("examProgressText");
-  if (progressText) {
-    progressText.textContent = `${selectedAnswers.size} / ${exam.questions.length} câu đã chọn`;
+  if (progressText && currentExam) {
+    progressText.textContent = `${selectedAnswers.size} / ${currentExam.questions.length} câu đã chọn`;
   }
 }
 
 function updateNavState() {
   document.querySelectorAll("[data-jump]").forEach((button) => {
     const index = Number(button.getAttribute("data-jump"));
-    button.classList.toggle("active", selectedAnswers.has(index));
+    const questionId = currentExam ? currentExam.questions[index]?.id : null;
+    const answered = questionId ? selectedAnswers.has(questionId) : false;
+    button.classList.toggle("active", answered);
     button.classList.toggle("flagged", flaggedQuestions.has(index));
   });
 }
 
+function ensureBackButtonTop() {
+  const heroTop = document.querySelector(".exam-hero-top");
+  if (!heroTop || document.getElementById("backToExamsTop")) return;
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.id = "backToExamsTop";
+  button.className = "btn btn-outline exam-back-top";
+  button.textContent = "Quay lại";
+  button.addEventListener("click", () => window.history.back());
+  heroTop.appendChild(button);
+}
+
+async function submitExam() {
+  if (!currentExam) return;
+
+  // Clear timer
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+
+  const tokens = typeof getAuthTokens === "function" ? getAuthTokens() : null;
+  if (!tokens || !tokens.access) {
+    renderSubmitMessage("Vui lòng đăng nhập để nộp bài.", "error");
+    return;
+  }
+
+  const durationSeconds = examStartTime ? Math.round((Date.now() - examStartTime) / 1000) : 0;
+  const answers = Array.from(selectedAnswers.entries()).map(([questionId, choice]) => ({
+    question_id: questionId,
+    choice
+  }));
+
+  const response = await fetch(`${API_BASE_URL}/quizzes/${currentExam.id}/submit/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${tokens.access}`
+    },
+    body: JSON.stringify({ answers, duration_seconds: durationSeconds })
+  });
+
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    renderSubmitMessage(data.error || data.detail || "Không thể nộp bài.", "error");
+    return;
+  }
+
+  isSubmitted = true;
+  storeSubmission(data);
+  renderResultBar(data);
+  applyAnswerHighlights(data.details || []);
+  lockExamInputs();
+}
+
+function storeSubmission(result) {
+  if (!result || !result.submission_id) return;
+  const answers = Array.from(selectedAnswers.entries()).map(([questionId, choice]) => ({
+    question_id: questionId,
+    choice
+  }));
+
+  const payload = {
+    quiz_id: currentExam ? currentExam.id : null,
+    result,
+    answers
+  };
+
+  try {
+    localStorage.setItem(`quizSubmission:${result.submission_id}`, JSON.stringify(payload));
+  } catch {
+    // ignore storage errors
+  }
+}
+
+function renderResultBar(result) {
+  const toolbar = document.querySelector(".exam-toolbar");
+  if (!toolbar) return;
+
+  let bar = document.getElementById("examResultBar");
+  if (!bar) {
+    bar = document.createElement("div");
+    bar.id = "examResultBar";
+    bar.className = "exam-result-bar";
+    toolbar.insertAdjacentElement("afterend", bar);
+  }
+
+  const durationText = result.duration_seconds ? `${Math.round(result.duration_seconds / 60)} phút` : "";
+  bar.innerHTML = `
+    <div><strong>Điểm số:</strong> ${result.score}</div>
+    <div><strong>Đúng:</strong> ${result.correct_count} / ${result.total}</div>
+    ${durationText ? `<div><strong>Thời gian:</strong> ${durationText}</div>` : ""}
+  `;
+  bar.classList.remove("exam-result-error");
+}
+
+function renderSubmitMessage(message, type = "error") {
+  const toolbar = document.querySelector(".exam-toolbar");
+  if (!toolbar) return;
+
+  let bar = document.getElementById("examResultBar");
+  if (!bar) {
+    bar = document.createElement("div");
+    bar.id = "examResultBar";
+    bar.className = "exam-result-bar";
+    toolbar.insertAdjacentElement("afterend", bar);
+  }
+
+  bar.textContent = message;
+  bar.classList.toggle("exam-result-error", type === "error");
+}
+
+function applyAnswerHighlights(details) {
+  const detailMap = new Map(details.map((item) => [item.question_id, item]));
+
+  document.querySelectorAll(".question-card").forEach((card) => {
+    const index = Number(card.id.replace("question-", ""));
+    const question = currentExam ? currentExam.questions[index] : null;
+    if (!question) return;
+
+    const detail = detailMap.get(question.id);
+    const correctLetter = detail ? detail.correct_answer : null;
+    const selectedLetter = selectedAnswers.get(question.id);
+
+    card.querySelectorAll(".option-item").forEach((option) => {
+      const letter = option.getAttribute("data-option-letter");
+      option.classList.remove("is-correct", "is-wrong");
+
+      if (correctLetter && letter === correctLetter) {
+        option.classList.add("is-correct");
+      }
+
+      if (selectedLetter && selectedLetter === letter && selectedLetter !== correctLetter) {
+        option.classList.add("is-wrong");
+      }
+    });
+
+    renderExplanation(card, detail?.explanation);
+  });
+}
+
+function renderExplanation(card, explanation) {
+  if (!card) return;
+  let block = card.querySelector(".answer-explanation");
+  if (!explanation) {
+    if (block) block.remove();
+    return;
+  }
+
+  if (!block) {
+    block = document.createElement("div");
+    block.className = "answer-explanation";
+    card.appendChild(block);
+  }
+  block.textContent = `Giải thích: ${explanation}`;
+}
+
+function lockExamInputs() {
+  document.querySelectorAll('.question-card input[type="radio"]').forEach((input) => {
+    input.disabled = true;
+  });
+  document.querySelectorAll("[data-flag-btn]").forEach((button) => {
+    button.disabled = true;
+  });
+  const submitButton = document.getElementById("submitExamBtn");
+  if (submitButton) submitButton.disabled = true;
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   initStandardHeader();
-  renderExam();
+  ensureBackButtonTop();
+
+  const reviewParams = getReviewParams();
+  reviewSubmissionId = reviewParams.submissionId;
+
+  loadExamFromApi().then((exam) => {
+    if (!exam) {
+      const title = document.getElementById("examTitle");
+      const intro = document.getElementById("examIntro");
+      if (title) title.textContent = "Không tải được đề thi";
+      if (intro) intro.textContent = "Vui lòng đăng nhập và thử lại.";
+      return;
+    }
+
+    currentExam = exam;
+    renderExam();
+
+    if (reviewParams.review && reviewSubmissionId) {
+      const stored = getStoredSubmission(reviewSubmissionId);
+      if (stored && stored.result) {
+        isSubmitted = true;
+        renderResultBar(stored.result);
+
+        const detailList = Array.isArray(stored.result.details) ? stored.result.details : [];
+        if (Array.isArray(stored.answers)) {
+          stored.answers.forEach((answer) => {
+            selectedAnswers.set(answer.question_id, answer.choice);
+          });
+        }
+        applyAnswerHighlights(detailList);
+        lockExamInputs();
+
+        // Hide timer in review mode
+        const timerContainer = document.getElementById("timerContainer");
+        const examDurationStatic = document.getElementById("examDurationStatic");
+        if (timerContainer) timerContainer.style.display = "none";
+        if (examDurationStatic) examDurationStatic.style.display = "inline-block";
+        return;
+      }
+
+      fetchSubmissionDetail(reviewSubmissionId);
+    }
+  });
 
   document.getElementById("backToExamsBtn")?.addEventListener("click", () => {
+    // Clear timer on back
+    if (timerInterval) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
     window.history.back();
   });
 });
+
+async function fetchSubmissionDetail(submissionId) {
+  if (!currentExam || !submissionId) return;
+  const tokens = typeof getAuthTokens === "function" ? getAuthTokens() : null;
+  if (!tokens || !tokens.access) return;
+
+  const response = await fetch(`${API_BASE_URL}/quiz-submissions/${submissionId}/`, {
+    headers: { Authorization: `Bearer ${tokens.access}` }
+  });
+  if (!response.ok) return;
+  const data = await response.json();
+  if (!data || !Array.isArray(data.answers)) return;
+
+  data.answers.forEach((answer) => {
+    if (answer.question_id && answer.selected_choice) {
+      selectedAnswers.set(answer.question_id, answer.selected_choice);
+    }
+  });
+
+  const details = data.answers.map((answer) => ({
+    question_id: answer.question_id,
+    correct_answer: answer.correct,
+    explanation: answer.explanation
+  }));
+
+  isSubmitted = true;
+  renderResultBar({
+    score: data.score,
+    correct_count: data.correct_count,
+    total: data.total_questions,
+    duration_seconds: data.duration_seconds
+  });
+  applyAnswerHighlights(details);
+  lockExamInputs();
+}

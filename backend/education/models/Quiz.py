@@ -25,8 +25,10 @@ class Quiz(models.Model):
         set_count = sum(
             1 for field in [self.lesson_id, self.chapter_id, self.course_id] if field is not None
         )
+        if self.quiz_type == 'practice' and set_count == 0:
+            return
         if set_count != 1:
-            raise ValidationError('Quiz must have exactly one of lesson, chapter, or course set.')
+            raise ValidationError('Quiz must have exactly one of lesson, chapter, or course set, unless it is a practice quiz.')
 
     class Meta:
         constraints = [
@@ -34,7 +36,8 @@ class Quiz(models.Model):
                 condition=(
                     (Q(lesson__isnull=False) & Q(chapter__isnull=True) & Q(course__isnull=True)) |
                     (Q(lesson__isnull=True) & Q(chapter__isnull=False) & Q(course__isnull=True)) |
-                    (Q(lesson__isnull=True) & Q(chapter__isnull=True) & Q(course__isnull=False))
+                    (Q(lesson__isnull=True) & Q(chapter__isnull=True) & Q(course__isnull=False)) |
+                    (Q(quiz_type='practice') & Q(lesson__isnull=True) & Q(chapter__isnull=True) & Q(course__isnull=True))
                 ),
                 name='quiz_exactly_one_fk'
             )

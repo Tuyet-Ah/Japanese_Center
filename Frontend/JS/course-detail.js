@@ -212,20 +212,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const buyBtn = document.getElementById("buy-now");
     if (buyBtn) {
-      buyBtn.addEventListener("click", () => {
-        const cart = readCart();
-        const cartItem = {
-          id: course.id,
-          name: course.title || course.name,
-          level: course.level,
-          schedule: course.schedule || "Chua cap nhat",
-          price: Number(course.price || 0)
-        };
-        if (!cart.some((item) => item.id === course.id)) {
-          cart.push(cartItem);
-          saveCart(cart);
+      buyBtn.addEventListener("click", async () => {
+        const result = await addToCartBackend(course.id);
+        if (result && result.ok) {
+          window.location.href = "cart.html";
+        } else {
+          alert((result && result.error) || "Không thể thêm vào giỏ hàng.");
         }
-        window.location.href = "cart.html";
       });
     }
 

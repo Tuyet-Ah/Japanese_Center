@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
 	<script defer src="JS/script.js"></script>
 	<script defer src="JS/admin-forum.js"></script>
 </head>
+
 <body>
 	<header class="topbar">
 		<div class="container topbar-inner">
@@ -23,11 +25,11 @@
 				<a href="admin-forum.html">Quản lý thảo luận</a>
 				<a href="admin-dashboard.html">Thống kê & Báo cáo</a>
 			</nav>
-			<div class="actions">
-				<div class="admin-user-section">
-					<span class="user-greeting">⚙️ <span id="adminDisplayName">Admin</span></span>
-					<a href="admin-profile.html" class="icon-btn" title="Hồ sơ Admin" style="color:var(--primary-dark); font-size:1.3rem; text-decoration:none;">👤</a>
-				</div>
+			<div class="sidebar-footer">
+				<button id="adminLogout" class="menu-item logout-btn">
+					<span class="menu-icon">🚪</span>
+					<span>Đăng Xuất</span>
+				</button>
 			</div>
 		</div>
 	</header>
@@ -62,13 +64,18 @@
 									<strong>Danh mục:</strong> Luyện Tập & Chia Sẻ
 								</p>
 								<div class="forum-preview">
-									<p>Xin chào mọi người, mình là học viên N4 và muốn chia sẻ những mẹo học kanji mà mình đã thử nghiệm trong 6 tháng qua. Mình thấy rất hiệu quả...</p>
+									<p>Xin chào mọi người, mình là học viên N4 và muốn chia sẻ những
+										mẹo học kanji mà mình đã thử nghiệm trong 6 tháng qua. Mình
+										thấy rất hiệu quả...</p>
 								</div>
 
 								<div class="forum-actions">
-									<button class="btn btn-success" onclick="forumAction('approve', 1)">✅ Duyệt</button>
-									<button class="btn btn-info" onclick="forumAction('view', 1)">👁️ Xem Chi Tiết</button>
-									<button class="btn btn-danger" onclick="forumAction('reject', 1)">❌ Từ Chối</button>
+									<button class="btn btn-success"
+										onclick="forumAction('approve', 1)">✅ Duyệt</button>
+									<button class="btn btn-info" onclick="forumAction('view', 1)">👁️
+										Xem Chi Tiết</button>
+									<button class="btn btn-danger"
+										onclick="forumAction('reject', 1)">❌ Từ Chối</button>
 								</div>
 							</div>
 						</div>
@@ -87,13 +94,17 @@
 									<strong>Danh mục:</strong> JLPT & Luyện Thi
 								</p>
 								<div class="forum-preview">
-									<p>Mình vừa thi JLPT N3 tháng trước và may mắn đạt điểm cao. Mình muốn chia sẻ lộ trình ôn tập 3 tháng của mình...</p>
+									<p>Mình vừa thi JLPT N3 tháng trước và may mắn đạt điểm cao. Mình
+										muốn chia sẻ lộ trình ôn tập 3 tháng của mình...</p>
 								</div>
 
 								<div class="forum-actions">
-									<button class="btn btn-success" onclick="forumAction('approve', 2)">✅ Duyệt</button>
-									<button class="btn btn-info" onclick="forumAction('view', 2)">👁️ Xem Chi Tiết</button>
-									<button class="btn btn-danger" onclick="forumAction('reject', 2)">❌ Từ Chối</button>
+									<button class="btn btn-success"
+										onclick="forumAction('approve', 2)">✅ Duyệt</button>
+									<button class="btn btn-info" onclick="forumAction('view', 2)">👁️
+										Xem Chi Tiết</button>
+									<button class="btn btn-danger"
+										onclick="forumAction('reject', 2)">❌ Từ Chối</button>
 								</div>
 							</div>
 						</div>
@@ -112,13 +123,17 @@
 									<strong>Danh mục:</strong> Kết Nối & Hỗ Trợ
 								</p>
 								<div class="forum-preview">
-									<p>Mình là học viên N5 vừa mới bắt đầu, muốn tìm bạn để luyện tập nói chuyện tiếng Nhật cơ bản. Bạn nào có quan tâm không?</p>
+									<p>Mình là học viên N5 vừa mới bắt đầu, muốn tìm bạn để luyện tập
+										nói chuyện tiếng Nhật cơ bản. Bạn nào có quan tâm không?</p>
 								</div>
 
 								<div class="forum-actions">
-									<button class="btn btn-success" onclick="forumAction('approve', 3)">✅ Duyệt</button>
-									<button class="btn btn-info" onclick="forumAction('view', 3)">👁️ Xem Chi Tiết</button>
-									<button class="btn btn-danger" onclick="forumAction('reject', 3)">❌ Từ Chối</button>
+									<button class="btn btn-success"
+										onclick="forumAction('approve', 3)">✅ Duyệt</button>
+									<button class="btn btn-info" onclick="forumAction('view', 3)">👁️
+										Xem Chi Tiết</button>
+									<button class="btn btn-danger"
+										onclick="forumAction('reject', 3)">❌ Từ Chối</button>
 								</div>
 							</div>
 						</div>
@@ -137,13 +152,17 @@
 									<strong>Danh mục:</strong> Tổng Quát
 								</p>
 								<div class="forum-preview">
-									<p>Mình là giáo viên tiếng Nhật có 10 năm kinh nghiệm, hiện đang nhận dạy kèm riêng với giá rất ưu đãi. Liên hệ...</p>
+									<p>Mình là giáo viên tiếng Nhật có 10 năm kinh nghiệm, hiện đang
+										nhận dạy kèm riêng với giá rất ưu đãi. Liên hệ...</p>
 								</div>
 
 								<div class="forum-actions">
-									<button class="btn btn-success" onclick="forumAction('approve', 4)">✅ Duyệt</button>
-									<button class="btn btn-info" onclick="forumAction('view', 4)">👁️ Xem Chi Tiết</button>
-									<button class="btn btn-danger" onclick="forumAction('reject', 4)">❌ Từ Chối</button>
+									<button class="btn btn-success"
+										onclick="forumAction('approve', 4)">✅ Duyệt</button>
+									<button class="btn btn-info" onclick="forumAction('view', 4)">👁️
+										Xem Chi Tiết</button>
+									<button class="btn btn-danger"
+										onclick="forumAction('reject', 4)">❌ Từ Chối</button>
 								</div>
 							</div>
 						</div>
@@ -178,5 +197,5 @@
 	</div>
 
 </body>
-</html>
 
+</html>

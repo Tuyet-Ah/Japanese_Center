@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
 	<script defer src="JS/script.js"></script>
 	<script defer src="JS/admin-quizzes.js"></script>
 </head>
+
 <body>
 	<header class="topbar">
 		<div class="container topbar-inner">
@@ -23,11 +25,11 @@
 				<a href="admin-forum.html">Quản lý thảo luận</a>
 				<a href="admin-dashboard.html">Thống kê & Báo cáo</a>
 			</nav>
-			<div class="actions">
-				<div class="admin-user-section">
-					<span class="user-greeting">⚙️ <span id="adminDisplayName">Admin</span></span>
-					<a href="admin-profile.html" class="icon-btn" title="Hồ sơ Admin" style="color:var(--primary-dark); font-size:1.3rem; text-decoration:none;">👤</a>
-				</div>
+			<div class="sidebar-footer">
+				<button id="adminLogout" class="menu-item logout-btn">
+					<span class="menu-icon">🚪</span>
+					<span>Đăng Xuất</span>
+				</button>
 			</div>
 		</div>
 	</header>
@@ -76,25 +78,29 @@
 							</div>
 							<div class="form-group">
 								<label for="quizQuestions">Số Câu Hỏi *</label>
-								<input type="number" id="quizQuestions" placeholder="VD: 30" min="1" required>
+								<input type="number" id="quizQuestions" placeholder="VD: 30" min="1"
+									required>
 							</div>
 						</div>
 
 						<div class="form-row">
 							<div class="form-group">
 								<label for="quizDuration">Thời Gian (phút) *</label>
-								<input type="number" id="quizDuration" placeholder="VD: 20" min="1" required>
+								<input type="number" id="quizDuration" placeholder="VD: 20" min="1"
+									required>
 							</div>
 							<div class="form-group">
 								<label for="quizPassingScore">Điểm Đạt (%) *</label>
-								<input type="number" id="quizPassingScore" placeholder="VD: 70" min="0" max="100" required>
+								<input type="number" id="quizPassingScore" placeholder="VD: 70" min="0"
+									max="100" required>
 							</div>
 						</div>
 
 						<div class="form-row">
 							<div class="form-group" style="grid-column: 1 / -1;">
 								<label for="quizDesc">Mô Tả</label>
-								<textarea id="quizDesc" placeholder="Mô tả chi tiết quiz" rows="4"></textarea>
+								<textarea id="quizDesc" placeholder="Mô tả chi tiết quiz"
+									rows="4"></textarea>
 							</div>
 						</div>
 
@@ -108,6 +114,35 @@
 				<!-- Quizzes Table -->
 				<section class="admin-table-section">
 					<h2>Danh Sách Quiz</h2>
+					<div class="admin-filter-bar">
+						<div class="filter-group">
+							<label for="quizSearchInput">Tìm kiếm</label>
+							<input type="text" id="quizSearchInput" placeholder="Nhap ten quiz...">
+						</div>
+						<div class="filter-group">
+							<label for="quizLevelFilter">Cấp độ</label>
+							<select id="quizLevelFilter">
+								<option value="">Tất cả</option>
+								<option value="N5">N5</option>
+								<option value="N4">N4</option>
+								<option value="N3">N3</option>
+								<option value="N2">N2</option>
+								<option value="N1">N1</option>
+							</select>
+						</div>
+						<div class="filter-group">
+							<label for="quizTypeFilter">Loai quiz</label>
+							<select id="quizTypeFilter">
+								<option value="">Tat ca</option>
+								<option value="lesson">Bai tap bai hoc</option>
+								<option value="chapter">Kiem tra chuong</option>
+								<option value="final">Thi cuoi khoa</option>
+								<option value="practice">Luyen thi</option>
+							</select>
+						</div>
+						<button id="quizFilterBtn" class="btn btn-small">Loc</button>
+						<button id="quizFilterReset" class="btn btn-small btn-outline">Xoa loc</button>
+					</div>
 					<div class="table-responsive">
 						<table class="admin-table">
 							<thead>
@@ -115,65 +150,16 @@
 									<th>STT</th>
 									<th>Tên Quiz</th>
 									<th>Cấp Độ</th>
-									<th>Danh Mục</th>
 									<th>Câu Hỏi</th>
-									<th>Thời Gian</th>
-									<th>Điểm Đạt</th>
+									<th>Thời Gian (phut)</th>
+									<th>Luot lam</th>
+									<th>Loại Quiz</th>
 									<th>Hành Động</th>
 								</tr>
 							</thead>
 							<tbody id="quizzesTableBody">
 								<tr>
-									<td>1</td>
-									<td>Ngữ Pháp N5</td>
-									<td><span class="badge badge-n5">N5</span></td>
-									<td>Ngữ Pháp</td>
-									<td>30</td>
-									<td>20 phút</td>
-									<td>70%</td>
-									<td>
-										<button class="btn btn-small">Sửa</button>
-										<button class="btn btn-small btn-danger">Xóa</button>
-									</td>
-								</tr>
-								<tr>
-									<td>2</td>
-									<td>Từ Vựng N5</td>
-									<td><span class="badge badge-n5">N5</span></td>
-									<td>Từ Vựng</td>
-									<td>25</td>
-									<td>15 phút</td>
-									<td>75%</td>
-									<td>
-										<button class="btn btn-small">Sửa</button>
-										<button class="btn btn-small btn-danger">Xóa</button>
-									</td>
-								</tr>
-								<tr>
-									<td>3</td>
-									<td>Nghe Hiểu N4</td>
-									<td><span class="badge badge-n4">N4</span></td>
-									<td>Nghe Hiểu</td>
-									<td>20</td>
-									<td>25 phút</td>
-									<td>65%</td>
-									<td>
-										<button class="btn btn-small">Sửa</button>
-										<button class="btn btn-small btn-danger">Xóa</button>
-									</td>
-								</tr>
-								<tr>
-									<td>4</td>
-									<td>Kanji N5-N3</td>
-									<td><span class="badge badge-kanji">Kanji</span></td>
-									<td>Kanji</td>
-									<td>50</td>
-									<td>30 phút</td>
-									<td>80%</td>
-									<td>
-										<button class="btn btn-small">Sửa</button>
-										<button class="btn btn-small btn-danger">Xóa</button>
-									</td>
+									<td colspan="8">Dang tai quiz...</td>
 								</tr>
 							</tbody>
 						</table>
@@ -182,4 +168,5 @@
 			</div>
 	</main>
 </body>
+
 </html>
