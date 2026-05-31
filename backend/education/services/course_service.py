@@ -1,4 +1,4 @@
-from education.models import Course,Enrollment,Lesson,UserProgress,CourseReview
+from education.models import Course,Enrollment,Lesson,UserProgress,CourseReview,LessonNote
 from django.db.models import Q,Avg
 class CourseService:
     @staticmethod
@@ -128,3 +128,18 @@ class CourseService:
         if rating:
             queryset = queryset.filter(rating=rating)
         return queryset.order_by('-created_at')
+
+    @staticmethod
+    def get_notes(user, lesson_id=None):
+        queryset = LessonNote.objects.filter(user=user)
+        if lesson_id:
+            queryset = queryset.filter(lesson_id=lesson_id)
+        return queryset.order_by('-created_at')
+
+    @staticmethod
+    def delete_note(user, note_id):
+        note = LessonNote.objects.filter(id=note_id, user=user).first()
+        if not note:
+            return False
+        note.delete()
+        return True

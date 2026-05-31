@@ -89,17 +89,15 @@ const COURSES = {
 
 const LESSON_DETAILS = {
   default: {
-    desc: 'Video bài giảng chi tiết với giải thích rõ ràng từng bước. Hãy xem toàn bộ video và làm bài tập đi kèm để nắm vững kiến thức.',
-    goals: [
-      'Hiểu được nội dung chính của bài',
-      'Nắm vững từ vựng và cấu trúc ngữ pháp mới',
-      'Áp dụng vào bài tập thực hành',
-    ]
+    desc: 'Video bài giảng chi tiết với giải thích rõ ràng từng bước. Hãy xem toàn bộ video và làm bài tập đi kèm để nắm vững kiến thức.'
   }
 };
 
 let currentLearningCourse = null;
 let currentLearningLesson = null;
+let ytPlayer = null;
+let ytPlayerReady = false;
+let youtubeApiPromise = null;
 
 function escapeHtml(value) {
   return String(value ?? '')
@@ -167,11 +165,190 @@ function getYoutubeId(url) {
 
 function convertYoutubeToEmbed(url) {
   if (!url) return '';
-  const baseParams = 'rel=0&modestbranding=1&playsinline=1';
+  const origin = encodeURIComponent(window.location.origin);
+  const baseParams = `rel=0&modestbranding=1&playsinline=1&enablejsapi=1&origin=${origin}`;
   const videoId = getYoutubeId(url);
   if (videoId) return `https://www.youtube.com/embed/${videoId}?${baseParams}`;
   if (url.includes('youtube.com') || url.includes('youtu.be')) return '';
   return url;
+}
+
+function ensureYoutubeApiLoaded() {
+  if (window.YT && window.YT.Player) {
+    return Promise.resolve();
+  }
+  if (youtubeApiPromise) return youtubeApiPromise;
+  youtubeApiPromise = new Promise((resolve) => {
+    if (!document.getElementById('youtube-iframe-api')) {
+      const tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      tag.id = 'youtube-iframe-api';
+      document.head.appendChild(tag);
+    }
+    const previousReady = window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady = () => {
+      if (typeof previousReady === 'function') previousReady();
+      resolve();
+    };
+  });
+  return youtubeApiPromise;
+}
+
+function setupYoutubePlayer(videoId) {
+  if (!videoId) {
+    if (ytPlayer && typeof ytPlayer.destroy === 'function') {
+      ytPlayer.destroy();
+    }
+    ytPlayer = null;
+    ytPlayerReady = false;
+    return;
+  }
+
+  ensureYoutubeApiLoaded().then(() => {
+    if (ytPlayer) {
+      ytPlayer.loadVideoById(videoId);
+      return;
+    }
+    ytPlayer = new YT.Player('videoFrame', {
+      videoId,
+      playerVars: {
+        rel: 0,
+        modestbranding: 1,
+        playsinline: 1
+      },
+      events: {
+        onReady: () => {
+          ytPlayerReady = true;
+        }
+      }
+    });
+  });
+}
+
+function getCurrentVideoTime() {
+  if (ytPlayer && ytPlayerReady && typeof ytPlayer.getCurrentTime === 'function') {
+    return Math.floor(ytPlayer.getCurrentTime());
+  }
+  return 0;
+}
+
+function seekToTimestamp(seconds) {
+  if (ytPlayer && ytPlayerReady && typeof ytPlayer.seekTo === 'function') {
+    ytPlayer.seekTo(seconds, true);
+    if (typeof ytPlayer.playVideo === 'function') {
+      ytPlayer.playVideo();
+    }
+    return;
+  }
+
+  const frame = document.getElementById('videoFrame');
+  const rawVideoUrl = currentLearningLesson?.videoUrl || currentLearningLesson?.video_url || '';
+  if (frame && rawVideoUrl && getYoutubeId(rawVideoUrl)) {
+    const base = convertYoutubeToEmbed(rawVideoUrl);
+    const separator = base.includes('?') ? '&' : '?';
+    frame.src = `${base}${separator}start=${seconds}`;
+    return;
+  }
+
+  alert('Video này không hỗ trợ tua theo ghi chú.');
+}
+
+function formatTimestamp(seconds) {
+  const total = Math.max(0, Number(seconds || 0));
+  const hrs = Math.floor(total / 3600);
+  const mins = Math.floor((total % 3600) / 60);
+  const secs = Math.floor(total % 60);
+  const pad = (value) => String(value).padStart(2, '0');
+  if (hrs > 0) return `${hrs}:${pad(mins)}:${pad(secs)}`;
+  return `${pad(mins)}:${pad(secs)}`;
+}
+
+async function fetchLessonNotes(lessonId) {
+  const tokens = typeof getAuthTokens === 'function' ? getAuthTokens() : null;
+  if (!tokens || !tokens.access) return [];
+  const response = await fetch(`${API_BASE_URL}/notes/?lesson_id=${lessonId}`, {
+    headers: { Authorization: `Bearer ${tokens.access}` }
+  });
+  if (!response.ok) return [];
+  const data = await response.json().catch(() => ([]));
+  return Array.isArray(data) ? data : [];
+}
+
+async function createLessonNote(lessonId, content, timestamp) {
+  const tokens = typeof getAuthTokens === 'function' ? getAuthTokens() : null;
+  if (!tokens || !tokens.access) return null;
+  const response = await fetch(`${API_BASE_URL}/notes/`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${tokens.access}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      lesson_id: lessonId,
+      content,
+      video_timestamp: timestamp
+    })
+  });
+  if (!response.ok) return null;
+  return response.json().catch(() => null);
+}
+
+async function deleteLessonNote(noteId) {
+  const tokens = typeof getAuthTokens === 'function' ? getAuthTokens() : null;
+  if (!tokens || !tokens.access) return false;
+  const response = await fetch(`${API_BASE_URL}/notes/${noteId}/`, {
+    method: 'DELETE',
+    headers: { Authorization: `Bearer ${tokens.access}` }
+  });
+  return response.ok;
+}
+
+function renderLessonNotes(notes) {
+  const list = document.getElementById('lessonNotesList');
+  if (!list) return;
+  if (!Array.isArray(notes) || notes.length === 0) {
+    list.innerHTML = '<p class="note-empty">Chưa có ghi chú cho bài học này.</p>';
+    return;
+  }
+  list.innerHTML = notes
+    .sort((a, b) => (a.video_timestamp ?? 0) - (b.video_timestamp ?? 0))
+    .map((note) => {
+      const time = formatTimestamp(note.video_timestamp || 0);
+      const created = note.created_at ? new Date(note.created_at).toLocaleString('vi-VN') : '';
+      return `
+        <div class="note-item" data-note-id="${note.id}" data-note-time="${note.video_timestamp || 0}">
+          <button class="note-time" type="button">⏱ ${time}</button>
+          <div class="note-body">
+            <div class="note-text">${escapeHtml(note.content || '')}</div>
+            <div class="note-meta">${escapeHtml(created)}</div>
+          </div>
+          <button class="note-delete" type="button" title="Xóa ghi chú">✕</button>
+        </div>
+      `;
+    })
+    .join('');
+
+  list.querySelectorAll('.note-time').forEach((button) => {
+    button.addEventListener('click', () => {
+      const parent = button.closest('.note-item');
+      if (!parent) return;
+      const seconds = Number(parent.dataset.noteTime || 0);
+      seekToTimestamp(seconds);
+    });
+  });
+
+  list.querySelectorAll('.note-delete').forEach((button) => {
+    button.addEventListener('click', async () => {
+      const parent = button.closest('.note-item');
+      const noteId = parent?.dataset.noteId;
+      if (!noteId) return;
+      const ok = await deleteLessonNote(noteId);
+      if (ok) {
+        const updated = await fetchLessonNotes(currentLearningLesson?.id);
+        renderLessonNotes(updated);
+      }
+    });
+  });
 }
 
 function normalizeBackendCourse(course, progressPercentage) {
@@ -378,7 +555,24 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   document.querySelector('.save-notes-btn')?.addEventListener('click', () => {
-    alert('Đã lưu ghi chú!');
+    const area = document.querySelector('.notes-area');
+    const content = area?.value?.trim();
+    if (!content) {
+      alert('Vui lòng nhập ghi chú trước khi lưu.');
+      return;
+    }
+    if (!currentLearningLesson || !/^\d+$/.test(String(currentLearningLesson.id))) {
+      alert('Ghi chú chỉ khả dụng cho bài học từ hệ thống.');
+      return;
+    }
+    const timestamp = getCurrentVideoTime();
+    createLessonNote(Number(currentLearningLesson.id), content, timestamp)
+      .then(async () => {
+        if (area) area.value = '';
+        const notes = await fetchLessonNotes(Number(currentLearningLesson.id));
+        renderLessonNotes(notes);
+      })
+      .catch(() => alert('Không thể lưu ghi chú lúc này.'));
   });
 
   document.getElementById('completeLessonBtn')?.addEventListener('click', async () => {
@@ -405,6 +599,7 @@ function loadLesson(lesson, itemEl) {
   const frame = document.getElementById('videoFrame');
   const completeBtn = document.getElementById('completeLessonBtn');
   const rawVideoUrl = lesson.videoUrl || lesson.video_url || '';
+  const videoId = rawVideoUrl ? getYoutubeId(rawVideoUrl) : (lesson.videoId || '');
   const videoSrc = rawVideoUrl
     ? convertYoutubeToEmbed(rawVideoUrl)
     : (lesson.videoId ? `https://www.youtube.com/embed/${lesson.videoId}?rel=0&modestbranding=1&playsinline=1` : '');
@@ -442,6 +637,18 @@ function loadLesson(lesson, itemEl) {
     } else {
       resources.innerHTML = '<p>Chưa có tài nguyên cho bài học này.</p>';
     }
+  }
+
+  if (videoId) {
+    setupYoutubePlayer(videoId);
+  } else {
+    setupYoutubePlayer('');
+  }
+
+  if (currentLearningLesson && /^\d+$/.test(String(currentLearningLesson.id))) {
+    fetchLessonNotes(Number(currentLearningLesson.id)).then(renderLessonNotes);
+  } else {
+    renderLessonNotes([]);
   }
 }
 

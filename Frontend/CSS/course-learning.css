@@ -416,6 +416,73 @@ body {
   opacity: 0.85;
 }
 
+.notes-list {
+  margin-top: 18px;
+  display: grid;
+  gap: 12px;
+}
+
+.note-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 12px;
+  align-items: start;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(255, 171, 199, 0.35);
+}
+
+.note-time {
+  border: 0;
+  background: rgba(255, 171, 199, 0.2);
+  color: var(--primary-dark);
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
+.note-body {
+  display: grid;
+  gap: 6px;
+}
+
+.note-text {
+  color: #4a2040;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.note-meta {
+  font-size: 0.75rem;
+  color: #9d174d;
+  opacity: 0.8;
+}
+
+.note-delete {
+  border: 0;
+  background: rgba(248, 113, 113, 0.15);
+  color: #be123c;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.note-delete:hover {
+  background: rgba(248, 113, 113, 0.25);
+}
+
+.note-empty {
+  color: #9d174d;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
 /* ===== Q&A ===== */
 .qa-list {
   display: flex;

@@ -7,6 +7,6 @@ from .cartViews import CartView, CartDeleteView
 from .paymentViews import CheckoutView, VnpayReturnView, VnpayIpnView
 from .quizViews import QuizDetailView, QuizSubmitView, PracticeHistoryView, FinalExamHistoryView, QuizReviewDetailView, QuizLeaderboardView, PracticeQuizListView, QuizSubmissionDetailView, AdminQuizListView
 from .lessonViews import LessonDetailView, MarkLessonCompleteView
-from .interactionView import LessonCommentView,PersonalNoteView,ForumTopicView,ReplyToTopicView,GetReplyTopicView
+from .interactionView import LessonCommentView, PersonalNoteView, LessonNoteDetailView, ForumTopicView, ReplyToTopicView, GetReplyTopicView
 from .chatbotViews import JapaneseChatbotView
 from .materialViews import MaterialListView, MaterialDetailView
