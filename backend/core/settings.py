@@ -88,7 +88,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'japanese_center_db', 
         'USER': 'root',
-        'PASSWORD': 'admin123',
+        'PASSWORD': 'hha1525678',
         'HOST': os.environ.get('DB_HOST', '127.0.0.1'),
         'PORT': '3306',
     }
