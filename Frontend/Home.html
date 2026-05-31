@@ -1,5 +1,6 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,23 +9,25 @@
   <script defer src="JS/script.js"></script>
   <script defer src="JS/home.js"></script>
 </head>
+
 <body>
   <header class="topbar">
     <div class="container topbar-inner">
       <a class="brand" href="Home.html">
-        <span class="brand-mark">日</span>
+        <img src="assets/Logo.png" alt="JSMART Logo" class="brand-logo">
         <span>JSMART<small>Trung tâm giảng dạy tiếng Nhật</small></span>
       </a>
       <nav class="nav">
         <a href="Home.html">Trang chủ</a>
         <a href="courses.html">Khóa học</a>
         <a href="exams.html">Đề thi</a>
-        <a href="jlpt.html">JLPT</a>
+        <a href="forum.html">Thảo luận</a>
         <a href="materials.html">Tài liệu</a>
       </nav>
       <div class="actions">
         <a data-profile-link href="profile.html" class="icon-btn" hidden title="Trang cá nhân">👤</a>
-        <a data-cart-link href="cart.html" class="icon-btn cart-icon" hidden title="Giỏ hàng">🛒<span data-cart-count class="badge">0</span></a>
+        <a data-cart-link href="cart.html" class="icon-btn cart-icon" hidden title="Giỏ hàng">🛒<span data-cart-count
+            class="badge">0</span></a>
         <div data-auth-actions class="auth-buttons">
           <a class="btn btn-outline" href="login.html">Đăng nhập</a>
           <a class="btn btn-primary" href="register.html">Đăng ký</a>
@@ -75,329 +78,351 @@
     </section>
 
     <div data-student-home>
-    <!-- HERO -->
-    <section class="hero-banner">
-      <div class="container hero-banner-inner">
-        <div class="hero-content">
-          <div class="hero-tag">🌸 Trung tâm tiếng Nhật uy tín số 1</div>
-          <h1 class="hero-title">HỌC TIẾNG NHẬT<br><span class="hero-highlight">CÙNG JSMART</span></h1>
-          <p class="hero-subtitle">Phương pháp hiện đại, giáo viên chuyên nghiệp, lộ trình rõ ràng — JSMART đồng hành cùng bạn từ N5 đến N1!</p>
-          <div class="hero-stats">
-            <div class="hero-stat"><strong>5.000+</strong><span>Học viên</span></div>
-            <div class="hero-stat"><strong>98%</strong><span>Đậu JLPT</span></div>
-            <div class="hero-stat"><strong>50+</strong><span>Giáo viên</span></div>
-            <div class="hero-stat"><strong>10+</strong><span>Năm kinh nghiệm</span></div>
-          </div>
-          <div class="hero-actions">
-            <a href="courses.html" class="btn btn-primary btn-large">Xem khóa học</a>
-            <a href="register.html" class="btn btn-outline btn-large" style="color:#fff;border-color:#fff;">Đăng ký miễn phí</a>
-          </div>
-        </div>
-        <div class="hero-visual">
-          <div class="hero-card-group">
-            <div class="hero-float-card">🎌 <span>N5 → N1 trong 18 tháng</span></div>
-            <div class="hero-img-box">
-              <img src="assets/cherry_blossom_bg.png" alt="Học tiếng Nhật" style="width:100%;height:100%;object-fit:cover;border-radius:20px;">
+      <!-- HERO -->
+      <section class="hero-banner">
+        <div class="container hero-banner-inner">
+          <div class="hero-content">
+            <div class="hero-tag">🌸 Trung tâm tiếng Nhật uy tín số 1</div>
+            <h1 class="hero-title">HỌC TIẾNG NHẬT<br><span class="hero-highlight">CÙNG JSMART</span></h1>
+            <p class="hero-subtitle">Phương pháp hiện đại, giáo viên chuyên nghiệp, lộ trình rõ ràng — JSMART đồng hành
+              cùng bạn từ N5 đến N1!</p>
+            <div class="hero-stats">
+              <div class="hero-stat"><strong>5.000+</strong><span>Học viên</span></div>
+              <div class="hero-stat"><strong>98%</strong><span>Đậu JLPT</span></div>
+              <div class="hero-stat"><strong>50+</strong><span>Giáo viên</span></div>
+              <div class="hero-stat"><strong>10+</strong><span>Năm kinh nghiệm</span></div>
             </div>
-            <div class="hero-float-card hero-float-card--right">🏆 <span>Top 1 trung tâm 2024</span></div>
+            <div class="hero-actions">
+              <a href="courses.html" class="btn btn-primary btn-large">Xem khóa học</a>
+              <a href="register.html" class="btn btn-outline btn-large" style="background:transparent;color:#fff;border-color:#fff;">Đăng ký
+                miễn phí</a>
+            </div>
+          </div>
+          <div class="hero-visual">
+            <div class="hero-card-group">
+              <div class="hero-float-card">🎌 <span>N5 → N1 trong 18 tháng</span></div>
+              <div class="hero-img-box">
+                <img src="assets/cherry_blossom_bg.png" alt="Học tiếng Nhật"
+                  style="width:100%;height:100%;object-fit:cover;border-radius:20px;">
+              </div>
+              <div class="hero-float-card hero-float-card--right">🏆 <span>Top 1 trung tâm 2024</span></div>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- THỐNG KÊ NHANH -->
-    <section class="stats-banner">
-      <div class="container stats-grid">
-        <div class="stat-item"><span class="stat-num">120+</span><span class="stat-label">Khóa học đang mở</span></div>
-        <div class="stat-item"><span class="stat-num">50+</span><span class="stat-label">Giáo viên bản ngữ & Việt</span></div>
-        <div class="stat-item"><span class="stat-num">5.000+</span><span class="stat-label">Học viên tốt nghiệp</span></div>
-        <div class="stat-item"><span class="stat-num">98%</span><span class="stat-label">Tỉ lệ đậu JLPT</span></div>
-        <div class="stat-item"><span class="stat-num">4.9/5</span><span class="stat-label">Đánh giá trung bình</span></div>
-      </div>
-    </section>
+      <!-- THỐNG KÊ NHANH -->
+      <section class="stats-banner">
+        <div class="container stats-grid">
+          <div class="stat-item"><span class="stat-num">120+</span><span class="stat-label">Khóa học đang mở</span>
+          </div>
+          <div class="stat-item"><span class="stat-num">50+</span><span class="stat-label">Giáo viên bản ngữ &
+              Việt</span></div>
+          <div class="stat-item"><span class="stat-num">5.000+</span><span class="stat-label">Học viên tốt nghiệp</span>
+          </div>
+          <div class="stat-item"><span class="stat-num">98%</span><span class="stat-label">Tỉ lệ đậu JLPT</span></div>
+          <div class="stat-item"><span class="stat-num">4.9/5</span><span class="stat-label">Đánh giá trung bình</span>
+          </div>
+        </div>
+      </section>
 
-    <!-- KHÓA HỌC NỔI BẬT -->
-    <section class="section-block">
-      <div class="container">
-        <div class="section-header">
-          <h2>Khóa học nổi bật</h2>
-          <a href="courses.html" class="see-all-link">Xem tất cả →</a>
+      <!-- KHÓA HỌC NỔI BẬT -->
+      <section class="section-block">
+        <div class="container">
+          <div class="section-header">
+            <h2>Khóa học nổi bật</h2>
+            <a href="courses.html" class="see-all-link">Xem tất cả →</a>
+          </div>
+          <div class="courses-grid">
+            <a href="courses.html" class="course-highlight-card">
+              <div class="chc-badge">Phổ biến nhất</div>
+              <div class="chc-level level-n5">N5</div>
+              <h3>N5 Beginner Journey</h3>
+              <p>Nền tảng vững chắc cho người mới bắt đầu. Hiragana, Katakana, từ vựng & ngữ pháp cơ bản.</p>
+              <div class="chc-meta"><span>⏱ 3 tháng</span><span>👩‍🏫 Nguyễn Thị Lan</span></div>
+              <div class="chc-price">2.400.000 đ</div>
+            </a>
+            <a href="courses.html" class="course-highlight-card">
+              <div class="chc-badge chc-badge--blue">Học viên yêu thích</div>
+              <div class="chc-level level-n4">N4</div>
+              <h3>N4 Communication Boost</h3>
+              <p>Giao tiếp thực tế trong cuộc sống hàng ngày, công sở và du lịch Nhật Bản.</p>
+              <div class="chc-meta"><span>⏱ 4 tháng</span><span>👩‍🏫 Trần Văn Minh</span></div>
+              <div class="chc-price">2.900.000 đ</div>
+            </a>
+            <a href="courses.html" class="course-highlight-card">
+              <div class="chc-badge chc-badge--green">Mới khai giảng</div>
+              <div class="chc-level level-n3">N3</div>
+              <h3>N3 Business Japanese</h3>
+              <p>Tiếng Nhật thương mại, email, hội họp và môi trường làm việc chuyên nghiệp.</p>
+              <div class="chc-meta"><span>⏱ 5 tháng</span><span>👩‍🏫 Lê Thị Hoa</span></div>
+              <div class="chc-price">3.500.000 đ</div>
+            </a>
+            <a href="courses.html" class="course-highlight-card">
+              <div class="chc-level level-kanji">Kanji</div>
+              <h3>Kanji Intensive Lab</h3>
+              <p>Chinh phục 2.000+ Kanji với phương pháp ghi nhớ theo bộ thủ và ngữ cảnh.</p>
+              <div class="chc-meta"><span>⏱ 3 tháng</span><span>👩‍🏫 Phạm Minh Tuấn</span></div>
+              <div class="chc-price">1.800.000 đ</div>
+            </a>
+          </div>
         </div>
-        <div class="courses-grid">
-          <a href="courses.html" class="course-highlight-card">
-            <div class="chc-badge">Phổ biến nhất</div>
-            <div class="chc-level level-n5">N5</div>
-            <h3>N5 Beginner Journey</h3>
-            <p>Nền tảng vững chắc cho người mới bắt đầu. Hiragana, Katakana, từ vựng & ngữ pháp cơ bản.</p>
-            <div class="chc-meta"><span>⏱ 3 tháng</span><span>👩‍🏫 Nguyễn Thị Lan</span></div>
-            <div class="chc-price">2.400.000 đ</div>
-          </a>
-          <a href="courses.html" class="course-highlight-card">
-            <div class="chc-badge chc-badge--blue">Học viên yêu thích</div>
-            <div class="chc-level level-n4">N4</div>
-            <h3>N4 Communication Boost</h3>
-            <p>Giao tiếp thực tế trong cuộc sống hàng ngày, công sở và du lịch Nhật Bản.</p>
-            <div class="chc-meta"><span>⏱ 4 tháng</span><span>👩‍🏫 Trần Văn Minh</span></div>
-            <div class="chc-price">2.900.000 đ</div>
-          </a>
-          <a href="courses.html" class="course-highlight-card">
-            <div class="chc-badge chc-badge--green">Mới khai giảng</div>
-            <div class="chc-level level-n3">N3</div>
-            <h3>N3 Business Japanese</h3>
-            <p>Tiếng Nhật thương mại, email, hội họp và môi trường làm việc chuyên nghiệp.</p>
-            <div class="chc-meta"><span>⏱ 5 tháng</span><span>👩‍🏫 Lê Thị Hoa</span></div>
-            <div class="chc-price">3.500.000 đ</div>
-          </a>
-          <a href="courses.html" class="course-highlight-card">
-            <div class="chc-level level-kanji">Kanji</div>
-            <h3>Kanji Intensive Lab</h3>
-            <p>Chinh phục 2.000+ Kanji với phương pháp ghi nhớ theo bộ thủ và ngữ cảnh.</p>
-            <div class="chc-meta"><span>⏱ 3 tháng</span><span>👩‍🏫 Phạm Minh Tuấn</span></div>
-            <div class="chc-price">1.800.000 đ</div>
-          </a>
-        </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- TẠI SAO CHỌN JSMART -->
-    <section class="why-section">
-      <div class="container">
-        <h2 class="text-center">Tại sao chọn JSMART?</h2>
-        <p class="text-center why-sub">Hàng ngàn học viên đã tin tưởng và thành công cùng chúng tôi</p>
-        <div class="why-grid">
-          <div class="why-card">
-            <div class="why-icon">🎯</div>
-            <h3>Lộ trình cá nhân hóa</h3>
-            <p>Kiểm tra đầu vào, xếp lớp phù hợp, giáo trình được điều chỉnh theo năng lực từng học viên.</p>
-          </div>
-          <div class="why-card">
-            <div class="why-icon">👨‍🏫</div>
-            <h3>Giáo viên bản ngữ</h3>
-            <p>Đội ngũ giáo viên người Nhật và Việt có chứng chỉ JLPT N1, trên 5 năm kinh nghiệm giảng dạy.</p>
-          </div>
-          <div class="why-card">
-            <div class="why-icon">📱</div>
-            <h3>Học mọi lúc mọi nơi</h3>
-            <p>Nền tảng học trực tuyến với video bài giảng, flashcard và bài tập tương tác luôn sẵn sàng 24/7.</p>
-          </div>
-          <div class="why-card">
-            <div class="why-icon">🏆</div>
-            <h3>Cam kết đầu ra</h3>
-            <p>Học đến khi đậu JLPT. Nếu không đạt, học lại hoàn toàn miễn phí đến khi thành công.</p>
-          </div>
-          <div class="why-card">
-            <div class="why-icon">🤝</div>
-            <h3>Cộng đồng học tập</h3>
-            <p>Nhóm học viên sôi nổi, câu lạc bộ tiếng Nhật hàng tuần, kết nối với người Nhật bản địa.</p>
-          </div>
-          <div class="why-card">
-            <div class="why-icon">💼</div>
-            <h3>Hỗ trợ việc làm</h3>
-            <p>Kết nối với 200+ doanh nghiệp Nhật Bản tại Việt Nam, hỗ trợ CV và phỏng vấn tiếng Nhật.</p>
+      <!-- TẠI SAO CHỌN JSMART -->
+      <section class="why-section">
+        <div class="container">
+          <h2 class="text-center">Tại sao chọn JSMART?</h2>
+          <p class="text-center why-sub">Hàng ngàn học viên đã tin tưởng và thành công cùng chúng tôi</p>
+          <div class="why-grid">
+            <div class="why-card">
+              <div class="why-icon">🎯</div>
+              <h3>Lộ trình cá nhân hóa</h3>
+              <p>Kiểm tra đầu vào, xếp lớp phù hợp, giáo trình được điều chỉnh theo năng lực từng học viên.</p>
+            </div>
+            <div class="why-card">
+              <div class="why-icon">👨‍🏫</div>
+              <h3>Giáo viên bản ngữ</h3>
+              <p>Đội ngũ giáo viên người Nhật và Việt có chứng chỉ JLPT N1, trên 5 năm kinh nghiệm giảng dạy.</p>
+            </div>
+            <div class="why-card">
+              <div class="why-icon">📱</div>
+              <h3>Học mọi lúc mọi nơi</h3>
+              <p>Nền tảng học trực tuyến với video bài giảng, flashcard và bài tập tương tác luôn sẵn sàng 24/7.</p>
+            </div>
+            <div class="why-card">
+              <div class="why-icon">🏆</div>
+              <h3>Cam kết đầu ra</h3>
+              <p>Học đến khi đậu JLPT. Nếu không đạt, học lại hoàn toàn miễn phí đến khi thành công.</p>
+            </div>
+            <div class="why-card">
+              <div class="why-icon">🤝</div>
+              <h3>Cộng đồng học tập</h3>
+              <p>Nhóm học viên sôi nổi, câu lạc bộ tiếng Nhật hàng tuần, kết nối với người Nhật bản địa.</p>
+            </div>
+            <div class="why-card">
+              <div class="why-icon">💼</div>
+              <h3>Hỗ trợ việc làm</h3>
+              <p>Kết nối với 200+ doanh nghiệp Nhật Bản tại Việt Nam, hỗ trợ CV và phỏng vấn tiếng Nhật.</p>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- TIN TỨC & SỰ KIỆN -->
-    <section class="section-block news-section">
-      <div class="container">
-        <div class="section-header">
-          <h2>Tin tức & Sự kiện</h2>
-          <a href="#" class="see-all-link">Xem tất cả →</a>
+      <!-- TIN TỨC & SỰ KIỆN -->
+      <section class="section-block news-section">
+        <div class="container">
+          <div class="section-header">
+            <h2>Tin tức & Sự kiện</h2>
+            <a href="#" class="see-all-link">Xem tất cả →</a>
+          </div>
+          <div class="news-grid">
+            <article class="news-card news-card--featured">
+              <div class="news-img" style="background: linear-gradient(135deg, #ffabc7, #bce6f4);">
+                <span class="news-img-icon">📰</span>
+              </div>
+              <div class="news-body">
+                <div class="news-tag">Họp báo</div>
+                <h3>JSMART công bố khai giảng 20 lớp mới tháng 6/2025</h3>
+                <p>Trung tâm chính thức mở đăng ký 20 lớp học mới từ N5 đến N2, bao gồm các lớp buổi tối và cuối tuần...
+                </p>
+                <div class="news-meta"><span>📅 10/05/2025</span><span>👁 1.234 lượt xem</span></div>
+              </div>
+            </article>
+            <article class="news-card">
+              <div class="news-img news-img--sm" style="background: linear-gradient(135deg, #ffdbe9, #f9a8d4);">
+                <span class="news-img-icon">🎌</span>
+              </div>
+              <div class="news-body">
+                <div class="news-tag news-tag--event">Sự kiện</div>
+                <h3>Ngày hội văn hóa Nhật Bản tại JSMART 2025</h3>
+                <p>Tham gia trải nghiệm trà đạo, mặc Yukata, học Origami và giao lưu với sinh viên Nhật Bản...</p>
+                <div class="news-meta"><span>📅 05/05/2025</span><span>👁 892 lượt xem</span></div>
+              </div>
+            </article>
+            <article class="news-card">
+              <div class="news-img news-img--sm" style="background: linear-gradient(135deg, #bce6f4, #93c5fd);">
+                <span class="news-img-icon">🏆</span>
+              </div>
+              <div class="news-body">
+                <div class="news-tag news-tag--achievement">Thành tích</div>
+                <h3>97 học viên JSMART đậu JLPT N2/N1 kỳ thi tháng 12/2024</h3>
+                <p>Kết quả vượt mong đợi — tỉ lệ đậu đạt 97%, cao nhất trong 10 năm hoạt động của trung tâm...</p>
+                <div class="news-meta"><span>📅 01/04/2025</span><span>👁 2.156 lượt xem</span></div>
+              </div>
+            </article>
+            <article class="news-card">
+              <div class="news-img news-img--sm" style="background: linear-gradient(135deg, #d8b4fe, #c084fc);">
+                <span class="news-img-icon">🤝</span>
+              </div>
+              <div class="news-body">
+                <div class="news-tag news-tag--partner">Hợp tác</div>
+                <h3>JSMART ký kết hợp tác chiến lược với Đại học Waseda, Nhật Bản</h3>
+                <p>Chương trình trao đổi sinh viên và học bổng du học Nhật Bản chính thức được triển khai...</p>
+                <div class="news-meta"><span>📅 20/03/2025</span><span>👁 3.410 lượt xem</span></div>
+              </div>
+            </article>
+          </div>
         </div>
-        <div class="news-grid">
-          <article class="news-card news-card--featured">
-            <div class="news-img" style="background: linear-gradient(135deg, #ffabc7, #bce6f4);">
-              <span class="news-img-icon">📰</span>
-            </div>
-            <div class="news-body">
-              <div class="news-tag">Họp báo</div>
-              <h3>JSMART công bố khai giảng 20 lớp mới tháng 6/2025</h3>
-              <p>Trung tâm chính thức mở đăng ký 20 lớp học mới từ N5 đến N2, bao gồm các lớp buổi tối và cuối tuần...</p>
-              <div class="news-meta"><span>📅 10/05/2025</span><span>👁 1.234 lượt xem</span></div>
-            </div>
-          </article>
-          <article class="news-card">
-            <div class="news-img news-img--sm" style="background: linear-gradient(135deg, #ffdbe9, #f9a8d4);">
-              <span class="news-img-icon">🎌</span>
-            </div>
-            <div class="news-body">
-              <div class="news-tag news-tag--event">Sự kiện</div>
-              <h3>Ngày hội văn hóa Nhật Bản tại JSMART 2025</h3>
-              <p>Tham gia trải nghiệm trà đạo, mặc Yukata, học Origami và giao lưu với sinh viên Nhật Bản...</p>
-              <div class="news-meta"><span>📅 05/05/2025</span><span>👁 892 lượt xem</span></div>
-            </div>
-          </article>
-          <article class="news-card">
-            <div class="news-img news-img--sm" style="background: linear-gradient(135deg, #bce6f4, #93c5fd);">
-              <span class="news-img-icon">🏆</span>
-            </div>
-            <div class="news-body">
-              <div class="news-tag news-tag--achievement">Thành tích</div>
-              <h3>97 học viên JSMART đậu JLPT N2/N1 kỳ thi tháng 12/2024</h3>
-              <p>Kết quả vượt mong đợi — tỉ lệ đậu đạt 97%, cao nhất trong 10 năm hoạt động của trung tâm...</p>
-              <div class="news-meta"><span>📅 01/04/2025</span><span>👁 2.156 lượt xem</span></div>
-            </div>
-          </article>
-          <article class="news-card">
-            <div class="news-img news-img--sm" style="background: linear-gradient(135deg, #d8b4fe, #c084fc);">
-              <span class="news-img-icon">🤝</span>
-            </div>
-            <div class="news-body">
-              <div class="news-tag news-tag--partner">Hợp tác</div>
-              <h3>JSMART ký kết hợp tác chiến lược với Đại học Waseda, Nhật Bản</h3>
-              <p>Chương trình trao đổi sinh viên và học bổng du học Nhật Bản chính thức được triển khai...</p>
-              <div class="news-meta"><span>📅 20/03/2025</span><span>👁 3.410 lượt xem</span></div>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- CHIA SẺ CỦA GIÁO VIÊN -->
-    <section class="section-block teacher-section">
-      <div class="container">
-        <div class="section-header">
-          <h2>Chia sẻ từ giáo viên</h2>
-          <a href="#" class="see-all-link">Xem thêm →</a>
+      <!-- CHIA SẺ CỦA GIÁO VIÊN -->
+      <section class="section-block teacher-section">
+        <div class="container">
+          <div class="section-header">
+            <h2>Chia sẻ từ giáo viên</h2>
+            <a href="#" class="see-all-link">Xem thêm →</a>
+          </div>
+          <div class="teacher-tips-grid">
+            <div class="tip-card">
+              <div class="tip-avatar">🧑‍🏫</div>
+              <div class="tip-content">
+                <div class="tip-teacher">Thầy Nguyễn Văn Hùng — Giáo viên N3/N2</div>
+                <h4>"Bí quyết học Kanji hiệu quả nhất"</h4>
+                <p>Học Kanji theo bộ thủ giúp bạn đoán được nghĩa của hàng trăm chữ mới chỉ qua 214 bộ thủ cơ bản. Đừng
+                  học thuộc lòng từng chữ riêng lẻ...</p>
+                <a href="#" class="tip-read-more">Đọc tiếp →</a>
+              </div>
+            </div>
+            <div class="tip-card">
+              <div class="tip-avatar">👩‍🏫</div>
+              <div class="tip-content">
+                <div class="tip-teacher">Cô Tanaka Yuki — Giáo viên bản ngữ N5/N4</div>
+                <h4>"Luyện nghe tiếng Nhật từ 0 đến N4"</h4>
+                <p>Nghe anime, podcast tiếng Nhật 15 phút mỗi ngày kiên trì trong 6 tháng sẽ thay đổi hoàn toàn khả năng
+                  nghe của bạn. Quan trọng là consistency...</p>
+                <a href="#" class="tip-read-more">Đọc tiếp →</a>
+              </div>
+            </div>
+            <div class="tip-card">
+              <div class="tip-avatar">🧑‍💼</div>
+              <div class="tip-content">
+                <div class="tip-teacher">Thầy Trần Minh Khoa — Giáo viên N1/Business</div>
+                <h4>"Chiến lược ôn thi JLPT N1 trong 90 ngày"</h4>
+                <p>Chia nhỏ mục tiêu: tuần 1-4 ôn từ vựng, tuần 5-8 ngữ pháp, tuần 9-12 luyện đề. Mỗi ngày tối thiểu 2
+                  tiếng học tập có kế hoạch cụ thể...</p>
+                <a href="#" class="tip-read-more">Đọc tiếp →</a>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="teacher-tips-grid">
-          <div class="tip-card">
-            <div class="tip-avatar">🧑‍🏫</div>
-            <div class="tip-content">
-              <div class="tip-teacher">Thầy Nguyễn Văn Hùng — Giáo viên N3/N2</div>
-              <h4>"Bí quyết học Kanji hiệu quả nhất"</h4>
-              <p>Học Kanji theo bộ thủ giúp bạn đoán được nghĩa của hàng trăm chữ mới chỉ qua 214 bộ thủ cơ bản. Đừng học thuộc lòng từng chữ riêng lẻ...</p>
-              <a href="#" class="tip-read-more">Đọc tiếp →</a>
-            </div>
-          </div>
-          <div class="tip-card">
-            <div class="tip-avatar">👩‍🏫</div>
-            <div class="tip-content">
-              <div class="tip-teacher">Cô Tanaka Yuki — Giáo viên bản ngữ N5/N4</div>
-              <h4>"Luyện nghe tiếng Nhật từ 0 đến N4"</h4>
-              <p>Nghe anime, podcast tiếng Nhật 15 phút mỗi ngày kiên trì trong 6 tháng sẽ thay đổi hoàn toàn khả năng nghe của bạn. Quan trọng là consistency...</p>
-              <a href="#" class="tip-read-more">Đọc tiếp →</a>
-            </div>
-          </div>
-          <div class="tip-card">
-            <div class="tip-avatar">🧑‍💼</div>
-            <div class="tip-content">
-              <div class="tip-teacher">Thầy Trần Minh Khoa — Giáo viên N1/Business</div>
-              <h4>"Chiến lược ôn thi JLPT N1 trong 90 ngày"</h4>
-              <p>Chia nhỏ mục tiêu: tuần 1-4 ôn từ vựng, tuần 5-8 ngữ pháp, tuần 9-12 luyện đề. Mỗi ngày tối thiểu 2 tiếng học tập có kế hoạch cụ thể...</p>
-              <a href="#" class="tip-read-more">Đọc tiếp →</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- CẢM NHẬN HỌC VIÊN -->
-    <section class="testimonials-section">
-      <div class="container">
-        <h2 class="text-center">Học viên nói gì về JSMART?</h2>
-        <div class="testimonials-grid">
-          <div class="testimonial-card">
-            <div class="stars">⭐⭐⭐⭐⭐</div>
-            <p>"Nhờ JSMART mình đậu JLPT N2 ngay lần đầu tiên! Giáo viên tận tâm, tài liệu phong phú và hệ thống bài thi online rất tiện lợi."</p>
-            <div class="testimonial-author">
-              <div class="t-avatar">L</div>
-              <div><strong>Lê Thị Mai</strong><br><small>Đã đậu JLPT N2 — Kỹ sư tại Sony Việt Nam</small></div>
+      <!-- CẢM NHẬN HỌC VIÊN -->
+      <section class="testimonials-section">
+        <div class="container">
+          <h2 class="text-center">Học viên nói gì về JSMART?</h2>
+          <div class="testimonials-grid">
+            <div class="testimonial-card">
+              <div class="stars">⭐⭐⭐⭐⭐</div>
+              <p>"Nhờ JSMART mình đậu JLPT N2 ngay lần đầu tiên! Giáo viên tận tâm, tài liệu phong phú và hệ thống bài
+                thi online rất tiện lợi."</p>
+              <div class="testimonial-author">
+                <div class="t-avatar">L</div>
+                <div><strong>Lê Thị Mai</strong><br><small>Đã đậu JLPT N2 — Kỹ sư tại Sony Việt Nam</small></div>
+              </div>
             </div>
-          </div>
-          <div class="testimonial-card">
-            <div class="stars">⭐⭐⭐⭐⭐</div>
-            <p>"Ban đầu mình sợ tiếng Nhật lắm, nhưng sau 4 tháng học JSMART mình đã có thể giao tiếp cơ bản với đồng nghiệp người Nhật rồi!"</p>
-            <div class="testimonial-author">
-              <div class="t-avatar" style="background:var(--accent);">N</div>
-              <div><strong>Nguyễn Hoàng Nam</strong><br><small>Học N4 — Nhân viên công ty Nhật</small></div>
+            <div class="testimonial-card">
+              <div class="stars">⭐⭐⭐⭐⭐</div>
+              <p>"Ban đầu mình sợ tiếng Nhật lắm, nhưng sau 4 tháng học JSMART mình đã có thể giao tiếp cơ bản với đồng
+                nghiệp người Nhật rồi!"</p>
+              <div class="testimonial-author">
+                <div class="t-avatar" style="background:var(--accent);">N</div>
+                <div><strong>Nguyễn Hoàng Nam</strong><br><small>Học N4 — Nhân viên công ty Nhật</small></div>
+              </div>
             </div>
-          </div>
-          <div class="testimonial-card">
-            <div class="stars">⭐⭐⭐⭐⭐</div>
-            <p>"Platform học online của JSMART rất tiện. Video bài giảng chất lượng cao, có thể xem lại bất cứ lúc nào. Mình học lúc 11h đêm cũng được!"</p>
-            <div class="testimonial-author">
-              <div class="t-avatar" style="background:#f9a8d4;color:#9d174d;">T</div>
-              <div><strong>Trịnh Tuyết Anh</strong><br><small>Học N5 — Sinh viên đại học</small></div>
+            <div class="testimonial-card">
+              <div class="stars">⭐⭐⭐⭐⭐</div>
+              <p>"Platform học online của JSMART rất tiện. Video bài giảng chất lượng cao, có thể xem lại bất cứ lúc
+                nào. Mình học lúc 11h đêm cũng được!"</p>
+              <div class="testimonial-author">
+                <div class="t-avatar" style="background:#f9a8d4;color:#9d174d;">T</div>
+                <div><strong>Trịnh Tuyết Anh</strong><br><small>Học N5 — Sinh viên đại học</small></div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- LỊCH KHAI GIẢNG -->
-    <section class="section-block schedule-section">
-      <div class="container">
-        <div class="section-header">
-          <h2>Lịch khai giảng sắp tới</h2>
-          <a href="courses.html" class="see-all-link">Đăng ký ngay →</a>
-        </div>
-        <div class="schedule-table-wrap">
-          <table class="schedule-table">
-            <thead>
-              <tr><th>Khóa học</th><th>Ngày khai giảng</th><th>Lịch học</th><th>Giáo viên</th><th>Còn lại</th><th></th></tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><span class="sl-badge level-n5">N5</span> N5 Beginner Journey</td>
-                <td>15/06/2025</td>
-                <td>Thứ 2-4-6 | 19:00-21:00</td>
-                <td>Nguyễn Thị Lan</td>
-                <td><span class="seat-badge">5 chỗ</span></td>
-                <td><a href="courses.html" class="btn btn-primary btn-sm">Đăng ký</a></td>
-              </tr>
-              <tr>
-                <td><span class="sl-badge level-n4">N4</span> N4 Communication Boost</td>
-                <td>20/06/2025</td>
-                <td>Thứ 3-5-7 | 18:00-20:00</td>
-                <td>Trần Văn Minh</td>
-                <td><span class="seat-badge">3 chỗ</span></td>
-                <td><a href="courses.html" class="btn btn-primary btn-sm">Đăng ký</a></td>
-              </tr>
-              <tr>
-                <td><span class="sl-badge level-n3">N3</span> N3 Business Japanese</td>
-                <td>01/07/2025</td>
-                <td>Thứ 7-CN | 08:00-11:00</td>
-                <td>Tanaka Yuki</td>
-                <td><span class="seat-badge seat-many">12 chỗ</span></td>
-                <td><a href="courses.html" class="btn btn-primary btn-sm">Đăng ký</a></td>
-              </tr>
-              <tr>
-                <td><span class="sl-badge level-kanji">Kanji</span> Kanji Intensive Lab</td>
-                <td>01/07/2025</td>
-                <td>Tối 2-4-6 | 20:00-22:00</td>
-                <td>Phạm Minh Tuấn</td>
-                <td><span class="seat-badge">8 chỗ</span></td>
-                <td><a href="courses.html" class="btn btn-primary btn-sm">Đăng ký</a></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <!-- CTA -->
-    <section class="cta-section">
-      <div class="container">
-        <div class="cta-content">
-          <h2>Bắt đầu hành trình học tiếng Nhật của bạn ngay hôm nay!</h2>
-          <p>Hơn 5.000 học viên đã tin tưởng JSMART. Đừng để cơ hội vụt qua — đăng ký tư vấn miễn phí ngay!</p>
-          <div class="actions">
-            <a href="register.html" class="btn btn-primary btn-large">Đăng ký miễn phí</a>
-            <a href="courses.html" class="btn btn-outline btn-large" style="color:#fff;border-color:rgba(255,255,255,0.6);">Xem các khóa học</a>
+      <!-- LỊCH KHAI GIẢNG -->
+      <section class="section-block schedule-section">
+        <div class="container">
+          <div class="section-header">
+            <h2>Lịch khai giảng sắp tới</h2>
+            <a href="courses.html" class="see-all-link">Đăng ký ngay →</a>
+          </div>
+          <div class="schedule-table-wrap">
+            <table class="schedule-table">
+              <thead>
+                <tr>
+                  <th>Khóa học</th>
+                  <th>Ngày khai giảng</th>
+                  <th>Lịch học</th>
+                  <th>Giáo viên</th>
+                  <th>Còn lại</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="sl-badge level-n5">N5</span> N5 Beginner Journey</td>
+                  <td>15/06/2025</td>
+                  <td>Thứ 2-4-6 | 19:00-21:00</td>
+                  <td>Nguyễn Thị Lan</td>
+                  <td><span class="seat-badge">5 chỗ</span></td>
+                  <td><a href="courses.html" class="btn btn-primary btn-sm">Đăng ký</a></td>
+                </tr>
+                <tr>
+                  <td><span class="sl-badge level-n4">N4</span> N4 Communication Boost</td>
+                  <td>20/06/2025</td>
+                  <td>Thứ 3-5-7 | 18:00-20:00</td>
+                  <td>Trần Văn Minh</td>
+                  <td><span class="seat-badge">3 chỗ</span></td>
+                  <td><a href="courses.html" class="btn btn-primary btn-sm">Đăng ký</a></td>
+                </tr>
+                <tr>
+                  <td><span class="sl-badge level-n3">N3</span> N3 Business Japanese</td>
+                  <td>01/07/2025</td>
+                  <td>Thứ 7-CN | 08:00-11:00</td>
+                  <td>Tanaka Yuki</td>
+                  <td><span class="seat-badge seat-many">12 chỗ</span></td>
+                  <td><a href="courses.html" class="btn btn-primary btn-sm">Đăng ký</a></td>
+                </tr>
+                <tr>
+                  <td><span class="sl-badge level-kanji">Kanji</span> Kanji Intensive Lab</td>
+                  <td>01/07/2025</td>
+                  <td>Tối 2-4-6 | 20:00-22:00</td>
+                  <td>Phạm Minh Tuấn</td>
+                  <td><span class="seat-badge">8 chỗ</span></td>
+                  <td><a href="courses.html" class="btn btn-primary btn-sm">Đăng ký</a></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      <!-- CTA -->
+      <section class="cta-section">
+        <div class="container">
+          <div class="cta-content">
+            <h2>Bắt đầu hành trình học tiếng Nhật của bạn ngay hôm nay!</h2>
+            <p>Hơn 5.000 học viên đã tin tưởng JSMART. Đừng để cơ hội vụt qua — đăng ký tư vấn miễn phí ngay!</p>
+            <div class="actions">
+              <a href="register.html" class="btn btn-primary btn-large">Đăng ký miễn phí</a>
+              <a href="courses.html" class="btn btn-outline btn-large"
+                style="background:transparent;color:#fff;border-color:rgba(255,255,255,0.6);">Xem các khóa học</a>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   </main>
 
   <footer class="footer">
     <div class="container footer-grid">
       <div class="footer-brand">
-        <div class="footer-logo"><span class="brand-mark">日</span> JSMART</div>
+        <div class="footer-logo"><img src="assets/Logo.png" alt="JSMART Logo" class="brand-logo"> JSMART</div>
         <p>Trung tâm giảng dạy tiếng Nhật uy tín — đồng hành cùng bạn trên con đường chinh phục JLPT.</p>
         <div class="footer-socials">
           <a href="#">📘 Facebook</a>
@@ -416,7 +441,7 @@
         <h4>Tài nguyên</h4>
         <a href="exams.html">Đề thi online</a>
         <a href="materials.html">Tài liệu học</a>
-        <a href="jlpt.html">Luyện thi JLPT</a>
+        <a href="forum.html">Thảo luận</a>
         <a href="#">Blog tiếng Nhật</a>
       </div>
       <div class="footer-contact">
@@ -432,4 +457,5 @@
     </div>
   </footer>
 </body>
+
 </html>

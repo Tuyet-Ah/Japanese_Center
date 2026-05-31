@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Thảo Luận | JSMART</title>
+	<meta name="description" content="Diễn đàn thảo luận JSMART — Nơi học viên trao đổi bài, hỏi đáp ngữ pháp, chia sẻ kinh nghiệm học tiếng Nhật.">
+	<link rel="stylesheet" href="CSS/forum.css">
+	<script defer src="JS/script.js"></script>
+	<script defer src="JS/forum.js"></script>
+</head>
+
+<body>
+	<header class="topbar">
+		<div class="container topbar-inner">
+			<a class="brand" href="Home.html">
+				<img src="assets/Logo.png" alt="JSMART Logo" class="brand-logo">
+				<span>
+					JSMART
+					<small>Trung tâm giảng dạy tiếng Nhật</small>
+				</span>
+			</a>
+			<nav class="nav">
+				<a href="Home.html">Trang chủ</a>
+				<a href="courses.html">Khóa học</a>
+				<a href="exams.html">Đề thi</a>
+				<a href="forum.html" class="active">Thảo luận</a>
+				<a href="materials.html">Tài liệu</a>
+			</nav>
+			<div class="actions">
+				<a data-profile-link href="profile.html" class="icon-btn" hidden title="Trang cá nhân">👤</a>
+				<a data-cart-link href="cart.html" class="icon-btn cart-icon" hidden title="Giỏ hàng">🛒<span
+						data-cart-count class="badge">0</span></a>
+				<div data-auth-actions class="auth-buttons">
+					<a class="btn btn-outline" href="login.html">Đăng nhập</a>
+					<a class="btn btn-primary" href="register.html">Đăng ký</a>
+				</div>
+				<div data-user-actions class="user-section" style="display: none;">
+					<span class="user-greeting">Xin chào, <span data-username></span></span>
+					<button data-logout-btn class="btn btn-outline">Đăng xuất</button>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<main>
+		<!-- Page Header -->
+		<section class="page-header">
+			<div class="container">
+				<h1>Thảo Luận</h1>
+				<p>Diễn đàn trao đổi bài — Hỏi đáp, chia sẻ kinh nghiệm và kết nối cùng bạn học</p>
+			</div>
+		</section>
+
+		<!-- Forum Stats -->
+		<section class="section">
+			<div class="container">
+				<div class="forum-stats-bar">
+					<div class="forum-stat-card">
+						<div class="forum-stat-icon">💬</div>
+						<span class="forum-stat-num" id="stat-topics">0</span>
+						<span class="forum-stat-label">Chủ đề</span>
+					</div>
+					<div class="forum-stat-card">
+						<div class="forum-stat-icon">💭</div>
+						<span class="forum-stat-num" id="stat-replies">0</span>
+						<span class="forum-stat-label">Trả lời</span>
+					</div>
+					<div class="forum-stat-card">
+						<div class="forum-stat-icon">👀</div>
+						<span class="forum-stat-num" id="stat-views">0</span>
+						<span class="forum-stat-label">Lượt xem</span>
+					</div>
+					<div class="forum-stat-card">
+						<div class="forum-stat-icon">👥</div>
+						<span class="forum-stat-num" id="stat-members">0</span>
+						<span class="forum-stat-label">Thành viên</span>
+					</div>
+				</div>
+
+				<!-- Toolbar -->
+				<div class="forum-toolbar">
+					<div class="forum-search-wrap">
+						<input type="text" id="forum-search" placeholder="Tìm kiếm chủ đề, tác giả...">
+					</div>
+					<select class="forum-filter-select" id="forum-filter">
+						<option value="all">Tất cả danh mục</option>
+						<option value="grammar">📖 Ngữ pháp & Từ vựng</option>
+						<option value="jlpt">📝 JLPT & Luyện thi</option>
+						<option value="share">💬 Chia sẻ kinh nghiệm</option>
+						<option value="find">🤝 Tìm bạn luyện tập</option>
+						<option value="qa">❓ Hỏi đáp khóa học</option>
+						<option value="material">📚 Tài liệu & Sách</option>
+					</select>
+					<button class="btn btn-primary btn-new-topic" id="btn-new-topic">✏️ Tạo chủ đề mới</button>
+				</div>
+
+				<!-- Category Tabs -->
+				<div class="forum-categories">
+					<button class="forum-cat-btn active" data-cat="all">Tất cả</button>
+					<button class="forum-cat-btn" data-cat="grammar">📖 Ngữ pháp</button>
+					<button class="forum-cat-btn" data-cat="jlpt">📝 JLPT</button>
+					<button class="forum-cat-btn" data-cat="share">💬 Chia sẻ</button>
+					<button class="forum-cat-btn" data-cat="find">🤝 Tìm bạn</button>
+					<button class="forum-cat-btn" data-cat="qa">❓ Hỏi đáp</button>
+					<button class="forum-cat-btn" data-cat="material">📚 Tài liệu</button>
+				</div>
+
+				<!-- Forum Table -->
+				<div class="forum-table-wrap">
+					<table class="forum-table">
+						<thead>
+							<tr>
+								<th style="width: 45%;">Chủ đề</th>
+								<th>Danh mục</th>
+								<th>Trả lời</th>
+								<th>Lượt xem</th>
+								<th>Hoạt động</th>
+							</tr>
+						</thead>
+						<tbody id="forum-tbody">
+							<!-- Rendered by JS -->
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</section>
+
+		<!-- CTA -->
+		<section class="cta-section">
+			<div class="container">
+				<div class="cta-content">
+					<h2>Tham gia cộng đồng JSMART ngay!</h2>
+					<p>Đăng ký tài khoản để đặt câu hỏi, chia sẻ kinh nghiệm và kết nối với hàng ngàn học viên
+						khác</p>
+					<div class="actions">
+						<a href="register.html" class="btn btn-primary btn-large">Đăng ký miễn phí</a>
+						<a href="courses.html" class="btn btn-outline btn-large"
+							style="background:transparent;color:#fff;border-color:rgba(255,255,255,0.6);">Xem Khóa
+							học</a>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="footer">
+		<div class="container footer-inner">
+			<div>JSMART - Trung tâm giảng dạy tiếng Nhật</div>
+			<div>Hotline: 0900 123 456 | Email: hello@jsmart.vn</div>
+		</div>
+	</footer>
+
+	<!-- ===== TOPIC DETAIL MODAL ===== -->
+	<div class="forum-modal-overlay" id="topic-detail-modal">
+		<div class="forum-modal">
+			<div class="forum-modal-header">
+				<h2 id="detail-title"></h2>
+				<button class="forum-modal-close" id="close-topic-detail">×</button>
+			</div>
+			<div class="forum-modal-body">
+				<div class="forum-modal-meta" id="detail-meta"></div>
+				<div class="forum-modal-content" id="detail-content"></div>
+
+				<div class="comments-section">
+					<h3>💬 Bình luận (<span id="comments-count">0</span>)</h3>
+					<div id="comments-list"></div>
+
+					<!-- Comment Form -->
+					<div id="comment-form-area">
+						<div class="comment-form">
+							<textarea id="comment-input" placeholder="Viết bình luận của bạn..." rows="3"></textarea>
+							<button class="btn btn-primary" id="submit-comment">Gửi</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- ===== NEW TOPIC MODAL ===== -->
+	<div class="forum-modal-overlay" id="new-topic-modal">
+		<div class="forum-modal">
+			<div class="forum-modal-header">
+				<h2>✏️ Tạo chủ đề mới</h2>
+				<button class="forum-modal-close" id="close-new-topic">×</button>
+			</div>
+			<div class="forum-modal-body">
+				<div class="new-topic-form">
+					<label for="new-topic-title">Tiêu đề</label>
+					<input type="text" id="new-topic-title" placeholder="Nhập tiêu đề chủ đề...">
+
+					<label for="new-topic-category">Danh mục</label>
+					<select id="new-topic-category">
+						<option value="grammar">📖 Ngữ pháp & Từ vựng</option>
+						<option value="jlpt">📝 JLPT & Luyện thi</option>
+						<option value="share">💬 Chia sẻ kinh nghiệm</option>
+						<option value="find">🤝 Tìm bạn luyện tập</option>
+						<option value="qa">❓ Hỏi đáp khóa học</option>
+						<option value="material">📚 Tài liệu & Sách</option>
+					</select>
+
+					<label for="new-topic-content">Nội dung</label>
+					<textarea id="new-topic-content" placeholder="Viết nội dung chi tiết..."></textarea>
+
+					<div class="form-actions">
+						<button class="btn btn-outline" id="cancel-new-topic" onclick="closeNewTopicModal()">Hủy</button>
+						<button class="btn btn-primary" id="submit-new-topic">Đăng chủ đề</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+</html>
