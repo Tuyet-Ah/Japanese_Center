@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
   <script defer src="JS/script.js"></script>
   <script defer src="JS/course-learning.js"></script>
 </head>
+
 <body>
   <!-- Topbar -->
   <header class="topbar">
@@ -26,7 +28,8 @@
       </nav>
       <div class="actions">
         <a data-profile-link href="profile.html" class="icon-btn" hidden title="Trang cá nhân">👤</a>
-        <a data-cart-link href="cart.html" class="icon-btn cart-icon" hidden title="Giỏ hàng">🛒<span data-cart-count class="badge">0</span></a>
+        <a data-cart-link href="cart.html" class="icon-btn cart-icon" hidden title="Giỏ hàng">🛒<span data-cart-count
+            class="badge">0</span></a>
         <div data-auth-actions class="auth-buttons">
           <a class="btn btn-outline" href="login.html">Đăng nhập</a>
           <a class="btn btn-primary" href="register.html">Đăng ký</a>
@@ -49,7 +52,9 @@
         <h2 id="sidebarCourseTitle">N5 Beginner Journey</h2>
         <div class="sidebar-progress">
           <div class="progress-label"><span>Tiến độ</span><span id="progressPct">65%</span></div>
-          <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:65%"></div></div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width:65%"></div>
+          </div>
         </div>
       </div>
 
@@ -69,10 +74,15 @@
             <div class="play-icon">▶</div>
             <p id="videoTitle">Chọn bài học để bắt đầu</p>
           </div>
-          <iframe id="videoFrame" src="" frameborder="0" allowfullscreen style="display:none;width:100%;height:100%;"></iframe>
+          <iframe id="videoFrame" src="" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen style="display:none;width:100%;height:100%;"></iframe>
         </div>
         <div class="video-info">
-          <h1 class="lesson-title" id="lessonTitle">Chào mừng đến với khóa học</h1>
+          <div class="lesson-title-row">
+            <h1 class="lesson-title" id="lessonTitle">Chào mừng đến với khóa học</h1>
+            <button class="lesson-complete-btn" id="completeLessonBtn" type="button" disabled>Hoàn thành bài</button>
+          </div>
           <div class="lesson-meta" id="lessonMeta">Chọn một bài học từ danh sách bên trái để bắt đầu học</div>
         </div>
       </div>
@@ -81,96 +91,34 @@
       <div class="lesson-tabs">
         <button class="lesson-tab-btn active" data-ltab="overview">📋 Tổng quan</button>
         <button class="lesson-tab-btn" data-ltab="notes">📝 Ghi chú</button>
-        <button class="lesson-tab-btn" data-ltab="qa">💬 Hỏi & Đáp</button>
         <button class="lesson-tab-btn" data-ltab="resources">📎 Tài nguyên</button>
       </div>
 
       <!-- Tab: Overview -->
       <div class="lesson-tab-panel active" id="ltab-overview">
         <h3>Giới thiệu bài học</h3>
-        <p id="lessonDesc">Hãy chọn một bài học từ danh sách để bắt đầu. Mỗi bài học bao gồm video giảng dạy, bài tập thực hành và tài liệu tham khảo để giúp bạn nắm vững kiến thức.</p>
-        <div class="lesson-goals" id="lessonGoals">
-          <h4>Mục tiêu bài học</h4>
-          <ul>
-            <li>Hiểu được cấu trúc ngữ pháp cơ bản</li>
-            <li>Nhận biết và đọc được từ vựng mới</li>
-            <li>Áp dụng vào hội thoại thực tế</li>
-          </ul>
-        </div>
+        <p id="lessonDesc">Hãy chọn một bài học từ danh sách để bắt đầu. Mỗi bài học bao gồm video giảng dạy, bài tập
+          thực hành và tài liệu tham khảo để giúp bạn nắm vững kiến thức.</p>
       </div>
 
       <!-- Tab: Notes -->
       <div class="lesson-tab-panel" id="ltab-notes">
         <h3>Ghi chú của bạn</h3>
-        <textarea class="notes-area" placeholder="Gõ ghi chú của bạn ở đây...&#10;&#10;Ví dụ: từ vựng quan trọng, cấu trúc câu cần nhớ..."></textarea>
+        <textarea class="notes-area"
+          placeholder="Gõ ghi chú của bạn ở đây...&#10;&#10;Ví dụ: từ vựng quan trọng, cấu trúc câu cần nhớ..."></textarea>
         <button class="save-notes-btn">💾 Lưu ghi chú</button>
-      </div>
-
-      <!-- Tab: Q&A -->
-      <div class="lesson-tab-panel" id="ltab-qa">
-        <h3>Hỏi & Đáp</h3>
-        <div class="qa-list">
-          <div class="qa-item">
-            <div class="qa-avatar">T</div>
-            <div class="qa-content">
-              <div class="qa-author">Trần Văn An <span class="qa-time">2 ngày trước</span></div>
-              <p>Cô ơi, mẫu câu 〜てください có thể dùng trong văn viết không ạ?</p>
-              <div class="qa-reply">
-                <div class="qa-avatar qa-avatar-teacher">GV</div>
-                <div class="qa-content">
-                  <div class="qa-author qa-teacher">Giáo viên <span class="qa-time">1 ngày trước</span></div>
-                  <p>Mẫu câu 〜てください thường dùng trong văn nói và văn viết thông thường, nhưng trong văn phong trang trọng, bạn nên dùng 〜てください nhé!</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="qa-item">
-            <div class="qa-avatar">N</div>
-            <div class="qa-content">
-              <div class="qa-author">Nguyễn Thị Mai <span class="qa-time">5 ngày trước</span></div>
-              <p>Bài này có thể ôn lại bằng flashcard không ạ?</p>
-            </div>
-          </div>
-        </div>
-        <div class="qa-form">
-          <textarea placeholder="Đặt câu hỏi của bạn..."></textarea>
-          <button class="qa-submit-btn">Gửi câu hỏi</button>
-        </div>
+        <div class="notes-list" id="lessonNotesList"></div>
       </div>
 
       <!-- Tab: Resources -->
       <div class="lesson-tab-panel" id="ltab-resources">
         <h3>Tài nguyên học tập</h3>
-        <div class="resources-list">
-          <a href="#" class="resource-item">
-            <span class="resource-icon">📄</span>
-            <div class="resource-info">
-              <div class="resource-name">Bảng từ vựng N5 - Chương 1.pdf</div>
-              <div class="resource-size">1.2 MB</div>
-            </div>
-            <span class="resource-download">⬇</span>
-          </a>
-          <a href="#" class="resource-item">
-            <span class="resource-icon">📊</span>
-            <div class="resource-info">
-              <div class="resource-name">Bảng chia động từ nhóm 1.pdf</div>
-              <div class="resource-size">0.8 MB</div>
-            </div>
-            <span class="resource-download">⬇</span>
-          </a>
-          <a href="#" class="resource-item">
-            <span class="resource-icon">🎵</span>
-            <div class="resource-info">
-              <div class="resource-name">File nghe - Hội thoại bài 1.mp3</div>
-              <div class="resource-size">3.5 MB</div>
-            </div>
-            <span class="resource-download">⬇</span>
-          </a>
-        </div>
+        <div class="resources-list" id="lessonResources"></div>
       </div>
 
     </main>
   </div>
 
 </body>
+
 </html>

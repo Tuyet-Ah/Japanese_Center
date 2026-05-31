@@ -16,3 +16,4 @@ from .ForumResponse import ForumResponse
 from .ForumTopic import ForumTopic
 from .PaymentTransaction import PaymentTransaction
 from .PaymentTransactionItem import PaymentTransactionItem
+from .Material import Material

@@ -4,7 +4,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const adminHome = document.querySelector("[data-admin-home]");
   const studentHome = document.querySelector("[data-student-home]");
   const user = getLoginUser();
-  const isAdmin = user && user.role === "admin";
+  const tokens = getAuthTokens();
+  const isAdmin = Boolean(user && user.role === "admin" && tokens && tokens.access);
 
   if (adminHome) adminHome.hidden = !isAdmin;
   if (studentHome) studentHome.hidden = isAdmin;

@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions
 from education.serializers import LessonCommentSerializer, LessonNoteSerializer, ForumTopicSerializer,ForumResponseSerializer
-from education.services import InteractionService
+from education.services import InteractionService, CourseService
 from education.models import ForumTopic
 class LessonCommentView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -20,6 +20,12 @@ class LessonCommentView(APIView):
 class PersonalNoteView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
+    def get(self, request):
+        lesson_id = request.query_params.get('lesson_id')
+        notes = CourseService.get_notes(request.user, lesson_id)
+        serializer = LessonNoteSerializer(notes, many=True)
+        return Response(serializer.data)
+
     def post(self, request):
         note = InteractionService.upsert_note(
             request.user, 
@@ -28,6 +34,16 @@ class PersonalNoteView(APIView):
             request.data.get('video_timestamp')
         )
         return Response(LessonNoteSerializer(note).data)
+
+
+class LessonNoteDetailView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def delete(self, request, note_id):
+        ok = CourseService.delete_note(request.user, note_id)
+        if not ok:
+            return Response({"error": "Không có quyền xóa ghi chú"}, status=status.HTTP_403_FORBIDDEN)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 class ForumTopicView(APIView):
     def get(self, request):
