@@ -96,6 +96,7 @@ function updateUIBasedOnLogin() {
   const userActions = document.querySelector("[data-user-actions]");
   const profileLink = document.querySelector("[data-profile-link]");
   const cartLink = document.querySelector("[data-cart-link]");
+  const homeCta = document.querySelector("[data-home-cta]");
 
   if (isAuthenticated) {
     if (authActions) authActions.style.display = "none";
@@ -111,6 +112,8 @@ function updateUIBasedOnLogin() {
     if (profileLink) profileLink.hidden = true;
     if (cartLink) cartLink.hidden = true;
   }
+
+  if (homeCta) homeCta.hidden = isAuthenticated;
 
   updateCartCount();
 }
