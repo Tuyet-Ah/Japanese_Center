@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thống kê hệ thống | JSMART Admin</title>
+  <meta name="description" content="Bảng thống kê tổng quan hệ thống JSMART - học viên, doanh thu, khóa học">
+  <link rel="stylesheet" href="CSS/admin-statistics.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script defer src="JS/script.js"></script>
+  <script defer src="JS/admin-statistics.js"></script>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="admin-home.html">
+        <img src="assets/Logo.png" alt="JSMART Logo" class="brand-logo">
+        <span>JSMART<small>Quản trị hệ thống</small></span>
+      </a>
+      <nav class="nav">
+        <a href="admin-home.html">Trang chủ</a>
+        <a href="admin-approvals.html">Quản lý tài khoản</a>
+        <a href="admin-courses.html">Quản lý khóa học</a>
+        <a href="admin-quizzes.html">Quản lý đề thi</a>
+        <a href="admin-forum.html">Quản lý thảo luận</a>
+        <a href="admin-statistics.html">Thống kê</a>
+      </nav>
+      <div class="sidebar-footer">
+        <button id="adminLogout" class="menu-item logout-btn">
+          <span class="menu-icon">🚪</span>
+          <span>Đăng Xuất</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-main container">
+    <!-- Page Header -->
+    <header class="admin-header stats-page-header">
+      <div class="stats-header-left">
+        <h1>📊 Thống kê hệ thống</h1>
+        <p class="stats-header-sub">Tổng quan dữ liệu học viên, doanh thu và khóa học</p>
+      </div>
+      <div class="stats-date-filter">
+        <div class="date-field">
+          <label for="dateFrom">Từ ngày</label>
+          <input type="date" id="dateFrom">
+        </div>
+        <div class="date-field">
+          <label for="dateTo">Đến ngày</label>
+          <input type="date" id="dateTo">
+        </div>
+        <button id="btnApplyFilter" class="btn btn-primary btn-filter">Áp dụng</button>
+      </div>
+    </header>
+
+    <!-- Overview Cards -->
+    <section class="overview-cards" id="overviewCards">
+      <div class="overview-card overview-card--students">
+        <div class="ov-icon">🎓</div>
+        <div class="ov-body">
+          <span class="ov-label">Tổng học viên</span>
+          <span class="ov-value" id="statTotalStudents">—</span>
+        </div>
+      </div>
+      <div class="overview-card overview-card--courses">
+        <div class="ov-icon">📚</div>
+        <div class="ov-body">
+          <span class="ov-label">Tổng khóa học</span>
+          <span class="ov-value" id="statTotalCourses">—</span>
+        </div>
+      </div>
+      <div class="overview-card overview-card--enrollments">
+        <div class="ov-icon">📝</div>
+        <div class="ov-body">
+          <span class="ov-label">Lượt đăng ký</span>
+          <span class="ov-value" id="statTotalEnrollments">—</span>
+        </div>
+      </div>
+      <div class="overview-card overview-card--revenue">
+        <div class="ov-icon">💰</div>
+        <div class="ov-body">
+          <span class="ov-label">Tổng doanh thu</span>
+          <span class="ov-value" id="statTotalRevenue">—</span>
+        </div>
+      </div>
+      <div class="overview-card overview-card--revenue-range">
+        <div class="ov-icon">📈</div>
+        <div class="ov-body">
+          <span class="ov-label">Doanh thu kỳ chọn</span>
+          <span class="ov-value" id="statRangeRevenue">—</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Charts Row 1: Line charts -->
+    <section class="charts-row">
+      <div class="chart-card">
+        <div class="chart-header">
+          <h2>Học viên đăng ký mới theo tháng</h2>
+          <span class="chart-badge">Xu hướng</span>
+        </div>
+        <div class="chart-body">
+          <canvas id="chartStudents"></canvas>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-header">
+          <h2>Lượt đăng ký khóa học theo tháng</h2>
+          <span class="chart-badge">Xu hướng</span>
+        </div>
+        <div class="chart-body">
+          <canvas id="chartEnrollments"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- Charts Row 2: Revenue line + Doughnut -->
+    <section class="charts-row">
+      <div class="chart-card chart-card--wide">
+        <div class="chart-header">
+          <h2>Doanh thu theo tháng</h2>
+          <span class="chart-badge chart-badge--green">Tài chính</span>
+        </div>
+        <div class="chart-body chart-body--tall">
+          <canvas id="chartRevenue"></canvas>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-header">
+          <h2>Đăng ký theo cấp độ JLPT</h2>
+          <span class="chart-badge chart-badge--blue">Phân bổ</span>
+        </div>
+        <div class="chart-body">
+          <canvas id="chartLevel"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- Revenue Per Course Table -->
+    <section class="chart-card course-revenue-section">
+      <div class="chart-header">
+        <h2>💰 Doanh thu từng khóa học</h2>
+        <span class="chart-badge chart-badge--green">Chi tiết</span>
+      </div>
+      <div class="table-responsive">
+        <table class="revenue-table" id="courseRevenueTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Khóa học</th>
+              <th>Cấp độ</th>
+              <th>Lượt mua</th>
+              <th>Doanh thu</th>
+              <th>Tỉ lệ</th>
+            </tr>
+          </thead>
+          <tbody id="courseRevenueBody">
+            <tr><td colspan="6" class="table-loading">Đang tải dữ liệu...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- No Data State -->
+    <div id="noDataState" class="no-data-state" hidden>
+      <div class="no-data-icon">📭</div>
+      <h3>Chưa có dữ liệu</h3>
+      <p>Hệ thống chưa ghi nhận dữ liệu thống kê trong khoảng thời gian này.</p>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-bottom">
+      <div class="container" style="text-align:center; padding: 16px 0; color: var(--muted); font-size: 0.9rem;">
+        © 2025 JSMART Admin Panel. All rights reserved.
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

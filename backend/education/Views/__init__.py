@@ -10,3 +10,4 @@ from .lessonViews import LessonDetailView, MarkLessonCompleteView
 from .interactionView import LessonCommentView, PersonalNoteView, LessonNoteDetailView, ForumTopicView, ForumTopicDetailView, ReplyToTopicView, GetReplyTopicView
 from .chatbotViews import JapaneseChatbotView
 from .materialViews import MaterialListView, MaterialDetailView
+from .statisticsViews import AdminStatisticsView

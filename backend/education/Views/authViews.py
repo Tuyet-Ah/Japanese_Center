@@ -36,20 +36,16 @@ class LoginView(TokenObtainPairView):
 class ApproveAdminView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
-    def post(self, request, user_id):
-        try:
-            user = AuthService.approve_admin(user_id, request.user)
-            return Response(UserSerializer(user).data, status=200)
-        except ValueError as e:
-            return Response({"error": str(e)}, status=400)
-
     def delete(self, request, user_id):
         if request.user.role != 'admin' or request.user.is_admin_pending:
             return Response({"error": "Không có quyền xóa tài khoản"}, status=403)
 
-        target = User.objects.filter(id=user_id, role='admin', is_admin_pending=True).first()
+        target = User.objects.filter(id=user_id).first()
         if not target:
             return Response({"error": "Không tìm thấy tài khoản cần xóa"}, status=404)
+
+        if target.id == request.user.id:
+            return Response({"error": "Không thể xóa chính tài khoản của bạn"}, status=400)
 
         target.delete()
         return Response({"message": "Đã xóa tài khoản"}, status=200)
@@ -59,10 +55,10 @@ class PendingAdminListView(APIView):
 
     def get(self, request):
         if request.user.role != 'admin' or request.user.is_admin_pending:
-            return Response({"error": "Không có quyền xem danh sách chờ duyệt"}, status=403)
+            return Response({"error": "Không có quyền xem danh sách tài khoản"}, status=403)
 
-        pending_admins = User.objects.filter(role='admin', is_admin_pending=True).order_by('-id')
-        return Response(UserSerializer(pending_admins, many=True).data)
+        all_users = User.objects.all().order_by('-date_joined')
+        return Response(UserSerializer(all_users, many=True).data)
 
 
 class AdminDashboardStatsView(APIView):

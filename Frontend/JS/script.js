@@ -250,7 +250,7 @@ async function fetchPendingAdmins() {
 function renderPendingAdminList(listNode, admins, countNode) {
   if (!listNode) return;
   if (!Array.isArray(admins) || admins.length === 0) {
-    listNode.innerHTML = '<p class="pending-empty">Khong co tai khoan admin cho duyet.</p>';
+    listNode.innerHTML = '<p class="pending-empty">Khong co tai khoan nao.</p>';
     if (countNode) countNode.textContent = "0";
     return;
   }
@@ -269,7 +269,7 @@ function renderPendingAdminList(listNode, admins, countNode) {
             <div class="pending-admin-meta">So dien thoai: ${phone || "-"}</div>
             <div class="pending-admin-meta">Dia chi: ${address || "-"}</div>
           </div>
-          <a class="btn btn-small" href="admin-approvals.html">Duyet</a>
+          <a class="btn btn-small" href="admin-approvals.html">Xem</a>
         </div>
       `;
     })
@@ -277,6 +277,7 @@ function renderPendingAdminList(listNode, admins, countNode) {
 
   if (countNode) countNode.textContent = String(admins.length);
 }
+
 
 async function updateProfileBackend(formData) {
   const tokens = getAuthTokens();

@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Duyệt Người Dùng | Admin</title>
+	<title>Quản lý Tài khoản | Admin</title>
 	<link rel="stylesheet" href="CSS/admin-approvals.css">
 	<script defer src="JS/script.js"></script>
 	<script defer src="JS/admin-approvals.js"></script>
@@ -23,6 +23,7 @@
 				<a href="admin-courses.html">Quản lý khóa học</a>
 				<a href="admin-quizzes.html">Quản lý đề thi</a>
 				<a href="admin-forum.html">Quản lý thảo luận</a>
+				<a href="admin-statistics.html">Thống kê</a>
 			</nav>
 			<div class="sidebar-footer">
 				<button id="adminLogout" class="menu-item logout-btn">
@@ -35,15 +36,26 @@
 
 	<main class="admin-main container" style="padding-top: 20px;">
 			<header class="admin-header">
-				<h1>Duyệt Người Dùng Mới</h1>
-				<span class="header-info">Tổng: <strong id="pendingAdminsCount">0</strong> đơn chờ duyệt</span>
+				<h1>Quản lý Tài khoản</h1>
+				<span class="header-info">Tổng: <strong id="pendingAdminsCount">0</strong> tài khoản</span>
 			</header>
 
+			<!-- Search & Filter Bar -->
+			<div class="filter-bar">
+				<input type="text" id="searchInput" class="filter-input" placeholder="Tìm kiếm theo tên, email...">
+				<select id="roleFilter" class="filter-select">
+					<option value="all">Tất cả vai trò</option>
+					<option value="admin">Admin</option>
+					<option value="teacher">Giáo viên</option>
+					<option value="student">Học viên</option>
+				</select>
+			</div>
+
 			<div class="admin-content">
-				<!-- Approvals List -->
+				<!-- Accounts List -->
 				<section class="approvals-section">
 					<div id="pendingAdminsList" class="approvals-list">
-						<p class="pending-empty">Dang tai danh sach...</p>
+						<p class="pending-empty">Đang tải danh sách...</p>
 					</div>
 				</section>
 			</div>
@@ -51,11 +63,11 @@
 
 	<div id="confirmModal" class="modal-backdrop" hidden>
 		<div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="confirmModalTitle">
-			<h3 id="confirmModalTitle">Xac nhan</h3>
-			<p id="confirmModalMessage">Ban chac chan?</p>
+			<h3 id="confirmModalTitle">Xác nhận</h3>
+			<p id="confirmModalMessage">Bạn chắc chắn?</p>
 			<div class="modal-actions">
-				<button id="confirmModalCancel" class="btn btn-outline">Huy</button>
-				<button id="confirmModalOk" class="btn btn-danger">Dong y</button>
+				<button id="confirmModalCancel" class="btn btn-outline">Hủy</button>
+				<button id="confirmModalOk" class="btn btn-danger">Đồng ý</button>
 			</div>
 		</div>
 	</div>
