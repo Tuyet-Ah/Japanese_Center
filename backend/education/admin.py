@@ -24,7 +24,16 @@ admin.site.register(UserProgress)
 admin.site.register(LessonNote)
 admin.site.register(LessonComment)
 admin.site.register(ForumResponse)
-admin.site.register(ForumTopic)
+@admin.action(description="Duyệt bài viết đã chọn")
+def approve_topics(modeladmin, request, queryset):
+    queryset.update(is_approved=True)
+
+class ForumTopicAdmin(admin.ModelAdmin):
+    list_display = ('title', 'user', 'category', 'is_approved', 'created_at')
+    list_filter = ('is_approved', 'category')
+    actions = [approve_topics]
+
+admin.site.register(ForumTopic, ForumTopicAdmin)
 admin.site.register(PaymentTransaction)
 admin.site.register(PaymentTransactionItem)
 admin.site.register(Material)

@@ -47,7 +47,7 @@ class LessonNoteDetailView(APIView):
 
 class ForumTopicView(APIView):
     def get(self, request):
-        topics = ForumTopic.objects.all().order_by('-created_at')
+        topics = ForumTopic.objects.filter(is_approved=True).order_by('-created_at')
         return Response(ForumTopicSerializer(topics, many=True).data)
     def post(self, request):
         if not request.user.is_authenticated:
@@ -105,3 +105,35 @@ class GetReplyTopicView(APIView):
         responses = InteractionService.get_replyTopic(topic_id)
         serializer = ForumResponseSerializer(responses, many=True)
         return Response(serializer.data)
+
+class PendingForumTopicListView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        if request.user.role != 'admin':
+            return Response({"error": "Không có quyền truy cập"}, status=status.HTTP_403_FORBIDDEN)
+        topics = ForumTopic.objects.filter(is_approved=False).order_by('-created_at')
+        return Response(ForumTopicSerializer(topics, many=True).data)
+
+class ApproveForumTopicView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, topic_id):
+        if request.user.role != 'admin':
+            return Response({"error": "Không có quyền duyệt bài"}, status=status.HTTP_403_FORBIDDEN)
+        
+        topic = InteractionService.approve_topic(topic_id)
+        if not topic:
+            return Response({"error": "Không tìm thấy bài viết"}, status=status.HTTP_404_NOT_FOUND)
+        
+        return Response({"message": "Đã duyệt bài viết thành công"}, status=status.HTTP_200_OK)
+
+    def delete(self, request, topic_id):
+        if request.user.role != 'admin':
+            return Response({"error": "Không có quyền xóa bài"}, status=status.HTTP_403_FORBIDDEN)
+        
+        deleted = InteractionService.reject_topic(topic_id)
+        if not deleted:
+            return Response({"error": "Không tìm thấy bài viết"}, status=status.HTTP_404_NOT_FOUND)
+            
+        return Response({"message": "Đã từ chối/xóa bài viết"}, status=status.HTTP_200_OK)

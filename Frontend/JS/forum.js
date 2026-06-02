@@ -459,6 +459,7 @@ function submitNewTopic() {
                   contentInput.value = "";
                   catSelect.value = "grammar";
                   closeNewTopicModal();
+                  alert("Chủ đề của bạn đã được gửi thành công và đang chờ ban quản trị duyệt.");
                   await refreshTopics();
             })
             .catch((error) => {

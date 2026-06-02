@@ -1,5 +1,5 @@
 from django.urls import path
-from .Views import RegisterView, RegisterAdminView, LoginView, ApproveAdminView, PendingAdminListView, AdminDashboardStatsView, ReplyToTopicView, GetReplyTopicView, CourseListView, CourseDetailView, CourseLearningDetailView, ChapterCreateView, ChapterDetailView, CartView, CheckoutView, CartDeleteView, PracticeHistoryView, FinalExamHistoryView, QuizSubmitView, QuizDetailView, LessonDetailView, LessonCreateView, MarkLessonCompleteView, ProfileView, ChangePasswordView, MyCoursesProgressView, QuizLeaderboardView, QuizReviewDetailView, LessonCommentView, PersonalNoteView, LessonNoteDetailView, ForumTopicView, ForumTopicDetailView, CourseSearchSuggestView, CourseReviewView, VnpayReturnView, VnpayIpnView, JapaneseChatbotView, PracticeQuizListView, QuizSubmissionDetailView, AdminQuizListView, MaterialListView, MaterialDetailView
+from .Views import RegisterView, RegisterAdminView, LoginView, ApproveAdminView, PendingAdminListView, AdminDashboardStatsView, ReplyToTopicView, GetReplyTopicView, CourseListView, CourseDetailView, CourseLearningDetailView, ChapterCreateView, ChapterDetailView, CartView, CheckoutView, CartDeleteView, PracticeHistoryView, FinalExamHistoryView, QuizSubmitView, QuizDetailView, LessonDetailView, LessonCreateView, MarkLessonCompleteView, ProfileView, ChangePasswordView, MyCoursesProgressView, QuizLeaderboardView, QuizReviewDetailView, LessonCommentView, PersonalNoteView, LessonNoteDetailView, ForumTopicView, ForumTopicDetailView, CourseSearchSuggestView, CourseReviewView, VnpayReturnView, VnpayIpnView, JapaneseChatbotView, PracticeQuizListView, QuizSubmissionDetailView, AdminQuizListView, MaterialListView, MaterialDetailView, PendingForumTopicListView, ApproveForumTopicView
 
 urlpatterns =[
       path('register/', RegisterView.as_view(), name='register'),
@@ -57,4 +57,6 @@ urlpatterns =[
       path('chatbot/', JapaneseChatbotView.as_view(), name='japanese-chatbot'),
       path('materials/', MaterialListView.as_view(), name='material-list'),
       path('materials/<int:pk>/', MaterialDetailView.as_view(), name='material-detail'),
+      path('admin-forum-approvals/', PendingForumTopicListView.as_view(), name='pending-forum-list'),
+      path('admin-forum-approvals/<int:topic_id>/', ApproveForumTopicView.as_view(), name='approve-forum'),
 ] 

@@ -28,6 +28,23 @@ class InteractionService:
             category=data.get('category'),
             content=data.get('content')
         )
+
+    @staticmethod
+    def approve_topic(topic_id):
+        topic = ForumTopic.objects.filter(id=topic_id).first()
+        if topic:
+            topic.is_approved = True
+            topic.save()
+            return topic
+        return None
+
+    @staticmethod
+    def reject_topic(topic_id):
+        topic = ForumTopic.objects.filter(id=topic_id).first()
+        if topic:
+            topic.delete()
+            return True
+        return False
     
     @staticmethod
     def get_replyTopic(topic_id):
