@@ -112,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
         loginTime: new Date().toISOString()
       });
       setFormMessage(message, "Dang chuyen huong...");
-      window.location.href = role === "admin" ? "admin-dashboard.html" : "Home.html";
+      window.location.href = role === "admin" ? "admin-home.html" : "Home.html";
     } catch (error) {
       setFormMessage(message, "Khong the ket noi den may chu. Vui long thu lai.");
     } finally {
