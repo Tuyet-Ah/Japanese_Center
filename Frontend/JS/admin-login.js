@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
         role: "admin",
         loginTime: new Date().toISOString()
       });
-      window.location.href = "admin-dashboard.html";
+      window.location.href = "admin-home.html";
       return;
     }
 
