@@ -49,16 +49,55 @@ class ForumTopicView(APIView):
     def get(self, request):
         topics = ForumTopic.objects.all().order_by('-created_at')
         return Response(ForumTopicSerializer(topics, many=True).data)
-
     def post(self, request):
+        if not request.user.is_authenticated:
+            return Response({"error": "Vui lòng đăng nhập"}, status=status.HTTP_401_UNAUTHORIZED)
         topic = InteractionService.create_topic(request.user, request.data)
         return Response(ForumTopicSerializer(topic).data, status=status.HTTP_201_CREATED)
+
+
+class ForumTopicDetailView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def patch(self, request, topic_id):
+        topic = ForumTopic.objects.filter(id=topic_id).first()
+        if not topic:
+            return Response({"error": "Chủ đề không tồn tại"}, status=status.HTTP_404_NOT_FOUND)
+
+        if topic.user_id != request.user.id and request.user.role != 'admin':
+            return Response({"error": "Không có quyền chỉnh sửa chủ đề"}, status=status.HTTP_403_FORBIDDEN)
+
+        title = request.data.get('title', '').strip()
+        content = request.data.get('content', '').strip()
+        if not title or not content:
+            return Response({"error": "Tiêu đề và nội dung không được để trống"}, status=status.HTTP_400_BAD_REQUEST)
+
+        topic.title = title
+        topic.content = content
+        topic.save()
+        return Response(ForumTopicSerializer(topic).data)
+
+    def delete(self, request, topic_id):
+        topic = ForumTopic.objects.filter(id=topic_id).first()
+        if not topic:
+            return Response({"error": "Chủ đề không tồn tại"}, status=status.HTTP_404_NOT_FOUND)
+
+        if topic.user_id != request.user.id and request.user.role != 'admin':
+            return Response({"error": "Không có quyền xóa chủ đề"}, status=status.HTTP_403_FORBIDDEN)
+
+        topic.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 class ReplyToTopicView(APIView):
     permission_classes = [permissions.IsAuthenticated]
     def post(self,request,topic_id):
-        content = request.data.get('content')
-        response = InteractionService.reply_to_topic(request.user, topic_id, content)
+        content = (request.data.get('content') or '').strip()
+        image_url = (request.data.get('image_url') or '').strip()
+        link_url = (request.data.get('link_url') or '').strip()
+        image_file = request.FILES.get('image_file')
+        if not content and not image_url and not link_url and not image_file:
+            return Response({"error": "Vui lòng nhập nội dung hoặc link/ảnh."}, status=status.HTTP_400_BAD_REQUEST)
+        response = InteractionService.reply_to_topic(request.user, topic_id, content, image_url, link_url, image_file)
         return Response({"message": "Trả lời đã được đăng"}, status=status.HTTP_201_CREATED)
     
 class GetReplyTopicView(APIView):

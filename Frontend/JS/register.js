@@ -13,11 +13,11 @@ function persistLoginUser(user) {
   }
 }
 
-async function loginAfterRegister(username, password) {
+async function loginAfterRegister(username, password, role) {
   const response = await fetch(`${AUTH_API_BASE_URL}/login/`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username, password })
+    body: JSON.stringify({ username, password, role })
   });
 
   const data = await response.json().catch(() => ({}));
@@ -71,10 +71,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const roleSelect = document.getElementById("registerRole");
   const adminNote = document.getElementById("adminRegisterNote");
+  const goalGroup = document.getElementById("registerGoalGroup");
+  const goalSelect = document.getElementById("registerGoal");
 
   if (roleSelect && adminNote) {
     const toggleNote = () => {
       adminNote.style.display = roleSelect.value === "admin" ? "block" : "none";
+      if (goalGroup) {
+        goalGroup.style.display = roleSelect.value === "admin" ? "none" : "block";
+      }
+      if (goalSelect) {
+        if (roleSelect.value === "admin") {
+          goalSelect.value = "";
+          goalSelect.removeAttribute("required");
+        } else {
+          goalSelect.setAttribute("required", "required");
+        }
+      }
     };
     toggleNote();
     roleSelect.addEventListener("change", toggleNote);
@@ -112,7 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
       hasConfirm: Boolean(passwordConfirm)
     });
 
-    if (!name || !username || !email || !phone || !gender || !goal || !password) {
+    if (!name || !username || !email || !phone || !gender || (!goal && role !== "admin") || !password) {
       setFormMessage(message, "Vui long nhap day du thong tin.");
       return;
     }
@@ -158,7 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      await loginAfterRegister(username, password);
+      await loginAfterRegister(username, password, role);
       setFormMessage(message, "Dang chuyen huong...");
       window.location.href = "Home.html";
     } catch (error) {

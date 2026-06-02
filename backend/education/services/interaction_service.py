@@ -35,5 +35,12 @@ class InteractionService:
         return ForumResponse.objects.filter(topic_id=topic_id).select_related('user').order_by('created_at')
         
     @staticmethod
-    def reply_to_topic(user, topic_id, content):
-        return ForumResponse.objects.create(user=user, topic_id=topic_id, content=content)
+    def reply_to_topic(user, topic_id, content, image_url=None, link_url=None, image_file=None):
+        return ForumResponse.objects.create(
+            user=user,
+            topic_id=topic_id,
+            content=content or "",
+            image_url=image_url or "",
+            link_url=link_url or "",
+            image_file=image_file
+        )

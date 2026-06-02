@@ -5,7 +5,8 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Thảo Luận | JSMART</title>
-	<meta name="description" content="Diễn đàn thảo luận JSMART — Nơi học viên trao đổi bài, hỏi đáp ngữ pháp, chia sẻ kinh nghiệm học tiếng Nhật.">
+	<meta name="description"
+		content="Diễn đàn thảo luận JSMART — Nơi học viên trao đổi bài, hỏi đáp ngữ pháp, chia sẻ kinh nghiệm học tiếng Nhật.">
 	<link rel="stylesheet" href="CSS/forum.css">
 	<script defer src="JS/script.js"></script>
 	<script defer src="JS/forum.js"></script>
@@ -53,32 +54,9 @@
 			</div>
 		</section>
 
-		<!-- Forum Stats -->
+		<!-- Forum Content -->
 		<section class="section">
 			<div class="container">
-				<div class="forum-stats-bar">
-					<div class="forum-stat-card">
-						<div class="forum-stat-icon">💬</div>
-						<span class="forum-stat-num" id="stat-topics">0</span>
-						<span class="forum-stat-label">Chủ đề</span>
-					</div>
-					<div class="forum-stat-card">
-						<div class="forum-stat-icon">💭</div>
-						<span class="forum-stat-num" id="stat-replies">0</span>
-						<span class="forum-stat-label">Trả lời</span>
-					</div>
-					<div class="forum-stat-card">
-						<div class="forum-stat-icon">👀</div>
-						<span class="forum-stat-num" id="stat-views">0</span>
-						<span class="forum-stat-label">Lượt xem</span>
-					</div>
-					<div class="forum-stat-card">
-						<div class="forum-stat-icon">👥</div>
-						<span class="forum-stat-num" id="stat-members">0</span>
-						<span class="forum-stat-label">Thành viên</span>
-					</div>
-				</div>
-
 				<!-- Toolbar -->
 				<div class="forum-toolbar">
 					<div class="forum-search-wrap">
@@ -93,7 +71,8 @@
 						<option value="qa">❓ Hỏi đáp khóa học</option>
 						<option value="material">📚 Tài liệu & Sách</option>
 					</select>
-					<button class="btn btn-primary btn-new-topic" id="btn-new-topic">✏️ Tạo chủ đề mới</button>
+					<button class="btn btn-primary btn-new-topic" id="btn-new-topic">✏️ Tạo chủ đề
+						mới</button>
 				</div>
 
 				<!-- Category Tabs -->
@@ -127,22 +106,6 @@
 			</div>
 		</section>
 
-		<!-- CTA -->
-		<section class="cta-section">
-			<div class="container">
-				<div class="cta-content">
-					<h2>Tham gia cộng đồng JSMART ngay!</h2>
-					<p>Đăng ký tài khoản để đặt câu hỏi, chia sẻ kinh nghiệm và kết nối với hàng ngàn học viên
-						khác</p>
-					<div class="actions">
-						<a href="register.html" class="btn btn-primary btn-large">Đăng ký miễn phí</a>
-						<a href="courses.html" class="btn btn-outline btn-large"
-							style="background:transparent;color:#fff;border-color:rgba(255,255,255,0.6);">Xem Khóa
-							học</a>
-					</div>
-				</div>
-			</div>
-		</section>
 	</main>
 
 	<footer class="footer">
@@ -157,6 +120,10 @@
 		<div class="forum-modal">
 			<div class="forum-modal-header">
 				<h2 id="detail-title"></h2>
+				<button class="btn btn-outline topic-edit-btn" id="edit-topic" type="button" hidden>✏️
+					Sửa</button>
+				<button class="btn btn-outline topic-delete-btn" id="delete-topic" type="button" hidden>🗑
+					Xóa</button>
 				<button class="forum-modal-close" id="close-topic-detail">×</button>
 			</div>
 			<div class="forum-modal-body">
@@ -170,9 +137,48 @@
 					<!-- Comment Form -->
 					<div id="comment-form-area">
 						<div class="comment-form">
-							<textarea id="comment-input" placeholder="Viết bình luận của bạn..." rows="3"></textarea>
+							<div class="comment-fields">
+								<textarea id="comment-input" placeholder="Viết bình luận của bạn..."
+									rows="3"></textarea>
+								<div class="comment-tools">
+									<input type="file" id="comment-image-input" accept="image/*"
+										hidden>
+									<button class="btn btn-outline comment-attach-btn"
+										id="comment-attach-btn" type="button">🖼 Thêm ảnh</button>
+									<span class="comment-hint">Dán ảnh bằng Ctrl+V</span>
+								</div>
+								<div class="comment-image-preview" id="comment-image-preview" hidden>
+									<img id="comment-image-preview-img" alt="preview">
+									<button class="comment-image-remove" id="comment-image-remove"
+										type="button">×</button>
+								</div>
+							</div>
 							<button class="btn btn-primary" id="submit-comment">Gửi</button>
 						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- ===== EDIT TOPIC MODAL ===== -->
+	<div class="forum-modal-overlay" id="edit-topic-modal">
+		<div class="forum-modal">
+			<div class="forum-modal-header">
+				<h2>✏️ Chỉnh sửa chủ đề</h2>
+				<button class="forum-modal-close" id="close-edit-topic">×</button>
+			</div>
+			<div class="forum-modal-body">
+				<div class="new-topic-form">
+					<label for="edit-topic-title">Tiêu đề</label>
+					<input type="text" id="edit-topic-title" placeholder="Nhập tiêu đề chủ đề...">
+
+					<label for="edit-topic-content">Nội dung</label>
+					<textarea id="edit-topic-content" placeholder="Viết nội dung chi tiết..."></textarea>
+
+					<div class="form-actions">
+						<button class="btn btn-outline" id="cancel-edit-topic">Hủy</button>
+						<button class="btn btn-primary" id="submit-edit-topic">Lưu thay đổi</button>
 					</div>
 				</div>
 			</div>
@@ -205,11 +211,37 @@
 					<textarea id="new-topic-content" placeholder="Viết nội dung chi tiết..."></textarea>
 
 					<div class="form-actions">
-						<button class="btn btn-outline" id="cancel-new-topic" onclick="closeNewTopicModal()">Hủy</button>
+						<button class="btn btn-outline" id="cancel-new-topic"
+							onclick="closeNewTopicModal()">Hủy</button>
 						<button class="btn btn-primary" id="submit-new-topic">Đăng chủ đề</button>
 					</div>
 				</div>
 			</div>
+		</div>
+	</div>
+
+	<!-- ===== DELETE TOPIC CONFIRM MODAL ===== -->
+	<div class="forum-modal-overlay" id="delete-topic-modal">
+		<div class="forum-modal forum-modal--confirm">
+			<div class="forum-modal-header">
+				<h2>Xác nhận xóa chủ đề</h2>
+				<button class="forum-modal-close" id="close-delete-topic">×</button>
+			</div>
+			<div class="forum-modal-body">
+				<p>Bạn chắc chắn muốn xóa chủ đề này? Hành động này không thể hoàn tác.</p>
+				<div class="form-actions">
+					<button class="btn btn-outline" id="cancel-delete-topic">Hủy</button>
+					<button class="btn btn-danger" id="confirm-delete-topic">Xóa chủ đề</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- ===== IMAGE VIEWER ===== -->
+	<div class="forum-modal-overlay image-viewer" id="image-viewer">
+		<div class="image-viewer-body">
+			<button class="image-viewer-close" id="close-image-viewer">×</button>
+			<img id="image-viewer-img" alt="comment image preview">
 		</div>
 	</div>
 
