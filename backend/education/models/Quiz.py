@@ -12,9 +12,16 @@ class Quiz(models.Model):
         ('final', 'Thi cuối khóa'),
         ('practice', 'Luyện thi tự do'),
     )
+    STATUS_CHOICES = (
+        ('draft', 'Bản nháp'),
+        ('published', 'Đã đăng'),
+        ('hidden', 'Ẩn'),
+    )
     quiz_type = models.CharField(max_length=10, choices=TYPE_CHOICES, default='lesson')
     title = models.CharField(max_length=255)
     time_limit = models.PositiveIntegerField(default=30) # minutes
+    total_score = models.PositiveIntegerField(default=0)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='draft')
 
     lesson = models.OneToOneField(Lesson, on_delete=models.CASCADE, related_name='quiz', null=True, blank=True)
     chapter = models.OneToOneField(Chapter, on_delete=models.CASCADE, related_name='chapter_quiz', null=True, blank=True)

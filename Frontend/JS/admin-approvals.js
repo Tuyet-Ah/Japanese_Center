@@ -62,7 +62,7 @@ function formatUserCard(user) {
 async function deleteUser(userId) {
   const tokens = typeof getAuthTokens === "function" ? getAuthTokens() : null;
   if (!tokens || !tokens.access) {
-    alert("Cần đăng nhập admin.");
+    showAppToast("Cần đăng nhập admin.", "error");
     return false;
   }
 
@@ -76,7 +76,7 @@ async function deleteUser(userId) {
 
   if (!response.ok) {
     const data = await response.json().catch(() => ({}));
-    alert(data.error || "Không thể xóa tài khoản.");
+    showAppToast(data.error || "Không thể xóa tài khoản.", "error");
     return false;
   }
   return true;

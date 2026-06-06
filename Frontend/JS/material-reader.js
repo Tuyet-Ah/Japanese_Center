@@ -161,11 +161,58 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   const pdfUrl = doc.pdf_url || buildThumbnailUrl(doc.pdf_file);
-  if (contentNode && pdfUrl) {
-    const pdfInline = document.createElement("div");
-    pdfInline.className = "reader-pdf-inline";
-    pdfInline.innerHTML = `PDF: <a href="${pdfUrl}" target="_blank" rel="noopener">Mở tệp</a>`;
-    contentNode.prepend(pdfInline);
+  const exerciseUrl = doc.exercise_url || buildThumbnailUrl(doc.exercise_file);
+  
+  if (contentNode) {
+    const metaContainer = document.createElement("div");
+    metaContainer.style.marginBottom = "2rem";
+
+    if (pdfUrl) {
+      const pdfInline = document.createElement("div");
+      pdfInline.className = "reader-pdf-inline";
+      pdfInline.style.marginBottom = "1rem";
+      pdfInline.innerHTML = `<strong>PDF:</strong> <a href="${pdfUrl}" target="_blank" rel="noopener">Mở tệp</a>`;
+      metaContainer.appendChild(pdfInline);
+    }
+
+    if (exerciseUrl) {
+      const exInline = document.createElement("div");
+      exInline.style.marginBottom = "1rem";
+      exInline.innerHTML = `<strong>Bài tập luyện tập:</strong> <a href="${exerciseUrl}" target="_blank" rel="noopener">Tải xuống / Mở tệp</a>`;
+      metaContainer.appendChild(exInline);
+    }
+
+    if (doc.objective) {
+      const objSec = document.createElement("div");
+      objSec.style.marginBottom = "1.5rem";
+      objSec.innerHTML = `<h3 style="color: var(--primary); margin-bottom: 0.5rem;">Mục tiêu</h3>`;
+      doc.objective.split('\n').forEach(line => {
+        if (!line.trim()) return;
+        const p = document.createElement("p");
+        p.textContent = line;
+        p.style.marginBottom = "0.5rem";
+        objSec.appendChild(p);
+      });
+      metaContainer.appendChild(objSec);
+    }
+
+    if (doc.vocab_examples) {
+      const vocSec = document.createElement("div");
+      vocSec.style.marginBottom = "1.5rem";
+      vocSec.innerHTML = `<h3 style="color: var(--primary); margin-bottom: 0.5rem;">Ví dụ từ vựng</h3>`;
+      doc.vocab_examples.split('\n').forEach(line => {
+        if (!line.trim()) return;
+        const p = document.createElement("p");
+        p.textContent = line;
+        p.style.marginBottom = "0.5rem";
+        vocSec.appendChild(p);
+      });
+      metaContainer.appendChild(vocSec);
+    }
+
+    if (metaContainer.children.length > 0) {
+      contentNode.prepend(metaContainer);
+    }
   }
 
   if (doc.video_url && videoSection && videoPlayer && questionList && answerInput) {

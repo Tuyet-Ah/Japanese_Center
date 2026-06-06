@@ -217,7 +217,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (result && result.ok) {
           window.location.href = "cart.html";
         } else {
-          alert((result && result.error) || "Không thể thêm vào giỏ hàng.");
+          showAppToast((result && result.error) || "Không thể thêm vào giỏ hàng.", "error");
         }
       });
     }
@@ -225,7 +225,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const consultBtn = document.getElementById("consult");
     if (consultBtn) {
       consultBtn.addEventListener("click", () => {
-        alert("Vui long lien he trung tam de duoc tu van lo trinh phu hop.");
+        showAppToast("Vui lòng liên hệ trung tâm để được tư vấn lộ trình phù hợp.", "info");
       });
     }
   };

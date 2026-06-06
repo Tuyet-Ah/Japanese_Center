@@ -250,7 +250,7 @@ function seekToTimestamp(seconds) {
     return;
   }
 
-  alert('Video này không hỗ trợ tua theo ghi chú.');
+  showAppToast('Video này không hỗ trợ tua theo ghi chú.', 'warning');
 }
 
 function formatTimestamp(seconds) {
@@ -435,7 +435,7 @@ function renderLearningCourse(course, preferredLessonId) {
       `;
       item.addEventListener('click', () => {
         if (lesson.isLocked) {
-          alert('Bạn cần hoàn thành bài trước để mở khóa bài này.');
+          showAppToast('Bạn cần hoàn thành bài trước để mở khóa bài này.', 'warning');
           return;
         }
         loadLesson(lesson, item);
@@ -518,7 +518,7 @@ async function loadCourseLearningPage() {
 async function markLessonCompleted(lessonId) {
   const tokens = typeof getAuthTokens === 'function' ? getAuthTokens() : null;
   if (!tokens || !tokens.access) {
-    alert('Bạn cần đăng nhập để hoàn thành bài học.');
+    showAppToast('Bạn cần đăng nhập để hoàn thành bài học.', 'error');
     return false;
   }
 
@@ -532,7 +532,7 @@ async function markLessonCompleted(lessonId) {
 
   if (!response.ok) {
     const data = await response.json().catch(() => ({}));
-    alert(data.error || data.detail || 'Không thể cập nhật tiến độ.');
+    showAppToast(data.error || data.detail || 'Không thể cập nhật tiến độ.', 'error');
     return false;
   }
   return true;
@@ -558,11 +558,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     const area = document.querySelector('.notes-area');
     const content = area?.value?.trim();
     if (!content) {
-      alert('Vui lòng nhập ghi chú trước khi lưu.');
+      showAppToast('Vui lòng nhập ghi chú trước khi lưu.', 'warning');
       return;
     }
     if (!currentLearningLesson || !/^\d+$/.test(String(currentLearningLesson.id))) {
-      alert('Ghi chú chỉ khả dụng cho bài học từ hệ thống.');
+      showAppToast('Ghi chú chỉ khả dụng cho bài học từ hệ thống.', 'warning');
       return;
     }
     const timestamp = getCurrentVideoTime();
@@ -572,7 +572,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const notes = await fetchLessonNotes(Number(currentLearningLesson.id));
         renderLessonNotes(notes);
       })
-      .catch(() => alert('Không thể lưu ghi chú lúc này.'));
+      .catch(() => showAppToast('Không thể lưu ghi chú lúc này.', 'error'));
   });
 
   document.getElementById('completeLessonBtn')?.addEventListener('click', async () => {

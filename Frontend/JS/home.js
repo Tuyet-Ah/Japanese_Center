@@ -4,6 +4,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const adminHome = document.querySelector("[data-admin-home]");
   const studentHome = document.querySelector("[data-student-home]");
   const homeCta = document.querySelector("[data-home-cta]");
+  const homeCtaLink = document.querySelector("[data-home-cta-link]");
+  const homeHeroLink = document.querySelector("[data-home-hero-link]");
   const user = getLoginUser();
   const tokens = getAuthTokens();
   const isAdmin = Boolean(user && user.role === "admin" && tokens && tokens.access);
@@ -11,7 +13,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (adminHome) adminHome.hidden = !isAdmin;
   if (studentHome) studentHome.hidden = isAdmin;
-  if (homeCta) homeCta.hidden = isAuthenticated;
+  if (homeCta) homeCta.hidden = false;
+  if (homeCtaLink) {
+    if (isAuthenticated) {
+      homeCtaLink.href = "exams.html";
+      homeCtaLink.textContent = "Đề thi";
+    } else {
+      homeCtaLink.href = "register.html";
+      homeCtaLink.textContent = "Đăng ký miễn phí";
+    }
+  }
+
+  if (homeHeroLink) {
+    if (isAuthenticated) {
+      homeHeroLink.href = "exams.html";
+      homeHeroLink.textContent = "Đề thi";
+    } else {
+      homeHeroLink.href = "register.html";
+      homeHeroLink.textContent = "Đăng ký miễn phí";
+    }
+  }
 
   const track = document.getElementById("carouselTrack");
   const prevBtn = document.getElementById("prevBtn");

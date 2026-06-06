@@ -20,6 +20,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    alert("Email, mật khẩu hoặc mã admin không đúng!");
+    showAppToast("Email, mật khẩu hoặc mã admin không đúng!", "error");
   });
 });

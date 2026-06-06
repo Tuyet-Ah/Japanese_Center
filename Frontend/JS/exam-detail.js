@@ -7,65 +7,255 @@ let examStartTime = null;
 let timerInterval = null;
 let remainingSeconds = 0;
 
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function normalizeExamQuestion(question) {
+  const options = Array.isArray(question.options) ? question.options : [];
+  const answers = Array.isArray(question.answers) ? question.answers : [];
+
+  return {
+    id: Number(question.id),
+    questionNumber: Number(question.question_number || 0),
+    content: question.content || question.text || "",
+    questionType: question.question_type || (answers.length ? "FILL_IN_BLANK" : "MULTIPLE_CHOICE"),
+    points: Number(question.points || 1),
+    groupId: question.group || null,
+    options: options.map((option, index) => ({
+      id: option.id ?? `legacy-${index + 1}`,
+      content: option.content || "",
+      orderIndex: Number(option.order_index || index + 1),
+    })),
+    answers: answers.map((answer, index) => ({
+      id: answer.id ?? index + 1,
+      acceptable_text: answer.acceptable_text || "",
+      is_case_sensitive: Boolean(answer.is_case_sensitive),
+    })),
+    explainText: question.explain_text || question.explanation || "",
+    legacyOptions: [question.opt_a, question.opt_b, question.opt_c, question.opt_d].filter(Boolean),
+  };
+}
+
+function normalizeQuestionGroup(group) {
+  const questions = Array.isArray(group.questions) ? group.questions : [];
+  return {
+    id: Number(group.id),
+    instruction: group.instruction || "",
+    passageText: group.passage_text || "",
+    audioUrl: group.audio_url || "",
+    groupType: group.group_type || "other",
+    orderIndex: Number(group.order_index || 0),
+    questions: questions.map(normalizeExamQuestion),
+  };
+}
+
+function normalizeSection(section) {
+  const groups = Array.isArray(section.question_groups) ? section.question_groups : [];
+  return {
+    id: Number(section.id),
+    name: section.name || "Phần thi",
+    maxScore: Number(section.max_score || 0),
+    orderIndex: Number(section.order_index || 0),
+    questionGroups: groups.map(normalizeQuestionGroup),
+  };
+}
+
+function flattenQuestionsFromSections(sections) {
+  const flat = [];
+  sections.forEach((section) => {
+    section.questionGroups.forEach((group) => {
+      group.questions.forEach((question) => {
+        flat.push({
+          ...question,
+          sectionId: section.id,
+          sectionName: section.name,
+          groupInstruction: group.instruction,
+          passageText: group.passageText,
+          audioUrl: group.audioUrl,
+          groupType: group.groupType,
+        });
+      });
+    });
+  });
+  return flat.sort((left, right) => {
+    const leftNumber = left.questionNumber || 0;
+    const rightNumber = right.questionNumber || 0;
+    return leftNumber - rightNumber || left.id - right.id;
+  });
+}
+
+function buildLegacyQuestions(questions) {
+  return questions.map((question, index) => {
+    const normalized = normalizeExamQuestion(question);
+    return {
+      ...normalized,
+      questionNumber: normalized.questionNumber || index + 1,
+      sectionId: null,
+      sectionName: "Đề thi",
+      groupInstruction: "",
+      passageText: "",
+      audioUrl: "",
+      groupType: "other",
+    };
+  });
+}
+
 function buildExamFromApi(quiz) {
-  const questions = Array.isArray(quiz.questions) ? quiz.questions : [];
-  const questionCount = questions.length;
-  const levelLabel = quiz.level ? `JLPT ${quiz.level}` : "JLPT";
+  const sections = Array.isArray(quiz.sections) ? quiz.sections.map(normalizeSection) : [];
+  const fallbackQuestions = Array.isArray(quiz.questions) ? buildLegacyQuestions(quiz.questions) : [];
+  const questions = sections.length ? flattenQuestionsFromSections(sections) : fallbackQuestions;
+  const totalScore = Number(quiz.total_score || 0) || Math.max(questions.reduce((sum, question) => sum + Number(question.points || 1), 0), questions.length);
 
   return {
     id: quiz.id,
     title: quiz.title,
-    level: levelLabel,
+    level: quiz.level ? `JLPT ${quiz.level}` : "JLPT",
     subtitle: quiz.quiz_type === "practice" ? "Đề thi luyện tập" : "Bài kiểm tra",
     duration: `${quiz.time_limit} phút`,
-    questionCount: `${questionCount} câu hỏi`,
-    points: `${questionCount * 10} điểm`,
-    tip: "Đọc kỹ câu hỏi, loại trừ đáp án sai trước khi chọn đáp án đúng.",
-    intro: "Bài thi gồm các câu hỏi trắc nghiệm. Hãy tập trung vào từng câu và kiểm tra lại trước khi nộp bài.",
-    questions: questions.map((question) => ({
-      id: question.id,
-      text: question.text,
-      options: [question.opt_a, question.opt_b, question.opt_c, question.opt_d]
-    }))
+    questionCount: `${questions.length} câu hỏi`,
+    points: `${totalScore} điểm`,
+    tip: "Đọc kỹ yêu cầu từng nhóm câu hỏi, rồi chọn hoặc nhập đáp án phù hợp.",
+    intro: "Bài thi gồm câu trắc nghiệm và câu điền từ. Một số đoạn văn hoặc audio dùng chung cho nhiều câu trong cùng nhóm.",
+    sections,
+    questions,
   };
 }
 
-async function loadExamFromApi() {
-  const examId = new URLSearchParams(window.location.search).get("exam");
-  if (!examId) return null;
-
-  const tokens = typeof getAuthTokens === "function" ? getAuthTokens() : null;
-  if (!tokens || !tokens.access) return null;
-
-  const response = await fetch(`${API_BASE_URL}/quizzes/${examId}/`, {
-    headers: { Authorization: `Bearer ${tokens.access}` }
-  });
-
-  if (!response.ok) return null;
-  const data = await response.json();
-  return buildExamFromApi(data);
+function getQuestionSelection(questionId) {
+  return selectedAnswers.get(questionId) || {};
 }
 
-function getReviewParams() {
-  const params = new URLSearchParams(window.location.search);
-  const review = params.get("review") === "1";
-  const submissionId = params.get("submission");
-  return { review, submissionId };
+function hasSelection(answer) {
+  if (!answer) return false;
+  const choice = String(answer.choice_id || answer.choice || "").trim();
+  const text = String(answer.text || answer.selected_text || "").trim();
+  return Boolean(choice || text);
 }
 
-function getStoredSubmission(submissionId) {
-  if (!submissionId) return null;
-  try {
-    const raw = localStorage.getItem(`quizSubmission:${submissionId}`);
-    return raw ? JSON.parse(raw) : null;
-  } catch {
-    return null;
+function setQuestionSelection(questionId, answer) {
+  if (hasSelection(answer)) {
+    selectedAnswers.set(questionId, answer);
+  } else {
+    selectedAnswers.delete(questionId);
   }
+  updateProgress();
+  updateNavState();
+}
+
+function getQuestionIndex(questionId) {
+  if (!currentExam) return -1;
+  return currentExam.questions.findIndex((question) => Number(question.id) === Number(questionId));
+}
+
+function getQuestionLabel(questionId) {
+  const index = getQuestionIndex(questionId);
+  return index >= 0 ? index + 1 : questionId;
+}
+
+function renderQuestionOption(question, option, optionIndex, selectedChoiceId) {
+  const optionId = String(option.id);
+  const checked = selectedChoiceId && String(selectedChoiceId) === optionId ? "checked" : "";
+  const letter = String.fromCharCode(65 + optionIndex);
+  return `
+    <label class="option-item" data-option-id="${escapeHtml(optionId)}">
+      <input type="radio" name="question-${question.id}" value="${escapeHtml(optionId)}" data-answer-choice ${checked}>
+      <span>${letter}. ${escapeHtml(option.content)}</span>
+    </label>
+  `;
+}
+
+function renderQuestionCard(question) {
+  const selected = getQuestionSelection(question.id);
+  const selectedChoiceId = selected.choice_id || selected.choice || selected.selected_choice || "";
+  const selectedText = selected.text || selected.selected_text || "";
+  const isFillBlank = question.questionType === "FILL_IN_BLANK";
+
+  return `
+    <article class="question-card" id="question-${question.id}" data-question-id="${question.id}" data-question-type="${escapeHtml(question.questionType)}">
+      <div class="question-head">
+        <div class="question-number">Câu ${getQuestionLabel(question.id)}</div>
+        <div class="question-actions">
+          <button type="button" class="review-toggle ${flaggedQuestions.has(question.id) ? "active" : ""}" data-flag-btn="${question.id}">${flaggedQuestions.has(question.id) ? "Bỏ đánh dấu" : "Đánh dấu phân vân"}</button>
+        </div>
+      </div>
+      <div class="question-text">${escapeHtml(question.content)}</div>
+      ${isFillBlank ? `
+        <div class="fib-answer-wrap">
+          <input type="text" class="fib-answer-input" data-answer-text data-question-id="${question.id}" value="${escapeHtml(selectedText)}" placeholder="Nhập đáp án của bạn">
+        </div>
+      ` : `
+        <div class="option-list">
+          ${(question.options.length ? question.options : question.legacyOptions.map((content, index) => ({ id: String.fromCharCode(65 + index), content })))
+            .map((option, index) => renderQuestionOption(question, option, index, selectedChoiceId))
+            .join("")}
+        </div>
+      `}
+    </article>
+  `;
+}
+
+function renderQuestionGroup(group) {
+  const passageHtml = group.passageText
+    ? `<div class="passage-box">${escapeHtml(group.passageText).replace(/\n/g, "<br>")}</div>`
+    : "";
+  const audioHtml = group.audioUrl
+    ? `<div class="group-audio"><audio controls src="${escapeHtml(group.audioUrl)}"></audio></div>`
+    : "";
+
+  return `
+    <section class="question-group">
+      <div class="question-group-header">
+        <div>
+          <h3>${escapeHtml(group.instruction)}</h3>
+          <span class="group-tag">${escapeHtml(group.groupType)}</span>
+        </div>
+      </div>
+      ${passageHtml}
+      ${audioHtml}
+      <div class="question-stack">
+        ${group.questions.map((question) => renderQuestionCard(question)).join("")}
+      </div>
+    </section>
+  `;
+}
+
+function renderSection(section) {
+  return `
+    <section class="exam-section">
+      <div class="exam-section-header">
+        <h2>${escapeHtml(section.name)}</h2>
+        <span>${section.maxScore ? `${section.maxScore} điểm` : ""}</span>
+      </div>
+      ${section.questionGroups.map((group) => renderQuestionGroup(group)).join("")}
+    </section>
+  `;
+}
+
+function renderFallbackSection() {
+  if (!currentExam) return "";
+  return `
+    <section class="exam-section">
+      <div class="exam-section-header">
+        <h2>Đề thi</h2>
+        <span>${currentExam.questions.length ? `${currentExam.questions.length} câu` : ""}</span>
+      </div>
+      <div class="question-stack">
+        ${currentExam.questions.map((question) => renderQuestionCard(question)).join("")}
+      </div>
+    </section>
+  `;
 }
 
 function renderExam() {
   const exam = currentExam;
   if (!exam) return;
+
   const levelTag = document.getElementById("examLevelTag");
   const title = document.getElementById("examTitle");
   const subtitle = document.getElementById("examSubtitle");
@@ -74,6 +264,8 @@ function renderExam() {
   const points = document.getElementById("examPoints");
   const intro = document.getElementById("examIntro");
   const tip = document.getElementById("examTip");
+  const questionList = document.getElementById("questionList");
+  const questionNav = document.getElementById("questionNav");
 
   if (levelTag) levelTag.textContent = exam.level;
   if (title) title.textContent = exam.title;
@@ -84,57 +276,31 @@ function renderExam() {
   if (intro) intro.textContent = exam.intro;
   if (tip) tip.textContent = exam.tip;
 
-  const questionList = document.getElementById("questionList");
   if (questionList) {
-    questionList.innerHTML = exam.questions
-      .map(
-        (question, index) => `
-          <article class="question-card" id="question-${index}">
-            <div class="question-head">
-              <div class="question-number">Câu ${index + 1}</div>
-              <div class="question-actions">
-                <button type="button" class="review-toggle" data-flag-btn="${index}">Đánh dấu phân vân</button>
-              </div>
-            </div>
-            <div class="question-text">${question.text}</div>
-            <div class="option-list">
-              ${question.options
-            .map(
-              (option, optionIndex) => {
-                const letter = String.fromCharCode(65 + optionIndex);
-                return `
-                    <label class="option-item" data-question-id="${question.id}" data-option-letter="${letter}">
-                      <input type="radio" name="question-${question.id}" value="${letter}">
-                      <span>${letter}. ${option}</span>
-                    </label>
-                  `;
-              }
-            )
-            .join("")}
-            </div>
-          </article>
-        `
-      )
-      .join("");
+    questionList.innerHTML = exam.sections.length ? exam.sections.map(renderSection).join("") : renderFallbackSection();
   }
 
-  const questionNav = document.getElementById("questionNav");
   if (questionNav) {
-    questionNav.innerHTML = exam.questions.map((_, index) => `<button type="button" data-jump="${index}">${index + 1}</button>`).join("");
+    questionNav.innerHTML = exam.questions
+      .map((question, index) => `<button type="button" data-jump-question-id="${question.id}">${question.questionNumber || index + 1}</button>`)
+      .join("");
   }
 
   bindExamEvents();
   updateFlagUI();
   updateProgress();
-  examStartTime = Date.now();
-  startTimer();
+  updateNavState();
+
+  if (!isSubmitted && !reviewSubmissionId && !timerInterval) {
+    examStartTime = Date.now();
+    startTimer();
+  }
 }
 
 function startTimer() {
   if (isSubmitted || reviewSubmissionId) return;
   if (!currentExam || !currentExam.duration) return;
 
-  // Parse duration from "20 phút" format to get minutes
   const match = currentExam.duration.match(/(\d+)/);
   if (!match) return;
 
@@ -154,6 +320,7 @@ function startTimer() {
 
     if (remainingSeconds <= 0) {
       clearInterval(timerInterval);
+      timerInterval = null;
       autoSubmitExam();
     }
   }, 1000);
@@ -165,11 +332,8 @@ function updateTimerDisplay() {
 
   const minutes = Math.floor(remainingSeconds / 60);
   const seconds = remainingSeconds % 60;
-  const timeStr = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+  timerElement.textContent = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 
-  timerElement.textContent = timeStr;
-
-  // Update warning/danger states
   timerElement.classList.remove("warning", "danger");
   if (remainingSeconds <= 60) {
     timerElement.classList.add("danger");
@@ -184,34 +348,49 @@ async function autoSubmitExam() {
 }
 
 function bindExamEvents() {
-  document.querySelectorAll("[data-flag-btn]").forEach((button) => {
+  const questionList = document.getElementById("questionList");
+  if (!questionList) return;
+
+  questionList.querySelectorAll("[data-flag-btn]").forEach((button) => {
     button.addEventListener("click", () => {
       if (isSubmitted) return;
-      const index = Number(button.getAttribute("data-flag-btn"));
-      if (flaggedQuestions.has(index)) {
-        flaggedQuestions.delete(index);
+      const questionId = Number(button.getAttribute("data-flag-btn"));
+      if (flaggedQuestions.has(questionId)) {
+        flaggedQuestions.delete(questionId);
       } else {
-        flaggedQuestions.add(index);
+        flaggedQuestions.add(questionId);
       }
       updateFlagUI();
     });
   });
 
-  document.querySelectorAll('.question-card input[type="radio"]').forEach((input) => {
+  questionList.querySelectorAll('input[data-answer-choice]').forEach((input) => {
     input.addEventListener("change", () => {
       if (isSubmitted) return;
       const questionId = Number(input.name.replace("question-", ""));
-      const answer = input.value;
-      selectedAnswers.set(questionId, answer);
-      updateProgress();
-      updateNavState();
+      setQuestionSelection(questionId, {
+        type: "MULTIPLE_CHOICE",
+        choice_id: String(input.value),
+      });
     });
   });
 
-  document.querySelectorAll("[data-jump]").forEach((button) => {
+  questionList.querySelectorAll("input[data-answer-text]").forEach((input) => {
+    input.addEventListener("input", () => {
+      if (isSubmitted) return;
+      const questionId = Number(input.getAttribute("data-question-id"));
+      setQuestionSelection(questionId, {
+        type: "FILL_IN_BLANK",
+        text: input.value,
+      });
+    });
+  });
+
+  const questionNav = document.getElementById("questionNav");
+  questionNav?.querySelectorAll("[data-jump-question-id]").forEach((button) => {
     button.addEventListener("click", () => {
-      const index = Number(button.getAttribute("data-jump"));
-      document.getElementById(`question-${index}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      const questionId = Number(button.getAttribute("data-jump-question-id"));
+      document.getElementById(`question-${questionId}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   });
 
@@ -234,44 +413,44 @@ function updateFlagUI() {
       flagList.innerHTML = '<span class="flag-chip">Chưa có câu nào</span>';
     } else {
       flagList.innerHTML = Array.from(flaggedQuestions)
-        .sort((a, b) => a - b)
-        .map((index) => `<button type="button" class="flag-chip" data-flag-jump="${index}">Câu ${index + 1}</button>`)
+        .map((questionId) => {
+          const label = getQuestionLabel(questionId);
+          return `<button type="button" class="flag-chip" data-flag-jump="${questionId}">Câu ${label}</button>`;
+        })
         .join("");
 
-      document.querySelectorAll("[data-flag-jump]").forEach((button) => {
+      flagList.querySelectorAll("[data-flag-jump]").forEach((button) => {
         button.addEventListener("click", () => {
-          const index = Number(button.getAttribute("data-flag-jump"));
-          document.getElementById(`question-${index}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+          const questionId = Number(button.getAttribute("data-flag-jump"));
+          document.getElementById(`question-${questionId}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
         });
       });
     }
   }
 
   document.querySelectorAll("[data-flag-btn]").forEach((button) => {
-    const index = Number(button.getAttribute("data-flag-btn"));
-    const active = flaggedQuestions.has(index);
+    const questionId = Number(button.getAttribute("data-flag-btn"));
+    const active = flaggedQuestions.has(questionId);
     button.classList.toggle("active", active);
     button.textContent = active ? "Bỏ đánh dấu" : "Đánh dấu phân vân";
-    document.getElementById(`question-${index}`)?.classList.toggle("flagged", active);
+    document.getElementById(`question-${questionId}`)?.classList.toggle("flagged", active);
   });
-
-  updateNavState();
 }
 
 function updateProgress() {
   const progressText = document.getElementById("examProgressText");
-  if (progressText && currentExam) {
-    progressText.textContent = `${selectedAnswers.size} / ${currentExam.questions.length} câu đã chọn`;
-  }
+  if (!progressText || !currentExam) return;
+
+  const answeredCount = Array.from(selectedAnswers.values()).filter(hasSelection).length;
+  progressText.textContent = `${answeredCount} / ${currentExam.questions.length} câu đã chọn`;
 }
 
 function updateNavState() {
-  document.querySelectorAll("[data-jump]").forEach((button) => {
-    const index = Number(button.getAttribute("data-jump"));
-    const questionId = currentExam ? currentExam.questions[index]?.id : null;
-    const answered = questionId ? selectedAnswers.has(questionId) : false;
+  document.querySelectorAll("[data-jump-question-id]").forEach((button) => {
+    const questionId = Number(button.getAttribute("data-jump-question-id"));
+    const answered = selectedAnswers.has(questionId);
     button.classList.toggle("active", answered);
-    button.classList.toggle("flagged", flaggedQuestions.has(index));
+    button.classList.toggle("flagged", flaggedQuestions.has(questionId));
   });
 }
 
@@ -291,7 +470,6 @@ function ensureBackButtonTop() {
 async function submitExam() {
   if (!currentExam) return;
 
-  // Clear timer
   if (timerInterval) {
     clearInterval(timerInterval);
     timerInterval = null;
@@ -304,18 +482,21 @@ async function submitExam() {
   }
 
   const durationSeconds = examStartTime ? Math.round((Date.now() - examStartTime) / 1000) : 0;
-  const answers = Array.from(selectedAnswers.entries()).map(([questionId, choice]) => ({
-    question_id: questionId,
-    choice
-  }));
+  const answers = Array.from(selectedAnswers.entries())
+    .filter(([, answer]) => hasSelection(answer))
+    .map(([questionId, answer]) => ({
+      question_id: questionId,
+      choice: answer.choice_id || answer.choice || "",
+      text: answer.text || answer.selected_text || "",
+    }));
 
   const response = await fetch(`${API_BASE_URL}/quizzes/${currentExam.id}/submit/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${tokens.access}`
+      Authorization: `Bearer ${tokens.access}`,
     },
-    body: JSON.stringify({ answers, duration_seconds: durationSeconds })
+    body: JSON.stringify({ answers, duration_seconds: durationSeconds }),
   });
 
   const data = await response.json().catch(() => ({}));
@@ -325,23 +506,23 @@ async function submitExam() {
   }
 
   isSubmitted = true;
-  storeSubmission(data);
+  storeSubmission(data, answers);
   renderResultBar(data);
-  applyAnswerHighlights(data.details || []);
+  applyAnswerHighlights(Array.isArray(data.details) ? data.details : []);
   lockExamInputs();
 }
 
-function storeSubmission(result) {
+function storeSubmission(result, answers) {
   if (!result || !result.submission_id) return;
-  const answers = Array.from(selectedAnswers.entries()).map(([questionId, choice]) => ({
-    question_id: questionId,
-    choice
-  }));
 
   const payload = {
     quiz_id: currentExam ? currentExam.id : null,
     result,
-    answers
+    answers: answers || Array.from(selectedAnswers.entries()).map(([questionId, answer]) => ({
+      question_id: questionId,
+      choice: answer.choice_id || answer.choice || "",
+      text: answer.text || answer.selected_text || "",
+    })),
   };
 
   try {
@@ -363,10 +544,11 @@ function renderResultBar(result) {
     toolbar.insertAdjacentElement("afterend", bar);
   }
 
+  const totalValue = result.total ?? result.total_questions ?? 0;
   const durationText = result.duration_seconds ? `${Math.round(result.duration_seconds / 60)} phút` : "";
   bar.innerHTML = `
     <div><strong>Điểm số:</strong> ${result.score}</div>
-    <div><strong>Đúng:</strong> ${result.correct_count} / ${result.total}</div>
+    <div><strong>Đúng:</strong> ${result.correct_count} / ${totalValue}</div>
     ${durationText ? `<div><strong>Thời gian:</strong> ${durationText}</div>` : ""}
   `;
   bar.classList.remove("exam-result-error");
@@ -388,39 +570,14 @@ function renderSubmitMessage(message, type = "error") {
   bar.classList.toggle("exam-result-error", type === "error");
 }
 
-function applyAnswerHighlights(details) {
-  const detailMap = new Map(details.map((item) => [item.question_id, item]));
-
-  document.querySelectorAll(".question-card").forEach((card) => {
-    const index = Number(card.id.replace("question-", ""));
-    const question = currentExam ? currentExam.questions[index] : null;
-    if (!question) return;
-
-    const detail = detailMap.get(question.id);
-    const correctLetter = detail ? detail.correct_answer : null;
-    const selectedLetter = selectedAnswers.get(question.id);
-
-    card.querySelectorAll(".option-item").forEach((option) => {
-      const letter = option.getAttribute("data-option-letter");
-      option.classList.remove("is-correct", "is-wrong");
-
-      if (correctLetter && letter === correctLetter) {
-        option.classList.add("is-correct");
-      }
-
-      if (selectedLetter && selectedLetter === letter && selectedLetter !== correctLetter) {
-        option.classList.add("is-wrong");
-      }
-    });
-
-    renderExplanation(card, detail?.explanation);
-  });
-}
-
-function renderExplanation(card, explanation) {
+function renderExplanation(card, explanation, correctSummary) {
   if (!card) return;
   let block = card.querySelector(".answer-explanation");
-  if (!explanation) {
+  const parts = [];
+  if (correctSummary) parts.push(correctSummary);
+  if (explanation) parts.push(`Giải thích: ${explanation}`);
+
+  if (!parts.length) {
     if (block) block.remove();
     return;
   }
@@ -430,11 +587,67 @@ function renderExplanation(card, explanation) {
     block.className = "answer-explanation";
     card.appendChild(block);
   }
-  block.textContent = `Giải thích: ${explanation}`;
+  block.textContent = parts.join(" • ");
+}
+
+function applyAnswerHighlights(details) {
+  const detailMap = new Map(details.map((item) => [Number(item.question_id), item]));
+
+  document.querySelectorAll(".question-card").forEach((card) => {
+    const questionId = Number(card.getAttribute("data-question-id"));
+    const question = currentExam ? currentExam.questions.find((item) => Number(item.id) === questionId) : null;
+    if (!question) return;
+
+    const detail = detailMap.get(questionId);
+    if (!detail) return;
+
+    if (question.questionType === "MULTIPLE_CHOICE") {
+      const correctChoiceId = detail.correct_answer && typeof detail.correct_answer === "object"
+        ? String(detail.correct_answer.choice_id || "")
+        : String(detail.correct_answer || "");
+      const selectedChoiceId = String(detail.selected_choice || getQuestionSelection(questionId).choice_id || getQuestionSelection(questionId).choice || "");
+
+      card.querySelectorAll("[data-option-id]").forEach((option) => {
+        const optionId = String(option.getAttribute("data-option-id") || "");
+        option.classList.remove("is-correct", "is-wrong");
+
+        if (correctChoiceId && optionId === correctChoiceId) {
+          option.classList.add("is-correct");
+        }
+
+        if (selectedChoiceId && selectedChoiceId === optionId && selectedChoiceId !== correctChoiceId) {
+          option.classList.add("is-wrong");
+        }
+      });
+
+      const correctSummary = detail.correct_answer && typeof detail.correct_answer === "object" && detail.correct_answer.content
+        ? `Đáp án đúng: ${detail.correct_answer.content}`
+        : correctChoiceId
+          ? `Đáp án đúng: ${correctChoiceId}`
+          : "";
+      renderExplanation(card, detail.explain_text || detail.explanation || question.explainText || "", correctSummary);
+      return;
+    }
+
+    const input = card.querySelector("[data-answer-text]");
+    if (input) {
+      input.classList.remove("is-correct", "is-wrong");
+      input.classList.toggle("is-correct", Boolean(detail.is_correct));
+      input.classList.toggle("is-wrong", !detail.is_correct && Boolean((detail.selected_text || "").trim()));
+    }
+
+    const correctSummary = Array.isArray(detail.correct_texts) && detail.correct_texts.length
+      ? `Đáp án chấp nhận: ${detail.correct_texts.map((item) => item.acceptable_text).join(", ")}`
+      : "";
+    renderExplanation(card, detail.explain_text || detail.explanation || question.explainText || "", correctSummary);
+  });
 }
 
 function lockExamInputs() {
-  document.querySelectorAll('.question-card input[type="radio"]').forEach((input) => {
+  document.querySelectorAll('input[type="radio"][data-answer-choice]').forEach((input) => {
+    input.disabled = true;
+  });
+  document.querySelectorAll('[data-answer-text]').forEach((input) => {
     input.disabled = true;
   });
   document.querySelectorAll("[data-flag-btn]").forEach((button) => {
@@ -461,24 +674,26 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     currentExam = exam;
-    renderExam();
 
     if (reviewParams.review && reviewSubmissionId) {
       const stored = getStoredSubmission(reviewSubmissionId);
       if (stored && stored.result) {
         isSubmitted = true;
-        renderResultBar(stored.result);
-
-        const detailList = Array.isArray(stored.result.details) ? stored.result.details : [];
         if (Array.isArray(stored.answers)) {
           stored.answers.forEach((answer) => {
-            selectedAnswers.set(answer.question_id, answer.choice);
+            if (answer.choice || answer.text) {
+              selectedAnswers.set(answer.question_id, {
+                choice_id: answer.choice || "",
+                text: answer.text || "",
+              });
+            }
           });
         }
-        applyAnswerHighlights(detailList);
+        renderExam();
+        renderResultBar(stored.result);
+        applyAnswerHighlights(Array.isArray(stored.result.details) ? stored.result.details : []);
         lockExamInputs();
 
-        // Hide timer in review mode
         const timerContainer = document.getElementById("timerContainer");
         const examDurationStatic = document.getElementById("examDurationStatic");
         if (timerContainer) timerContainer.style.display = "none";
@@ -487,11 +702,13 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       fetchSubmissionDetail(reviewSubmissionId);
+      return;
     }
+
+    renderExam();
   });
 
   document.getElementById("backToExamsBtn")?.addEventListener("click", () => {
-    // Clear timer on back
     if (timerInterval) {
       clearInterval(timerInterval);
       timerInterval = null;
@@ -506,31 +723,44 @@ async function fetchSubmissionDetail(submissionId) {
   if (!tokens || !tokens.access) return;
 
   const response = await fetch(`${API_BASE_URL}/quiz-submissions/${submissionId}/`, {
-    headers: { Authorization: `Bearer ${tokens.access}` }
+    headers: { Authorization: `Bearer ${tokens.access}` },
   });
   if (!response.ok) return;
+
   const data = await response.json();
   if (!data || !Array.isArray(data.answers)) return;
 
+  selectedAnswers.clear();
   data.answers.forEach((answer) => {
-    if (answer.question_id && answer.selected_choice) {
-      selectedAnswers.set(answer.question_id, answer.selected_choice);
-    }
+    if (!answer.question_id) return;
+    selectedAnswers.set(Number(answer.question_id), {
+      choice_id: answer.selected_choice || "",
+      text: answer.selected_text || "",
+    });
   });
 
-  const details = data.answers.map((answer) => ({
-    question_id: answer.question_id,
-    correct_answer: answer.correct,
-    explanation: answer.explanation
-  }));
-
   isSubmitted = true;
+  renderExam();
   renderResultBar({
     score: data.score,
     correct_count: data.correct_count,
     total: data.total_questions,
-    duration_seconds: data.duration_seconds
+    duration_seconds: data.duration_seconds,
   });
-  applyAnswerHighlights(details);
+  applyAnswerHighlights(data.answers.map((answer) => ({
+    question_id: answer.question_id,
+    question_type: answer.question_type,
+    selected_choice: answer.selected_choice,
+    selected_text: answer.selected_text,
+    correct_answer: answer.correct_answer,
+    correct_texts: answer.correct_texts,
+    is_correct: answer.is_correct,
+    explain_text: answer.explain_text,
+  })));
   lockExamInputs();
+
+  const timerContainer = document.getElementById("timerContainer");
+  const examDurationStatic = document.getElementById("examDurationStatic");
+  if (timerContainer) timerContainer.style.display = "none";
+  if (examDurationStatic) examDurationStatic.style.display = "inline-block";
 }

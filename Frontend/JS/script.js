@@ -11,6 +11,94 @@ const CHATBOT_API_URL = `${API_BASE_URL}/chatbot/`;
 
 let courseCatalog = {};
 
+let globalToastTimer = null;
+
+function ensureGlobalToast() {
+  let toast = document.getElementById("globalToast");
+  if (toast) return toast;
+
+  const styleId = "globalToastStyles";
+  if (!document.getElementById(styleId)) {
+    const style = document.createElement("style");
+    style.id = styleId;
+    style.textContent = `
+      #globalToast {
+        position: fixed;
+        right: 24px;
+        top: 96px;
+        z-index: 9999;
+        min-width: 240px;
+        max-width: min(380px, calc(100vw - 48px));
+        padding: 14px 18px;
+        border-radius: 16px;
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18);
+        border: 1px solid transparent;
+        background: rgba(255, 255, 255, 0.98);
+        color: #0f172a;
+        font-weight: 700;
+        line-height: 1.5;
+        opacity: 0;
+        transform: translateY(-10px);
+        pointer-events: none;
+        transition: opacity 0.22s ease, transform 0.22s ease;
+        white-space: pre-line;
+      }
+      #globalToast.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      #globalToast[data-type="success"] {
+        background: linear-gradient(135deg, #ecfdf5, #f0fdf4);
+        border-color: rgba(34, 197, 94, 0.24);
+        color: #166534;
+      }
+      #globalToast[data-type="error"] {
+        background: linear-gradient(135deg, #fff1f2, #ffe4e6);
+        border-color: rgba(244, 63, 94, 0.24);
+        color: #9f1239;
+      }
+      #globalToast[data-type="warning"] {
+        background: linear-gradient(135deg, #fffbeb, #fef3c7);
+        border-color: rgba(245, 158, 11, 0.24);
+        color: #92400e;
+      }
+      #globalToast[data-type="info"] {
+        background: linear-gradient(135deg, #eff6ff, #dbeafe);
+        border-color: rgba(59, 130, 246, 0.24);
+        color: #1d4ed8;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  toast = document.createElement("div");
+  toast.id = "globalToast";
+  toast.setAttribute("role", "status");
+  toast.setAttribute("aria-live", "polite");
+  document.body.appendChild(toast);
+  return toast;
+}
+
+function showAppToast(message, type = "info") {
+  if (typeof document === "undefined") return;
+  const toast = ensureGlobalToast();
+  if (!toast) return;
+
+  toast.textContent = message;
+  toast.dataset.type = type;
+  toast.classList.add("is-visible");
+
+  if (globalToastTimer) {
+    clearTimeout(globalToastTimer);
+  }
+
+  globalToastTimer = setTimeout(() => {
+    toast.classList.remove("is-visible");
+  }, 2600);
+}
+
+window.showAppToast = showAppToast;
+
 function getLoginUser() {
   try {
     return JSON.parse(authStorage.getItem(loginKey)) || null;
@@ -97,6 +185,7 @@ function updateUIBasedOnLogin() {
   const profileLink = document.querySelector("[data-profile-link]");
   const cartLink = document.querySelector("[data-cart-link]");
   const homeCta = document.querySelector("[data-home-cta]");
+  const homeCtaLink = document.querySelector("[data-home-cta-link]");
 
   if (isAuthenticated) {
     if (authActions) authActions.style.display = "none";
@@ -113,7 +202,16 @@ function updateUIBasedOnLogin() {
     if (cartLink) cartLink.hidden = true;
   }
 
-  if (homeCta) homeCta.hidden = isAuthenticated;
+  if (homeCta) homeCta.hidden = false;
+  if (homeCtaLink) {
+    if (isAuthenticated) {
+      homeCtaLink.href = "forum.html";
+      homeCtaLink.textContent = "Thảo luận";
+    } else {
+      homeCtaLink.href = "register.html";
+      homeCtaLink.textContent = "Đăng ký miễn phí";
+    }
+  }
 
   updateCartCount();
 }
@@ -444,7 +542,7 @@ async function renderCourses(options = {}) {
         button.textContent = "Đã thêm";
         updateCartCount();
       } else {
-        alert(result.error || "Không thể thêm vào giỏ hàng.");
+        showAppToast(result.error || "Không thể thêm vào giỏ hàng.", "error");
         button.disabled = false;
       }
     });
@@ -958,6 +1056,11 @@ function initAdminShell() {
   const username = document.getElementById("adminUsername");
   if (username) {
     username.textContent = admin.name;
+  }
+
+  const displayNameEl = document.getElementById("adminDisplayName");
+  if (displayNameEl) {
+    displayNameEl.textContent = admin.name || "Admin";
   }
 
   initAdminNav();

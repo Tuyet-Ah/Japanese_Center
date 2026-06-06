@@ -102,6 +102,13 @@ class ReplyToTopicView(APIView):
     
 class GetReplyTopicView(APIView):
     def get(self,request,topic_id):
+        try:
+            topic = ForumTopic.objects.get(id=topic_id)
+            topic.views += 1
+            topic.save(update_fields=['views'])
+        except ForumTopic.DoesNotExist:
+            pass
+            
         responses = InteractionService.get_replyTopic(topic_id)
         serializer = ForumResponseSerializer(responses, many=True)
         return Response(serializer.data)

@@ -21,12 +21,12 @@ let pendingEditTopicId = null;
 let pendingCommentImage = null;
 
 function mapUiCategoryToBackend(value) {
-      if (["grammar", "kanji", "jlpt", "other"].includes(value)) return value;
+      if (Object.prototype.hasOwnProperty.call(CATEGORIES, value)) return value;
       return "other";
 }
 
 function mapBackendCategoryToUi(value) {
-      if (value === "grammar" || value === "kanji" || value === "jlpt" || value === "other") return value;
+      if (Object.prototype.hasOwnProperty.call(CATEGORIES, value)) return value;
       return "other";
 }
 
@@ -158,8 +158,9 @@ function normalizeTopic(topic) {
             content: topic.content || "",
             author,
             authorInit,
+            avatar: topic.avatar || null,
             replies: Number(topic.response_count || 0),
-            views: 0,
+            views: Number(topic.views || 0),
             createdAt: topic.created_at
       };
 }
@@ -221,11 +222,14 @@ function renderTopics() {
       tbody.innerHTML = topics
             .map((topic) => {
                   const cat = CATEGORIES[topic.category] || CATEGORIES.other;
+                  const avatarHtml = topic.avatar
+                        ? `<img src="${buildMediaUrl(topic.avatar)}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`
+                        : `${escapeHtml(topic.authorInit)}`;
                   return `
       <tr data-topic-id="${topic.id}">
         <td>
           <div class="topic-cell">
-            <div class="topic-avatar" style="${getAvatarGradient(topic.authorInit)}">${escapeHtml(topic.authorInit)}</div>
+            <div class="topic-avatar" style="${topic.avatar ? 'background:transparent;' : getAvatarGradient(topic.authorInit)}">${avatarHtml}</div>
             <div class="topic-info">
               <div class="topic-title">${escapeHtml(topic.title)}</div>
               <div class="topic-meta">
@@ -262,12 +266,18 @@ async function openTopicDetail(topicId) {
       const topic = allTopics.find((t) => t.id === topicId);
       if (!topic) return;
 
+      // Optimistically increment views on frontend
+      topic.views += 1;
+      renderTopics();
+
       const overlay = document.getElementById("topic-detail-modal");
       const cat = CATEGORIES[topic.category] || CATEGORIES.other;
 
       document.getElementById("detail-title").textContent = topic.title;
       document.getElementById("detail-meta").innerHTML = `
-    <div class="topic-avatar" style="${getAvatarGradient(topic.authorInit)};width:32px;height:32px;font-size:0.8rem">${escapeHtml(topic.authorInit)}</div>
+    <div class="topic-avatar" style="${topic.avatar ? 'background:transparent;' : getAvatarGradient(topic.authorInit)};width:32px;height:32px;font-size:0.8rem">
+      ${topic.avatar ? `<img src="${buildMediaUrl(topic.avatar)}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">` : escapeHtml(topic.authorInit)}
+    </div>
     <strong>${escapeHtml(topic.author)}</strong>
     <span>•</span>
     <span>${timeAgo(topic.createdAt)}</span>
@@ -369,9 +379,12 @@ function renderComments(comments) {
                   const linkHtml = c.link_url
                         ? `<a class="comment-link" href="${escapeHtml(c.link_url)}" target="_blank" rel="noopener">${escapeHtml(c.link_url)}</a>`
                         : '';
+                  const avatarHtml = c.avatar
+                        ? `<img src="${buildMediaUrl(c.avatar)}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`
+                        : `${escapeHtml(init)}`;
                   return `
     <div class="comment-item">
-      <div class="comment-avatar" style="${getAvatarGradient(init)}">${escapeHtml(init)}</div>
+      <div class="comment-avatar" style="${c.avatar ? 'background:transparent;' : getAvatarGradient(init)}">${avatarHtml}</div>
       <div class="comment-body">
         <div class="comment-header">
           <span class="comment-author">${escapeHtml(author)}</span>
@@ -395,14 +408,14 @@ function renderComments(comments) {
 async function submitComment() {
       const user = getLoginUser();
       if (!user) {
-            alert("Vui lòng đăng nhập để bình luận!");
+            showAppToast("Vui lòng đăng nhập để bình luận!", "error");
             return;
       }
 
       const textarea = document.getElementById("comment-input");
       const text = textarea.value.trim();
       if (!text && !pendingCommentImage) {
-            alert("Vui lòng nhập nội dung hoặc đính kèm ảnh.");
+            showAppToast("Vui lòng nhập nội dung hoặc đính kèm ảnh.", "warning");
             return;
       }
 
@@ -417,7 +430,7 @@ async function submitComment() {
             renderComments(replies);
             await refreshTopics();
       } catch (error) {
-            alert(error.message || "Không thể gửi bình luận.");
+            showAppToast(error.message || "Không thể gửi bình luận.", "error");
       }
 }
 
@@ -425,7 +438,7 @@ async function submitComment() {
 function openNewTopicModal() {
       const user = getLoginUser();
       if (!user) {
-            alert("Vui lòng đăng nhập để tạo chủ đề mới!");
+            showAppToast("Vui lòng đăng nhập để tạo chủ đề mới!", "error");
             window.location.href = "login.html";
             return;
       }
@@ -449,7 +462,7 @@ function submitNewTopic() {
       const content = contentInput.value.trim();
 
       if (!title || !content) {
-            alert("Vui lòng nhập tiêu đề và nội dung!");
+            showAppToast("Vui lòng nhập tiêu đề và nội dung!", "warning");
             return;
       }
 
@@ -462,7 +475,7 @@ function submitNewTopic() {
                   await refreshTopics();
             })
             .catch((error) => {
-                  alert(error.message || "Không thể tạo chủ đề.");
+                  showAppToast(error.message || "Không thể tạo chủ đề.", "error");
             });
 }
 
@@ -486,23 +499,11 @@ document.addEventListener("DOMContentLoaded", () => {
             });
       }
 
-      const filterSelect = document.getElementById("forum-filter");
-      if (filterSelect) {
-            filterSelect.addEventListener("change", (e) => {
-                  currentFilter = e.target.value;
-                  document.querySelectorAll(".forum-cat-btn").forEach((btn) => {
-                        btn.classList.toggle("active", btn.getAttribute("data-cat") === currentFilter);
-                  });
-                  renderTopics();
-            });
-      }
-
       document.querySelectorAll(".forum-cat-btn").forEach((btn) => {
             btn.addEventListener("click", () => {
                   currentFilter = btn.getAttribute("data-cat");
                   document.querySelectorAll(".forum-cat-btn").forEach((b) => b.classList.remove("active"));
                   btn.classList.add("active");
-                  if (filterSelect) filterSelect.value = currentFilter;
                   renderTopics();
             });
       });
@@ -523,7 +524,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const title = titleInput?.value.trim();
             const content = contentInput?.value.trim();
             if (!title || !content) {
-                  alert("Vui lòng nhập tiêu đề và nội dung!");
+                  showAppToast("Vui lòng nhập tiêu đề và nội dung!", "warning");
                   return;
             }
             try {
@@ -533,7 +534,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   pendingEditTopicId = null;
                   await refreshTopics();
             } catch (error) {
-                  alert(error.message || "Không thể cập nhật chủ đề.");
+                  showAppToast(error.message || "Không thể cập nhật chủ đề.", "error");
             }
       });
 
@@ -548,7 +549,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   pendingDeleteTopicId = null;
                   await refreshTopics();
             } catch (error) {
-                  alert(error.message || "Không thể xóa chủ đề.");
+                  showAppToast(error.message || "Không thể xóa chủ đề.", "error");
             }
       });
 
@@ -598,7 +599,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const file = event.target.files?.[0];
             if (!file) return;
             if (!file.type.startsWith("image/")) {
-                  alert("Vui lòng chọn file ảnh hợp lệ.");
+                  showAppToast("Vui lòng chọn file ảnh hợp lệ.", "warning");
                   return;
             }
             setCommentImage(file);

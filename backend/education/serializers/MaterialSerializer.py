@@ -20,6 +20,10 @@ class MaterialSerializer(serializers.ModelSerializer):
             "pdf_file",
             "pdf_url",
             "video_url",
+            "objective",
+            "vocab_examples",
+            "exercise_file",
+            "exercise_url",
             "sections",
             "created_at",
         ]

@@ -7,6 +7,10 @@ from .Lesson import Lesson
 from .Enrollement import Enrollment
 from .Question import Question
 from .Quiz import Quiz
+from .Section import Section
+from .QuestionGroup import QuestionGroup
+from .MCQOption import MCQOption
+from .FIBAnswer import FIBAnswer
 from .QuizAubmission import QuizSubmission
 from .QuizSubmissionAnswer import QuizSubmissionAnswer
 from .UserProgression import UserProgress

@@ -25,6 +25,10 @@ class Material(models.Model):
     pdf_file = models.FileField(upload_to="materials/pdfs/", null=True, blank=True)
     pdf_url = models.URLField(blank=True)
     video_url = models.URLField(blank=True)
+    objective = models.TextField(blank=True)
+    vocab_examples = models.TextField(blank=True)
+    exercise_file = models.FileField(upload_to="materials/exercises/", null=True, blank=True)
+    exercise_url = models.URLField(blank=True)
     sections = models.JSONField(default=list, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

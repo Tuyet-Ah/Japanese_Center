@@ -146,7 +146,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const updated = await updateProfileBackend(formData);
         renderProfile(updated);
       } catch (error) {
-        alert(error.message || 'Không thể cập nhật avatar.');
+        showAppToast(error.message || 'Không thể cập nhật avatar.', 'error');
       }
     });
   }

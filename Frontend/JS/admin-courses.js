@@ -166,7 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
     event.preventDefault();
     const tokens = typeof getAuthTokens === "function" ? getAuthTokens() : null;
     if (!tokens || !tokens.access) {
-      alert("Can dang nhap admin.");
+      showAppToast("Cần đăng nhập admin.", "error");
       return;
     }
 
@@ -176,7 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const description = document.getElementById("courseDesc")?.value.trim() || "";
 
     if (!title || !level || !price) {
-      alert("Vui long nhap day du ten, cap do va gia khoa hoc.");
+      showAppToast("Vui lòng nhập đầy đủ tên, cấp độ và giá khóa học.", "warning");
       return;
     }
 
@@ -229,14 +229,14 @@ document.addEventListener("DOMContentLoaded", () => {
         return response.json();
       })
       .then(() => {
-        alert("✅ Khóa học đã được lưu thành công!");
+        showAppToast("Khóa học đã được lưu thành công!", "success");
         if (section) section.style.display = "none";
         form?.reset();
         if (chaptersContainer) chaptersContainer.innerHTML = "";
         loadCourses();
       })
       .catch((error) => {
-        alert(error.message || "Khong the tao khoa hoc.");
+        showAppToast(error.message || "Không thể tạo khóa học.", "error");
       });
   });
 });

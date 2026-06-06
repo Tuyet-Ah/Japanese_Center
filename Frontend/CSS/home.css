@@ -1,5 +1,4 @@
 @import url('./base.css');
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap');
 
 body { background: url('../assets/cherry_blossom_bg.png') center/cover fixed; }
 
@@ -220,6 +219,8 @@ body { background: url('../assets/cherry_blossom_bg.png') center/cover fixed; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 768px) {
+  .hero-banner { padding: 40px 0 50px; }
+  .section-block, .why-section, .testimonials-section, .cta-section { padding: 40px 0; }
   .hero-banner-inner { grid-template-columns: 1fr; }
   .hero-visual { display: none; }
   .why-grid, .teacher-tips-grid, .testimonials-grid { grid-template-columns: 1fr; }

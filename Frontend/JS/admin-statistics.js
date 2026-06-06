@@ -33,7 +33,7 @@ const LEVEL_COLORS = {
 };
 
 const CHART_FONT = {
-  family: "'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+  family: "'Segoe UI', 'Noto Sans', 'Noto Sans JP', Meiryo, Arial, sans-serif",
   size: 12,
   weight: 600,
 };
@@ -68,7 +68,7 @@ function formatMonthLabel(ym) {
 async function fetchStatistics(fromDate, toDate) {
   const tokens = typeof getAuthTokens === 'function' ? getAuthTokens() : null;
   if (!tokens || !tokens.access) {
-    alert('Cần đăng nhập admin để xem thống kê.');
+    showAppToast('Cần đăng nhập admin để xem thống kê.', 'error');
     return null;
   }
 

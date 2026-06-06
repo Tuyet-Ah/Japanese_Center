@@ -137,7 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   form?.addEventListener("submit", (event) => {
     event.preventDefault();
-    alert("✅ Quiz đã được lưu thành công!");
+    showAppToast("Quiz đã được lưu thành công!", "success");
     if (section) section.style.display = "none";
   });
 });

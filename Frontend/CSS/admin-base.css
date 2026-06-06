@@ -1,5 +1,13 @@
 @import url('./base.css');
 
+/* Admin user section in topbar */
+.admin-user-section { display: flex; align-items: center; gap: 12px; }
+.admin-user-section .user-greeting { color: var(--primary-dark); font-weight: 600; font-size: 0.92rem; }
+.admin-user-section .btn-outline { color: var(--primary-dark); border-color: rgba(255,171,199,0.4); }
+.admin-user-section .btn-outline:hover { background: rgba(255,171,199,0.15); }
+.admin-user-section a.icon-btn { color: var(--primary-dark) !important; font-size: 1.3rem; text-decoration: none; opacity: 0.9; }
+.admin-user-section a.icon-btn:hover { opacity: 1; transform: scale(1.15); filter: brightness(0.8); }
+
 body {
   background: radial-gradient(circle at 15% 20%, rgba(255, 171, 199, 0.12), transparent 35%),
     radial-gradient(circle at 85% 10%, rgba(188, 230, 244, 0.3), transparent 30%),

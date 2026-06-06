@@ -13,6 +13,10 @@ from .EnrollmentSerializer import EnrollmentSerializer
 from .LessonSerializer import LessonSerializer
 from .QuestionResultSerializer import QuestionResultSerializer
 from .QuestionSerializer import QuestionSerializer
+from .SectionSerializer import SectionSerializer
+from .QuestionGroupSerializer import QuestionGroupSerializer
+from .MCQOptionSerializer import MCQOptionSerializer
+from .FIBAnswerSerializer import FIBAnswerSerializer
 from .QuizSerializer import QuizSerializer, QuizListSerializer
 from .QuizSubmissionSerializer import QuizSubmissionSerializer
 from .QuizSubmissionDetailSerializer import QuizSubmissionAnswerSerializer
