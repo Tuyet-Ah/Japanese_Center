@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Quản Lý Đề Thi JLPT | Admin</title>
+      <link rel="stylesheet" href="CSS/admin-exams.css" />
+      <script defer src="JS/script.js"></script>
+      <script defer src="JS/admin-exams.js"></script>
+</head>
+
+<body>
+      <!-- ===== TOP BAR ===== -->
+      <header class="topbar">
+            <div class="container topbar-inner">
+                  <a class="brand" href="admin-home.html">
+                        <img src="assets/Logo.png" alt="JSMART Logo" class="brand-logo" />
+                        <span>JSMART<small>Quản trị hệ thống</small></span>
+                  </a>
+                  <nav class="nav">
+                        <a href="admin-home.html">Trang chủ</a>
+                        <a href="admin-approvals.html">Quản lý tài khoản</a>
+                        <a href="admin-courses.html">Quản lý khóa học</a>
+                        <a href="admin-exams.html" class="active">Quản lý đề thi JLPT</a>
+                        <a href="admin-forum.html">Quản lý thảo luận</a>
+                  </nav>
+                  <div class="sidebar-footer">
+                        <button id="adminLogout" class="menu-item logout-btn">
+                              <span class="menu-icon">🚪</span>
+                              <span>Đăng Xuất</span>
+                        </button>
+                  </div>
+            </div>
+      </header>
+
+      <main class="admin-main container" style="padding-top: 20px;">
+            <header class="admin-header">
+                  <h1>Quản Lý Đề Thi JLPT</h1>
+                  <button id="addExamBtn" class="btn btn-primary">+ Thêm Đề Thi</button>
+            </header>
+
+            <div class="admin-content">
+
+                  <!-- ===== FILTER BAR ===== -->
+                  <section class="admin-table-section">
+                        <h2>Danh Sách Đề Thi</h2>
+
+                        <div class="admin-filter-bar">
+                              <div class="filter-group">
+                                    <label for="examSearchInput">Tìm kiếm</label>
+                                    <input type="text" id="examSearchInput" placeholder="Tên đề thi..." />
+                              </div>
+                              <div class="filter-group">
+                                    <label for="examLevelFilter">Cấp độ</label>
+                                    <select id="examLevelFilter">
+                                          <option value="">Tất cả</option>
+                                          <option value="N5">N5</option>
+                                          <option value="N4">N4</option>
+                                          <option value="N3">N3</option>
+                                          <option value="N2">N2</option>
+                                          <option value="N1">N1</option>
+                                    </select>
+                              </div>
+                              <div class="filter-group">
+                                    <label for="examStatusFilter">Trạng thái</label>
+                                    <select id="examStatusFilter">
+                                          <option value="">Tất cả</option>
+                                          <option value="draft">Nháp</option>
+                                          <option value="published">Công bố</option>
+                                          <option value="hidden">Ẩn</option>
+                                    </select>
+                              </div>
+                              <button id="examFilterBtn" class="btn btn-small">Lọc</button>
+                              <button id="examFilterReset" class="btn btn-small btn-outline">Xóa lọc</button>
+                        </div>
+
+                        <div class="table-responsive">
+                              <table class="admin-table">
+                                    <thead>
+                                          <tr>
+                                                <th>STT</th>
+                                                <th>Tên Đề Thi</th>
+                                                <th>Cấp Độ</th>
+                                                <th>Thời Gian</th>
+                                                <th>Điểm Tối Đa</th>
+                                                <th>Câu Hỏi</th>
+                                                <th>Trạng Thái</th>
+                                                <th>Hành Động</th>
+                                          </tr>
+                                    </thead>
+                                    <tbody id="examsTableBody">
+                                          <tr>
+                                                <td colspan="8">Đang tải đề thi...</td>
+                                          </tr>
+                                    </tbody>
+                              </table>
+                        </div>
+                  </section>
+            </div><!-- /.admin-content -->
+      </main>
+
+      <!-- ===== EXAM BUILDER MODAL ===== -->
+      <div class="exam-modal-overlay" id="examBuilderOverlay">
+            <div class="exam-modal" id="examBuilderModal">
+
+                  <div class="exam-modal-header">
+                        <h2 id="examModalTitle">Thêm Đề Thi Mới</h2>
+                        <button class="exam-modal-close" id="closeExamModal" aria-label="Đóng">&times;</button>
+                  </div>
+
+                  <div class="exam-modal-body">
+                        <!-- ── Thông tin đề thi ── -->
+                        <fieldset class="exam-meta-fieldset">
+                              <legend>Thông Tin Chung</legend>
+                              <div class="form-row">
+                                    <div class="form-group">
+                                          <label for="examTitle">Tên Đề Thi <span class="required">*</span></label>
+                                          <input type="text" id="examTitle" placeholder="VD: Đề thi thử JLPT N3 – Kỳ 1"
+                                                required />
+                                    </div>
+                                    <div class="form-group">
+                                          <label for="examLevel">Cấp Độ <span class="required">*</span></label>
+                                          <select id="examLevel" required>
+                                                <option value="">-- Chọn --</option>
+                                                <option value="N5">N5</option>
+                                                <option value="N4">N4</option>
+                                                <option value="N3">N3</option>
+                                                <option value="N2">N2</option>
+                                                <option value="N1">N1</option>
+                                          </select>
+                                    </div>
+                              </div>
+                              <div class="form-row">
+                                    <div class="form-group">
+                                          <label for="examDuration">Thời Gian Làm Bài (phút) <span
+                                                      class="required">*</span></label>
+                                          <input type="number" id="examDuration" min="1" placeholder="VD: 120"
+                                                required />
+                                    </div>
+                                    <div class="form-group">
+                                          <label for="examTotalScore">Điểm Tối Đa <span
+                                                      class="required">*</span></label>
+                                          <input type="number" id="examTotalScore" min="1" value="180" required />
+                                    </div>
+                                    <div class="form-group">
+                                          <label for="examStatus">Trạng Thái</label>
+                                          <select id="examStatus">
+                                                <option value="draft">Nháp</option>
+                                                <option value="published">Công bố</option>
+                                                <option value="hidden">Ẩn</option>
+                                          </select>
+                                    </div>
+                              </div>
+                        </fieldset>
+
+                        <!-- ── Cây phân cấp Section → Group → Question ── -->
+                        <div class="sections-builder">
+                              <div class="builder-header">
+                                    <h3>Cấu Trúc Đề Thi</h3>
+                                    <button type="button" id="addSectionBtn" class="btn btn-small btn-outline">
+                                          + Thêm Phần (Section)
+                                    </button>
+                              </div>
+                              <div id="sectionsContainer" class="sections-container">
+                                    <!-- Sections sẽ được render động bởi JS -->
+                              </div>
+                        </div>
+                  </div><!-- /.exam-modal-body -->
+
+                  <div class="exam-modal-footer">
+                        <button type="button" class="btn btn-outline" id="cancelExamModal">Hủy</button>
+                        <button type="button" class="btn btn-primary" id="saveExamBtn">💾 Lưu Đề Thi</button>
+                  </div>
+
+            </div><!-- /.exam-modal -->
+      </div><!-- /.exam-modal-overlay -->
+
+      <!-- ===== CONFIRM DELETE MODAL ===== -->
+      <div class="forum-modal-overlay" id="confirmDeleteModal">
+            <div class="forum-modal forum-modal--confirm">
+                  <div class="forum-modal-header">
+                        <h2>Xác Nhận Xóa</h2>
+                        <button class="forum-modal-close" id="closeDeleteModal">&times;</button>
+                  </div>
+                  <div class="forum-modal-body">
+                        <p>Bạn có chắc chắn muốn xóa đề thi này không? Toàn bộ câu hỏi bên trong cũng sẽ bị xóa. Hành
+                              động này <strong>không thể hoàn tác</strong>.</p>
+                        <div class="form-actions">
+                              <button class="btn btn-outline" id="cancelDeleteModal">Hủy</button>
+                              <button class="btn btn-danger" id="submitDeleteModal">Xác Nhận Xóa</button>
+                        </div>
+                  </div>
+            </div>
+      </div>
+
+</body>
+
+</html>

@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return `
           <div class="chapter-item">
             <button type="button" class="chapter-toggle" data-chapter-toggle="${chapter.id}">
-              Chuong ${chapter.order}: ${chapter.title}
+              Chuong ${chapter.order}
             </button>
             <div class="chapter-lessons" data-chapter-lessons="${chapter.id}" hidden>
               <ul>${lessonItems || "<li>Chua co bai hoc.</li>"}</ul>

@@ -459,7 +459,7 @@ function submitNewTopic() {
                   contentInput.value = "";
                   catSelect.value = "grammar";
                   closeNewTopicModal();
-                  alert("Chủ đề của bạn đã được gửi thành công và đang chờ ban quản trị duyệt.");
+                  document.getElementById("success-modal").classList.add("is-open");
                   await refreshTopics();
             })
             .catch((error) => {
@@ -559,6 +559,10 @@ document.addEventListener("DOMContentLoaded", () => {
                         overlay.classList.remove("is-open");
                   }
             });
+      });
+
+      document.getElementById("close-success-modal")?.addEventListener("click", () => {
+            document.getElementById("success-modal").classList.remove("is-open");
       });
 
       document.getElementById("close-image-viewer")?.addEventListener("click", closeImageViewer);

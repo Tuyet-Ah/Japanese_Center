@@ -21,7 +21,7 @@
 				<a href="admin-home.html">Trang chủ</a>
 				<a href="admin-approvals.html">Quản lý tài khoản</a>
 				<a href="admin-courses.html">Quản lý khóa học</a>
-				<a href="admin-quizzes.html">Quản lý đề thi</a>
+				<a href="admin-exams.html">Quản lý đề thi</a>
 				<a href="admin-forum.html">Quản lý thảo luận</a>
 			</nav>
 			<div class="sidebar-footer">
@@ -34,79 +34,26 @@
 	</header>
 
 	<main class="admin-main container" style="padding-top: 20px;">
-			<header class="admin-header">
-				<h1>Quản Lý Khóa Học</h1>
-				<button id="addCourseBtn" class="btn btn-primary">+ Thêm Khóa Học</button>
-			</header>
+		<header class="admin-header">
+			<h1>Quản Lý Khóa Học</h1>
+			<button id="addCourseBtn" class="btn btn-primary">+ Thêm Khóa Học</button>
+		</header>
 
-			<div class="admin-content">
-				<!-- Add/Edit Form -->
-				<section class="admin-form-section" id="courseFormSection" style="display: none;">
-					<h2>Thêm/Sửa Khóa Học</h2>
-					<form id="courseForm" class="admin-form">
-						<div class="form-row">
-							<div class="form-group">
-								<label for="courseName">Tên Khóa Học *</label>
-								<input type="text" id="courseName" placeholder="VD: N5 Beginner Journey"
-									required>
-							</div>
-							<div class="form-group">
-								<label for="courseLevel">Cấp Độ *</label>
-								<select id="courseLevel" required>
-									<option value="">-- Chọn cấp độ --</option>
-									<option value="N5">N5</option>
-									<option value="N4">N4</option>
-									<option value="N3">N3</option>
-									<option value="N2">N2</option>
-									<option value="N1">N1</option>
-								</select>
-							</div>
+		<div class="admin-content">
+			<!-- Add/Edit Form -->
+			<section class="admin-form-section" id="courseFormSection" style="display: none;">
+				<h2>Thêm/Sửa Khóa Học</h2>
+				<form id="courseForm" class="admin-form">
+					<div class="form-row">
+						<div class="form-group">
+							<label for="courseName">Tên Khóa Học *</label>
+							<input type="text" id="courseName" placeholder="VD: N5 Beginner Journey"
+								required>
 						</div>
-
-						<div class="form-row">
-							<div class="form-group">
-								<label for="coursePrice">Giá (VNĐ) *</label>
-								<input type="number" id="coursePrice" placeholder="VD: 2400000"
-									required>
-							</div>
-						</div>
-
-						<div class="form-row">
-							<div class="form-group" style="grid-column: 1 / -1;">
-								<label for="courseDesc">Mô Tả</label>
-								<textarea id="courseDesc" placeholder="Mô tả khóa học"
-									rows="4"></textarea>
-							</div>
-						</div>
-
-						<div class="course-builder">
-							<div class="course-builder-header">
-								<h3>Thiết Kế Khóa Học</h3>
-								<button type="button" id="addChapterBtn" class="btn btn-small">+ Thêm
-									Chương</button>
-							</div>
-							<div id="chaptersContainer" class="chapters-container"></div>
-						</div>
-
-						<div class="form-actions">
-							<button type="submit" class="btn btn-primary">Lưu Khóa Học</button>
-							<button type="button" class="btn btn-outline" id="cancelFormBtn">Hủy</button>
-						</div>
-					</form>
-				</section>
-
-				<!-- Courses Table -->
-				<section class="admin-table-section">
-					<h2>Danh Sách Khóa Học</h2>
-					<div class="admin-filter-bar">
-						<div class="filter-group">
-							<label for="courseSearchInput">Tìm kiếm</label>
-							<input type="text" id="courseSearchInput" placeholder="Nhap ten khoa hoc...">
-						</div>
-						<div class="filter-group">
-							<label for="courseLevelFilter">Cấp độ</label>
-							<select id="courseLevelFilter">
-								<option value="">Tất cả</option>
+						<div class="form-group">
+							<label for="courseLevel">Cấp Độ *</label>
+							<select id="courseLevel" required>
+								<option value="">-- Chọn cấp độ --</option>
 								<option value="N5">N5</option>
 								<option value="N4">N4</option>
 								<option value="N3">N3</option>
@@ -114,39 +61,108 @@
 								<option value="N1">N1</option>
 							</select>
 						</div>
-						<div class="filter-group">
-							<label for="courseMinPrice">Gia tu</label>
-							<input type="number" id="courseMinPrice" min="0" placeholder="VD: 500000">
-						</div>
-						<div class="filter-group">
-							<label for="courseMaxPrice">Gia den</label>
-							<input type="number" id="courseMaxPrice" min="0" placeholder="VD: 2000000">
-						</div>
-						<button id="courseFilterBtn" class="btn btn-small">Loc</button>
-						<button id="courseFilterReset" class="btn btn-small btn-outline">Xoa loc</button>
 					</div>
-					<div class="table-responsive">
-						<table class="admin-table">
-							<thead>
-								<tr>
-									<th>STT</th>
-									<th>Tên Khóa Học</th>
-									<th>Cấp Độ</th>
-									<th>Giá</th>
-									<th>Học Viên</th>
-									<th>Hành Động</th>
-								</tr>
-							</thead>
-							<tbody id="coursesTableBody">
-								<tr>
-									<td colspan="6">Dang tai khoa hoc...</td>
-								</tr>
-							</tbody>
-						</table>
+
+					<div class="form-row">
+						<div class="form-group">
+							<label for="coursePrice">Giá (VNĐ) *</label>
+							<input type="number" id="coursePrice" placeholder="VD: 2400000" required>
+						</div>
 					</div>
-				</section>
-			</div>
+
+					<div class="form-row">
+						<div class="form-group" style="grid-column: 1 / -1;">
+							<label for="courseDesc">Mô Tả</label>
+							<textarea id="courseDesc" placeholder="Mô tả khóa học" rows="4"></textarea>
+						</div>
+					</div>
+
+					<div class="course-builder">
+						<div class="course-builder-header">
+							<h3>Thiết Kế Khóa Học</h3>
+							<button type="button" id="addChapterBtn" class="btn btn-small">+ Thêm
+								Chương</button>
+						</div>
+						<div id="chaptersContainer" class="chapters-container"></div>
+					</div>
+
+					<div class="form-actions">
+						<button type="submit" class="btn btn-primary">Lưu Khóa Học</button>
+						<button type="button" class="btn btn-outline" id="cancelFormBtn">Hủy</button>
+					</div>
+				</form>
+			</section>
+
+			<!-- Courses Table -->
+			<section class="admin-table-section">
+				<h2>Danh Sách Khóa Học</h2>
+				<div class="admin-filter-bar">
+					<div class="filter-group">
+						<label for="courseSearchInput">Tìm kiếm</label>
+						<input type="text" id="courseSearchInput" placeholder="Nhap ten khoa hoc...">
+					</div>
+					<div class="filter-group">
+						<label for="courseLevelFilter">Cấp độ</label>
+						<select id="courseLevelFilter">
+							<option value="">Tất cả</option>
+							<option value="N5">N5</option>
+							<option value="N4">N4</option>
+							<option value="N3">N3</option>
+							<option value="N2">N2</option>
+							<option value="N1">N1</option>
+						</select>
+					</div>
+					<div class="filter-group">
+						<label for="courseMinPrice">Gia tu</label>
+						<input type="number" id="courseMinPrice" min="0" placeholder="VD: 500000">
+					</div>
+					<div class="filter-group">
+						<label for="courseMaxPrice">Gia den</label>
+						<input type="number" id="courseMaxPrice" min="0" placeholder="VD: 2000000">
+					</div>
+					<button id="courseFilterBtn" class="btn btn-small">Loc</button>
+					<button id="courseFilterReset" class="btn btn-small btn-outline">Xoa loc</button>
+				</div>
+				<div class="table-responsive">
+					<table class="admin-table">
+						<thead>
+							<tr>
+								<th>STT</th>
+								<th>Tên Khóa Học</th>
+								<th>Cấp Độ</th>
+								<th>Giá</th>
+								<th>Học Viên</th>
+								<th>Hành Động</th>
+							</tr>
+						</thead>
+						<tbody id="coursesTableBody">
+							<tr>
+								<td colspan="6">Dang tai khoa hoc...</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+		</div>
 	</main>
+
+	<!-- ===== CONFIRM DELETE MODAL ===== -->
+	<div class="forum-modal-overlay" id="confirm-delete-modal">
+		<div class="forum-modal forum-modal--confirm">
+			<div class="forum-modal-header">
+				<h2>Xác nhận xóa</h2>
+				<button class="forum-modal-close" id="close-delete-modal">&times;</button>
+			</div>
+			<div class="forum-modal-body">
+				<p>Bạn có chắc chắn muốn xóa khóa học này không? Hành động này không thể hoàn tác.</p>
+				<div class="form-actions">
+					<button class="btn btn-outline" id="cancel-delete-modal">Hủy</button>
+					<button class="btn btn-danger" id="submit-delete-modal">Xác nhận Xóa</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 </body>
 
 </html>

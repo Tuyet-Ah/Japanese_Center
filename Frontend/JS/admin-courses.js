@@ -39,6 +39,9 @@ document.addEventListener("DOMContentLoaded", () => {
     return query;
   };
 
+  let currentEditCourseId = null;
+  let pendingDeleteCourseId = null;
+
   const renderCourseTable = (courses) => {
     if (!tableBody) return;
     if (!Array.isArray(courses) || courses.length === 0) {
@@ -60,8 +63,8 @@ document.addEventListener("DOMContentLoaded", () => {
             <td>${price}</td>
             <td>${enrolled}</td>
             <td>
-              <button class="btn btn-small">Sua</button>
-              <button class="btn btn-small btn-danger">Xoa</button>
+              <button class="btn btn-small" onclick="editCourse(${course.id})">Sua</button>
+              <button class="btn btn-small btn-danger" onclick="confirmDeleteCourse(${course.id})">Xoa</button>
             </td>
           </tr>
         `;
@@ -98,12 +101,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   loadCourses();
 
-  const createLessonRow = () => {
+  const createLessonRow = (initialData = {}) => {
     const row = document.createElement("div");
     row.className = "lesson-row";
     row.innerHTML = `
-      <input type="text" class="lesson-title" placeholder="Ten bai hoc">
-      <input type="url" class="lesson-video" placeholder="Video URL (tuy chon)">
+      <input type="text" class="lesson-title" placeholder="Ten bai hoc" value="${escapeHtml(initialData.title || '')}">
+      <input type="url" class="lesson-video" placeholder="Video URL (tuy chon)" value="${escapeHtml(initialData.video_url || '')}">
       <button type="button" class="btn btn-small btn-danger" data-remove-lesson>Bo</button>
     `;
     row.querySelector("[data-remove-lesson]")?.addEventListener("click", () => {
@@ -112,12 +115,12 @@ document.addEventListener("DOMContentLoaded", () => {
     return row;
   };
 
-  const createChapterCard = () => {
+  const createChapterCard = (initialData = {}) => {
     const card = document.createElement("div");
     card.className = "chapter-card";
     card.innerHTML = `
       <div class="chapter-header">
-        <input type="text" class="chapter-title" placeholder="Ten chuong">
+        <input type="text" class="chapter-title" placeholder="Ten chuong" value="${escapeHtml(initialData.title || '')}">
         <button type="button" class="btn btn-small btn-danger" data-remove-chapter>Bo chuong</button>
       </div>
       <div class="lessons-container"></div>
@@ -129,6 +132,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const lessonsContainer = card.querySelector(".lessons-container");
     const addLessonBtn = card.querySelector("[data-add-lesson]");
     const removeChapterBtn = card.querySelector("[data-remove-chapter]");
+
+    if (initialData.lessons && Array.isArray(initialData.lessons)) {
+        initialData.lessons.forEach(lesson => {
+            lessonsContainer?.appendChild(createLessonRow(lesson));
+        });
+    }
 
     addLessonBtn?.addEventListener("click", () => {
       lessonsContainer?.appendChild(createLessonRow());
@@ -153,13 +162,92 @@ document.addEventListener("DOMContentLoaded", () => {
   const cancelButton = document.getElementById("cancelFormBtn");
 
   addCourseBtn?.addEventListener("click", () => {
+    currentEditCourseId = null;
+    section.querySelector("h2").textContent = "Thêm Khóa Học";
     if (section) section.style.display = "block";
     form?.reset();
     if (chaptersContainer) chaptersContainer.innerHTML = "";
+    section.scrollIntoView({ behavior: 'smooth' });
   });
 
   cancelButton?.addEventListener("click", () => {
+    currentEditCourseId = null;
     if (section) section.style.display = "none";
+  });
+
+  window.editCourse = async (id) => {
+      const tokens = typeof getAuthTokens === "function" ? getAuthTokens() : null;
+      if (!tokens || !tokens.access) {
+          alert("Can dang nhap admin.");
+          return;
+      }
+      try {
+          const response = await fetch(`${API_BASE_URL}/courses/${id}/`, {
+              headers: { Authorization: `Bearer ${tokens.access}` }
+          });
+          if (!response.ok) throw new Error("Khong the lay thong tin khoa hoc");
+          const course = await response.json();
+          
+          currentEditCourseId = course.id;
+          section.querySelector("h2").textContent = "Sửa Khóa Học (Lưu ý: Không thể sửa chương/bài học tại đây)";
+          
+          document.getElementById("courseName").value = course.title || "";
+          document.getElementById("courseLevel").value = course.level || "";
+          document.getElementById("coursePrice").value = course.price || "";
+          document.getElementById("courseDesc").value = course.description || "";
+          
+          if (chaptersContainer) {
+              chaptersContainer.innerHTML = "";
+              if (course.chapters && Array.isArray(course.chapters)) {
+                  course.chapters.forEach(chapter => {
+                      chaptersContainer.appendChild(createChapterCard(chapter));
+                  });
+              }
+          }
+          
+          if (section) section.style.display = "block";
+          section.scrollIntoView({ behavior: 'smooth' });
+      } catch (error) {
+          alert(error.message);
+      }
+  };
+
+  window.confirmDeleteCourse = (id) => {
+      pendingDeleteCourseId = id;
+      const modal = document.getElementById("confirm-delete-modal");
+      if (modal) modal.classList.add("is-open");
+  };
+
+  document.getElementById("close-delete-modal")?.addEventListener("click", () => {
+      document.getElementById("confirm-delete-modal")?.classList.remove("is-open");
+      pendingDeleteCourseId = null;
+  });
+
+  document.getElementById("cancel-delete-modal")?.addEventListener("click", () => {
+      document.getElementById("confirm-delete-modal")?.classList.remove("is-open");
+      pendingDeleteCourseId = null;
+  });
+
+  document.getElementById("submit-delete-modal")?.addEventListener("click", async () => {
+      if (!pendingDeleteCourseId) return;
+      const tokens = typeof getAuthTokens === "function" ? getAuthTokens() : null;
+      if (!tokens || !tokens.access) return;
+
+      try {
+          const response = await fetch(`${API_BASE_URL}/courses/${pendingDeleteCourseId}/`, {
+              method: "DELETE",
+              headers: { Authorization: `Bearer ${tokens.access}` }
+          });
+          if (!response.ok) throw new Error("Khong the xoa khoa hoc.");
+          
+          document.getElementById("confirm-delete-modal")?.classList.remove("is-open");
+          alert("✅ Đã xóa khóa học thành công!");
+          loadCourses();
+      } catch (error) {
+          alert(error.message);
+      } finally {
+          pendingDeleteCourseId = null;
+      }
   });
 
   form?.addEventListener("submit", (event) => {
@@ -213,8 +301,15 @@ document.addEventListener("DOMContentLoaded", () => {
       chapters
     };
 
-    fetch(`${API_BASE_URL}/courses/`, {
-      method: "POST",
+
+
+    const method = currentEditCourseId ? "PATCH" : "POST";
+    const url = currentEditCourseId 
+        ? `${API_BASE_URL}/courses/${currentEditCourseId}/` 
+        : `${API_BASE_URL}/courses/`;
+
+    fetch(url, {
+      method: method,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${tokens.access}`
@@ -224,19 +319,20 @@ document.addEventListener("DOMContentLoaded", () => {
       .then(async (response) => {
         if (!response.ok) {
           const data = await response.json().catch(() => ({}));
-          throw new Error(data.error || data.detail || "Khong the tao khoa hoc.");
+          throw new Error(data.error || data.detail || "Khong the luu khoa hoc.");
         }
         return response.json();
       })
       .then(() => {
-        alert("✅ Khóa học đã được lưu thành công!");
+        alert(currentEditCourseId ? "✅ Khóa học đã được cập nhật thành công! (Lưu ý: Các thay đổi về chương/bài học có thể không được áp dụng do hạn chế của API hiện tại)" : "✅ Khóa học đã được tạo thành công!");
         if (section) section.style.display = "none";
         form?.reset();
         if (chaptersContainer) chaptersContainer.innerHTML = "";
+        currentEditCourseId = null;
         loadCourses();
       })
       .catch((error) => {
-        alert(error.message || "Khong the tao khoa hoc.");
+        alert(error.message || "Khong the luu khoa hoc.");
       });
   });
 });

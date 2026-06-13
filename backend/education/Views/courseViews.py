@@ -4,6 +4,7 @@ from rest_framework import status, permissions
 from rest_framework.parsers import MultiPartParser, FormParser,JSONParser
 
 from education.services import CourseService
+from education.services.activity_log_service import log_admin_action
 from education.serializers import (
     ChapterCreateUpdateSerializer,
     CourseCreateSerializer,
@@ -36,6 +37,7 @@ class CourseListView(APIView):
         serializer = CourseCreateSerializer(data=request.data)
         if serializer.is_valid():
             course = serializer.save()
+            log_admin_action(request.user, 'create_course', course.title)
             return Response(CourseSerializer(course).data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -61,6 +63,7 @@ class CourseDetailView(APIView):
         serializer = CourseUpdateSerializer(course, data=request.data, partial=True)
         if serializer.is_valid():
             course = serializer.save()
+            log_admin_action(request.user, 'update_course', course.title)
             return Response(CourseSerializer(course).data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -73,7 +76,9 @@ class CourseDetailView(APIView):
         except Course.DoesNotExist:
             return Response({"error": "Khóa học không tồn tại"}, status=status.HTTP_404_NOT_FOUND)
 
+        title = course.title
         course.delete()
+        log_admin_action(request.user, 'delete_course', title)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -121,6 +126,7 @@ class ChapterCreateView(APIView):
         serializer = ChapterCreateUpdateSerializer(data=request.data)
         if serializer.is_valid():
             chapter = serializer.save(course=course)
+            log_admin_action(request.user, 'create_chapter', f'{chapter.title} — {course.title}')
             return Response(ChapterCreateUpdateSerializer(chapter).data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -140,6 +146,7 @@ class ChapterDetailView(APIView):
         serializer = ChapterCreateUpdateSerializer(chapter, data=request.data, partial=True)
         if serializer.is_valid():
             chapter = serializer.save()
+            log_admin_action(request.user, 'update_chapter', chapter.title)
             return Response(ChapterCreateUpdateSerializer(chapter).data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -152,7 +159,9 @@ class ChapterDetailView(APIView):
         except Chapter.DoesNotExist:
             return Response({"error": "Chương không tồn tại"}, status=status.HTTP_404_NOT_FOUND)
 
+        title = chapter.title
         chapter.delete()
+        log_admin_action(request.user, 'delete_chapter', title)
         return Response(status=status.HTTP_204_NO_CONTENT)
         
 class MyCoursesProgressView(APIView):

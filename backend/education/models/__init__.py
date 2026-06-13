@@ -17,3 +17,10 @@ from .ForumTopic import ForumTopic
 from .PaymentTransaction import PaymentTransaction
 from .PaymentTransactionItem import PaymentTransactionItem
 from .Material import Material
+from .Exam import Exam
+from .ExamSection import ExamSection
+from .QuestionGroup import QuestionGroup
+from .ExamQuestion import ExamQuestion
+from .McqOption import McqOption
+from .FibAnswer import FibAnswer
+from .AdminActivityLog import AdminActivityLog

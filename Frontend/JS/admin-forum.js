@@ -123,34 +123,55 @@ function renderAdminTopics() {
     }).join('');
 }
 
-async function forumAction(action, topicId) {
+let pendingAction = null;
+let pendingActionTopicId = null;
+
+function forumAction(action, topicId) {
+    pendingAction = action;
+    pendingActionTopicId = topicId;
+
+    const titleEl = document.getElementById("confirm-action-title");
+    const messageEl = document.getElementById("confirm-action-message");
+
+    if (action === "approve") {
+        titleEl.textContent = "Xác nhận duyệt";
+        messageEl.textContent = "Bạn có chắc chắn muốn duyệt chủ đề này để hiển thị công khai trên diễn đàn không?";
+    } else if (action === "reject") {
+        titleEl.textContent = "Xác nhận xóa/từ chối";
+        messageEl.textContent = "Bạn có chắc chắn muốn từ chối/xóa chủ đề này không? Hành động này không thể hoàn tác.";
+    }
+
+    document.getElementById("confirm-action-modal").classList.add("is-open");
+}
+
+async function executeForumAction() {
     const tokens = getAuthTokens();
     if (!tokens) return;
 
+    document.getElementById("confirm-action-modal").classList.remove("is-open");
+
     try {
-        if (action === "approve") {
-            const res = await fetch(`${API_BASE_URL}/admin-forum-approvals/${topicId}/`, {
+        if (pendingAction === "approve") {
+            const res = await fetch(`${API_BASE_URL}/admin-forum-approvals/${pendingActionTopicId}/`, {
                 method: 'POST',
                 headers: { "Authorization": `Bearer ${tokens.access}` }
             });
             if (res.ok) {
-                alert(`✅ Đã duyệt topic thành công!`);
+                showAdminSuccess("Duyệt chủ đề thành công", "Chủ đề đã được duyệt thành công và hiện đang hiển thị công khai trên diễn đàn.");
                 fetchAdminTopics();
             } else {
                 alert(`❌ Có lỗi xảy ra khi duyệt.`);
             }
-        } else if (action === "reject") {
-            if (confirm(`Bạn chắc chắn muốn từ chối/xóa topic này?`)) {
-                const res = await fetch(`${API_BASE_URL}/admin-forum-approvals/${topicId}/`, {
-                    method: 'DELETE',
-                    headers: { "Authorization": `Bearer ${tokens.access}` }
-                });
-                if (res.ok) {
-                    alert(`❌ Đã xóa/từ chối topic thành công.`);
-                    fetchAdminTopics();
-                } else {
-                    alert(`❌ Có lỗi xảy ra khi xóa.`);
-                }
+        } else if (pendingAction === "reject") {
+            const res = await fetch(`${API_BASE_URL}/admin-forum-approvals/${pendingActionTopicId}/`, {
+                method: 'DELETE',
+                headers: { "Authorization": `Bearer ${tokens.access}` }
+            });
+            if (res.ok) {
+                showAdminSuccess("Xóa chủ đề thành công", "Chủ đề đã được từ chối/xóa thành công.");
+                fetchAdminTopics();
+            } else {
+                alert(`❌ Có lỗi xảy ra khi xóa.`);
             }
         }
     } catch(err) {
@@ -159,8 +180,34 @@ async function forumAction(action, topicId) {
     }
 }
 
+function showAdminSuccess(title, message) {
+    document.getElementById("admin-success-title").textContent = title;
+    document.getElementById("admin-success-message").textContent = message;
+    document.getElementById("admin-success-modal").classList.add("is-open");
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     initAdminShell();
+
+    document.getElementById("close-confirm-action")?.addEventListener("click", () => {
+        document.getElementById("confirm-action-modal").classList.remove("is-open");
+    });
+    document.getElementById("cancel-confirm-action")?.addEventListener("click", () => {
+        document.getElementById("confirm-action-modal").classList.remove("is-open");
+    });
+    document.getElementById("submit-confirm-action")?.addEventListener("click", executeForumAction);
+
+    document.getElementById("close-admin-success-modal")?.addEventListener("click", () => {
+        document.getElementById("admin-success-modal").classList.remove("is-open");
+    });
+
+    document.querySelectorAll(".forum-modal-overlay").forEach((overlay) => {
+        overlay.addEventListener("click", (e) => {
+            if (e.target === overlay) {
+                overlay.classList.remove("is-open");
+            }
+        });
+    });
 
     document.querySelectorAll(".tab-btn").forEach((button) => {
         button.addEventListener("click", function () {

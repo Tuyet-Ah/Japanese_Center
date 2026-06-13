@@ -1,10 +1,14 @@
 from django.urls import path
-from .Views import RegisterView, RegisterAdminView, LoginView, ApproveAdminView, PendingAdminListView, AdminDashboardStatsView, ReplyToTopicView, GetReplyTopicView, CourseListView, CourseDetailView, CourseLearningDetailView, ChapterCreateView, ChapterDetailView, CartView, CheckoutView, CartDeleteView, PracticeHistoryView, FinalExamHistoryView, QuizSubmitView, QuizDetailView, LessonDetailView, LessonCreateView, MarkLessonCompleteView, ProfileView, ChangePasswordView, MyCoursesProgressView, QuizLeaderboardView, QuizReviewDetailView, LessonCommentView, PersonalNoteView, LessonNoteDetailView, ForumTopicView, ForumTopicDetailView, CourseSearchSuggestView, CourseReviewView, VnpayReturnView, VnpayIpnView, JapaneseChatbotView, PracticeQuizListView, QuizSubmissionDetailView, AdminQuizListView, MaterialListView, MaterialDetailView, PendingForumTopicListView, ApproveForumTopicView
+from .Views import RegisterView, RegisterAdminView, LoginView, ApproveAdminView, PendingAdminListView, AdminDashboardStatsView, ReplyToTopicView, GetReplyTopicView, CourseListView, CourseDetailView, CourseLearningDetailView, ChapterCreateView, ChapterDetailView, CartView, CheckoutView, CartDeleteView, PracticeHistoryView, FinalExamHistoryView, QuizSubmitView, QuizDetailView, LessonDetailView, LessonCreateView, MarkLessonCompleteView, ProfileView, ChangePasswordView, MyCoursesProgressView, QuizLeaderboardView, QuizReviewDetailView, LessonCommentView, PersonalNoteView, LessonNoteDetailView, ForumTopicView, ForumTopicDetailView, CourseSearchSuggestView, CourseReviewView, VnpayReturnView, VnpayIpnView, JapaneseChatbotView, PracticeQuizListView, QuizSubmissionDetailView, AdminQuizListView, MaterialListView, MaterialDetailView, PendingForumTopicListView, ApproveForumTopicView, PublicSiteStatsView
+from .Views import AdminExamListView, AdminExamDetailView, ExamPublicListView, ExamPublicDetailView, ExamSubmitView
+from .Views import AdminActivityLogView
 
 urlpatterns =[
       path('register/', RegisterView.as_view(), name='register'),
       path('register-admin/', RegisterAdminView.as_view(), name='register-admin'),
       path('login/', LoginView.as_view(), name='login'),
+      # Thống kê công khai cho trang Home học viên
+      path('site-stats/', PublicSiteStatsView.as_view(), name='site-stats'),
       path('admin/dashboard-stats/', AdminDashboardStatsView.as_view(), name='admin-dashboard-stats'),
       path('admin-approvals/', PendingAdminListView.as_view(), name='pending-admin-list'),
       path('admin-approvals/<int:user_id>/', ApproveAdminView.as_view(), name='approve-admin'),
@@ -59,4 +63,16 @@ urlpatterns =[
       path('materials/<int:pk>/', MaterialDetailView.as_view(), name='material-detail'),
       path('admin-forum-approvals/', PendingForumTopicListView.as_view(), name='pending-forum-list'),
       path('admin-forum-approvals/<int:topic_id>/', ApproveForumTopicView.as_view(), name='approve-forum'),
-] 
+
+      # ── Hệ thống Thi Online (JLPT & Điền từ) ──
+      # Admin CRUD
+      path('admin/exams/', AdminExamListView.as_view(), name='admin-exam-list'),
+      path('admin/exams/<int:pk>/', AdminExamDetailView.as_view(), name='admin-exam-detail'),
+      # Public (học viên)
+      path('exams/', ExamPublicListView.as_view(), name='exam-public-list'),
+      path('exams/<int:pk>/', ExamPublicDetailView.as_view(), name='exam-public-detail'),
+      path('exams/<int:pk>/submit/', ExamSubmitView.as_view(), name='exam-submit'),
+
+      # ── Lịch sử hoạt động Admin ──
+      path('admin/activity-log/', AdminActivityLogView.as_view(), name='admin-activity-log'),
+]

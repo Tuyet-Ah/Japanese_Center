@@ -1,28 +1,74 @@
 @import url('./base.css');
 
 /* cart.css */
-.cart-list { display: grid; gap: 14px; }
-.item { display: flex; justify-content: space-between; gap: 16px; padding: 18px; border-radius: 18px; background: white; border: 1px solid var(--border); }
-.item-title { margin: 0 0 6px; font-size: 1.05rem; }
+.cart-list {
+  display: grid;
+  gap: 14px;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px;
+  border-radius: 18px;
+  background: white;
+  border: 1px solid var(--border);
+}
+
+.item-title {
+  margin: 0 0 6px;
+  font-size: 1.05rem;
+}
+
 .cart-summary {
   background: linear-gradient(135deg, rgba(255, 171, 199, 0.15), rgba(188, 230, 244, 0.25));
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg); padding: 20px;
+  border-radius: var(--radius-lg);
+  padding: 20px;
 }
-.offer { position: relative; overflow: hidden; }
-.offer::after { content: ""; position: absolute; inset: auto -30px -40px auto; width: 140px; height: 140px; border-radius: 50%; background: rgba(251, 113, 133, 0.12); }
+
+.offer {
+  position: relative;
+  overflow: hidden;
+}
+
+.offer::after {
+  content: "";
+  position: absolute;
+  inset: auto -30px -40px auto;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: rgba(251, 113, 133, 0.12);
+}
 
 /* Checkboxes */
-.item { align-items: center; justify-content: flex-start; }
-.item-checkbox-wrapper { margin-right: 12px; display: flex; align-items: center; }
+.item {
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.item-checkbox-wrapper {
+  margin-right: 12px;
+  display: flex;
+  align-items: center;
+}
+
 .cart-checkbox {
   width: 20px;
   height: 20px;
   accent-color: var(--primary);
   cursor: pointer;
 }
-.item-details { flex: 1; }
-.item .price { margin-left: auto; }
+
+.item-details {
+  flex: 1;
+}
+
+.item .price {
+  margin-left: auto;
+}
 
 /* Discount Section */
 .discount-section {
@@ -31,17 +77,20 @@
   border-top: 1px dashed var(--border);
   border-bottom: 1px dashed var(--border);
 }
+
 .discount-section label {
   display: block;
   font-weight: 600;
   margin-bottom: 8px;
   color: var(--primary-dark);
 }
+
 .discount-input-wrapper {
   display: flex;
   gap: 10px;
   margin-bottom: 8px;
 }
+
 #discountInput {
   flex: 1;
   padding: 10px 14px;
@@ -50,23 +99,89 @@
   outline: none;
   font-family: inherit;
 }
+
 #discountInput:focus {
   border-color: var(--primary);
   box-shadow: 0 0 0 3px rgba(255, 171, 199, 0.2);
 }
+
 .btn-apply-discount {
   padding: 10px 16px;
   font-size: 0.95rem;
 }
+
 #discountMessage {
   font-size: 0.9rem;
   margin-bottom: 8px;
   min-height: 20px;
 }
+
 .discount-display {
   margin: 0;
   display: flex;
   justify-content: space-between;
   font-weight: 600;
   color: var(--muted);
+}
+
+/* ── Banner kết quả thanh toán ── */
+#paymentResultBanner {
+  padding: 16px 0;
+}
+
+.payment-banner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 22px;
+  border-radius: 14px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  animation: bannerSlideIn 0.35s ease;
+}
+
+.payment-banner.success {
+  background: #f0fdf4;
+  border: 1.5px solid #4ade80;
+  color: #15803d;
+}
+
+.payment-banner.failed {
+  background: #fff1f2;
+  border: 1.5px solid #fca5a5;
+  color: #dc2626;
+}
+
+.payment-banner .banner-icon {
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+.payment-banner .banner-text {
+  flex: 1;
+}
+
+.payment-banner .banner-text strong {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 3px;
+}
+
+.payment-banner .banner-actions {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+@keyframes bannerSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

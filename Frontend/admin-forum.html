@@ -21,7 +21,7 @@
 				<a href="admin-home.html">Trang chủ</a>
 				<a href="admin-approvals.html">Quản lý tài khoản</a>
 				<a href="admin-courses.html">Quản lý khóa học</a>
-				<a href="admin-quizzes.html">Quản lý đề thi</a>
+				<a href="admin-exams.html">Quản lý đề thi</a>
 				<a href="admin-forum.html">Quản lý thảo luận</a>
 			</nav>
 			<div class="sidebar-footer">
@@ -34,50 +34,78 @@
 	</header>
 
 	<main class="admin-main container" style="padding-top: 20px;">
-			<header class="admin-header">
-				<h1>Duyệt Forum Topics</h1>
-				<span class="header-info">Chờ duyệt: 4 chủ đề</span>
-			</header>
+		<header class="admin-header">
+			<h1>Duyệt Forum Topics</h1>
+			<span class="header-info">Chờ duyệt: 4 chủ đề</span>
+		</header>
 
-			<div class="admin-content">
-				<!-- Forum Topics List -->
-				<section class="forum-section">
-					<div class="tabs">
-						<button class="tab-btn active" data-tab="pending">Chờ Duyệt (4)</button>
-						<button class="tab-btn" data-tab="approved">Đã Duyệt (28)</button>
-						<button class="tab-btn" data-tab="rejected">Đã Từ Chối (2)</button>
-					</div>
+		<div class="admin-content">
+			<!-- Forum Topics List -->
+			<section class="forum-section">
+				<div class="tabs">
+					<button class="tab-btn active" data-tab="pending">Chờ Duyệt (4)</button>
+					<button class="tab-btn" data-tab="approved">Đã Duyệt (28)</button>
+					<button class="tab-btn" data-tab="rejected">Đã Từ Chối (2)</button>
+				</div>
 
-					<div class="forum-list">
-						<!-- Content is dynamically rendered by admin-forum.js -->
-					</div>
-				</section>
+				<div class="forum-list">
+					<!-- Content is dynamically rendered by admin-forum.js -->
+				</div>
+			</section>
 
-				<!-- Moderation Guidelines -->
-				<section class="guidelines-section">
-					<h2>Hướng Dẫn Duyệt Forum</h2>
-					<div class="guidelines-content">
-						<h4>✅ Duyệt các chủ đề:</h4>
-						<ul>
-							<li>Chia sẻ kinh nghiệm học tập tiếng Nhật</li>
-							<li>Thảo luận về ngữ pháp, từ vựng, kanji</li>
-							<li>Trao đổi về JLPT và chuẩn bị thi</li>
-							<li>Tìm bạn luyện tập</li>
-							<li>Hỏi đáp về các khóa học</li>
-						</ul>
+			<!-- Moderation Guidelines -->
+			<section class="guidelines-section">
+				<h2>Hướng Dẫn Duyệt Forum</h2>
+				<div class="guidelines-content">
+					<h4>✅ Duyệt các chủ đề:</h4>
+					<ul>
+						<li>Chia sẻ kinh nghiệm học tập tiếng Nhật</li>
+						<li>Thảo luận về ngữ pháp, từ vựng, kanji</li>
+						<li>Trao đổi về JLPT và chuẩn bị thi</li>
+						<li>Tìm bạn luyện tập</li>
+						<li>Hỏi đáp về các khóa học</li>
+					</ul>
 
-						<h4>❌ Từ chối các chủ đề:</h4>
-						<ul>
-							<li>Quảng cáo dịch vụ cá nhân</li>
-							<li>Nội dung spam, lừa đảo</li>
-							<li>Bình luận xúc phạm, phân biệt</li>
-							<li>Chia sẻ thông tin nhạy cảm cá nhân</li>
-							<li>Liên kết bên ngoài không tin cậy</li>
-						</ul>
-					</div>
-				</section>
+					<h4>❌ Từ chối các chủ đề:</h4>
+					<ul>
+						<li>Quảng cáo dịch vụ cá nhân</li>
+						<li>Nội dung spam, lừa đảo</li>
+						<li>Bình luận xúc phạm, phân biệt</li>
+						<li>Chia sẻ thông tin nhạy cảm cá nhân</li>
+						<li>Liên kết bên ngoài không tin cậy</li>
+					</ul>
+				</div>
+			</section>
+		</div>
+	</main>
+	</div>
+
+	<!-- ===== CONFIRM ACTION MODAL ===== -->
+	<div class="forum-modal-overlay" id="confirm-action-modal">
+		<div class="forum-modal forum-modal--confirm">
+			<div class="forum-modal-header">
+				<h2 id="confirm-action-title">Xác nhận</h2>
+				<button class="forum-modal-close" id="close-confirm-action">×</button>
 			</div>
-		</main>
+			<div class="forum-modal-body">
+				<p id="confirm-action-message">Bạn có chắc chắn muốn thực hiện hành động này?</p>
+				<div class="form-actions">
+					<button class="btn btn-outline" id="cancel-confirm-action">Hủy</button>
+					<button class="btn btn-primary" id="submit-confirm-action">Xác nhận</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- ===== SUCCESS MODAL ===== -->
+	<div class="forum-modal-overlay" id="admin-success-modal">
+		<div class="forum-modal forum-modal--confirm" style="text-align: center; padding: 2rem;">
+			<div class="success-icon" style="font-size: 4rem; color: #10b981; margin-bottom: 1rem;">✅</div>
+			<h2 id="admin-success-title">Thành công</h2>
+			<p id="admin-success-message" style="margin: 1rem 0; color: #4b5563;">Thao tác đã được thực hiện thành
+				công.</p>
+			<button class="btn btn-primary" id="close-admin-success-modal" style="margin-top: 1rem;">Đóng</button>
+		</div>
 	</div>
 
 </body>

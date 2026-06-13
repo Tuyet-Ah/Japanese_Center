@@ -27,3 +27,9 @@ from .CourseReviewSerializer import CourseReviewSerializer
 from .JapaneseChatbotSerializer import JapaneseChatbotSerializer
 from .MaterialSerializer import MaterialSerializer
 from .CourseLearningSerializer import CourseLearningSerializer
+from .ExamSerializer import (
+    ExamSerializer,
+    ExamListSerializer,
+    ExamWriteSerializer,
+    ExamQuestionReadSerializer,
+)

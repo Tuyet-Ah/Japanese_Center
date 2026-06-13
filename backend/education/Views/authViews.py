@@ -3,10 +3,12 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions
 from rest_framework_simplejwt.views import TokenObtainPairView
+from django.db.models import Avg
 
 from education.services import AuthService
 from education.serializers import UserSerializer, CustomTokenSerializer,UserProfileSerializer
-from education.models import Course, Quiz
+from education.models import Course, Quiz, CourseReview, Enrollment, Exam
+from education.services.activity_log_service import log_admin_action
 
 User = get_user_model()
 
@@ -39,6 +41,7 @@ class ApproveAdminView(APIView):
     def post(self, request, user_id):
         try:
             user = AuthService.approve_admin(user_id, request.user)
+            log_admin_action(request.user, 'approve_user', f'{user.username} ({user.email})')
             return Response(UserSerializer(user).data, status=200)
         except ValueError as e:
             return Response({"error": str(e)}, status=400)
@@ -51,7 +54,9 @@ class ApproveAdminView(APIView):
         if not target:
             return Response({"error": "Không tìm thấy tài khoản cần xóa"}, status=404)
 
+        name = f'{target.username} ({target.email})'
         target.delete()
+        log_admin_action(request.user, 'reject_user', name)
         return Response({"message": "Đã xóa tài khoản"}, status=200)
 
 class PendingAdminListView(APIView):
@@ -82,6 +87,36 @@ class AdminDashboardStatsView(APIView):
             "total_students": total_students,
             "total_quizzes": total_quizzes,
             "pending_admins": pending_admins
+        })
+
+
+class PublicSiteStatsView(APIView):
+    """
+    GET /educations/site-stats/
+    Thống kê công khai cho trang Home của học viên — không cần đăng nhập.
+    """
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        total_courses  = Course.objects.count()
+        total_students = User.objects.filter(role='student').count()
+        total_exams    = Exam.objects.filter(status='published').count()
+
+        # Tổng số học viên đã hoàn thành ít nhất 1 khóa (Enrollment paid)
+        paid_students  = Enrollment.objects.filter(status='paid').values('user').distinct().count()
+
+        # Đánh giá trung bình toàn hệ thống
+        avg_rating_qs  = CourseReview.objects.aggregate(avg=Avg('rating'))
+        avg_rating     = avg_rating_qs['avg']
+        avg_rating_str = f"{avg_rating:.1f}/5" if avg_rating else "—"
+
+        return Response({
+            "total_courses":   total_courses,
+            "total_students":  total_students,   # tổng học viên đăng ký hệ thống
+            "paid_students":   paid_students,    # học viên đã mua ít nhất 1 khóa
+            "total_exams":     total_exams,      # đề thi đã publish
+            "avg_rating":      avg_rating_str,
+            "avg_rating_raw":  round(avg_rating, 2) if avg_rating else None,
         })
 
 # Quản lý thông tin các nhân và avatar

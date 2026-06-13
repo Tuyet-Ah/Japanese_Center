@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status, permissions
 from education.serializers import LessonCommentSerializer, LessonNoteSerializer, ForumTopicSerializer,ForumResponseSerializer
 from education.services import InteractionService, CourseService
+from education.services.activity_log_service import log_admin_action
 from education.models import ForumTopic
 class LessonCommentView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -126,14 +127,18 @@ class ApproveForumTopicView(APIView):
         if not topic:
             return Response({"error": "Không tìm thấy bài viết"}, status=status.HTTP_404_NOT_FOUND)
         
+        log_admin_action(request.user, 'approve_topic', topic.title)
         return Response({"message": "Đã duyệt bài viết thành công"}, status=status.HTTP_200_OK)
 
     def delete(self, request, topic_id):
         if request.user.role != 'admin':
             return Response({"error": "Không có quyền xóa bài"}, status=status.HTTP_403_FORBIDDEN)
         
+        topic = ForumTopic.objects.filter(id=topic_id).first()
+        topic_title = topic.title if topic else f'Topic #{topic_id}'
         deleted = InteractionService.reject_topic(topic_id)
         if not deleted:
             return Response({"error": "Không tìm thấy bài viết"}, status=status.HTTP_404_NOT_FOUND)
-            
+        
+        log_admin_action(request.user, 'reject_topic', topic_title)
         return Response({"message": "Đã từ chối/xóa bài viết"}, status=status.HTTP_200_OK)

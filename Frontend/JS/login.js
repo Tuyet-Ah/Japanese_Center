@@ -3,12 +3,6 @@ const AUTH_API_BASE_URL = window.API_BASE_URL || "http://127.0.0.1:8000/educatio
 const LOGIN_API_URL = "http://127.0.0.1:8000/educations/login/";
 const PROFILE_API_URL = "http://127.0.0.1:8000/educations/profile/";
 
-// Demo admin credentials (tạm, sẽ thay bằng BE sau)
-const DEMO_ADMIN = {
-  email: "admin@demo.com",
-  password: "admin123",
-  adminCode: "ADMIN2026"
-};
 
 function setFormMessage(node, text, isError = true) {
   if (!node) return;

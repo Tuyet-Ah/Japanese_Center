@@ -771,21 +771,66 @@ function initFloatingChatWidget() {
     const style = document.createElement('style');
     style.id = 'jsmart-chat-widget-style';
     style.textContent = `
-      .jsmart-chat-launcher { position:fixed;right:20px;bottom:20px;width:60px;height:60px;border:0;border-radius:999px;background:linear-gradient(135deg,#ff6b8b,#fb7185);color:#fff;box-shadow:0 18px 40px rgba(255,107,139,0.3);cursor:pointer;z-index:9999;display:grid;place-items:center; }
-      .jsmart-chat-launcher::before { content:'';position:absolute;inset:-8px;border-radius:inherit;border:2px solid rgba(251,113,133,0.35);animation:jsmartChatPulse 1.8s infinite; }
-      .jsmart-chat-launcher span { position:relative;font-size:26px;animation:jsmartChatBob 1.8s ease-in-out infinite; }
-      .jsmart-chat-panel { position:fixed;right:20px;bottom:92px;width:min(380px,calc(100vw - 28px));height:min(560px,calc(100vh - 120px));background:rgba(255,255,255,0.98);border:1px solid rgba(15,23,42,0.08);border-radius:24px;box-shadow:0 30px 70px rgba(15,23,42,0.18);overflow:hidden;z-index:9998;display:flex;flex-direction:column;opacity:0;transform:translateY(10px) scale(0.98);pointer-events:none;transition:opacity 0.22s ease,transform 0.22s ease;font-family:"Inter", "Noto Sans Vietnamese", -apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif; }
-      .jsmart-chat-panel.is-open { opacity:1;transform:translateY(0) scale(1);pointer-events:auto; }
-      .jsmart-chat-header { padding:14px 16px;background:linear-gradient(135deg,#ff6b8b,#fb7185);color:#fff;display:flex;justify-content:space-between;align-items:center;gap:12px; }
-      .jsmart-chat-header strong { display:block;font-size:0.98rem; }
+      /* ── Launcher button (góc dưới trái, có thể kéo thả) ── */
+      .jsmart-chat-launcher {
+        position:fixed; left:20px; bottom:20px;
+        width:62px; height:62px; border:0; border-radius:999px;
+        background:linear-gradient(135deg,#ff6b8b,#fb7185);
+        color:#fff; box-shadow:0 18px 40px rgba(255,107,139,0.35);
+        cursor:grab; z-index:9999; display:grid; place-items:center;
+        user-select:none; touch-action:none;
+        transition: box-shadow 0.2s, transform 0.2s;
+      }
+      .jsmart-chat-launcher:active { cursor:grabbing; transform:scale(0.95); }
+      .jsmart-chat-launcher.is-dragging { box-shadow:0 24px 56px rgba(255,107,139,0.5); cursor:grabbing; }
+      /* Vòng pulse xung quanh */
+      .jsmart-chat-launcher::before {
+        content:''; position:absolute; inset:-9px; border-radius:inherit;
+        border:2px solid rgba(251,113,133,0.4);
+        animation:jsmartChatPulse 1.8s infinite;
+      }
+      /* Icon bên trong */
+      .jsmart-chat-launcher-inner {
+        position:relative; display:flex; flex-direction:column;
+        align-items:center; justify-content:center; gap:1px; pointer-events:none;
+      }
+      .jsmart-chat-launcher-icon {
+        font-size:26px; animation:jsmartChatBob 2s ease-in-out infinite; line-height:1;
+      }
+      .jsmart-chat-launcher-label {
+        font-size:9px; font-weight:700; letter-spacing:0.04em;
+        opacity:0.92; line-height:1; text-transform:uppercase;
+      }
+
+      /* ── Chat panel ── */
+      .jsmart-chat-panel {
+        position:fixed; left:20px; bottom:96px;
+        width:min(380px,calc(100vw - 28px)); height:min(560px,calc(100vh - 120px));
+        background:rgba(255,255,255,0.98);
+        border:1px solid rgba(15,23,42,0.08); border-radius:24px;
+        box-shadow:0 30px 70px rgba(15,23,42,0.18);
+        overflow:hidden; z-index:9998; display:flex; flex-direction:column;
+        opacity:0; transform:translateY(12px) scale(0.97); pointer-events:none;
+        transition:opacity 0.22s ease,transform 0.22s ease;
+        font-family:"Inter","Noto Sans Vietnamese",-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+      }
+      .jsmart-chat-panel.is-open { opacity:1; transform:translateY(0) scale(1); pointer-events:auto; }
+
+      /* Header */
+      .jsmart-chat-header { padding:14px 16px; background:linear-gradient(135deg,#ff6b8b,#fb7185); color:#fff; display:flex; justify-content:space-between; align-items:center; gap:12px; }
+      .jsmart-chat-header strong { display:block; font-size:0.98rem; }
       .jsmart-chat-header small { opacity:0.9; }
       .jsmart-chat-close { width:32px;height:32px;border:0;border-radius:999px;background:rgba(255,255,255,0.18);color:#fff;font-size:18px;cursor:pointer; }
+
+      /* Messages */
       .jsmart-chat-messages { flex:1;overflow-y:auto;padding:16px;display:grid;gap:12px;background:linear-gradient(rgba(253,242,248,.96),rgba(253,242,248,.96)); }
       .jsmart-chat-message { max-width:86%;padding:12px 14px;border-radius:16px;line-height:1.65;font-size:0.95rem; }
       .jsmart-chat-message.user { margin-left:auto;background:linear-gradient(135deg,#ff6b8b,#fb7185);color:#fff;border-top-right-radius:6px; }
       .jsmart-chat-message.bot { background:#fff;color:#0f172a;border:1px solid rgba(15,23,42,0.08);border-top-left-radius:6px; }
       .jsmart-chat-message h3,.jsmart-chat-message p { margin:0 0 0.55em; }
       .jsmart-chat-message ul { margin:0.45em 0 0.45em 1.2em; }
+
+      /* Composer */
       .jsmart-chat-composer { border-top:1px solid rgba(15,23,42,0.08);padding:12px;background:#fff; }
       .jsmart-chat-quick { display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px; }
       .jsmart-chat-chip { border:1px solid rgba(255,107,139,0.2);background:rgba(255,107,139,0.08);color:#d65172;border-radius:999px;padding:8px 10px;cursor:pointer;font-size:0.85rem; }
@@ -793,14 +838,21 @@ function initFloatingChatWidget() {
       .jsmart-chat-actions { display:flex;gap:10px;margin-top:10px; }
       .jsmart-chat-send { flex:1;border:0;border-radius:14px;background:linear-gradient(135deg,#ff6b8b,#fb7185);color:#fff;padding:12px 14px;font-weight:700;cursor:pointer; }
       .jsmart-chat-send:disabled { opacity:0.7;cursor:not-allowed; }
+
+      /* Typing dots */
       .jsmart-chat-typing { display:inline-flex;gap:6px;align-items:center; }
       .jsmart-chat-typing span { width:8px;height:8px;border-radius:50%;background:#fb7185;animation:jsmartChatBounce 0.9s infinite ease-in-out; }
       .jsmart-chat-typing span:nth-child(2) { animation-delay:0.12s; }
       .jsmart-chat-typing span:nth-child(3) { animation-delay:0.24s; }
+
+      /* Keyframes */
       @keyframes jsmartChatPulse { 0%{transform:scale(0.94);opacity:0.8}70%{transform:scale(1.15);opacity:0}100%{transform:scale(1.15);opacity:0} }
-      @keyframes jsmartChatBob { 0%,100%{transform:translateY(0)}50%{transform:translateY(-1px)} }
+      @keyframes jsmartChatBob { 0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)} }
       @keyframes jsmartChatBounce { 0%,80%,100%{transform:scale(0.7);opacity:0.45}40%{transform:scale(1);opacity:1} }
-      @media(max-width:640px){.jsmart-chat-panel{right:12px;left:12px;bottom:86px;width:auto;height:min(72vh,560px);}}
+
+      @media(max-width:640px){
+        .jsmart-chat-panel{ left:10px; right:10px; bottom:86px; width:auto; height:min(72vh,560px); }
+      }
     `;
     document.head.appendChild(style);
   }
@@ -808,7 +860,11 @@ function initFloatingChatWidget() {
   const widget = document.createElement('div');
   widget.id = 'jsmart-chat-widget';
   widget.innerHTML = `
-    <button type="button" class="jsmart-chat-launcher" aria-label="Mở chatbot JSMART" title="Mở chatbot JSMART"><span>💬</span></button>
+    <button type="button" class="jsmart-chat-launcher" aria-label="Mở chatbot JSMART" title="Kéo để di chuyển • Click để mở">
+      <div class="jsmart-chat-launcher-inner">
+        <span class="jsmart-chat-launcher-icon">💬</span>
+      </div>
+    </button>
     <section class="jsmart-chat-panel" aria-hidden="true">
       <div class="jsmart-chat-header">
         <div>
@@ -918,11 +974,123 @@ function initFloatingChatWidget() {
     }
   }
 
-  launcher.addEventListener('click', () => {
-    panel.classList.toggle('is-open');
-    panel.setAttribute('aria-hidden', String(!panel.classList.contains('is-open')));
-    if (panel.classList.contains('is-open')) { input.focus(); }
+  // ── Drag-to-move logic ──
+  // Phân biệt click thường vs kéo: nếu di chuyển > 5px thì coi là drag, không toggle panel
+  let dragStartX = 0, dragStartY = 0;
+  let isDragging = false;
+  let launcherLeft = 20, launcherBottom = 20; // vị trí hiện tại (px từ cạnh left/bottom)
+
+  function clamp(val, min, max) { return Math.max(min, Math.min(max, val)); }
+
+  // Cập nhật vị trí panel chat theo launcher
+  function updatePanelPosition() {
+    const panelH = panel.offsetHeight || 560;
+    const panelW = panel.offsetWidth || 380;
+    const vpW = window.innerWidth;
+    const vpH = window.innerHeight;
+    const launcherSize = 62;
+
+    // Panel mở phía trên launcher, căn theo trái
+    let pLeft = launcherLeft;
+    let pBottom = launcherBottom + launcherSize + 12;
+
+    // Tránh tràn phải
+    if (pLeft + panelW > vpW - 10) pLeft = vpW - panelW - 10;
+    // Tránh tràn trên
+    if (vpH - pBottom - panelH < 10) pBottom = vpH - panelH - 10;
+
+    panel.style.left = pLeft + 'px';
+    panel.style.bottom = pBottom + 'px';
+    panel.style.right = 'auto';
+    panel.style.top = 'auto';
+  }
+
+  // Mouse drag
+  launcher.addEventListener('mousedown', (e) => {
+    dragStartX = e.clientX;
+    dragStartY = e.clientY;
+    isDragging = false;
+    launcher.classList.add('is-dragging');
+
+    const startLeft = launcher.getBoundingClientRect().left;
+    const startBottom = window.innerHeight - launcher.getBoundingClientRect().bottom;
+
+    function onMouseMove(ev) {
+      const dx = ev.clientX - dragStartX;
+      const dy = ev.clientY - dragStartY;
+      if (!isDragging && (Math.abs(dx) > 5 || Math.abs(dy) > 5)) isDragging = true;
+      if (!isDragging) return;
+
+      const newLeft = clamp(startLeft + dx, 0, window.innerWidth - 62);
+      const newBottom = clamp(startBottom - dy, 0, window.innerHeight - 62);
+      launcherLeft = newLeft;
+      launcherBottom = newBottom;
+      launcher.style.left = newLeft + 'px';
+      launcher.style.bottom = newBottom + 'px';
+      launcher.style.right = 'auto';
+      if (panel.classList.contains('is-open')) updatePanelPosition();
+    }
+
+    function onMouseUp() {
+      launcher.classList.remove('is-dragging');
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    }
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
   });
+
+  // Touch drag
+  launcher.addEventListener('touchstart', (e) => {
+    const t = e.touches[0];
+    dragStartX = t.clientX;
+    dragStartY = t.clientY;
+    isDragging = false;
+    launcher.classList.add('is-dragging');
+
+    const startLeft = launcher.getBoundingClientRect().left;
+    const startBottom = window.innerHeight - launcher.getBoundingClientRect().bottom;
+
+    function onTouchMove(ev) {
+      const touch = ev.touches[0];
+      const dx = touch.clientX - dragStartX;
+      const dy = touch.clientY - dragStartY;
+      if (!isDragging && (Math.abs(dx) > 5 || Math.abs(dy) > 5)) isDragging = true;
+      if (!isDragging) return;
+      ev.preventDefault();
+
+      const newLeft = clamp(startLeft + dx, 0, window.innerWidth - 62);
+      const newBottom = clamp(startBottom - dy, 0, window.innerHeight - 62);
+      launcherLeft = newLeft;
+      launcherBottom = newBottom;
+      launcher.style.left = newLeft + 'px';
+      launcher.style.bottom = newBottom + 'px';
+      launcher.style.right = 'auto';
+      if (panel.classList.contains('is-open')) updatePanelPosition();
+    }
+
+    function onTouchEnd() {
+      launcher.classList.remove('is-dragging');
+      launcher.removeEventListener('touchmove', onTouchMove);
+      launcher.removeEventListener('touchend', onTouchEnd);
+    }
+
+    launcher.addEventListener('touchmove', onTouchMove, { passive: false });
+    launcher.addEventListener('touchend', onTouchEnd);
+  }, { passive: true });
+
+  // Click để toggle (chỉ khi không phải drag)
+  launcher.addEventListener('click', () => {
+    if (isDragging) return; // bỏ qua nếu vừa kéo xong
+    const isOpen = panel.classList.toggle('is-open');
+    panel.setAttribute('aria-hidden', String(!isOpen));
+    if (isOpen) {
+      updatePanelPosition();
+      input.focus();
+    }
+  });
+
   closeButton.addEventListener('click', () => {
     panel.classList.remove('is-open');
     panel.setAttribute('aria-hidden', 'true');
@@ -1028,18 +1196,6 @@ document.addEventListener("DOMContentLoaded", () => {
         renderCourses(getCourseFilters());
       });
     }
-  }
-
-  if (statusFilter) {
-    statusFilter.addEventListener('change', () => {
-      renderCourses(getCourseFilters());
-    });
-  }
-
-  if (levelFilter) {
-    levelFilter.addEventListener('change', () => {
-      renderCourses(getCourseFilters());
-    });
   }
 
   renderCart();

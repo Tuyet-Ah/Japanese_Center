@@ -1,3 +1,87 @@
-﻿@import url('./base.css');
+@import url('./base.css');
 @import url('./admin-base.css');
 
+/* ===== MODAL CSS FOR ADMIN FORUM ===== */
+.forum-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(76, 5, 25, 0.35);
+  backdrop-filter: blur(6px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.forum-modal-overlay.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.forum-modal {
+  width: min(720px, 100%);
+  max-height: calc(100vh - 60px);
+  background: #fff;
+  border-radius: var(--radius-xl);
+  box-shadow: 0 30px 80px rgba(76, 5, 25, 0.2);
+  overflow-y: auto;
+  transform: translateY(16px) scale(0.97);
+  transition: transform 0.25s ease;
+}
+
+.forum-modal-overlay.is-open .forum-modal {
+  transform: translateY(0) scale(1);
+}
+
+.forum-modal-header {
+  padding: 24px 28px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.forum-modal-header h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  line-height: 1.4;
+}
+
+.forum-modal-close {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  font-size: 1.2rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  transition: background 0.2s;
+  color: var(--muted);
+}
+
+.forum-modal-close:hover {
+  background: var(--surface-2);
+}
+
+.forum-modal-body {
+  padding: 22px 28px;
+}
+
+.forum-modal--confirm {
+  width: min(520px, 100%);
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
