@@ -7,7 +7,10 @@ backend/media/
 venv/
 .venv/
 .env
-.env.*
+.env.local
+.env.production
+.env.development
+# .env.example được giữ lại để commit lên git
 **/__pycache__/
 .pytest_cache/
 .mypy_cache/

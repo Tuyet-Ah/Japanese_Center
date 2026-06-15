@@ -177,12 +177,19 @@ async function refreshCourseList() {
   const myLearning = await getMyLearningCache();
   const progressByCourseId = buildProgressMap(myLearning);
 
+  // Tập hợp course_id đã đăng ký (có enrollment paid)
+  const enrolledIds = new Set(
+    Array.isArray(myLearning) ? myLearning.map((c) => c.course_id) : []
+  );
+
   await renderCourses({
     queryParams: {
       search: filters.search,
       level: filters.level === "all" ? "" : filters.level
     },
-    status: filters.status,
+    // Truyền enrollmentFilter thay vì status cũ
+    enrollmentFilter: filters.status,
+    enrolledIds,
     progressByCourseId
   });
 }

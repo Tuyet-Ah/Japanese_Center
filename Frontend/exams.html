@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Đề Thi Online | JSMART</title>
+	<title>Đề Thi JLPT Online | JSMART</title>
 	<link rel="stylesheet" href="CSS/exams.css">
 	<script defer src="JS/script.js"></script>
 	<script defer src="JS/exams.js"></script>
@@ -15,10 +15,7 @@
 		<div class="container topbar-inner">
 			<a class="brand" href="Home.html">
 				<img src="assets/Logo.png" alt="JSMART Logo" class="brand-logo">
-				<span>
-					JSMART
-					<small>Trung tâm giảng dạy tiếng Nhật</small>
-				</span>
+				<span>JSMART<small>Trung tâm giảng dạy tiếng Nhật</small></span>
 			</a>
 			<nav class="nav">
 				<a href="Home.html">Trang chủ</a>
@@ -26,17 +23,17 @@
 				<a href="exams.html" class="active">Đề thi</a>
 				<a href="forum.html">Thảo luận</a>
 				<a href="materials.html">Tài liệu</a>
-
 			</nav>
 			<div class="actions">
 				<a data-profile-link href="profile.html" class="icon-btn" hidden title="Trang cá nhân">👤</a>
-				<a data-cart-link href="cart.html" class="icon-btn cart-icon" hidden title="Giỏ hàng">🛒<span
-						data-cart-count class="badge">0</span></a>
+				<a data-cart-link href="cart.html" class="icon-btn cart-icon" hidden title="Giỏ hàng">
+					🛒<span data-cart-count class="badge">0</span>
+				</a>
 				<div data-auth-actions class="auth-buttons">
 					<a class="btn btn-outline" href="login.html">Đăng nhập</a>
 					<a class="btn btn-primary" href="register.html">Đăng ký</a>
 				</div>
-				<div data-user-actions class="user-section" style="display: none;">
+				<div data-user-actions class="user-section" style="display:none;">
 					<span class="user-greeting">Xin chào, <span data-username></span></span>
 					<button data-logout-btn class="btn btn-outline">Đăng xuất</button>
 				</div>
@@ -45,195 +42,23 @@
 	</header>
 
 	<main>
+
+		<!-- ── Danh sách đề thi ── -->
 		<section class="section exam-page-wrapper">
 			<div class="container exam-page-container">
+
 				<div class="exams-main">
+					<!-- JS sẽ inject card vào đây; placeholder hiển thị trong lúc chờ -->
 					<div class="exams-grid" id="examsGrid">
-						<!-- N1 Exams -->
-						<div class="exam-card" data-exam-level="N1">
-							<h3>JLPT - N1 Actual<br>Test 201202</h3>
-							<div class="exam-meta">
-								<span><i class="time-icon">⏱</i> 165 phút |</span>
-								<span>257</span>
-							</div>
-							<div class="exam-meta-secondary">
-								4 phần thi | 108 câu hỏi
-							</div>
-							<button class="btn btn-exam-detail btn-outline-exam" onclick="startExam('N1-201202')">Chi tiết <span class="click-icon"></span></button>
-						</div>
-
-						<div class="exam-card" data-exam-level="N5">
-							<h3>JLPT - N5 Actual<br>Test 201202</h3>
-							<div class="exam-meta">
-								<span><i class="time-icon">⏱</i> 165 phút |</span>
-								<span>257</span>
-							</div>
-							<div class="exam-meta-secondary">
-								4 phần thi | 108 câu hỏi
-							</div>
-							<button class="btn btn-exam-detail btn-primary-exam" onclick="startExam('N5-201202')">Chi tiết</button>
-						</div>
-
-						<div class="exam-card" data-exam-level="N1">
-							<h3>JLPT - N1 Actual<br>Test 201702</h3>
-							<div class="exam-meta">
-								<span><i class="time-icon">⏱</i> 165 phút |</span>
-								<span>257</span>
-							</div>
-							<div class="exam-meta-secondary">
-								4 phần thi | 108 câu hỏi
-							</div>
-							<button class="btn btn-exam-detail btn-primary-exam" onclick="startExam('N1-201702')">Chi tiết</button>
-						</div>
-
-						<div class="exam-card" data-exam-level="N1">
-							<h3>JLPT - N1 Actual<br>Test 201202</h3>
-							<div class="exam-meta">
-								<span><i class="time-icon">⏱</i> 165 phút |</span>
-								<span>257</span>
-							</div>
-							<div class="exam-meta-secondary">
-								4 phần thi | 108 câu hỏi
-							</div>
-							<button class="btn btn-exam-detail btn-outline-exam" onclick="startExam('N1-201202-b')">Chi tiết</button>
-						</div>
-
-						<div class="exam-card" data-exam-level="N1">
-							<h3>JLPT - N1 Actual<br>Test 201202</h3>
-							<div class="exam-meta">
-								<span><i class="time-icon">⏱</i> 165 phút |</span>
-								<span>257</span>
-							</div>
-							<div class="exam-meta-secondary">
-								4 phần thi | 108 câu hỏi
-							</div>
-							<button class="btn btn-exam-detail btn-outline-exam" onclick="startExam('N1-201202-c')">Chi tiết</button>
-						</div>
-
-						<div class="exam-card" data-exam-level="N1">
-							<h3>JLPT - N1 Actual<br>Test 201202</h3>
-							<div class="exam-meta">
-								<span><i class="time-icon">⏱</i> 165 phút |</span>
-								<span>257</span>
-							</div>
-							<div class="exam-meta-secondary">
-								4 phần thi | 108 câu hỏi
-							</div>
-							<button class="btn btn-exam-detail btn-outline-exam" onclick="startExam('N1-201202-d')">Chi tiết</button>
-						</div>
-
-						<div class="exam-card" data-exam-level="N2">
-							<h3>JLPT - N2 Actual<br>Test 201807</h3>
-							<div class="exam-meta">
-								<span><i class="time-icon">⏱</i> 155 phút |</span>
-								<span>235</span>
-							</div>
-							<div class="exam-meta-secondary">
-								4 phần thi | 96 câu hỏi
-							</div>
-							<button class="btn btn-exam-detail btn-primary-exam" onclick="startExam('N2-201807')">Chi tiết</button>
-						</div>
-
-						<div class="exam-card" data-exam-level="N2">
-							<h3>JLPT - N2 Actual<br>Test 201912</h3>
-							<div class="exam-meta">
-								<span><i class="time-icon">⏱</i> 155 phút |</span>
-								<span>235</span>
-							</div>
-							<div class="exam-meta-secondary">
-								4 phần thi | 96 câu hỏi
-							</div>
-							<button class="btn btn-exam-detail btn-outline-exam" onclick="startExam('N2-201912')">Chi tiết</button>
-						</div>
-
-						<div class="exam-card" data-exam-level="N3">
-							<h3>JLPT - N3 Actual<br>Test 201707</h3>
-							<div class="exam-meta">
-								<span><i class="time-icon">⏱</i> 140 phút |</span>
-								<span>210</span>
-							</div>
-							<div class="exam-meta-secondary">
-								3 phần thi | 89 câu hỏi
-							</div>
-							<button class="btn btn-exam-detail btn-primary-exam" onclick="startExam('N3-201707')">Chi tiết</button>
-						</div>
-
-						<div class="exam-card" data-exam-level="N3">
-							<h3>JLPT - N3 Actual<br>Test 201912</h3>
-							<div class="exam-meta">
-								<span><i class="time-icon">⏱</i> 140 phút |</span>
-								<span>210</span>
-							</div>
-							<div class="exam-meta-secondary">
-								3 phần thi | 89 câu hỏi
-							</div>
-							<button class="btn btn-exam-detail btn-outline-exam" onclick="startExam('N3-201912')">Chi tiết</button>
-						</div>
-
-						<div class="exam-card" data-exam-level="N4">
-							<h3>JLPT - N4 Actual<br>Test 201607</h3>
-							<div class="exam-meta">
-								<span><i class="time-icon">⏱</i> 125 phút |</span>
-								<span>180</span>
-							</div>
-							<div class="exam-meta-secondary">
-								3 phần thi | 72 câu hỏi
-							</div>
-							<button class="btn btn-exam-detail btn-primary-exam" onclick="startExam('N4-201607')">Chi tiết</button>
-						</div>
-
-						<div class="exam-card" data-exam-level="N4">
-							<h3>JLPT - N4 Actual<br>Test 201912</h3>
-							<div class="exam-meta">
-								<span><i class="time-icon">⏱</i> 125 phút |</span>
-								<span>180</span>
-							</div>
-							<div class="exam-meta-secondary">
-								3 phần thi | 72 câu hỏi
-							</div>
-							<button class="btn btn-exam-detail btn-outline-exam" onclick="startExam('N4-201912')">Chi tiết</button>
-						</div>
-
-						<div class="exam-card" data-exam-level="N5">
-							<h3>JLPT - N5 Actual<br>Test 201607</h3>
-							<div class="exam-meta">
-								<span><i class="time-icon">⏱</i> 105 phút |</span>
-								<span>140</span>
-							</div>
-							<div class="exam-meta-secondary">
-								3 phần thi | 60 câu hỏi
-							</div>
-							<button class="btn btn-exam-detail btn-primary-exam" onclick="startExam('N5-201607')">Chi tiết</button>
-						</div>
-
-						<div class="exam-card" data-exam-level="N5">
-							<h3>JLPT - N5 Actual<br>Test 201912</h3>
-							<div class="exam-meta">
-								<span><i class="time-icon">⏱</i> 105 phút |</span>
-								<span>140</span>
-							</div>
-							<div class="exam-meta-secondary">
-								3 phần thi | 60 câu hỏi
-							</div>
-							<button class="btn btn-exam-detail btn-outline-exam" onclick="startExam('N5-201912')">Chi tiết</button>
-						</div>
-
-						<div class="exam-card" data-exam-level="N1">
-							<h3>JLPT - N1 Actual<br>Test 201907</h3>
-							<div class="exam-meta">
-								<span><i class="time-icon">⏱</i> 165 phút |</span>
-								<span>257</span>
-							</div>
-							<div class="exam-meta-secondary">
-								4 phần thi | 108 câu hỏi
-							</div>
-							<button class="btn btn-exam-detail btn-primary-exam" onclick="startExam('N1-201907')">Chi tiết</button>
+						<div class="exam-card"
+							style="grid-column:1/-1;text-align:center;color:var(--muted);">
+							Đang tải đề thi...
 						</div>
 					</div>
 				</div>
 
 				<aside class="exams-sidebar">
-					<label class="level-select-label" for="levelFilter">Trình độ</label>
+					<label class="level-select-label" for="levelFilter">Lọc cấp độ</label>
 					<div class="level-select-wrap">
 						<select id="levelFilter" class="level-select">
 							<option value="">Tất cả</option>
@@ -248,130 +73,55 @@
 						<img src="assets/icon.png" alt="Mascot">
 					</div>
 				</aside>
+
 			</div>
 		</section>
 
-		<!-- Results Section -->
-		<section class="section" style="background: var(--surface-2);">
+		<!-- ── Kết quả kiểm tra gần đây ── -->
+		<section class="section" style="background:var(--surface-2);">
 			<div class="container">
 				<h2>Kết Quả Kiểm Tra Gần Đây</h2>
 				<div class="results-list" id="examResults">
-					<p style="color: var(--muted); text-align: center;">Bạn chưa làm bài kiểm tra nào. Hãy bắt
-						đầu ngay!</p>
+					<p style="color:var(--muted);text-align:center;">
+						Đang tải lịch sử làm bài...
+					</p>
 				</div>
 			</div>
 		</section>
 
-		<!-- Stats Section -->
+		<!-- ── Thống kê ── -->
 		<section class="section">
 			<div class="container">
 				<h2>Thống Kê Của Bạn</h2>
 				<div class="stats-grid">
 					<div class="stat-card">
-						<div class="stat-number" id="totalExams">0</div>
+						<div class="stat-number" id="totalExams">—</div>
 						<div class="stat-label">Bài Kiểm Tra</div>
 					</div>
 					<div class="stat-card">
-						<div class="stat-number" id="avgScore">0%</div>
+						<div class="stat-number" id="avgScore">—</div>
 						<div class="stat-label">Điểm Trung Bình</div>
 					</div>
 					<div class="stat-card">
-						<div class="stat-number" id="bestScore">0%</div>
+						<div class="stat-number" id="bestScore">—</div>
 						<div class="stat-label">Điểm Cao Nhất</div>
 					</div>
 					<div class="stat-card">
-						<div class="stat-number" id="studyStreak">0</div>
-						<div class="stat-label">Ngày Liên Tục</div>
+						<div class="stat-number" id="studyStreak">—</div>
+						<div class="stat-label">Đề Đã Làm</div>
 					</div>
 				</div>
 			</div>
 		</section>
+
 	</main>
 
 	<footer class="footer">
 		<div class="container footer-inner">
-			<div>JSMART - Trung tâm giảng dạy tiếng Nhật</div>
+			<div>JSMART – Trung tâm giảng dạy tiếng Nhật</div>
 			<div>Hotline: 0900 123 456 | Email: hello@jsmart.vn</div>
 		</div>
 	</footer>
-
-	<div id="examModal" class="exam-modal" hidden>
-		<div class="exam-shell">
-			<div class="exam-shell-header">
-				<div>
-					<div id="examLevelTag" class="exam-badge">N5 Beginner</div>
-					<h2 id="examTitle">Ngữ pháp N5</h2>
-					<p id="examSubtitle">Màn hình làm bài chi tiết</p>
-				</div>
-				<button type="button" class="btn btn-outline" data-close-exam-modal>Đóng</button>
-			</div>
-
-			<div class="exam-shell-body">
-				<section class="exam-paper">
-					<div class="exam-tabs">
-						<button class="exam-tab active" type="button">Tổng quan</button>
-						<button class="exam-tab" type="button">Câu hỏi</button>
-						<button class="exam-tab" type="button">Đáp án</button>
-						<button class="exam-tab" type="button">Ghi chú</button>
-					</div>
-
-					<div class="exam-paper-body">
-						<div class="exam-intro" id="examIntro"></div>
-						<div id="examQuestionList"></div>
-					</div>
-
-					<div class="exam-paper-footer">
-						<span id="examProgress">Câu 1 / 5</span>
-						<div class="actions">
-							<button type="button" class="btn btn-outline" data-close-exam-modal>Thoát</button>
-							<button type="button" class="btn btn-primary">Nộp bài</button>
-						</div>
-					</div>
-				</section>
-
-				<aside class="exam-sidebar">
-					<div class="sidebar-block">
-						<h3>Thông tin đề</h3>
-						<div class="exam-detail-list">
-							<div class="detail-item"><strong>Thời gian</strong><span id="examDuration">20
-									phút</span></div>
-							<div class="detail-item"><strong>Số câu</strong><span
-									id="examQuestionCount">30 câu</span></div>
-							<div class="detail-item"><strong>Điểm tối đa</strong><span
-									id="examPoints">1250 điểm</span></div>
-						</div>
-					</div>
-
-					<div class="sidebar-block">
-						<h3>Điều hướng câu hỏi</h3>
-						<div class="question-nav" id="questionNav"></div>
-					</div>
-
-					<div class="sidebar-block" style="border-bottom: 0;">
-						<h3>Gợi ý làm bài</h3>
-						<p id="examTip" style="margin: 0; color: var(--muted); line-height: 1.7;">Đọc kỹ đề,
-							làm từ câu dễ trước và đánh dấu lại các câu khó để quay lại sau.</p>
-					</div>
-				</aside>
-			</div>
-		</div>
-	</div>
-
-	<button id="aiChatToggle" class="ai-chat-toggle" type="button">AI Chat</button>
-	<div id="aiChatPanel" class="ai-chat-panel" hidden>
-		<div class="ai-chat-header">
-			<h3>AI Study Buddy</h3>
-			<p>Hỏi mình về đề thi, ngữ pháp hoặc từ vựng</p>
-		</div>
-		<div id="aiChatMessages" class="ai-chat-messages">
-			<div class="chat-bubble bot">Xin chào, mình có thể giúp bạn phân tích câu hỏi, nhắc mẹo làm bài và
-				giải thích ngữ pháp.</div>
-		</div>
-		<form id="aiChatForm" class="ai-chat-form">
-			<input id="aiChatInput" type="text" placeholder="Nhập câu hỏi của bạn..." autocomplete="off">
-			<button type="submit">Gửi</button>
-		</form>
-	</div>
 
 </body>
 

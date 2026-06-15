@@ -7,7 +7,7 @@ from django.db.models import Avg
 
 from education.services import AuthService
 from education.serializers import UserSerializer, CustomTokenSerializer,UserProfileSerializer
-from education.models import Course, Quiz, CourseReview, Enrollment, Exam
+from education.models import Course, CourseReview, Enrollment, Exam
 from education.services.activity_log_service import log_admin_action
 
 User = get_user_model()
@@ -77,16 +77,21 @@ class AdminDashboardStatsView(APIView):
         if request.user.role != 'admin' or request.user.is_admin_pending:
             return Response({"error": "Không có quyền xem thống kê"}, status=403)
 
-        total_courses = Course.objects.count()
+        from education.models import Exam, ForumTopic
+        total_courses  = Course.objects.count()
         total_students = User.objects.filter(role='student').count()
-        total_quizzes = Quiz.objects.count()
         pending_admins = User.objects.filter(role='admin', is_admin_pending=True).count()
+        total_exams    = Exam.objects.filter(status='published').count()
+        total_topics   = ForumTopic.objects.count()
+        pending_topics = ForumTopic.objects.filter(is_approved=False).count()
 
         return Response({
-            "total_courses": total_courses,
-            "total_students": total_students,
-            "total_quizzes": total_quizzes,
-            "pending_admins": pending_admins
+            "total_courses":   total_courses,
+            "total_students":  total_students,
+            "pending_admins":  pending_admins,
+            "total_exams":     total_exams,
+            "total_topics":    total_topics,
+            "pending_topics":  pending_topics,
         })
 
 

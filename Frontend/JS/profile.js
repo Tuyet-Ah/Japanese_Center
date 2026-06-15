@@ -127,6 +127,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       tabs.forEach((tab) => {
         tab.classList.toggle("active", tab.id === "tab-" + targetTab);
       });
+      // Lazy-load kết quả thi khi mở tab results
+      if (targetTab === "results") {
+        loadExamResults();
+      }
     });
   });
 
@@ -232,3 +236,74 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   await loadBackendData();
 });
+
+// ── Kết quả học tập: fetch lịch sử thi JLPT từ API ──
+async function loadExamResults() {
+  const tbody = document.getElementById('profileExamResultsBody');
+  const totalEl = document.getElementById('profileTotalExams');
+  const avgEl = document.getElementById('profileAvgScore');
+  const bestEl = document.getElementById('profileBestScore');
+
+  if (!tbody) return;
+
+  const tokens = typeof getAuthTokens === 'function' ? getAuthTokens() : null;
+  if (!tokens?.access) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted)">Vui lòng đăng nhập.</td></tr>';
+    return;
+  }
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/exam-history/`, {
+      headers: { Authorization: `Bearer ${tokens.access}` }
+    });
+    if (!res.ok) throw new Error('Không thể tải kết quả.');
+    const list = await res.json();
+
+    if (!Array.isArray(list) || list.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px">Bạn chưa làm bài thi nào.</td></tr>';
+      if (totalEl) totalEl.textContent = '0';
+      if (avgEl) avgEl.textContent = '—';
+      if (bestEl) bestEl.textContent = '—';
+      return;
+    }
+
+    // Cập nhật thống kê
+    if (totalEl) totalEl.textContent = String(list.length);
+    const percents = list.map(s => Number(s.score_percent || 0));
+    const avg = percents.reduce((a, b) => a + b, 0) / percents.length;
+    const best = Math.max(...percents);
+    if (avgEl) avgEl.textContent = `${Math.round(avg)}%`;
+    if (bestEl) bestEl.textContent = `${Math.round(best)}%`;
+
+    // Xếp loại
+    const gradeLabel = (pct) => {
+      if (pct >= 90) return { text: 'Xuất sắc', cls: 'grade-a' };
+      if (pct >= 75) return { text: 'Giỏi', cls: 'grade-b' };
+      if (pct >= 60) return { text: 'Khá', cls: 'grade-c' };
+      return { text: 'Cần cố gắng', cls: 'grade-d' };
+    };
+
+    tbody.innerHTML = list.map(s => {
+      const pct = Number(s.score_percent || 0);
+      const grade = gradeLabel(pct);
+      return `
+        <tr>
+          <td>
+            <a href="exam-detail.html?exam=${s.exam_id}&review=1&submission=${s.submission_id}"
+               class="exam-link">${s.exam_title}</a>
+          </td>
+          <td><span class="badge">${s.exam_level}</span></td>
+          <td>${s.submitted_at}</td>
+          <td><strong>${s.total_score}/${s.max_score}</strong> <small style="color:var(--muted)">(${pct}%)</small></td>
+          <td><span class="grade-badge ${grade.cls}">${grade.text}</span></td>
+          <td>
+            <a href="exam-detail.html?exam=${s.exam_id}&review=1&submission=${s.submission_id}"
+               class="btn btn-outline" style="font-size:0.78rem;padding:4px 10px;">Xem lại</a>
+          </td>
+        </tr>`;
+    }).join('');
+
+  } catch (err) {
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#dc2626">${err.message}</td></tr>`;
+  }
+}

@@ -354,7 +354,7 @@ function renderLessonNotes(notes) {
 function normalizeBackendCourse(course, progressPercentage) {
   const chapters = Array.isArray(course.chapters) ? course.chapters : [];
   const sections = chapters.map((chapter) => ({
-    title: chapter.title ? `Chương ${chapter.order || ''}: ${chapter.title}`.replace('Chương :', 'Chương') : 'Chương học',
+    title: chapter.title || 'Chương học',
     lessons: Array.isArray(chapter.lessons)
       ? chapter.lessons.map((lesson, index) => ({
         id: String(lesson.id),

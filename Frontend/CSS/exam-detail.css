@@ -361,3 +361,139 @@
             grid-template-columns: repeat(4, 1fr);
       }
 }
+
+/* ── Cấu trúc JLPT mới ── */
+.exam-section-header {
+      padding: 14px 0 6px;
+      border-bottom: 2px solid var(--primary);
+      margin-bottom: 16px;
+}
+
+.section-title {
+      margin: 0;
+      font-size: 1.1rem;
+      color: var(--primary-dark);
+      font-weight: 800;
+}
+
+/* Context box (passage / audio) */
+.question-context-box {
+      background: rgba(188, 230, 244, 0.18);
+      border: 1px solid rgba(188, 230, 244, 0.6);
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin-bottom: 12px;
+}
+
+.ctx-instruction {
+      font-weight: 700;
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: 0.9rem;
+}
+
+.ctx-passage {
+      white-space: pre-wrap;
+      line-height: 1.8;
+      font-size: 0.95rem;
+      background: #fff;
+      border-radius: 8px;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+}
+
+.ctx-audio {
+      margin: 8px 0;
+}
+
+.ctx-audio audio {
+      width: 100%;
+      border-radius: 8px;
+}
+
+/* FIB input */
+.fib-input-wrap {
+      padding: 8px 0;
+}
+
+.fib-input {
+      width: 100%;
+      max-width: 420px;
+      padding: 10px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+}
+
+.fib-input:focus {
+      border-color: var(--primary-dark);
+      outline: none;
+}
+
+.fib-input.fib-correct {
+      border-color: #4ade80;
+      background: #f0fdf4;
+}
+
+.fib-input.fib-wrong {
+      border-color: #f87171;
+      background: #fff1f2;
+}
+
+.fib-correct-hint {
+      margin-top: 6px;
+      font-size: 0.85rem;
+      color: #15803d;
+      font-weight: 600;
+}
+
+/* Kết quả thanh bar */
+.exam-result-bar {
+      background: linear-gradient(135deg, rgba(255, 171, 199, 0.15), rgba(188, 230, 244, 0.2));
+      border: 1.5px solid var(--primary);
+      border-radius: 14px;
+      padding: 16px 20px;
+      margin: 14px 0;
+}
+
+.exam-result-error {
+      border-color: #f87171;
+      background: rgba(254, 226, 226, 0.4);
+      color: #dc2626;
+}
+
+.result-bar-inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 16px;
+}
+
+.result-bar-score {
+      font-size: 1.3rem;
+      color: var(--primary-dark);
+}
+
+.result-pct {
+      display: inline-block;
+      margin-left: 8px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 20px;
+      padding: 2px 10px;
+      font-size: 0.9rem;
+      font-weight: 700;
+}
+
+/* Exam level badge trong exam-card ở exams.html */
+.exam-level-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff;
+      padding: 3px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+}

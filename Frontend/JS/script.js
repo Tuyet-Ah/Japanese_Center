@@ -11,6 +11,147 @@ const CHATBOT_API_URL = `${API_BASE_URL}/chatbot/`;
 
 let courseCatalog = {};
 
+// ─────────────────────────────────────────────
+// Custom Alert Modal — thay thế window.alert()
+// ─────────────────────────────────────────────
+(function () {
+  function ensureAlertModal() {
+    if (document.getElementById('jsmart-alert-overlay')) return;
+
+    const style = document.createElement('style');
+    style.textContent = `
+      #jsmart-alert-overlay {
+        position: fixed; inset: 0; z-index: 99999;
+        background: rgba(15,23,42,0.45);
+        backdrop-filter: blur(4px);
+        display: flex; align-items: center; justify-content: center;
+        padding: 20px;
+        opacity: 0; pointer-events: none;
+        transition: opacity 0.22s ease;
+      }
+      #jsmart-alert-overlay.is-open { opacity: 1; pointer-events: auto; }
+      #jsmart-alert-box {
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 32px 80px rgba(15,23,42,0.22);
+        width: min(400px, 100%);
+        padding: 36px 32px 28px;
+        text-align: center;
+        transform: translateY(16px) scale(0.97);
+        transition: transform 0.22s ease;
+      }
+      #jsmart-alert-overlay.is-open #jsmart-alert-box {
+        transform: translateY(0) scale(1);
+      }
+      #jsmart-alert-icon {
+        font-size: 2.8rem;
+        line-height: 1;
+        margin-bottom: 14px;
+      }
+      #jsmart-alert-msg {
+        font-size: 1rem;
+        line-height: 1.6;
+        color: #1e293b;
+        margin: 0 0 24px;
+        white-space: pre-wrap;
+      }
+      #jsmart-alert-msg.is-error { color: #dc2626; }
+      #jsmart-alert-ok {
+        border: 0;
+        border-radius: 999px;
+        padding: 12px 40px;
+        font-size: 0.95rem;
+        font-weight: 700;
+        cursor: pointer;
+        background: linear-gradient(135deg, #ffabc7, #fb7185);
+        color: #fff;
+        box-shadow: 0 10px 24px rgba(255,107,139,0.28);
+        transition: transform 0.15s, box-shadow 0.15s;
+        font-family: inherit;
+      }
+      #jsmart-alert-ok:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 30px rgba(255,107,139,0.38);
+      }
+      #jsmart-alert-ok.is-error {
+        background: linear-gradient(135deg, #f87171, #dc2626);
+        box-shadow: 0 10px 24px rgba(220,38,38,0.24);
+      }
+    `;
+    document.head.appendChild(style);
+
+    const overlay = document.createElement('div');
+    overlay.id = 'jsmart-alert-overlay';
+    overlay.innerHTML = `
+      <div id="jsmart-alert-box" role="dialog" aria-modal="true" aria-labelledby="jsmart-alert-msg">
+        <div id="jsmart-alert-icon">✅</div>
+        <p id="jsmart-alert-msg"></p>
+        <button id="jsmart-alert-ok" type="button">OK</button>
+      </div>`;
+    document.body.appendChild(overlay);
+
+    document.getElementById('jsmart-alert-ok').addEventListener('click', closeAlert);
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closeAlert();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' || e.key === 'Enter') {
+        const ov = document.getElementById('jsmart-alert-overlay');
+        if (ov && ov.classList.contains('is-open')) closeAlert();
+      }
+    });
+  }
+
+  function closeAlert() {
+    const overlay = document.getElementById('jsmart-alert-overlay');
+    if (!overlay) return;
+    overlay.classList.remove('is-open');
+    const resolver = overlay._resolve;
+    if (typeof resolver === 'function') { overlay._resolve = null; resolver(); }
+  }
+
+  // Hàm public — có thể gọi trực tiếp: showAlert('message', 'success'|'error'|'warning')
+  window.showAlert = function (message, type = 'success') {
+    return new Promise((resolve) => {
+      if (!document.body) { window._nativeAlert(message); resolve(); return; }
+      ensureAlertModal();
+
+      const overlay = document.getElementById('jsmart-alert-overlay');
+      const msgEl = document.getElementById('jsmart-alert-msg');
+      const iconEl = document.getElementById('jsmart-alert-icon');
+      const okBtn = document.getElementById('jsmart-alert-ok');
+
+      const isError = type === 'error' || /^(❌|lỗi|không thể|error)/i.test(message);
+      const isWarning = type === 'warning' || /^(⚠️|vui lòng|vui long)/i.test(message);
+
+      // Xác định icon + màu dựa trên nội dung
+      let icon = '✅';
+      if (isError) icon = '❌';
+      else if (isWarning) icon = '⚠️';
+      else if (/đã xóa|xóa thành công/i.test(message)) icon = '🗑️';
+      else if (/cập nhật|sửa/i.test(message)) icon = '✏️';
+      else if (/tạo|thêm|thành công/i.test(message)) icon = '✅';
+
+      iconEl.textContent = icon;
+      msgEl.textContent = message.replace(/^[✅❌⚠️🗑️✏️]\s*/u, '').trim();
+      msgEl.classList.toggle('is-error', isError);
+      okBtn.classList.toggle('is-error', isError);
+
+      overlay._resolve = resolve;
+      overlay.classList.add('is-open');
+      setTimeout(() => document.getElementById('jsmart-alert-ok')?.focus(), 50);
+    });
+  };
+
+  // Override window.alert để tất cả alert() cũ tự động dùng modal mới
+  window._nativeAlert = window.alert.bind(window);
+  window.alert = function (message) {
+    // Nếu DOM chưa sẵn sàng, fallback về native
+    if (!document.body) { window._nativeAlert(message); return; }
+    showAlert(String(message ?? ''));
+  };
+})();
+
 function getLoginUser() {
   try {
     return JSON.parse(authStorage.getItem(loginKey)) || null;
@@ -384,42 +525,54 @@ async function renderCourses(options = {}) {
   try {
     const data = await fetchCourseList(options.queryParams || {});
     const courses = data.map(normalizeCourseListItem);
-    let filteredCourses = courses;
 
-    if (options.status && options.status !== "all" && options.progressByCourseId) {
-      filteredCourses = courses.filter((course) => {
-        const progress = Number(options.progressByCourseId[course.id] || 0);
-        if (options.status === "not-started") return progress === 0;
-        if (options.status === "in-progress") return progress > 0 && progress < 100;
-        if (options.status === "completed") return progress >= 100;
-        return true;
-      });
+    // enrolledIds: Set<number> — các course_id đã đăng ký (paid)
+    const enrolledIds = options.enrolledIds instanceof Set
+      ? options.enrolledIds
+      : new Set(
+        options.progressByCourseId
+          ? Object.keys(options.progressByCourseId).map(Number)
+          : []
+      );
+
+    // Lọc theo trạng thái đăng ký
+    let filteredCourses = courses;
+    const enrollmentFilter = options.enrollmentFilter || options.status || "all";
+    if (enrollmentFilter === "enrolled") {
+      filteredCourses = courses.filter((c) => enrolledIds.has(c.id));
+    } else if (enrollmentFilter === "not-enrolled") {
+      filteredCourses = courses.filter((c) => !enrolledIds.has(c.id));
     }
+    // "all" → giữ nguyên
 
     courseCatalog = Object.fromEntries(filteredCourses.map((course) => [course.id, course]));
 
+    if (!filteredCourses.length) {
+      list.innerHTML = '<div class="card"><h3>Không có khóa học phù hợp.</h3></div>';
+      return;
+    }
+
     list.innerHTML = filteredCourses
       .map((course) => {
-        const progress = Number(options.progressByCourseId?.[course.id] ?? -1);
-        const enrolled = progress >= 0;
+        const enrolled = enrolledIds.has(course.id);
         const thumbClass = course.thumbnail ? "course-thumb" : "course-thumb is-empty";
         const thumbStyle = course.thumbnail ? `style="background-image: url('${course.thumbnail}');"` : "";
         const actionHtml = enrolled
           ? `
-              <a class="btn btn-primary" href="course-learning.html?course=${course.id}">Vao hoc</a>
-              <span class="badge" style="align-self:center;">Da dang ky</span>
+              <a class="btn btn-primary" href="course-learning.html?course=${course.id}">Vào học</a>
+              <span class="badge" style="align-self:center;">Đã đăng ký</span>
             `
-          : `<button class="btn btn-primary" data-add-course="${course.id}">Them vao gio</button>`;
+          : `<button class="btn btn-primary" data-add-course="${course.id}">Thêm vào giỏ</button>`;
         return `
           <article class="card">
             <div class="${thumbClass}" ${thumbStyle}>JSMART</div>
             <span class="badge">${course.level}</span>
             <h3>${course.name}</h3>
-            <p>${course.description || "Chua co mo ta."}</p>
+            <p>${course.description || "Chưa có mô tả."}</p>
             <div class="meta">
               <span class="price">${formatMoney(course.price)}</span>
               <div class="actions" style="gap: 8px;">
-                <a class="btn btn-outline" href="course-detail.html?id=${course.id}">Xem chi tiet</a>
+                <a class="btn btn-outline" href="course-detail.html?id=${course.id}">Xem chi tiết</a>
                 ${actionHtml}
               </div>
             </div>
@@ -428,7 +581,7 @@ async function renderCourses(options = {}) {
       })
       .join("");
   } catch (error) {
-    list.innerHTML = '<div class="card"><h3>Khong the tai khoa hoc.</h3><p>Vui long thu lai sau.</p></div>';
+    list.innerHTML = '<div class="card"><h3>Không thể tải khóa học.</h3><p>Vui lòng thử lại sau.</p></div>';
     return;
   }
 

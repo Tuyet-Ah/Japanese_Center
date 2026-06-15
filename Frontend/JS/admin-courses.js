@@ -104,48 +104,42 @@ document.addEventListener("DOMContentLoaded", () => {
   const createLessonRow = (initialData = {}) => {
     const row = document.createElement("div");
     row.className = "lesson-row";
+    row.dataset.lessonId = initialData.id ?? "";
     row.innerHTML = `
-      <input type="text" class="lesson-title" placeholder="Ten bai hoc" value="${escapeHtml(initialData.title || '')}">
-      <input type="url" class="lesson-video" placeholder="Video URL (tuy chon)" value="${escapeHtml(initialData.video_url || '')}">
-      <button type="button" class="btn btn-small btn-danger" data-remove-lesson>Bo</button>
+      <input type="text" class="lesson-title" placeholder="Tên bài học" value="${escapeHtml(initialData.title || '')}">
+      <input type="url"  class="lesson-video" placeholder="Video URL (tùy chọn)" value="${escapeHtml(initialData.video_url || '')}">
+      <textarea class="lesson-desc" placeholder="Mô tả bài học (tùy chọn)" rows="2">${escapeHtml(initialData.description || '')}</textarea>
+      <button type="button" class="btn btn-small btn-danger" data-remove-lesson>Bỏ</button>
     `;
-    row.querySelector("[data-remove-lesson]")?.addEventListener("click", () => {
-      row.remove();
-    });
+    row.querySelector("[data-remove-lesson]")?.addEventListener("click", () => row.remove());
     return row;
   };
 
   const createChapterCard = (initialData = {}) => {
     const card = document.createElement("div");
     card.className = "chapter-card";
+    card.dataset.chapterId = initialData.id ?? "";
     card.innerHTML = `
       <div class="chapter-header">
-        <input type="text" class="chapter-title" placeholder="Ten chuong" value="${escapeHtml(initialData.title || '')}">
-        <button type="button" class="btn btn-small btn-danger" data-remove-chapter>Bo chuong</button>
+        <input type="text" class="chapter-title" placeholder="Tên chương" value="${escapeHtml(initialData.title || '')}">
+        <button type="button" class="btn btn-small btn-danger" data-remove-chapter>Bỏ chương</button>
       </div>
       <div class="lessons-container"></div>
       <div class="chapter-actions">
-        <button type="button" class="btn btn-small" data-add-lesson>+ Them bai hoc</button>
+        <button type="button" class="btn btn-small" data-add-lesson>+ Thêm bài học</button>
       </div>
     `;
 
     const lessonsContainer = card.querySelector(".lessons-container");
-    const addLessonBtn = card.querySelector("[data-add-lesson]");
-    const removeChapterBtn = card.querySelector("[data-remove-chapter]");
 
     if (initialData.lessons && Array.isArray(initialData.lessons)) {
-        initialData.lessons.forEach(lesson => {
-            lessonsContainer?.appendChild(createLessonRow(lesson));
-        });
+      initialData.lessons.forEach(lesson => lessonsContainer?.appendChild(createLessonRow(lesson)));
     }
 
-    addLessonBtn?.addEventListener("click", () => {
+    card.querySelector("[data-add-lesson]")?.addEventListener("click", () => {
       lessonsContainer?.appendChild(createLessonRow());
     });
-
-    removeChapterBtn?.addEventListener("click", () => {
-      card.remove();
-    });
+    card.querySelector("[data-remove-chapter]")?.addEventListener("click", () => card.remove());
 
     return card;
   };
@@ -176,78 +170,76 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   window.editCourse = async (id) => {
-      const tokens = typeof getAuthTokens === "function" ? getAuthTokens() : null;
-      if (!tokens || !tokens.access) {
-          alert("Can dang nhap admin.");
-          return;
+    const tokens = typeof getAuthTokens === "function" ? getAuthTokens() : null;
+    if (!tokens || !tokens.access) {
+      alert("Cần đăng nhập admin.");
+      return;
+    }
+    try {
+      const response = await fetch(`${API_BASE_URL}/courses/${id}/`, {
+        headers: { Authorization: `Bearer ${tokens.access}` }
+      });
+      if (!response.ok) throw new Error("Không thể lấy thông tin khóa học");
+      const course = await response.json();
+
+      currentEditCourseId = course.id;
+      section.querySelector("h2").textContent = "Sửa Khóa Học";
+
+      document.getElementById("courseName").value = course.title || "";
+      document.getElementById("courseLevel").value = course.level || "";
+      document.getElementById("coursePrice").value = course.price || "";
+      document.getElementById("courseDesc").value = course.description || "";
+
+      if (chaptersContainer) {
+        chaptersContainer.innerHTML = "";
+        if (course.chapters && Array.isArray(course.chapters)) {
+          course.chapters.forEach(chapter => chaptersContainer.appendChild(createChapterCard(chapter)));
+        }
       }
-      try {
-          const response = await fetch(`${API_BASE_URL}/courses/${id}/`, {
-              headers: { Authorization: `Bearer ${tokens.access}` }
-          });
-          if (!response.ok) throw new Error("Khong the lay thong tin khoa hoc");
-          const course = await response.json();
-          
-          currentEditCourseId = course.id;
-          section.querySelector("h2").textContent = "Sửa Khóa Học (Lưu ý: Không thể sửa chương/bài học tại đây)";
-          
-          document.getElementById("courseName").value = course.title || "";
-          document.getElementById("courseLevel").value = course.level || "";
-          document.getElementById("coursePrice").value = course.price || "";
-          document.getElementById("courseDesc").value = course.description || "";
-          
-          if (chaptersContainer) {
-              chaptersContainer.innerHTML = "";
-              if (course.chapters && Array.isArray(course.chapters)) {
-                  course.chapters.forEach(chapter => {
-                      chaptersContainer.appendChild(createChapterCard(chapter));
-                  });
-              }
-          }
-          
-          if (section) section.style.display = "block";
-          section.scrollIntoView({ behavior: 'smooth' });
-      } catch (error) {
-          alert(error.message);
-      }
+
+      if (section) section.style.display = "block";
+      section.scrollIntoView({ behavior: "smooth" });
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   window.confirmDeleteCourse = (id) => {
-      pendingDeleteCourseId = id;
-      const modal = document.getElementById("confirm-delete-modal");
-      if (modal) modal.classList.add("is-open");
+    pendingDeleteCourseId = id;
+    const modal = document.getElementById("confirm-delete-modal");
+    if (modal) modal.classList.add("is-open");
   };
 
   document.getElementById("close-delete-modal")?.addEventListener("click", () => {
-      document.getElementById("confirm-delete-modal")?.classList.remove("is-open");
-      pendingDeleteCourseId = null;
+    document.getElementById("confirm-delete-modal")?.classList.remove("is-open");
+    pendingDeleteCourseId = null;
   });
 
   document.getElementById("cancel-delete-modal")?.addEventListener("click", () => {
-      document.getElementById("confirm-delete-modal")?.classList.remove("is-open");
-      pendingDeleteCourseId = null;
+    document.getElementById("confirm-delete-modal")?.classList.remove("is-open");
+    pendingDeleteCourseId = null;
   });
 
   document.getElementById("submit-delete-modal")?.addEventListener("click", async () => {
-      if (!pendingDeleteCourseId) return;
-      const tokens = typeof getAuthTokens === "function" ? getAuthTokens() : null;
-      if (!tokens || !tokens.access) return;
+    if (!pendingDeleteCourseId) return;
+    const tokens = typeof getAuthTokens === "function" ? getAuthTokens() : null;
+    if (!tokens || !tokens.access) return;
 
-      try {
-          const response = await fetch(`${API_BASE_URL}/courses/${pendingDeleteCourseId}/`, {
-              method: "DELETE",
-              headers: { Authorization: `Bearer ${tokens.access}` }
-          });
-          if (!response.ok) throw new Error("Khong the xoa khoa hoc.");
-          
-          document.getElementById("confirm-delete-modal")?.classList.remove("is-open");
-          alert("✅ Đã xóa khóa học thành công!");
-          loadCourses();
-      } catch (error) {
-          alert(error.message);
-      } finally {
-          pendingDeleteCourseId = null;
-      }
+    try {
+      const response = await fetch(`${API_BASE_URL}/courses/${pendingDeleteCourseId}/`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${tokens.access}` }
+      });
+      if (!response.ok) throw new Error("Khong the xoa khoa hoc.");
+
+      document.getElementById("confirm-delete-modal")?.classList.remove("is-open");
+      alert("✅ Đã xóa khóa học thành công!");
+      loadCourses();
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      pendingDeleteCourseId = null;
+    }
   });
 
   form?.addEventListener("submit", (event) => {
@@ -273,40 +265,36 @@ document.addEventListener("DOMContentLoaded", () => {
       .map((card) => {
         const chapterTitle = card.querySelector(".chapter-title")?.value.trim() || "";
         if (!chapterTitle) return null;
+        const chapterIdRaw = card.dataset.chapterId;
+        const chapterId = chapterIdRaw ? parseInt(chapterIdRaw) : null;
+
         const lessonRows = Array.from(card.querySelectorAll(".lesson-row"));
         const lessons = lessonRows
           .map((row) => {
             const lessonTitle = row.querySelector(".lesson-title")?.value.trim() || "";
             if (!lessonTitle) return null;
+            const lessonIdRaw = row.dataset.lessonId;
+            const lessonId = lessonIdRaw ? parseInt(lessonIdRaw) : null;
             const videoUrl = row.querySelector(".lesson-video")?.value.trim() || "";
-            return {
-              title: lessonTitle,
-              video_url: videoUrl || undefined
-            };
+            const description = row.querySelector(".lesson-desc")?.value.trim() || "";
+            const obj = { title: lessonTitle, video_url: videoUrl, description };
+            if (lessonId) obj.id = lessonId;
+            return obj;
           })
           .filter(Boolean);
 
-        return {
-          title: chapterTitle,
-          lessons
-        };
+        const obj = { title: chapterTitle, lessons };
+        if (chapterId) obj.id = chapterId;
+        return obj;
       })
       .filter(Boolean);
 
-    const payload = {
-      title,
-      level,
-      price,
-      description,
-      chapters
-    };
-
-
+    const payload = { title, level, price, description, chapters };
 
     const method = currentEditCourseId ? "PATCH" : "POST";
-    const url = currentEditCourseId 
-        ? `${API_BASE_URL}/courses/${currentEditCourseId}/` 
-        : `${API_BASE_URL}/courses/`;
+    const url = currentEditCourseId
+      ? `${API_BASE_URL}/courses/${currentEditCourseId}/`
+      : `${API_BASE_URL}/courses/`;
 
     fetch(url, {
       method: method,
@@ -319,12 +307,12 @@ document.addEventListener("DOMContentLoaded", () => {
       .then(async (response) => {
         if (!response.ok) {
           const data = await response.json().catch(() => ({}));
-          throw new Error(data.error || data.detail || "Khong the luu khoa hoc.");
+          throw new Error(data.error || data.detail || "Không thể lưu khóa học.");
         }
         return response.json();
       })
       .then(() => {
-        alert(currentEditCourseId ? "✅ Khóa học đã được cập nhật thành công! (Lưu ý: Các thay đổi về chương/bài học có thể không được áp dụng do hạn chế của API hiện tại)" : "✅ Khóa học đã được tạo thành công!");
+        alert(currentEditCourseId ? "✅ Khóa học đã được cập nhật thành công!" : "✅ Khóa học đã được tạo thành công!");
         if (section) section.style.display = "none";
         form?.reset();
         if (chaptersContainer) chaptersContainer.innerHTML = "";
@@ -332,7 +320,7 @@ document.addEventListener("DOMContentLoaded", () => {
         loadCourses();
       })
       .catch((error) => {
-        alert(error.message || "Khong the luu khoa hoc.");
+        alert(error.message || "Không thể lưu khóa học.");
       });
   });
 });

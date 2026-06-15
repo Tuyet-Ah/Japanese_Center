@@ -242,11 +242,15 @@ class ExamService:
                 correct_count += 1
 
             details.append({
-                'question_id':     q_id,
-                'question_type':   question.question_type,
-                'is_correct':      is_correct,
-                'points_earned':   points_earned,
-                'correct_answer':  correct_answer_repr,
+                'question_id':        q_id,
+                'question_type':      question.question_type,
+                'is_correct':         is_correct,
+                'points_earned':      points_earned,
+                'correct_answer':     correct_answer_repr,
+                'explain_text':       question.explain_text or '',
+                # Lưu lại đáp án người dùng đã chọn để xem lại bài
+                'selected_option_id': user_ans.get('selected_option_id'),
+                'user_text_answer':   user_ans.get('text_answer'),
             })
 
         return {

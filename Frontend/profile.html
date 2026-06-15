@@ -117,18 +117,18 @@
           <div class="results-summary">
             <div class="result-stat-card">
               <div class="result-stat-icon">📝</div>
-              <div class="result-stat-value">12</div>
+              <div class="result-stat-value" id="profileTotalExams">—</div>
               <div class="result-stat-label">Bài kiểm tra</div>
             </div>
             <div class="result-stat-card">
               <div class="result-stat-icon">⭐</div>
-              <div class="result-stat-value">8.4</div>
+              <div class="result-stat-value" id="profileAvgScore">—</div>
               <div class="result-stat-label">Điểm TB</div>
             </div>
             <div class="result-stat-card">
               <div class="result-stat-icon">🏆</div>
-              <div class="result-stat-value">3</div>
-              <div class="result-stat-label">Khóa hoàn thành</div>
+              <div class="result-stat-value" id="profileBestScore">—</div>
+              <div class="result-stat-label">Điểm cao nhất</div>
             </div>
           </div>
           <div class="results-table-wrap">
@@ -136,47 +136,16 @@
               <thead>
                 <tr>
                   <th>Bài kiểm tra</th>
-                  <th>Khóa học</th>
+                  <th>Cấp độ</th>
                   <th>Ngày thi</th>
                   <th>Điểm số</th>
                   <th>Xếp loại</th>
+                  <th></th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="profileExamResultsBody">
                 <tr>
-                  <td><a href="exams.html?exam=N5-201202" class="exam-link">Quiz Từ Vựng N5 - Chương 1</a></td>
-                  <td>N5 Beginner Journey</td>
-                  <td>10/05/2025</td>
-                  <td><strong>9.0</strong></td>
-                  <td><span class="grade-badge grade-a">Xuất sắc</span></td>
-                </tr>
-                <tr>
-                  <td><a href="exams.html?exam=N5-201202" class="exam-link">Kiểm Tra Ngữ Pháp N5</a></td>
-                  <td>N5 Beginner Journey</td>
-                  <td>05/05/2025</td>
-                  <td><strong>8.5</strong></td>
-                  <td><span class="grade-badge grade-b">Giỏi</span></td>
-                </tr>
-                <tr>
-                  <td><a href="exams.html?exam=N1-201202" class="exam-link">Quiz Kanji Cơ Bản</a></td>
-                  <td>Kanji Intensive Lab</td>
-                  <td>01/05/2025</td>
-                  <td><strong>7.5</strong></td>
-                  <td><span class="grade-badge grade-c">Khá</span></td>
-                </tr>
-                <tr>
-                  <td><a href="exams.html?exam=N1-201202" class="exam-link">Thi Cuối Khóa Kanji Lab</a></td>
-                  <td>Kanji Intensive Lab</td>
-                  <td>28/04/2025</td>
-                  <td><strong>9.5</strong></td>
-                  <td><span class="grade-badge grade-a">Xuất sắc</span></td>
-                </tr>
-                <tr>
-                  <td><a href="exams.html?exam=N1-201702" class="exam-link">Quiz Giao Tiếp N4 - Tuần 1</a></td>
-                  <td>N4 Communication Boost</td>
-                  <td>20/04/2025</td>
-                  <td><strong>8.0</strong></td>
-                  <td><span class="grade-badge grade-b">Giỏi</span></td>
+                  <td colspan="6" style="text-align:center;color:var(--muted);padding:24px;">Đang tải kết quả...</td>
                 </tr>
               </tbody>
             </table>

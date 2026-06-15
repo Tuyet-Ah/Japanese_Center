@@ -44,10 +44,10 @@
           <p class="hero-subtitle">Quản lý toàn bộ hệ thống JSMART — tài khoản, khóa học, đề thi, thảo luận và báo cáo
             thống kê tập trung tại đây.</p>
           <div class="hero-stats">
-            <div class="hero-stat"><strong id="stat-users">156</strong><span>Học viên</span></div>
-            <div class="hero-stat"><strong id="stat-courses">12</strong><span>Khóa học</span></div>
-            <div class="hero-stat"><strong id="stat-exams">24</strong><span>Đề thi</span></div>
-            <div class="hero-stat"><strong id="stat-pending">3</strong><span>Chờ duyệt</span></div>
+            <div class="hero-stat"><strong id="stat-users">—</strong><span>Học viên</span></div>
+            <div class="hero-stat"><strong id="stat-courses">—</strong><span>Khóa học</span></div>
+            <div class="hero-stat"><strong id="stat-exams">—</strong><span>Đề thi</span></div>
+            <div class="hero-stat"><strong id="stat-pending">—</strong><span>Chờ duyệt</span></div>
           </div>
           <div class="hero-actions">
             <a href="admin-home.html" class="btn btn-primary btn-large">Xem thống kê</a>
@@ -62,7 +62,8 @@
               style="background: linear-gradient(135deg,rgba(255,171,199,0.6),rgba(188,230,244,0.7)); display:flex;align-items:center;justify-content:center;">
               <span style="font-size:6rem;">🛡️</span>
             </div>
-            <div class="hero-float-card hero-float-card--right">📊 <span>3 yêu cầu chờ duyệt</span></div>
+            <div class="hero-float-card hero-float-card--right">📊 <span id="stat-pending-label">— yêu cầu chờ
+                duyệt</span></div>
           </div>
         </div>
       </div>
@@ -71,11 +72,16 @@
     <!-- STATS BANNER -->
     <section class="stats-banner">
       <div class="container stats-grid">
-        <div class="stat-item"><span class="stat-num">156</span><span class="stat-label">Tổng học viên</span></div>
-        <div class="stat-item"><span class="stat-num">12</span><span class="stat-label">Khóa học đang mở</span></div>
-        <div class="stat-item"><span class="stat-num">24</span><span class="stat-label">Đề thi hiện có</span></div>
-        <div class="stat-item"><span class="stat-num">48</span><span class="stat-label">Chủ đề thảo luận</span></div>
-        <div class="stat-item"><span class="stat-num">3</span><span class="stat-label">Chờ phê duyệt</span></div>
+        <div class="stat-item"><span class="stat-num" id="banner-students">—</span><span class="stat-label">Tổng học
+            viên</span></div>
+        <div class="stat-item"><span class="stat-num" id="banner-courses">—</span><span class="stat-label">Khóa học đang
+            mở</span></div>
+        <div class="stat-item"><span class="stat-num" id="banner-exams">—</span><span class="stat-label">Đề thi hiện
+            có</span></div>
+        <div class="stat-item"><span class="stat-num" id="banner-topics">—</span><span class="stat-label">Chủ đề thảo
+            luận</span></div>
+        <div class="stat-item"><span class="stat-num" id="banner-pending">—</span><span class="stat-label">Chờ phê
+            duyệt</span></div>
       </div>
     </section>
 
@@ -92,7 +98,7 @@
             <div class="afc-body">
               <h3>Quản lý tài khoản</h3>
               <p>Duyệt giáo viên, học viên mới. Phân quyền và quản lý người dùng trong hệ thống.</p>
-              <div class="afc-stats"><span class="afc-badge afc-badge--warn">3 chờ duyệt</span></div>
+              <div class="afc-stats"><span class="afc-badge afc-badge--warn" id="badge-pending">— chờ duyệt</span></div>
             </div>
             <span class="afc-arrow">→</span>
           </a>
@@ -101,7 +107,7 @@
             <div class="afc-body">
               <h3>Quản lý khóa học</h3>
               <p>Tạo, chỉnh sửa, xóa khóa học. Cập nhật lịch học, giáo viên và lộ trình đào tạo.</p>
-              <div class="afc-stats"><span class="afc-badge">12 khóa học</span></div>
+              <div class="afc-stats"><span class="afc-badge" id="badge-courses">— khóa học</span></div>
             </div>
             <span class="afc-arrow">→</span>
           </a>
@@ -110,7 +116,7 @@
             <div class="afc-body">
               <h3>Quản lý đề thi</h3>
               <p>Thêm, sửa, xóa đề thi. Quản lý câu hỏi, đáp án và phân loại theo cấp độ JLPT.</p>
-              <div class="afc-stats"><span class="afc-badge">24 đề thi</span></div>
+              <div class="afc-stats"><span class="afc-badge" id="badge-exams">— đề thi</span></div>
             </div>
             <span class="afc-arrow">→</span>
           </a>
@@ -119,7 +125,7 @@
             <div class="afc-body">
               <h3>Quản lý thảo luận</h3>
               <p>Kiểm duyệt chủ đề forum, xóa nội dung vi phạm, quản lý bình luận học viên.</p>
-              <div class="afc-stats"><span class="afc-badge">48 chủ đề</span></div>
+              <div class="afc-stats"><span class="afc-badge" id="badge-topics">— chủ đề</span></div>
             </div>
             <span class="afc-arrow">→</span>
           </a>
@@ -140,122 +146,9 @@
       </div>
     </section>
 
-    <!-- HOẠT ĐỘNG GẦN ĐÂY -->
-    <section class="why-section">
-      <div class="container">
-        <h2 class="text-center">Hoạt động gần đây</h2>
-        <p class="text-center why-sub">Các thao tác và yêu cầu mới nhất trong hệ thống</p>
-        <div class="why-grid">
-          <div class="why-card">
-            <div class="why-icon">🆕</div>
-            <h3>Tài khoản mới</h3>
-            <p>Nguyễn Thị Linh đăng ký làm giáo viên — <strong>2 ngày trước</strong>. Đang chờ phê duyệt.</p>
-            <a href="admin-approvals.html" class="tip-read-more">Xem & duyệt →</a>
-          </div>
-          <div class="why-card">
-            <div class="why-icon">📖</div>
-            <h3>Khóa học mới</h3>
-            <p>Khóa <strong>N2 Elite Program</strong> vừa được thêm với 18 học viên đăng ký trong 24h đầu.</p>
-            <a href="admin-courses.html" class="tip-read-more">Quản lý →</a>
-          </div>
-          <div class="why-card">
-            <div class="why-icon">💬</div>
-            <h3>Thảo luận chờ duyệt</h3>
-            <p>Chủ đề <strong>"Mẹo học Kanji hiệu quả"</strong> — gửi 1 giờ trước, cần kiểm duyệt nội dung.</p>
-            <a href="admin-forum.html" class="tip-read-more">Kiểm duyệt →</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- THỐNG KÊ NHANH -->
-    <section class="section-block teacher-section">
-      <div class="container">
-        <div class="section-header">
-          <h2>Tóm tắt hệ thống</h2>
-          <a href="admin-home.html" class="see-all-link">Xem báo cáo đầy đủ →</a>
-        </div>
-        <div class="teacher-tips-grid">
-          <div class="tip-card">
-            <div class="tip-avatar">📈</div>
-            <div class="tip-content">
-              <div class="tip-teacher">Học viên đang hoạt động</div>
-              <h4>156 học viên — tăng 12% so tháng trước</h4>
-              <p>85 học viên N5, 42 học viên N4, 29 học viên N3 trở lên đang theo học tích cực.</p>
-              <a href="admin-home.html" class="tip-read-more">Xem chi tiết →</a>
-            </div>
-          </div>
-          <div class="tip-card">
-            <div class="tip-avatar">💰</div>
-            <div class="tip-content">
-              <div class="tip-teacher">Doanh thu tháng 5/2025</div>
-              <h4>42.500.000 đ — đạt 87% mục tiêu</h4>
-              <p>Khóa N5 Beginner Journey đóng góp doanh thu cao nhất với 25 học viên mới đăng ký.</p>
-              <a href="admin-home.html" class="tip-read-more">Xem báo cáo →</a>
-            </div>
-          </div>
-          <div class="tip-card">
-            <div class="tip-avatar">🏆</div>
-            <div class="tip-content">
-              <div class="tip-teacher">Kết quả thi JLPT kỳ gần nhất</div>
-              <h4>97 học viên đậu — tỉ lệ 98%</h4>
-              <p>Kỳ thi tháng 12/2024: 97/99 học viên đậu N2/N1, cao nhất trong 10 năm hoạt động.</p>
-              <a href="admin-home.html" class="tip-read-more">Xem thống kê →</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- LỊCH KHAI GIẢNG -->
-    <section class="section-block schedule-section">
-      <div class="container">
-        <div class="section-header">
-          <h2>Lịch khai giảng sắp tới</h2>
-          <a href="admin-courses.html" class="see-all-link">Quản lý lịch học →</a>
-        </div>
-        <div class="schedule-table-wrap">
-          <table class="schedule-table">
-            <thead>
-              <tr>
-                <th>Khóa học</th>
-                <th>Ngày khai giảng</th>
-                <th>Lịch học</th>
-                <th>Giáo viên</th>
-                <th>Học viên</th>
-                <th>Hành động</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><span class="sl-badge level-n5">N5</span> N5 Beginner Journey</td>
-                <td>15/06/2025</td>
-                <td>Thứ 2-4-6 | 19:00-21:00</td>
-                <td>Nguyễn Thị Lan</td>
-                <td><span class="seat-badge">25/30</span></td>
-                <td><a href="admin-courses.html" class="btn btn-primary btn-sm">Quản lý</a></td>
-              </tr>
-              <tr>
-                <td><span class="sl-badge level-n4">N4</span> N4 Communication Boost</td>
-                <td>20/06/2025</td>
-                <td>Thứ 3-5-7 | 18:00-20:00</td>
-                <td>Trần Văn Minh</td>
-                <td><span class="seat-badge">18/25</span></td>
-                <td><a href="admin-courses.html" class="btn btn-primary btn-sm">Quản lý</a></td>
-              </tr>
-              <tr>
-                <td><span class="sl-badge level-n3">N3</span> N3 Business Japanese</td>
-                <td>01/07/2025</td>
-                <td>Thứ 7-CN | 08:00-11:00</td>
-                <td>Tanaka Yuki</td>
-                <td><span class="seat-badge seat-many">12/30</span></td>
-                <td><a href="admin-courses.html" class="btn btn-primary btn-sm">Quản lý</a></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
+    <!-- HOẠT ĐỘNG GẦN ĐÂY — đã xóa -->
+    <!-- THỐNG KÊ NHANH — đã xóa -->
+    <!-- LỊCH KHAI GIẢNG — đã xóa -->
   </main>
 
   <footer class="footer">
@@ -297,10 +190,9 @@
   </footer>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', async () => {
       const adminUser = getAdminUser();
       const loginUser = getLoginUser();
-      // Accept either admin session or user with admin role
       const active = adminUser || (loginUser && loginUser.role === 'admin' ? loginUser : null);
 
       if (!active) {
@@ -309,7 +201,49 @@
       }
 
       const nameEl = document.getElementById('adminDisplayName');
-      if (nameEl) nameEl.textContent = active.name || 'Admin';
+      if (nameEl) nameEl.textContent = active.name || active.username || 'Admin';
+
+      // ── Fetch thống kê thực từ DB ──
+      const tokens = typeof getAuthTokens === 'function' ? getAuthTokens() : null;
+      if (!tokens?.access) return;
+
+      try {
+        const res = await fetch(`${API_BASE_URL}/admin/dashboard-stats/`, {
+          headers: { Authorization: `Bearer ${tokens.access}` }
+        });
+        if (!res.ok) return;
+        const d = await res.json();
+
+        const set = (id, val) => {
+          const el = document.getElementById(id);
+          if (el) el.textContent = val ?? '—';
+        };
+
+        // Hero stats
+        set('stat-users', d.total_students);
+        set('stat-courses', d.total_courses);
+        set('stat-exams', d.total_exams);
+        set('stat-pending', d.pending_admins + (d.pending_topics || 0));
+
+        // Float card
+        const pendingTotal = (d.pending_admins || 0) + (d.pending_topics || 0);
+        set('stat-pending-label', `${pendingTotal} yêu cầu chờ duyệt`);
+
+        // Stats banner
+        set('banner-students', d.total_students);
+        set('banner-courses', d.total_courses);
+        set('banner-exams', d.total_exams);
+        set('banner-topics', d.total_topics);
+        set('banner-pending', pendingTotal);
+
+        // Feature card badges
+        set('badge-pending', `${d.pending_admins || 0} chờ duyệt`);
+        set('badge-courses', `${d.total_courses} khóa học`);
+        set('badge-exams', `${d.total_exams} đề thi`);
+        set('badge-topics', `${d.total_topics} chủ đề`);
+      } catch {
+        // Giữ nguyên "—" nếu fetch thất bại
+      }
     });
   </script>
 </body>

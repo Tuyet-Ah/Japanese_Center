@@ -5,10 +5,6 @@ from .CartItem import CartItem
 from .Chapter import Chapter
 from .Lesson import Lesson
 from .Enrollement import Enrollment
-from .Question import Question
-from .Quiz import Quiz
-from .QuizAubmission import QuizSubmission
-from .QuizSubmissionAnswer import QuizSubmissionAnswer
 from .UserProgression import UserProgress
 from .LessonComment import LessonComment
 from .LessonNote import LessonNote
@@ -24,3 +20,4 @@ from .ExamQuestion import ExamQuestion
 from .McqOption import McqOption
 from .FibAnswer import FibAnswer
 from .AdminActivityLog import AdminActivityLog
+from .ExamSubmission import ExamSubmission

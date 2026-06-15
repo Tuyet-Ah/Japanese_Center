@@ -16,7 +16,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions
 
-from education.models import Exam
+from education.models import Exam, ExamSubmission
 from education.serializers import (
     ExamSerializer, ExamListSerializer, ExamWriteSerializer,
 )
@@ -152,18 +152,89 @@ class ExamPublicDetailView(APIView):
 
 
 class ExamSubmitView(APIView):
-    """POST — Nộp bài và nhận kết quả chấm điểm"""
+    """POST — Nộp bài, chấm điểm và lưu kết quả vào DB"""
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, pk):
         try:
-            Exam.objects.get(pk=pk, status='published')
+            exam = Exam.objects.get(pk=pk, status='published')
         except Exam.DoesNotExist:
             return Response({'error': 'Không tìm thấy đề thi.'}, status=status.HTTP_404_NOT_FOUND)
 
         user_answers = request.data.get('answers', [])
+        duration_seconds = int(request.data.get('duration_seconds', 0))
+
         if not isinstance(user_answers, list):
             return Response({'error': 'answers phải là một danh sách.'}, status=status.HTTP_400_BAD_REQUEST)
 
         result = ExamService.grade_submission(pk, user_answers)
-        return Response(result)
+
+        # Lưu kết quả vào DB
+        submission = ExamSubmission.objects.create(
+            user=request.user,
+            exam=exam,
+            total_score=result['total_score'],
+            max_score=result['max_score'],
+            correct_count=result['correct_count'],
+            total_questions=result['total_questions'],
+            duration_seconds=duration_seconds,
+            details_json=result['details'],
+        )
+
+        return Response({**result, 'submission_id': submission.pk})
+
+
+class ExamHistoryView(APIView):
+    """GET — Lịch sử làm bài thi JLPT của học viên đang đăng nhập"""
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        submissions = (
+            ExamSubmission.objects
+            .filter(user=request.user)
+            .select_related('exam')
+            .order_by('-submitted_at')[:50]
+        )
+        data = [
+            {
+                'submission_id':   s.pk,
+                'exam_id':         s.exam_id,
+                'exam_title':      s.exam.title,
+                'exam_level':      s.exam.level,
+                'total_score':     s.total_score,
+                'max_score':       s.max_score,
+                'score_percent':   s.score_percent,
+                'correct_count':   s.correct_count,
+                'total_questions': s.total_questions,
+                'duration_seconds': s.duration_seconds,
+                'submitted_at':    s.submitted_at.strftime('%d/%m/%Y %H:%M'),
+            }
+            for s in submissions
+        ]
+        return Response(data)
+
+
+class ExamSubmissionDetailView(APIView):
+    """GET — Chi tiết một lần làm bài (để xem lại đáp án)"""
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, pk):
+        try:
+            submission = ExamSubmission.objects.select_related('exam').get(pk=pk, user=request.user)
+        except ExamSubmission.DoesNotExist:
+            return Response({'error': 'Không tìm thấy bài làm.'}, status=status.HTTP_404_NOT_FOUND)
+
+        return Response({
+            'submission_id':   submission.pk,
+            'exam_id':         submission.exam_id,
+            'exam_title':      submission.exam.title,
+            'exam_level':      submission.exam.level,
+            'total_score':     submission.total_score,
+            'max_score':       submission.max_score,
+            'score_percent':   submission.score_percent,
+            'correct_count':   submission.correct_count,
+            'total_questions': submission.total_questions,
+            'duration_seconds': submission.duration_seconds,
+            'submitted_at':    submission.submitted_at.strftime('%d/%m/%Y %H:%M'),
+            'details':         submission.details_json,
+        })
