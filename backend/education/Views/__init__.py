@@ -6,7 +6,7 @@ from .courseViews import CourseListView, CourseDetailView, CourseLearningDetailV
 from .cartViews import CartView, CartDeleteView
 from .paymentViews import CheckoutView, VnpayReturnView, VnpayIpnView
 from .lessonViews import LessonDetailView, MarkLessonCompleteView
-from .interactionView import LessonCommentView, PersonalNoteView, LessonNoteDetailView, ForumTopicView, ForumTopicDetailView, ReplyToTopicView, GetReplyTopicView, PendingForumTopicListView, ApproveForumTopicView
+from .interactionView import LessonCommentView, PersonalNoteView, LessonNoteDetailView, ForumTopicView, ForumTopicDetailView, ReplyToTopicView, GetReplyTopicView, PendingForumTopicListView, ApproveForumTopicView, MyPendingTopicsView
 from .chatbotViews import JapaneseChatbotView
 from .examViews import (
     AdminExamListView, AdminExamDetailView,

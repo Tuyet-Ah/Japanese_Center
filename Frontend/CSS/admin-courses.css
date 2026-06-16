@@ -125,3 +125,45 @@
   min-height: 54px;
   font-family: inherit;
 }
+
+/* ── Thumbnail upload ── */
+.thumbnail-upload-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+
+.thumbnail-preview {
+  width: 180px;
+  height: 101px;
+  /* 16:9 */
+  border: 2px dashed var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-2);
+  flex-shrink: 0;
+  transition: border-color 0.2s;
+}
+
+.thumbnail-preview:hover {
+  border-color: var(--primary);
+}
+
+.thumbnail-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.thumb-placeholder {
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-align: center;
+  padding: 8px;
+}

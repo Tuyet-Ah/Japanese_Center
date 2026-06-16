@@ -829,3 +829,53 @@
     font-size: 0.82rem;
   }
 }
+
+/* ── Nút lọc Chờ duyệt ── */
+.forum-cat-btn--pending {
+  border-color: #f59e0b !important;
+  color: #92400e !important;
+  background: rgba(251, 191, 36, 0.1) !important;
+}
+
+.forum-cat-btn--pending.active {
+  background: linear-gradient(135deg, #f59e0b, #fbbf24) !important;
+  color: #fff !important;
+  border-color: transparent !important;
+}
+
+.pending-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #ef4444;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  border-radius: 999px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  margin-left: 5px;
+  vertical-align: middle;
+}
+
+.pending-badge:empty {
+  display: none;
+}
+
+/* Row chờ duyệt trong bảng — màu nhạt hơn */
+tr.is-pending td {
+  opacity: 0.75;
+}
+
+.pending-status-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: #fef3c7;
+  color: #92400e;
+  font-weight: 600;
+  margin-left: 6px;
+  vertical-align: middle;
+}

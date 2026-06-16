@@ -11,9 +11,6 @@ const CHATBOT_API_URL = `${API_BASE_URL}/chatbot/`;
 
 let courseCatalog = {};
 
-// ─────────────────────────────────────────────
-// Custom Alert Modal — thay thế window.alert()
-// ─────────────────────────────────────────────
 (function () {
   function ensureAlertModal() {
     if (document.getElementById('jsmart-alert-overlay')) return;

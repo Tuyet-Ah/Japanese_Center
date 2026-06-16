@@ -25,7 +25,17 @@ class CourseUpdateSerializer(serializers.Serializer):
     price          = serializers.DecimalField(required=False, max_digits=10, decimal_places=2)
     thumbnail      = serializers.ImageField(required=False, allow_null=True)
     content_blocks = serializers.ListField(required=False, default=list)
-    chapters       = ChapterUpdateSerializer(many=True, required=False)
+    chapters       = serializers.JSONField(required=False)   # nhận cả list lẫn JSON string
+
+    def validate_chapters(self, value):
+        """Parse nếu chapters được gửi dưới dạng JSON string (FormData multipart)."""
+        import json
+        if isinstance(value, str):
+            try:
+                value = json.loads(value)
+            except (ValueError, TypeError):
+                raise serializers.ValidationError("chapters phải là JSON hợp lệ.")
+        return value
 
     @transaction.atomic
     def update(self, instance, validated_data):
@@ -40,7 +50,9 @@ class CourseUpdateSerializer(serializers.Serializer):
             # Không gửi chapters → không thay đổi cấu trúc
             return instance
 
-        # --- Upsert chapters & lessons ---
+        # --- Upsert chapters & lessons (chapters_data là list of dict) ---
+        # Đảm bảo mỗi phần tử là dict (phòng trường hợp JSONField trả về object lạ)
+        chapters_data = [dict(c) for c in chapters_data]
         incoming_chapter_ids = [c['id'] for c in chapters_data if c.get('id')]
         # Xóa những chapter không còn trong payload
         instance.chapters.exclude(pk__in=incoming_chapter_ids).delete()

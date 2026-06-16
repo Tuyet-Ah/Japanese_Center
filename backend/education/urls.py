@@ -15,6 +15,7 @@ from .Views import (
     VnpayReturnView, VnpayIpnView,
     JapaneseChatbotView,
     PendingForumTopicListView, ApproveForumTopicView,
+    MyPendingTopicsView,
     PublicSiteStatsView,
 )
 from .Views import AdminExamListView, AdminExamDetailView, ExamPublicListView, ExamPublicDetailView, ExamSubmitView
@@ -71,6 +72,7 @@ urlpatterns = [
     path('notes/', PersonalNoteView.as_view(), name='personal-notes'),
     path('notes/<int:note_id>/', LessonNoteDetailView.as_view(), name='personal-note-detail'),
     path('forum/topics/', ForumTopicView.as_view(), name='forum-topics'),
+    path('forum/topics/my-pending/', MyPendingTopicsView.as_view(), name='forum-my-pending'),
     path('forum/topics/<int:topic_id>/', ForumTopicDetailView.as_view(), name='forum-topic-detail'),
     path('forum/topics/<int:topic_id>/reply/', ReplyToTopicView.as_view(), name='forum-reply'),
     path('forum/topics/<int:topic_id>/response/', GetReplyTopicView.as_view(), name='forum-get-response'),

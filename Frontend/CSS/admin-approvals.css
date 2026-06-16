@@ -1,2 +1,49 @@
 ﻿@import url('./base.css');
 @import url('./admin-base.css');
+
+/* ── Status badge (tái sử dụng từ admin-exams) ── */
+.status-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+.status-badge.published { background: #dcfce7; color: #15803d; }
+.status-badge.hidden    { background: #f1f5f9; color: #64748b; }
+.status-badge.draft     { background: #fef9c3; color: #92400e; }
+
+/* ── btn-success ── */
+.btn-success {
+  background: linear-gradient(135deg, #4ade80, #16a34a);
+  color: #fff;
+  border: 0;
+  box-shadow: 0 8px 18px rgba(22,163,74,0.22);
+}
+.btn-success:hover { filter: brightness(1.08); }
+
+/* ── Modal backdrop (admin action) ── */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(4px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-backdrop[hidden] { display: none; }
+
+.modal-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 24px 60px rgba(15,23,42,0.18);
+  padding: 28px 32px;
+  width: min(420px, 100%);
+  text-align: center;
+}
+.modal-card h3 { margin: 0 0 12px; font-size: 1.15rem; }
+.modal-card p  { color: var(--muted); margin: 0 0 22px; line-height: 1.6; }
+.modal-actions { display: flex; gap: 12px; justify-content: center; }

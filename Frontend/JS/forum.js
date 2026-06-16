@@ -14,6 +14,7 @@ const CATEGORIES = {
 
 // ===== State =====
 let allTopics = [];
+let myPendingTopics = [];   // bài chờ duyệt của user hiện tại
 let currentFilter = "all";
 let currentSearch = "";
 let pendingDeleteTopicId = null;
@@ -35,6 +36,16 @@ async function fetchTopics() {
       if (!response.ok) return [];
       const data = await response.json().catch(() => ([]));
       return Array.isArray(data) ? data : [];
+}
+
+async function fetchMyPendingTopics() {
+      const tokens = typeof getAuthTokens === 'function' ? getAuthTokens() : null;
+      if (!tokens?.access) return [];
+      const res = await fetch(`${API_BASE_URL}/forum/topics/my-pending/`, {
+            headers: { Authorization: `Bearer ${tokens.access}` }
+      });
+      if (!res.ok) return [];
+      return res.json().catch(() => []);
 }
 
 async function createTopic(payload) {
@@ -151,6 +162,9 @@ function buildMediaUrl(path) {
 function normalizeTopic(topic) {
       const author = topic.user_name || "Học viên";
       const authorInit = String(author).trim().charAt(0).toUpperCase() || "H";
+      const avatarUrl = topic.user_avatar
+            ? (topic.user_avatar.startsWith('http') ? topic.user_avatar : `${API_HOST}${topic.user_avatar}`)
+            : null;
       return {
             id: topic.id,
             title: topic.title,
@@ -158,6 +172,7 @@ function normalizeTopic(topic) {
             content: topic.content || "",
             author,
             authorInit,
+            avatarUrl,
             replies: Number(topic.response_count || 0),
             views: 0,
             createdAt: topic.created_at
@@ -166,6 +181,11 @@ function normalizeTopic(topic) {
 
 // ===== Render =====
 function getFilteredTopics() {
+      // Filter pending: dùng mảng riêng
+      if (currentFilter === "pending") {
+            return [...myPendingTopics].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      }
+
       let topics = [...allTopics];
 
       if (currentFilter !== "all") {
@@ -200,18 +220,38 @@ function getAvatarGradient(initial) {
       return colors[index];
 }
 
+/**
+ * Render avatar: ảnh thật nếu có, fallback về chữ cái gradient.
+ * Luôn bọc trong wrapper div để CSS class (.topic-avatar / .comment-avatar) apply đúng kích thước.
+ * @param {string|null} avatarUrl  - URL ảnh đại diện (có thể null)
+ * @param {string}      initial    - Chữ cái đầu dự phòng
+ * @param {string}      extraStyle - Style CSS bổ sung (vd: "width:32px;height:32px")
+ * @param {string}      wrapClass  - CSS class cho wrapper (mặc định: 'topic-avatar')
+ */
+function renderAvatar(avatarUrl, initial, extraStyle = '', wrapClass = 'topic-avatar') {
+      if (avatarUrl) {
+            return `<div class="${wrapClass}" style="${extraStyle};padding:0;overflow:hidden;">
+      <img src="${escapeHtml(avatarUrl)}" alt="${escapeHtml(initial)}"
+           style="width:100%;height:100%;object-fit:cover;display:block;border-radius:50%;"
+           onerror="this.parentElement.innerHTML='${escapeHtml(initial)}';this.parentElement.style.background='${getAvatarGradient(initial)}';">
+    </div>`;
+      }
+      return `<div class="${wrapClass}" style="${getAvatarGradient(initial)};${extraStyle}">${escapeHtml(initial)}</div>`;
+}
+
 function renderTopics() {
       const tbody = document.getElementById("forum-tbody");
       const topics = getFilteredTopics();
 
       if (!topics.length) {
+            const isPending = currentFilter === "pending";
             tbody.innerHTML = `
       <tr>
-        <td colspan="5">
+        <td colspan="4">
           <div class="forum-empty">
-            <div class="forum-empty-icon">💬</div>
-            <h3>Chưa có chủ đề nào</h3>
-            <p>Hãy là người đầu tiên tạo chủ đề thảo luận!</p>
+            <div class="forum-empty-icon">${isPending ? '⏳' : '💬'}</div>
+            <h3>${isPending ? 'Không có bài nào đang chờ duyệt' : 'Chưa có chủ đề nào'}</h3>
+            <p>${isPending ? 'Tất cả bài của bạn đã được duyệt hoặc bạn chưa tạo bài nào.' : 'Hãy là người đầu tiên tạo chủ đề thảo luận!'}</p>
           </div>
         </td>
       </tr>`;
@@ -221,13 +261,17 @@ function renderTopics() {
       tbody.innerHTML = topics
             .map((topic) => {
                   const cat = CATEGORIES[topic.category] || CATEGORIES.other;
+                  const isPending = currentFilter === "pending";
                   return `
-      <tr data-topic-id="${topic.id}">
+      <tr data-topic-id="${topic.id}" ${isPending ? 'class="is-pending"' : ''}>
         <td>
           <div class="topic-cell">
-            <div class="topic-avatar" style="${getAvatarGradient(topic.authorInit)}">${escapeHtml(topic.authorInit)}</div>
+            ${renderAvatar(topic.avatarUrl, topic.authorInit, '', 'topic-avatar')}
             <div class="topic-info">
-              <div class="topic-title">${escapeHtml(topic.title)}</div>
+              <div class="topic-title">
+                ${escapeHtml(topic.title)}
+                ${isPending ? '<span class="pending-status-tag">⏳ Chờ duyệt</span>' : ''}
+              </div>
               <div class="topic-meta">
                 <span class="topic-author">${escapeHtml(topic.author)}</span>
                 <span>•</span>
@@ -238,7 +282,6 @@ function renderTopics() {
         </td>
         <td><span class="cat-badge ${cat.cssClass}">${cat.icon} ${cat.label}</span></td>
         <td><div class="stat-col">${topic.replies}<small>trả lời</small></div></td>
-        <td><div class="stat-col">${topic.views}<small>lượt xem</small></div></td>
         <td>
           <div class="last-reply">
             <strong>${escapeHtml(topic.author)}</strong>
@@ -267,7 +310,7 @@ async function openTopicDetail(topicId) {
 
       document.getElementById("detail-title").textContent = topic.title;
       document.getElementById("detail-meta").innerHTML = `
-    <div class="topic-avatar" style="${getAvatarGradient(topic.authorInit)};width:32px;height:32px;font-size:0.8rem">${escapeHtml(topic.authorInit)}</div>
+    ${renderAvatar(topic.avatarUrl, topic.authorInit, 'width:32px;height:32px;font-size:0.8rem', 'topic-avatar')}
     <strong>${escapeHtml(topic.author)}</strong>
     <span>•</span>
     <span>${timeAgo(topic.createdAt)}</span>
@@ -357,6 +400,9 @@ function renderComments(comments) {
             .map((c) => {
                   const author = c.user_name || "Học viên";
                   const init = author.trim().charAt(0).toUpperCase() || "H";
+                  const avatarUrl = c.user_avatar
+                        ? (c.user_avatar.startsWith('http') ? c.user_avatar : `${API_HOST}${c.user_avatar}`)
+                        : null;
                   const textHtml = escapeHtml(c.content || '').replace(/\n/g, "<br>");
                   const imageUrl = buildMediaUrl(c.image_file || "");
                   const imageHtml = imageUrl
@@ -371,7 +417,7 @@ function renderComments(comments) {
                         : '';
                   return `
     <div class="comment-item">
-      <div class="comment-avatar" style="${getAvatarGradient(init)}">${escapeHtml(init)}</div>
+      ${renderAvatar(avatarUrl, init, '', 'comment-avatar')}
       <div class="comment-body">
         <div class="comment-header">
           <span class="comment-author">${escapeHtml(author)}</span>
@@ -474,10 +520,27 @@ async function refreshTopics() {
 }
 
 // ===== Event Listeners =====
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
       initStandardHeader();
 
-      refreshTopics();
+      // ── Load pending trước (token đã có sau initStandardHeader) ──
+      const pendingBtn = document.getElementById("btn-pending-filter");
+      const pendingBadge = document.getElementById("pending-count-badge");
+      const tokens = typeof getAuthTokens === "function" ? getAuthTokens() : null;
+      if (tokens?.access && pendingBtn) {
+            pendingBtn.style.display = "";
+            try {
+                  const raw = await fetchMyPendingTopics();
+                  myPendingTopics = (Array.isArray(raw) ? raw : []).map(normalizeTopic);
+            } catch {
+                  myPendingTopics = [];
+            }
+            if (pendingBadge) {
+                  pendingBadge.textContent = myPendingTopics.length > 0 ? String(myPendingTopics.length) : "";
+            }
+      }
+
+      await refreshTopics();
 
       const searchInput = document.getElementById("forum-search");
       if (searchInput) {

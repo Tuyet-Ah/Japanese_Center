@@ -155,11 +155,47 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("courseForm");
   const cancelButton = document.getElementById("cancelFormBtn");
 
+  // ── Thumbnail logic ──
+  const thumbInput = document.getElementById("courseThumbnail");
+  const thumbPreview = document.getElementById("thumbnailPreview");
+  const chooseThumbBtn = document.getElementById("chooseThumbnailBtn");
+  const clearThumbBtn = document.getElementById("clearThumbnailBtn");
+  let currentThumbnailFile = null;   // File object từ input
+  let keepExistingThumb = true;   // Khi edit: có giữ ảnh cũ không
+
+  const resetThumbnail = () => {
+    currentThumbnailFile = null;
+    keepExistingThumb = false;
+    if (thumbInput) thumbInput.value = "";
+    if (thumbPreview) thumbPreview.innerHTML = '<span class="thumb-placeholder">🖼️ Chưa chọn ảnh</span>';
+    if (clearThumbBtn) clearThumbBtn.style.display = "none";
+  };
+
+  const previewFile = (file) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      if (thumbPreview) thumbPreview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+    };
+    reader.readAsDataURL(file);
+    if (clearThumbBtn) clearThumbBtn.style.display = "";
+  };
+
+  chooseThumbBtn?.addEventListener("click", () => thumbInput?.click());
+  thumbInput?.addEventListener("change", () => {
+    const file = thumbInput.files?.[0];
+    if (!file) return;
+    currentThumbnailFile = file;
+    keepExistingThumb = false;
+    previewFile(file);
+  });
+  clearThumbBtn?.addEventListener("click", resetThumbnail);
+
   addCourseBtn?.addEventListener("click", () => {
     currentEditCourseId = null;
     section.querySelector("h2").textContent = "Thêm Khóa Học";
     if (section) section.style.display = "block";
     form?.reset();
+    resetThumbnail();
     if (chaptersContainer) chaptersContainer.innerHTML = "";
     section.scrollIntoView({ behavior: 'smooth' });
   });
@@ -189,6 +225,19 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("courseLevel").value = course.level || "";
       document.getElementById("coursePrice").value = course.price || "";
       document.getElementById("courseDesc").value = course.description || "";
+
+      // Load ảnh bìa hiện tại vào preview
+      currentThumbnailFile = null;
+      keepExistingThumb = true;
+      const existingThumb = typeof buildThumbnailUrl === 'function'
+        ? buildThumbnailUrl(course.thumbnail)
+        : (course.thumbnail || '');
+      if (thumbPreview) {
+        thumbPreview.innerHTML = existingThumb
+          ? `<img src="${existingThumb}" alt="Ảnh hiện tại">`
+          : '<span class="thumb-placeholder">🖼️ Chưa có ảnh</span>';
+      }
+      if (clearThumbBtn) clearThumbBtn.style.display = existingThumb ? '' : 'none';
 
       if (chaptersContainer) {
         chaptersContainer.innerHTML = "";
@@ -296,14 +345,26 @@ document.addEventListener("DOMContentLoaded", () => {
       ? `${API_BASE_URL}/courses/${currentEditCourseId}/`
       : `${API_BASE_URL}/courses/`;
 
-    fetch(url, {
-      method: method,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${tokens.access}`
-      },
-      body: JSON.stringify(payload)
-    })
+    // Dùng FormData nếu có ảnh mới, JSON thuần nếu không
+    let body, headers;
+    if (currentThumbnailFile) {
+      // Có file ảnh mới → gửi multipart/form-data
+      const fd = new FormData();
+      fd.append("title", title);
+      fd.append("level", level);
+      fd.append("price", price);
+      fd.append("description", description);
+      fd.append("chapters", JSON.stringify(chapters));
+      fd.append("thumbnail", currentThumbnailFile, currentThumbnailFile.name);
+      body = fd;
+      headers = { Authorization: `Bearer ${tokens.access}` };  // không set Content-Type (browser tự thêm boundary)
+    } else {
+      // Không có file mới → JSON thuần
+      body = JSON.stringify(payload);
+      headers = { "Content-Type": "application/json", Authorization: `Bearer ${tokens.access}` };
+    }
+
+    fetch(url, { method, headers, body })
       .then(async (response) => {
         if (!response.ok) {
           const data = await response.json().catch(() => ({}));
@@ -315,6 +376,7 @@ document.addEventListener("DOMContentLoaded", () => {
         alert(currentEditCourseId ? "✅ Khóa học đã được cập nhật thành công!" : "✅ Khóa học đã được tạo thành công!");
         if (section) section.style.display = "none";
         form?.reset();
+        resetThumbnail();
         if (chaptersContainer) chaptersContainer.innerHTML = "";
         currentEditCourseId = null;
         loadCourses();

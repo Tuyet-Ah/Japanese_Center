@@ -49,12 +49,23 @@ class LessonNoteDetailView(APIView):
 class ForumTopicView(APIView):
     def get(self, request):
         topics = ForumTopic.objects.filter(is_approved=True).order_by('-created_at')
-        return Response(ForumTopicSerializer(topics, many=True).data)
+        return Response(ForumTopicSerializer(topics, many=True, context={'request': request}).data)
     def post(self, request):
         if not request.user.is_authenticated:
             return Response({"error": "Vui lòng đăng nhập"}, status=status.HTTP_401_UNAUTHORIZED)
         topic = InteractionService.create_topic(request.user, request.data)
-        return Response(ForumTopicSerializer(topic).data, status=status.HTTP_201_CREATED)
+        return Response(ForumTopicSerializer(topic, context={'request': request}).data, status=status.HTTP_201_CREATED)
+
+
+class MyPendingTopicsView(APIView):
+    """GET — Bài thảo luận chờ duyệt của chính user đang đăng nhập."""
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        topics = ForumTopic.objects.filter(
+            user=request.user, is_approved=False
+        ).order_by('-created_at')
+        return Response(ForumTopicSerializer(topics, many=True, context={'request': request}).data)
 
 
 class ForumTopicDetailView(APIView):
@@ -76,7 +87,7 @@ class ForumTopicDetailView(APIView):
         topic.title = title
         topic.content = content
         topic.save()
-        return Response(ForumTopicSerializer(topic).data)
+        return Response(ForumTopicSerializer(topic, context={'request': request}).data)
 
     def delete(self, request, topic_id):
         topic = ForumTopic.objects.filter(id=topic_id).first()
@@ -102,9 +113,9 @@ class ReplyToTopicView(APIView):
         return Response({"message": "Trả lời đã được đăng"}, status=status.HTTP_201_CREATED)
     
 class GetReplyTopicView(APIView):
-    def get(self,request,topic_id):
+    def get(self, request, topic_id):
         responses = InteractionService.get_replyTopic(topic_id)
-        serializer = ForumResponseSerializer(responses, many=True)
+        serializer = ForumResponseSerializer(responses, many=True, context={'request': request})
         return Response(serializer.data)
 
 class PendingForumTopicListView(APIView):
@@ -114,7 +125,7 @@ class PendingForumTopicListView(APIView):
         if request.user.role != 'admin':
             return Response({"error": "Không có quyền truy cập"}, status=status.HTTP_403_FORBIDDEN)
         topics = ForumTopic.objects.filter(is_approved=False).order_by('-created_at')
-        return Response(ForumTopicSerializer(topics, many=True).data)
+        return Response(ForumTopicSerializer(topics, many=True, context={'request': request}).data)
 
 class ApproveForumTopicView(APIView):
     permission_classes = [permissions.IsAuthenticated]
