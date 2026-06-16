@@ -22,7 +22,6 @@
         <a href="courses.html">Khóa học</a>
         <a href="exams.html" class="active">Đề thi</a>
         <a href="forum.html">Thảo luận</a>
-        <a href="materials.html">Tài liệu</a>
       </nav>
       <div class="actions">
         <a data-profile-link href="profile.html" class="icon-btn" hidden title="Trang cá nhân">👤</a>
@@ -58,7 +57,7 @@
               <span>⭐ <strong id="examPoints">1250 điểm</strong></span>
             </div>
           </div>
-          <div class="exam-meta-row">
+          <div class="exam-meta-row" id="examMetaRow">
             <span class="exam-pill">🚩 Đánh dấu câu</span>
             <span class="exam-pill">Theo dõi tiến độ</span>
             <span class="exam-pill">Nộp bài khi xong</span>
@@ -73,14 +72,14 @@
 
           <div class="exam-shell-page">
             <section>
-              <div class="exam-toolbar">
+              <div class="exam-toolbar" id="examToolbar">
                 <div><strong>Trạng thái:</strong> <span id="examProgressText">0 / 5 câu đã chọn</span></div>
                 <div><strong>🚩 Đã đánh dấu:</strong> <span id="flagCount">0</span></div>
               </div>
 
               <div class="question-stack" id="questionList"></div>
 
-              <div class="exam-footer-bar">
+              <div class="exam-footer-bar" id="examFooterBar">
                 <div>
                   <strong style="color: var(--primary-dark);">Ghi nhớ</strong>
                   <div style="color: var(--muted); font-size: 0.95rem;">Bạn có thể đánh dấu các câu chưa chắc để quay
@@ -99,14 +98,14 @@
                 <div class="question-nav-grid" id="questionNav"></div>
               </div>
 
-              <div class="sidebar-box">
+              <div class="sidebar-box" id="sidebarFlagBox">
                 <h3>Câu đã đánh dấu</h3>
                 <div class="flag-list" id="flagList">
                   <span class="flag-chip">Chưa có câu nào</span>
                 </div>
               </div>
 
-              <div class="sidebar-box">
+              <div class="sidebar-box" id="sidebarTipBox">
                 <h3>Gợi ý làm bài</h3>
                 <p id="examTip" style="margin: 0; color: var(--muted); line-height: 1.7;">Đọc kỹ đề, làm từ câu dễ trước
                   và đánh dấu lại các câu khó để quay lại sau.</p>

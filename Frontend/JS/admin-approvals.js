@@ -207,3 +207,184 @@ document.addEventListener("DOMContentLoaded", () => {
     renderList([]);
   }
 });
+
+// ─────────────────────────────────────────────
+// Danh sách Admin hiện có + Xóa mềm / Kích hoạt lại
+// ─────────────────────────────────────────────
+
+async function fetchAdminList() {
+  const tokens = typeof getAuthTokens === 'function' ? getAuthTokens() : null;
+  if (!tokens?.access) return [];
+  const res = await fetch(`${API_BASE_URL}/admin/admins/`, {
+    headers: { Authorization: `Bearer ${tokens.access}` }
+  });
+  if (!res.ok) return [];
+  return res.json().catch(() => []);
+}
+
+async function deactivateAdmin(userId) {
+  const tokens = typeof getAuthTokens === 'function' ? getAuthTokens() : null;
+  if (!tokens?.access) return false;
+  const res = await fetch(`${API_BASE_URL}/admin/admins/${userId}/deactivate/`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${tokens.access}` }
+  });
+  if (!res.ok) {
+    const d = await res.json().catch(() => ({}));
+    alert(d.error || 'Không thể vô hiệu hóa tài khoản.');
+    return false;
+  }
+  return true;
+}
+
+async function reactivateAdmin(userId) {
+  const tokens = typeof getAuthTokens === 'function' ? getAuthTokens() : null;
+  if (!tokens?.access) return false;
+  const res = await fetch(`${API_BASE_URL}/admin/admins/${userId}/reactivate/`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${tokens.access}` }
+  });
+  if (!res.ok) {
+    const d = await res.json().catch(() => ({}));
+    alert(d.error || 'Không thể kích hoạt lại tài khoản.');
+    return false;
+  }
+  return true;
+}
+
+function formatJoinDate(value) {
+  if (!value) return '—';
+  const d = new Date(value);
+  if (isNaN(d.getTime())) return value;
+  return d.toLocaleDateString('vi-VN');
+}
+
+function renderAdminTable(admins) {
+  const tbody = document.getElementById('adminListTableBody');
+  if (!tbody) return;
+  if (!Array.isArray(admins) || !admins.length) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--muted)">Chưa có admin nào.</td></tr>';
+    return;
+  }
+
+  // Lấy id của admin đang đăng nhập để không cho tự xóa mình
+  const me = typeof getLoginUser === 'function' ? getLoginUser() : null;
+
+  tbody.innerHTML = admins.map((a, i) => {
+    const isSelf = me && (me.id === a.id || me.username === a.username);
+    const isActive = a.is_active !== false; // mặc định true
+    const statusBadge = isActive
+      ? '<span class="status-badge published">Hoạt động</span>'
+      : '<span class="status-badge hidden">Vô hiệu</span>';
+
+    const actionBtn = isSelf
+      ? '<span style="color:var(--muted);font-size:0.85rem;">(Bạn)</span>'
+      : isActive
+        ? `<button class="btn btn-small btn-danger" data-deactivate-id="${a.id}">🚫 Vô hiệu hóa</button>`
+        : `<button class="btn btn-small btn-outline" data-reactivate-id="${a.id}" style="color:#16a34a;border-color:#4ade80;">✅ Kích hoạt lại</button>`;
+
+    return `
+      <tr data-admin-row="${a.id}">
+        <td>${i + 1}</td>
+        <td><strong>${escapeHtml(a.username || '')}</strong></td>
+        <td>${escapeHtml(a.email || '—')}</td>
+        <td>${escapeHtml(a.phone || '—')}</td>
+        <td>${statusBadge}</td>
+        <td>${formatJoinDate(a.date_joined)}</td>
+        <td>${actionBtn}</td>
+      </tr>`;
+  }).join('');
+
+  // Bind deactivate
+  tbody.querySelectorAll('[data-deactivate-id]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = parseInt(btn.getAttribute('data-deactivate-id'));
+      const name = btn.closest('tr')?.querySelector('strong')?.textContent || `#${id}`;
+      openAdminActionModal({
+        title: 'Vô hiệu hóa tài khoản',
+        message: `Bạn xác nhận vô hiệu hóa tài khoản "${name}"? Admin này sẽ không thể đăng nhập cho đến khi được kích hoạt lại.`,
+        confirmLabel: '🚫 Vô hiệu hóa',
+        confirmClass: 'btn-danger',
+        action: async () => {
+          const ok = await deactivateAdmin(id);
+          if (ok) loadAdminList();
+        }
+      });
+    });
+  });
+
+  // Bind reactivate
+  tbody.querySelectorAll('[data-reactivate-id]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = parseInt(btn.getAttribute('data-reactivate-id'));
+      const name = btn.closest('tr')?.querySelector('strong')?.textContent || `#${id}`;
+      openAdminActionModal({
+        title: 'Kích hoạt lại tài khoản',
+        message: `Bạn xác nhận kích hoạt lại tài khoản "${name}"?`,
+        confirmLabel: '✅ Kích hoạt',
+        confirmClass: 'btn-success',
+        action: async () => {
+          const ok = await reactivateAdmin(id);
+          if (ok) loadAdminList();
+        }
+      });
+    });
+  });
+}
+
+async function loadAdminList() {
+  const tbody = document.getElementById('adminListTableBody');
+  if (!tbody) return;
+  tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--muted)">Đang tải...</td></tr>';
+  try {
+    const admins = await fetchAdminList();
+    renderAdminTable(admins);
+  } catch {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#dc2626">Không thể tải danh sách admin.</td></tr>';
+  }
+}
+
+// ── Modal riêng cho admin actions ──
+let onAdminActionConfirm = null;
+
+function openAdminActionModal({ title, message, confirmLabel, confirmClass, action }) {
+  const modal = document.getElementById('adminActionModal');
+  const titleEl = document.getElementById('adminActionTitle');
+  const msgEl = document.getElementById('adminActionMessage');
+  const okBtn = document.getElementById('adminActionOk');
+  if (!modal) return;
+  if (titleEl) titleEl.textContent = title;
+  if (msgEl) msgEl.textContent = message;
+  if (okBtn) {
+    okBtn.textContent = confirmLabel || 'Xác nhận';
+    okBtn.className = 'btn ' + (confirmClass || 'btn-danger');
+  }
+  onAdminActionConfirm = action;
+  modal.hidden = false;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Khởi động modal admin action
+  const modal = document.getElementById('adminActionModal');
+  const cancelBtn = document.getElementById('adminActionCancel');
+  const okBtn = document.getElementById('adminActionOk');
+
+  const closeModal = () => {
+    if (modal) modal.hidden = true;
+    onAdminActionConfirm = null;
+  };
+
+  cancelBtn?.addEventListener('click', closeModal);
+  modal?.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+  okBtn?.addEventListener('click', async () => {
+    if (typeof onAdminActionConfirm === 'function') {
+      okBtn.disabled = true;
+      await onAdminActionConfirm();
+      okBtn.disabled = false;
+    }
+    closeModal();
+  });
+
+  // Load danh sách admin
+  loadAdminList();
+});

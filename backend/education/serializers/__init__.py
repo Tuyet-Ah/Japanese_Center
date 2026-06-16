@@ -19,7 +19,6 @@ from .LessonNoteSerializer import LessonNoteSerializer
 from .CourseListSerializer import CourseListSerializer
 from .CourseReviewSerializer import CourseReviewSerializer
 from .JapaneseChatbotSerializer import JapaneseChatbotSerializer
-from .MaterialSerializer import MaterialSerializer
 from .CourseLearningSerializer import CourseLearningSerializer
 from .CartItemSerializer import CartItemSerializer
 from .ExamSerializer import (

@@ -12,7 +12,6 @@ from .ForumResponse import ForumResponse
 from .ForumTopic import ForumTopic
 from .PaymentTransaction import PaymentTransaction
 from .PaymentTransactionItem import PaymentTransactionItem
-from .Material import Material
 from .Exam import Exam
 from .ExamSection import ExamSection
 from .QuestionGroup import QuestionGroup

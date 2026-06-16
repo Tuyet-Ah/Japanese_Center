@@ -2,7 +2,7 @@ from django.contrib import admin
 from education.models import (
     User, Course, CourseReview, Chapter, Lesson, Enrollment, CartItem,
     UserProgress, LessonComment, LessonNote, ForumResponse, ForumTopic,
-    PaymentTransaction, PaymentTransactionItem, Material,
+    PaymentTransaction, PaymentTransactionItem,
     Exam, ExamSection, QuestionGroup, ExamQuestion, McqOption, FibAnswer,
     ExamSubmission, AdminActivityLog,
 )
@@ -42,7 +42,6 @@ admin.site.register(ForumResponse)
 admin.site.register(ForumTopic, ForumTopicAdmin)
 admin.site.register(PaymentTransaction)
 admin.site.register(PaymentTransactionItem)
-admin.site.register(Material)
 admin.site.register(Exam)
 admin.site.register(ExamSection)
 admin.site.register(QuestionGroup)

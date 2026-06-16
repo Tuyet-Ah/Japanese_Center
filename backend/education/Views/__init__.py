@@ -1,4 +1,4 @@
-from .authViews import RegisterView, RegisterAdminView, LoginView, ApproveAdminView, PendingAdminListView, AdminDashboardStatsView, LogoutView, ProfileView, PublicSiteStatsView
+from .authViews import RegisterView, RegisterAdminView, LoginView, ApproveAdminView, PendingAdminListView, AdminDashboardStatsView, LogoutView, ProfileView, PublicSiteStatsView, AdminListView, AdminDeactivateView, AdminReactivateView
 from .authViews import ChangePasswordView
 from .courseViews import ChapterCreateView, ChapterDetailView
 from .lessonViews import LessonCreateView
@@ -8,7 +8,6 @@ from .paymentViews import CheckoutView, VnpayReturnView, VnpayIpnView
 from .lessonViews import LessonDetailView, MarkLessonCompleteView
 from .interactionView import LessonCommentView, PersonalNoteView, LessonNoteDetailView, ForumTopicView, ForumTopicDetailView, ReplyToTopicView, GetReplyTopicView, PendingForumTopicListView, ApproveForumTopicView
 from .chatbotViews import JapaneseChatbotView
-from .materialViews import MaterialListView, MaterialDetailView
 from .examViews import (
     AdminExamListView, AdminExamDetailView,
     ExamPublicListView, ExamPublicDetailView, ExamSubmitView,

@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const adminHome = document.querySelector("[data-admin-home]");
   const studentHome = document.querySelector("[data-student-home]");
-  const homeCta = document.querySelector("[data-home-cta]");
+  const homeCtaNodes = document.querySelectorAll("[data-home-cta]");
   const user = getLoginUser();
   const tokens = getAuthTokens();
   const isAdmin = Boolean(user && user.role === "admin" && tokens && tokens.access);
@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (adminHome) adminHome.hidden = !isAdmin;
   if (studentHome) studentHome.hidden = isAdmin;
-  if (homeCta) homeCta.hidden = isAuthenticated;
+  homeCtaNodes.forEach(el => { el.hidden = isAuthenticated; });
 
   // ── Fetch thống kê thực từ DB ──
   loadSiteStats();

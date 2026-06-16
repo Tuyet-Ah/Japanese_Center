@@ -362,7 +362,7 @@ function showResultBar(dataOrMsg, isError) {
       </div>
       <div>Đúng: <strong>${d.correct_count}/${d.total_questions}</strong> câu</div>
       ${dur ? `<div>Thời gian: <strong>${dur}</strong></div>` : ''}
-      ${d.submission_id ? `
+      ${!reviewMode && d.submission_id ? `
         <a href="exams.html" class="btn btn-outline" style="font-size:0.85rem;">Về danh sách đề</a>
         <a href="exam-detail.html?exam=${currentExam.id}&review=1&submission=${d.submission_id}"
            class="btn btn-primary" style="font-size:0.85rem;">Xem lại bài làm</a>` : ''}
@@ -489,12 +489,44 @@ async function loadReview(submissionId) {
   showResultBar(data, false);
   applyAnswerHighlights(data.details || []);
   lockExamInputs();
+  applyReviewMode();   // ← ẩn các UI chỉ dành cho lúc làm bài
 
   // Ẩn timer ở chế độ review
   const timerContainer = document.getElementById('timerContainer');
   const durationStatic = document.getElementById('examDurationStatic');
   if (timerContainer) timerContainer.style.display = 'none';
   if (durationStatic) durationStatic.style.display = 'inline-block';
+}
+
+// ── Ẩn các phần UI không cần thiết khi đang xem lại bài ──
+function applyReviewMode() {
+  // Dòng pills "Đánh dấu câu / Theo dõi tiến độ / Nộp bài khi xong"
+  const metaRow = document.getElementById('examMetaRow');
+  if (metaRow) metaRow.style.display = 'none';
+
+  // Toolbar "Trạng thái: ... / Đã đánh dấu: ..."
+  const toolbar = document.getElementById('examToolbar');
+  if (toolbar) toolbar.style.display = 'none';
+
+  // Footer bar "Ghi nhớ / Quay lại / Nộp bài"
+  // Thay nội dung footer thành chỉ còn nút "Quay về danh sách"
+  const footerBar = document.getElementById('examFooterBar');
+  if (footerBar) {
+    footerBar.innerHTML = `
+      <div style="color:var(--muted);font-size:0.9rem;">
+        Đây là chế độ <strong>xem lại bài làm</strong>. Đáp án đúng được tô <span style="color:#15803d;font-weight:700;">xanh</span>,
+        đáp án sai bạn chọn được tô <span style="color:#dc2626;font-weight:700;">đỏ</span>.
+      </div>
+      <div class="actions">
+        <a href="exams.html" class="btn btn-primary">Quay lại</a>
+      </div>`;
+  }
+
+  // Sidebar: ẩn "Câu đã đánh dấu" và "Gợi ý làm bài"
+  const flagBox = document.getElementById('sidebarFlagBox');
+  const tipBox = document.getElementById('sidebarTipBox');
+  if (flagBox) flagBox.style.display = 'none';
+  if (tipBox) tipBox.style.display = 'none';
 }
 
 // ── Gắn nút quay lại ──

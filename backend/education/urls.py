@@ -2,6 +2,7 @@ from django.urls import path
 from .Views import (
     RegisterView, RegisterAdminView, LoginView,
     ApproveAdminView, PendingAdminListView, AdminDashboardStatsView,
+    AdminListView, AdminDeactivateView, AdminReactivateView,
     ReplyToTopicView, GetReplyTopicView,
     CourseListView, CourseDetailView, CourseLearningDetailView,
     ChapterCreateView, ChapterDetailView,
@@ -13,7 +14,6 @@ from .Views import (
     CourseSearchSuggestView, CourseReviewView,
     VnpayReturnView, VnpayIpnView,
     JapaneseChatbotView,
-    MaterialListView, MaterialDetailView,
     PendingForumTopicListView, ApproveForumTopicView,
     PublicSiteStatsView,
 )
@@ -33,6 +33,10 @@ urlpatterns = [
     # Duyệt admin
     path('admin-approvals/', PendingAdminListView.as_view(), name='pending-admin-list'),
     path('admin-approvals/<int:user_id>/', ApproveAdminView.as_view(), name='approve-admin'),
+    # Danh sách admin hiện có + xóa mềm
+    path('admin/admins/', AdminListView.as_view(), name='admin-list'),
+    path('admin/admins/<int:user_id>/deactivate/', AdminDeactivateView.as_view(), name='admin-deactivate'),
+    path('admin/admins/<int:user_id>/reactivate/', AdminReactivateView.as_view(), name='admin-reactivate'),
 
     # Profile
     path('profile/', ProfileView.as_view(), name='profile'),
@@ -73,10 +77,8 @@ urlpatterns = [
     path('admin-forum-approvals/', PendingForumTopicListView.as_view(), name='pending-forum-list'),
     path('admin-forum-approvals/<int:topic_id>/', ApproveForumTopicView.as_view(), name='approve-forum'),
 
-    # Chatbot & Tài liệu
+    # Chatbot
     path('chatbot/', JapaneseChatbotView.as_view(), name='japanese-chatbot'),
-    path('materials/', MaterialListView.as_view(), name='material-list'),
-    path('materials/<int:pk>/', MaterialDetailView.as_view(), name='material-detail'),
 
     # ── Hệ thống Thi JLPT ──
     path('admin/exams/', AdminExamListView.as_view(), name='admin-exam-list'),

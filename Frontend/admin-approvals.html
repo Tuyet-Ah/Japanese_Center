@@ -46,6 +46,31 @@
 					<p class="pending-empty">Dang tai danh sach...</p>
 				</div>
 			</section>
+
+			<!-- ── Danh sách Admin hiện có ── -->
+			<section class="admin-table-section" style="margin-top:32px;">
+				<h2>Danh Sách Admin Hiện Có</h2>
+				<div class="table-responsive">
+					<table class="admin-table">
+						<thead>
+							<tr>
+								<th>STT</th>
+								<th>Tên đăng nhập</th>
+								<th>Email</th>
+								<th>Số điện thoại</th>
+								<th>Trạng thái</th>
+								<th>Ngày tham gia</th>
+								<th>Hành động</th>
+							</tr>
+						</thead>
+						<tbody id="adminListTableBody">
+							<tr>
+								<td colspan="7">Đang tải...</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
 		</div>
 	</main>
 
@@ -56,6 +81,18 @@
 			<div class="modal-actions">
 				<button id="confirmModalCancel" class="btn btn-outline">Huy</button>
 				<button id="confirmModalOk" class="btn btn-danger">Dong y</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal xác nhận xóa mềm / kích hoạt lại admin -->
+	<div id="adminActionModal" class="modal-backdrop" hidden>
+		<div class="modal-card" role="dialog" aria-modal="true">
+			<h3 id="adminActionTitle">Xác nhận</h3>
+			<p id="adminActionMessage">Bạn chắc chắn?</p>
+			<div class="modal-actions">
+				<button id="adminActionCancel" class="btn btn-outline">Hủy</button>
+				<button id="adminActionOk" class="btn btn-danger">Xác nhận</button>
 			</div>
 		</div>
 	</div>

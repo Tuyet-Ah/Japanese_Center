@@ -70,6 +70,57 @@ class PendingAdminListView(APIView):
         return Response(UserSerializer(pending_admins, many=True).data)
 
 
+class AdminListView(APIView):
+    """GET — Danh sách tất cả admin đã duyệt (is_admin_pending=False)"""
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        if request.user.role != 'admin' or request.user.is_admin_pending:
+            return Response({"error": "Không có quyền."}, status=403)
+
+        admins = User.objects.filter(
+            role='admin', is_admin_pending=False
+        ).order_by('-date_joined')
+        return Response(UserSerializer(admins, many=True).data)
+
+
+class AdminDeactivateView(APIView):
+    """PATCH — Xóa mềm một admin (set is_active=False). Không thể tự vô hiệu hóa bản thân."""
+    permission_classes = [permissions.IsAuthenticated]
+
+    def patch(self, request, user_id):
+        if request.user.role != 'admin' or request.user.is_admin_pending:
+            return Response({"error": "Không có quyền."}, status=403)
+        if request.user.id == user_id:
+            return Response({"error": "Không thể vô hiệu hóa chính mình."}, status=400)
+
+        target = User.objects.filter(id=user_id, role='admin', is_admin_pending=False).first()
+        if not target:
+            return Response({"error": "Không tìm thấy admin."}, status=404)
+
+        target.is_active = False
+        target.save(update_fields=['is_active'])
+        log_admin_action(request.user, 'reject_user', f'{target.username} (vô hiệu hóa)')
+        return Response({"message": f"Đã vô hiệu hóa tài khoản {target.username}."})
+
+
+class AdminReactivateView(APIView):
+    """PATCH — Kích hoạt lại admin đã bị vô hiệu hóa (set is_active=True)."""
+    permission_classes = [permissions.IsAuthenticated]
+
+    def patch(self, request, user_id):
+        if request.user.role != 'admin' or request.user.is_admin_pending:
+            return Response({"error": "Không có quyền."}, status=403)
+
+        target = User.objects.filter(id=user_id, role='admin').first()
+        if not target:
+            return Response({"error": "Không tìm thấy admin."}, status=404)
+
+        target.is_active = True
+        target.save(update_fields=['is_active'])
+        return Response({"message": f"Đã kích hoạt lại tài khoản {target.username}."})
+
+
 class AdminDashboardStatsView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
